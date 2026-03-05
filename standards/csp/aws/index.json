@@ -1,0 +1,61 @@
+{
+  "csp": "aws",
+  "name": "Amazon Web Services",
+  "slug": "aws",
+  "description": "AWS is the largest public cloud provider, offering 200+ services across 30+ regions. AWS provides a comprehensive shared responsibility model where AWS secures the cloud infrastructure and customers secure their workloads within the cloud.",
+  "securityModel": {
+    "name": "AWS Shared Responsibility Model",
+    "description": "AWS is responsible for security OF the cloud (physical infrastructure, hypervisor, managed services), while customers are responsible for security IN the cloud (data, identity, application, OS patching, network configuration).",
+    "layers": [
+      {
+        "owner": "aws",
+        "scope": "Physical security, hardware, networking, hypervisor, managed service infrastructure"
+      },
+      {
+        "owner": "customer",
+        "scope": "Data classification, IAM, application-level security, OS/network/firewall configuration, encryption"
+      }
+    ]
+  },
+  "frameworks": [
+    {
+      "name": "CIS AWS Foundations Benchmark",
+      "version": "3.0",
+      "description": "Consensus-based security configuration guidelines for AWS accounts. Covers IAM, storage, logging, monitoring, and networking controls. Published by the Center for Internet Security.",
+      "url": "https://www.cisecurity.org/benchmark/amazon_web_services"
+    },
+    {
+      "name": "AWS Well-Architected Framework - Security Pillar",
+      "version": "2023",
+      "description": "AWS-authored best practices for designing secure workloads. Organized around seven design principles: strong identity foundation, traceability, security at all layers, automation, data protection, minimal human access, and incident preparedness.",
+      "url": "https://docs.aws.amazon.com/wellarchitected/latest/security-pillar/"
+    },
+    {
+      "name": "AWS Security Reference Architecture (SRA)",
+      "version": "2023",
+      "description": "Prescriptive guidance for deploying AWS security services in a multi-account environment using AWS Organizations. Covers account structure, delegated administration, and service deployment patterns.",
+      "url": "https://docs.aws.amazon.com/prescriptive-guidance/latest/security-reference-architecture/"
+    }
+  ],
+  "malaysiaContext": {
+    "nearestRegion": "ap-southeast-1",
+    "regionName": "Asia Pacific (Singapore)",
+    "hasLocalRegion": false,
+    "notes": "AWS does not have a region in Malaysia. The nearest region is ap-southeast-1 (Singapore), which offers low latency from Peninsular Malaysia. For data residency requirements under Malaysian law (e.g., PDPA 2010), evaluate whether Singapore hosting satisfies jurisdictional needs. AWS Local Zones or Outposts may be options for strict in-country data residency.",
+    "complianceCertifications": [
+      "ISO 27001",
+      "ISO 27017",
+      "ISO 27018",
+      "SOC 1/2/3",
+      "PCI DSS Level 1",
+      "CSA STAR Level 2"
+    ]
+  },
+  "keyLinks": {
+    "securityHub": "https://aws.amazon.com/security/",
+    "compliancePrograms": "https://aws.amazon.com/compliance/programs/",
+    "sharedResponsibility": "https://aws.amazon.com/compliance/shared-responsibility-model/",
+    "securityBlog": "https://aws.amazon.com/blogs/security/",
+    "documentation": "https://docs.aws.amazon.com/security/"
+  }
+}

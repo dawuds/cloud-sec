@@ -1,0 +1,402 @@
+{
+  "$schema": "cloud-security-v1",
+  "sourceType": "constructed-indicative",
+  "verificationNote": "Cloud security assessment checklist constructed from CSA CCM v4, NIST SP 800-144, ISO 27017, CIS Cloud Benchmarks, and cloud security audit experience. Not endorsed by any standards body -- verify against authoritative sources before use in formal assessments.",
+  "title": "Cloud Security Assessment Checklist",
+  "description": "Pre-assessment and ongoing security checklist for cloud environments. Covers pre-migration, architecture, IAM, data protection, network security, logging, compliance, and operational readiness. Complete before deploying production workloads to cloud and review periodically.",
+  "usage": "Review each section before and during cloud deployments. Items marked mandatory must be completed -- gaps in these areas indicate the cloud security posture is incomplete.",
+  "sections": [
+    {
+      "id": "pre-migration",
+      "name": "Pre-Migration Assessment",
+      "description": "Complete before migrating any workload to cloud. Establishes the security foundation for cloud adoption.",
+      "items": [
+        {
+          "id": "PM-01",
+          "item": "Classify all data planned for cloud hosting by sensitivity level (public, internal, confidential, restricted/regulated)",
+          "mandatory": true,
+          "guidance": "Data classification determines which cloud services and configurations are appropriate. PDPA-regulated personal data, BNM RMiT financial data, and NACSA NCII data have specific requirements that constrain cloud deployment options.",
+          "evidenceRequired": "Data classification register with sensitivity level per data type; classification policy document"
+        },
+        {
+          "id": "PM-02",
+          "item": "Document the shared responsibility model for each CSP service being adopted",
+          "mandatory": true,
+          "guidance": "Map security responsibilities (CSP vs customer) for each service model (IaaS, PaaS, SaaS). The boundary shifts significantly between models. Misunderstanding the boundary is the leading cause of cloud security incidents.",
+          "evidenceRequired": "Shared responsibility matrix per CSP service; documented customer-side control requirements"
+        },
+        {
+          "id": "PM-03",
+          "item": "Verify CSP data residency capabilities meet regulatory requirements (PDPA, BNM RMiT, NACSA)",
+          "mandatory": true,
+          "guidance": "Confirm the CSP offers regions in approved jurisdictions. Verify that selected services do not replicate metadata globally. For NCII-designated data, Malaysian data residency is mandatory.",
+          "evidenceRequired": "CSP data processing agreement; region configuration documentation; data residency compliance confirmation"
+        },
+        {
+          "id": "PM-04",
+          "item": "Review CSP security certifications (SOC 2 Type II, ISO 27001, ISO 27017, CSA STAR)",
+          "mandatory": true,
+          "guidance": "CSP certifications provide assurance for the CSP side of the shared responsibility model. Review the scope of certifications -- ensure they cover the specific services being used. SOC 2 Type II is the most relevant for operational assurance.",
+          "evidenceRequired": "CSP certification documents; NDA-accessed SOC 2 Type II report review notes"
+        },
+        {
+          "id": "PM-05",
+          "item": "Develop cloud exit strategy documenting data export procedures and alternative providers",
+          "mandatory": true,
+          "guidance": "Exit strategy must include: data export formats and procedures, application portability assessment, contractual provisions for data return/deletion, timeline for migration, and cost estimate. BNM RMiT requires financial institutions to maintain exit strategies for material cloud services.",
+          "evidenceRequired": "Cloud exit strategy document; data export procedures tested; contractual exit provisions documented"
+        },
+        {
+          "id": "PM-06",
+          "item": "Assess network connectivity requirements between on-premises and cloud (VPN, Direct Connect, ExpressRoute)",
+          "mandatory": false,
+          "guidance": "Hybrid connectivity introduces new attack surface. Evaluate whether dedicated private connectivity (Direct Connect, ExpressRoute) is required for sensitive data flows vs VPN.",
+          "evidenceRequired": "Network connectivity architecture diagram; bandwidth and latency assessment"
+        },
+        {
+          "id": "PM-07",
+          "item": "Establish cloud governance framework including account structure, naming conventions, and tagging strategy",
+          "mandatory": true,
+          "guidance": "Multi-account/multi-subscription architecture is essential for blast radius containment. Separate production, development, and sandbox environments into different accounts. Implement mandatory tagging for cost allocation, ownership, and data classification.",
+          "evidenceRequired": "Cloud governance policy; account structure diagram; tagging policy"
+        }
+      ]
+    },
+    {
+      "id": "architecture-review",
+      "name": "Architecture Review",
+      "description": "Review the cloud architecture design for security, resilience, and compliance before deployment.",
+      "items": [
+        {
+          "id": "AR-01",
+          "item": "Verify multi-account/multi-subscription architecture with environment separation",
+          "mandatory": true,
+          "guidance": "Production, development, staging, and sandbox environments must be in separate cloud accounts/subscriptions. AWS Organisations SCPs, Azure Management Groups, or GCP Organisation Policies should enforce guardrails.",
+          "evidenceRequired": "Account/subscription inventory; environment mapping; SCP/policy configuration"
+        },
+        {
+          "id": "AR-02",
+          "item": "Review VPC/VNET architecture for proper network segmentation",
+          "mandatory": true,
+          "guidance": "Workloads should be segmented into subnets by function and sensitivity. Public-facing, application, and database tiers should be in separate subnets. Verify no default VPC usage in production.",
+          "evidenceRequired": "VPC/VNET architecture diagram; subnet design with security group/NSG mapping"
+        },
+        {
+          "id": "AR-03",
+          "item": "Verify high-availability and disaster recovery design meets RTO/RPO requirements",
+          "mandatory": true,
+          "guidance": "Multi-AZ deployment for production workloads. Cross-region DR for critical services. Verify RTO/RPO alignment with business requirements. Test failover procedures.",
+          "evidenceRequired": "HA/DR architecture diagram; RTO/RPO documentation; failover test results"
+        },
+        {
+          "id": "AR-04",
+          "item": "Review use of CSP managed services vs self-managed for security implications",
+          "mandatory": false,
+          "guidance": "CSP managed services (RDS, CloudSQL, managed Kubernetes) shift operational security burden to CSP but reduce customer control. Evaluate the trade-off for each service.",
+          "evidenceRequired": "Service selection matrix with security rationale"
+        },
+        {
+          "id": "AR-05",
+          "item": "Verify all infrastructure is defined as code (IaC) and deployed through CI/CD pipeline",
+          "mandatory": true,
+          "guidance": "Manual infrastructure provisioning leads to configuration drift and undocumented changes. All cloud infrastructure should be defined in Terraform, CloudFormation, Bicep, or equivalent IaC. Console/manual changes should be detected and remediated.",
+          "evidenceRequired": "IaC repository; CI/CD pipeline configuration; drift detection configuration"
+        },
+        {
+          "id": "AR-06",
+          "item": "Review container/Kubernetes security architecture if applicable",
+          "mandatory": false,
+          "guidance": "Verify container image provenance, registry security, pod security standards, network policies, and runtime security monitoring. Kubernetes RBAC should be configured with least privilege.",
+          "evidenceRequired": "Container security architecture document; pod security policy/standard configuration; image scanning results"
+        }
+      ]
+    },
+    {
+      "id": "iam-review",
+      "name": "IAM Review",
+      "description": "Review Identity and Access Management configuration for least privilege, MFA enforcement, and credential hygiene.",
+      "items": [
+        {
+          "id": "IAM-01",
+          "item": "Verify MFA is enforced on all human accounts, especially administrative and root/owner accounts",
+          "mandatory": true,
+          "guidance": "MFA must be enforced for all human users accessing cloud management plane. Root/owner accounts should use hardware security keys (FIDO2). Push-notification MFA should be upgraded to number-matching or FIDO2 to prevent fatigue attacks.",
+          "evidenceRequired": "MFA enforcement policy configuration; root account MFA verification; MFA method inventory"
+        },
+        {
+          "id": "IAM-02",
+          "item": "Audit IAM policies for least-privilege compliance (no wildcard permissions in production)",
+          "mandatory": true,
+          "guidance": "Review all IAM policies for overly permissive statements. Wildcard (*) actions or resources in production accounts are critical findings. Use IAM Access Analyzer (AWS), Azure AD Access Reviews, or GCP IAM Recommender to identify excess permissions.",
+          "evidenceRequired": "IAM policy audit results; Access Analyzer findings; remediation actions"
+        },
+        {
+          "id": "IAM-03",
+          "item": "Verify service accounts and machine identities use short-lived credentials (not long-lived API keys)",
+          "mandatory": true,
+          "guidance": "Long-lived API keys are a primary credential theft vector. Migrate to IAM roles with temporary credentials (AWS STS, Azure Managed Identity, GCP Workload Identity). Eliminate static API keys where possible.",
+          "evidenceRequired": "Service account inventory; credential type per account; API key age report"
+        },
+        {
+          "id": "IAM-04",
+          "item": "Verify root/owner account is locked down (no API keys, MFA enabled, usage alerting)",
+          "mandatory": true,
+          "guidance": "Root/owner accounts should have no API keys, hardware MFA, and real-time alerting on any usage. Root access should be break-glass only, with all administrative work performed through delegated IAM roles.",
+          "evidenceRequired": "Root account configuration audit; root usage alerting configuration; root API key absence verification"
+        },
+        {
+          "id": "IAM-05",
+          "item": "Review cross-account and external trust relationships",
+          "mandatory": true,
+          "guidance": "Cross-account IAM roles and external identity provider trusts expand the trust boundary. Each trust relationship should be documented and justified. Review for overly permissive external principal access.",
+          "evidenceRequired": "Cross-account role inventory; external trust configuration; trust relationship justifications"
+        },
+        {
+          "id": "IAM-06",
+          "item": "Verify federation and SSO configuration if using external identity provider",
+          "mandatory": false,
+          "guidance": "Federated identity (SAML, OIDC) centralises authentication but creates a single point of failure. Verify IdP security posture, session duration limits, and conditional access policies.",
+          "evidenceRequired": "Federation configuration; IdP security assessment; session policy documentation"
+        }
+      ]
+    },
+    {
+      "id": "data-protection-review",
+      "name": "Data Protection Review",
+      "description": "Review data protection controls including encryption, classification, and data lifecycle management.",
+      "items": [
+        {
+          "id": "DP-01",
+          "item": "Verify encryption at rest is enabled for all storage services using CSP-managed or customer-managed keys",
+          "mandatory": true,
+          "guidance": "All data at rest in cloud storage must be encrypted. For regulated data, use customer-managed keys (CMEK) to maintain key control. For highest sensitivity, consider client-side encryption (data encrypted before upload to CSP).",
+          "evidenceRequired": "Encryption configuration per storage service; key management inventory; CMEK vs CSP-managed key mapping"
+        },
+        {
+          "id": "DP-02",
+          "item": "Verify encryption in transit (TLS 1.2+) for all data flows, both external and internal",
+          "mandatory": true,
+          "guidance": "All data in transit must use TLS 1.2 or later. This includes external-facing endpoints, internal service-to-service communication, and database connections. Verify TLS policy on load balancers, API gateways, and CDN configurations.",
+          "evidenceRequired": "TLS configuration per service; certificate management process; minimum TLS version policy"
+        },
+        {
+          "id": "DP-03",
+          "item": "Verify no cloud storage services (S3, Blob Storage, GCS) have public access enabled",
+          "mandatory": true,
+          "guidance": "Account-level block public access should be enabled on all production accounts. CSPM should continuously monitor for public storage. Any public access exception requires documented business justification and CISO approval.",
+          "evidenceRequired": "Block public access configuration; CSPM scan results; public access exception register (if any)"
+        },
+        {
+          "id": "DP-04",
+          "item": "Review data backup strategy including cross-region backup and immutability",
+          "mandatory": true,
+          "guidance": "Cloud backups should be cross-region for disaster recovery. Backup data should be encrypted and stored in a separate account with restricted access. Consider immutable backups (object lock) to protect against ransomware.",
+          "evidenceRequired": "Backup policy; cross-region backup configuration; backup encryption configuration; restore test results"
+        },
+        {
+          "id": "DP-05",
+          "item": "Verify data lifecycle policies are configured for retention and secure deletion",
+          "mandatory": true,
+          "guidance": "Implement automated lifecycle policies for data retention and deletion. Verify that deleted data is securely purged (CSP shared infrastructure -- confirm CSP deletion practices). NACSA s26 requires 7-year log retention for NCII operators.",
+          "evidenceRequired": "Lifecycle policy configuration per storage service; retention compliance mapping; deletion verification"
+        },
+        {
+          "id": "DP-06",
+          "item": "Review data loss prevention (DLP) controls for cloud storage and email",
+          "mandatory": false,
+          "guidance": "Implement DLP scanning on cloud storage to detect and classify sensitive data. Configure DLP policies for email and collaboration tools to prevent accidental data exposure.",
+          "evidenceRequired": "DLP policy configuration; DLP scan results; sensitive data discovery report"
+        }
+      ]
+    },
+    {
+      "id": "network-security-review",
+      "name": "Network Security Review",
+      "description": "Review network security controls including security groups, WAF, and DDoS protection.",
+      "items": [
+        {
+          "id": "NS-01",
+          "item": "Audit security groups and network ACLs for overly permissive rules (no 0.0.0.0/0 inbound on management ports)",
+          "mandatory": true,
+          "guidance": "No inbound 0.0.0.0/0 (any source) rules should exist for SSH (22), RDP (3389), database ports (3306, 5432, 1433), or any management interface. Security groups should follow least-privilege. Use CSPM to continuously monitor.",
+          "evidenceRequired": "Security group/NSG audit results; CSPM findings for overly permissive rules; remediation actions"
+        },
+        {
+          "id": "NS-02",
+          "item": "Verify Web Application Firewall (WAF) is deployed for all internet-facing web applications",
+          "mandatory": true,
+          "guidance": "WAF (AWS WAF, Azure WAF, Cloud Armor) must protect all internet-facing web applications and APIs. Configure OWASP Top 10 rule sets. Implement rate limiting for API endpoints. Review WAF logs for tuning opportunities.",
+          "evidenceRequired": "WAF deployment configuration; rule set configuration; WAF log review records"
+        },
+        {
+          "id": "NS-03",
+          "item": "Verify DDoS protection is enabled for internet-facing services",
+          "mandatory": true,
+          "guidance": "Enable CSP DDoS protection (AWS Shield, Azure DDoS Protection, GCP Cloud Armor) for all public-facing endpoints. Standard (free) tier provides basic protection. Evaluate Advanced/Premium tier for critical services.",
+          "evidenceRequired": "DDoS protection configuration; tier selection rationale; incident response procedure for DDoS events"
+        },
+        {
+          "id": "NS-04",
+          "item": "Review VPC flow logs and network traffic monitoring configuration",
+          "mandatory": true,
+          "guidance": "VPC flow logs (AWS), NSG flow logs (Azure), or VPC Flow Logs (GCP) should be enabled for all production VPCs. Logs should feed into SIEM for anomaly detection. Monitor for unexpected outbound connections.",
+          "evidenceRequired": "Flow log configuration; SIEM integration verification; sample flow log analysis"
+        },
+        {
+          "id": "NS-05",
+          "item": "Verify private connectivity for sensitive data flows (no sensitive data over public internet)",
+          "mandatory": false,
+          "guidance": "For sensitive data flows between on-premises and cloud, use private connectivity (Direct Connect, ExpressRoute, Cloud Interconnect) or VPN. VPC endpoints/Private Link should be used for cloud service API access to avoid internet transit.",
+          "evidenceRequired": "Private connectivity architecture; VPC endpoint configuration; data flow mapping"
+        },
+        {
+          "id": "NS-06",
+          "item": "Review egress controls and network segmentation between workload tiers",
+          "mandatory": true,
+          "guidance": "Implement egress controls to restrict outbound internet access from cloud workloads to only required destinations. Segment application tiers (web, app, database) into separate subnets with inter-tier traffic controls.",
+          "evidenceRequired": "Egress rule configuration; tier segmentation diagram; inter-tier traffic policy"
+        }
+      ]
+    },
+    {
+      "id": "logging-review",
+      "name": "Logging and Monitoring Review",
+      "description": "Review logging, monitoring, and alerting configuration for security event detection and incident response readiness.",
+      "items": [
+        {
+          "id": "LG-01",
+          "item": "Verify cloud audit logging (CloudTrail, Activity Log, Audit Log) is enabled across all accounts and regions",
+          "mandatory": true,
+          "guidance": "Management-plane audit logging must be enabled in all cloud accounts, all regions, and for all services. Organisation-level trail/log configuration ensures new accounts are automatically covered. Verify logging cannot be disabled by account-level users.",
+          "evidenceRequired": "Organisation-level audit log configuration; account coverage verification; log protection policy"
+        },
+        {
+          "id": "LG-02",
+          "item": "Verify audit logs are centralised in immutable storage with tamper protection",
+          "mandatory": true,
+          "guidance": "Audit logs should be centralised in a dedicated logging account with restricted access. Enable immutability (S3 Object Lock, Azure Immutable Blob Storage) to protect against log tampering. Verify log integrity validation is configured.",
+          "evidenceRequired": "Centralised logging architecture; immutability configuration; log integrity validation setup"
+        },
+        {
+          "id": "LG-03",
+          "item": "Verify SIEM integration with cloud-specific detection rules for CSA Top Threats",
+          "mandatory": true,
+          "guidance": "Cloud audit logs must feed into SIEM (or cloud-native SIEM such as AWS Security Hub, Microsoft Sentinel, Chronicle). Detection rules should cover: IAM policy changes, security group modifications, root account usage, public storage creation, cross-account access, and anomalous API call patterns.",
+          "evidenceRequired": "SIEM integration configuration; detection rule inventory; sample alert verification"
+        },
+        {
+          "id": "LG-04",
+          "item": "Verify alerting is configured for critical security events with defined response procedures",
+          "mandatory": true,
+          "guidance": "Real-time alerting for: root/owner account login, IAM privilege escalation, security group modification to allow 0.0.0.0/0, storage policy change to public, audit log disabling, and credential exposure detection. Each alert must have a documented response procedure.",
+          "evidenceRequired": "Alert configuration; response procedure per alert type; on-call rotation for cloud security alerts"
+        },
+        {
+          "id": "LG-05",
+          "item": "Verify log retention meets regulatory requirements (NACSA s26: 7 years for NCII operators)",
+          "mandatory": true,
+          "guidance": "Log retention must meet the most restrictive regulatory requirement. NACSA Act 854 s26 requires 7-year record retention for NCII operators. BNM RMiT requires log retention per BNM guidelines. Verify lifecycle policies do not delete logs prematurely.",
+          "evidenceRequired": "Log retention policy configuration; lifecycle policy configuration; regulatory requirement mapping"
+        },
+        {
+          "id": "LG-06",
+          "item": "Verify CSPM (Cloud Security Posture Management) is deployed for continuous assessment",
+          "mandatory": false,
+          "guidance": "CSPM tools (AWS Security Hub, Azure Defender, GCP Security Command Center, or third-party) provide continuous security posture assessment against benchmarks (CIS, CSP best practices). Configure automated remediation for critical findings.",
+          "evidenceRequired": "CSPM deployment configuration; benchmark selection; finding remediation process"
+        }
+      ]
+    },
+    {
+      "id": "compliance-review",
+      "name": "Compliance Review",
+      "description": "Review regulatory compliance requirements specific to cloud deployment in the Malaysian context.",
+      "items": [
+        {
+          "id": "CP-01",
+          "item": "Verify PDPA compliance for personal data processed in cloud (consent, purpose limitation, data subject rights)",
+          "mandatory": true,
+          "guidance": "All personal data processed in cloud must comply with Malaysia PDPA 2010. Verify: consent mechanism, purpose limitation, data subject access request procedures, cross-border transfer compliance (s129), and data processor agreements with CSP.",
+          "evidenceRequired": "PDPA compliance assessment; data processor agreement with CSP; cross-border transfer justification"
+        },
+        {
+          "id": "CP-02",
+          "item": "Verify BNM RMiT compliance for financial sector cloud workloads (if applicable)",
+          "mandatory": false,
+          "guidance": "Financial institutions must comply with BNM RMiT for material cloud outsourcing. Requirements include: risk assessment, vendor due diligence, data residency, exit strategy, incident reporting (24 hours), and regulatory access to CSP.",
+          "evidenceRequired": "BNM RMiT compliance matrix; material outsourcing risk assessment; exit strategy; BNM notification records"
+        },
+        {
+          "id": "CP-03",
+          "item": "Verify NACSA Act 854 compliance for NCII-designated cloud workloads (if applicable)",
+          "mandatory": false,
+          "guidance": "NCII-designated operators using cloud must include cloud assets in s21 risk assessment, comply with s18 security measures, implement s26 notification procedures for cloud-hosted NCII. Data residency in Malaysia is mandatory for NCII data.",
+          "evidenceRequired": "NACSA s21 risk assessment covering cloud; s18 control implementation; s26 notification procedure; data residency verification"
+        },
+        {
+          "id": "CP-04",
+          "item": "Review CSP data processing agreements for compliance with Malaysian law",
+          "mandatory": true,
+          "guidance": "CSP data processing agreement must address: data ownership, data residency, deletion obligations, breach notification, subprocessor management, audit rights, and compliance with Malaysian law. Negotiate terms if standard CSP agreement is insufficient.",
+          "evidenceRequired": "CSP data processing agreement; legal review opinion; identified gaps and negotiated amendments"
+        },
+        {
+          "id": "CP-05",
+          "item": "Verify incident response procedure includes cloud-specific scenarios and CSP coordination",
+          "mandatory": true,
+          "guidance": "Cloud incident response must address: CSP support escalation procedures, cloud forensic evidence collection, cloud account isolation procedures, and coordination with CSP abuse/security teams. Test cloud incident response annually.",
+          "evidenceRequired": "Cloud incident response plan; CSP escalation contacts; cloud IR tabletop exercise records"
+        }
+      ]
+    },
+    {
+      "id": "operational-review",
+      "name": "Operational Review",
+      "description": "Review operational security practices including patching, change management, and cost management.",
+      "items": [
+        {
+          "id": "OP-01",
+          "item": "Verify automated patching is configured for cloud-managed resources (OS, container images, managed services)",
+          "mandatory": true,
+          "guidance": "Enable automated patching for EC2/VM instances (AWS Systems Manager Patch Manager, Azure Update Management). Use latest container base images in CI/CD pipeline. Verify CSP managed services are patched automatically by CSP.",
+          "evidenceRequired": "Patching configuration; patch compliance report; container base image age report"
+        },
+        {
+          "id": "OP-02",
+          "item": "Verify change management process includes cloud infrastructure changes (IaC-based)",
+          "mandatory": true,
+          "guidance": "All cloud infrastructure changes should flow through IaC and CI/CD pipeline with code review, automated testing, and approval gates. Console/manual changes should be detected and either reconciled or reverted.",
+          "evidenceRequired": "Change management process for cloud; CI/CD pipeline with approval gates; drift detection configuration"
+        },
+        {
+          "id": "OP-03",
+          "item": "Verify cost monitoring and anomaly detection is configured",
+          "mandatory": true,
+          "guidance": "Billing anomalies are often the first indicator of cryptojacking, resource abuse, or compromised credentials. Configure budgets, spending alerts, and anomaly detection. Review top-spend services monthly.",
+          "evidenceRequired": "Budget/alert configuration; anomaly detection configuration; monthly cost review records"
+        },
+        {
+          "id": "OP-04",
+          "item": "Verify secrets management using centralised secrets store (not embedded in code or environment variables)",
+          "mandatory": true,
+          "guidance": "All secrets (API keys, database passwords, tokens) must be stored in centralised secrets management (AWS Secrets Manager, Azure Key Vault, GCP Secret Manager, HashiCorp Vault). No secrets in source code, IaC templates, or container environment variables.",
+          "evidenceRequired": "Secrets management configuration; secret scanning results in codebase; migration status from embedded secrets"
+        },
+        {
+          "id": "OP-05",
+          "item": "Verify disaster recovery procedures are tested and documented",
+          "mandatory": true,
+          "guidance": "DR procedures must be tested at least annually. Test should include: data restoration from backups, cross-region failover, DNS failover, and application recovery. Measure actual RTO/RPO against targets.",
+          "evidenceRequired": "DR test records; measured RTO/RPO vs targets; DR procedure document"
+        },
+        {
+          "id": "OP-06",
+          "item": "Review cloud service limits and quotas for production workloads",
+          "mandatory": false,
+          "guidance": "Cloud services have default quotas that can limit scaling during incidents or traffic spikes. Review quota utilisation for production services and request increases proactively.",
+          "evidenceRequired": "Quota utilisation report; quota increase requests for critical services"
+        }
+      ]
+    }
+  ]
+}

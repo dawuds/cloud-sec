@@ -1,0 +1,212 @@
+{
+  "$schema": "cloud-security-v1",
+  "standard": "CSA CCM v4",
+  "sourceType": "paraphrased-from-standard",
+  "verificationNote": "Control IDs and domain structure from CSA CCM v4.0.10 (publicly available). Descriptions paraphrased. Obtain the normative spreadsheet from cloudsecurityalliance.org for authoritative control text.",
+  "lastUpdated": "2026-03-06",
+  "controlDomains": [
+    {
+      "id": "AIS",
+      "name": "Application & Interface Security",
+      "description": "Controls for securing cloud applications and their interfaces throughout the development lifecycle, including secure coding practices, API security, and application vulnerability management.",
+      "controlCount": 7,
+      "exampleControls": [
+        { "id": "AIS-01", "name": "Application Security Policy", "summary": "Establish and maintain an application security policy defining requirements for secure development, testing, and deployment of cloud applications." },
+        { "id": "AIS-02", "name": "Application Security Baseline", "summary": "Define and enforce a security baseline for all cloud applications that specifies minimum security requirements and hardening standards." },
+        { "id": "AIS-04", "name": "Secure Application Design and Development", "summary": "Implement secure-by-design principles and secure coding practices during the application development lifecycle, including threat modelling and code review." },
+        { "id": "AIS-06", "name": "Automated Application Security Testing", "summary": "Implement automated security testing (SAST, DAST, SCA) integrated into CI/CD pipelines to detect vulnerabilities before deployment." }
+      ]
+    },
+    {
+      "id": "AAC",
+      "name": "Audit & Assurance",
+      "description": "Controls for conducting independent security audits, managing audit scope and planning, and maintaining audit evidence to provide assurance of control effectiveness.",
+      "controlCount": 3,
+      "exampleControls": [
+        { "id": "AAC-01", "name": "Audit & Assurance Policy", "summary": "Establish and maintain an audit policy defining scope, frequency, independence requirements, and reporting obligations for cloud security audits." },
+        { "id": "AAC-02", "name": "Independent Assessments", "summary": "Conduct independent security assessments at planned intervals or upon significant changes to validate control effectiveness." },
+        { "id": "AAC-03", "name": "Risk-Based Planning Assessment", "summary": "Plan audit activities based on risk assessment results, prioritising high-risk areas and ensuring adequate coverage of critical controls." }
+      ]
+    },
+    {
+      "id": "BCR",
+      "name": "Business Continuity Management & Operational Resilience",
+      "description": "Controls for ensuring cloud service continuity, disaster recovery, backup management, and operational resilience across all service models and deployment scenarios.",
+      "controlCount": 11,
+      "exampleControls": [
+        { "id": "BCR-01", "name": "Business Continuity Planning", "summary": "Establish and maintain a business continuity plan covering cloud service disruptions, including RTOs, RPOs, and recovery procedures for all critical cloud services." },
+        { "id": "BCR-03", "name": "Business Continuity Testing", "summary": "Test business continuity and disaster recovery plans at planned intervals, documenting results and updating plans based on lessons learned." },
+        { "id": "BCR-06", "name": "Backup", "summary": "Implement backup procedures for cloud-hosted data and configurations with defined retention periods, encryption requirements, and recovery testing." },
+        { "id": "BCR-11", "name": "Equipment Redundancy", "summary": "Implement redundant infrastructure components to eliminate single points of failure in cloud service delivery." }
+      ]
+    },
+    {
+      "id": "CCC",
+      "name": "Change Control & Configuration Management",
+      "description": "Controls for managing changes to cloud infrastructure, applications, and configurations through formal change management processes, baseline configurations, and unauthorised change detection.",
+      "controlCount": 9,
+      "exampleControls": [
+        { "id": "CCC-01", "name": "Change Management Policy", "summary": "Establish and maintain a change management policy governing all changes to cloud infrastructure, platforms, and applications, including emergency change procedures." },
+        { "id": "CCC-02", "name": "Quality Testing", "summary": "Perform quality and security testing on all changes before deployment to production cloud environments." },
+        { "id": "CCC-05", "name": "Change Agreements", "summary": "Define formal agreements with cloud service providers specifying notification requirements and approval processes for changes that may affect consumers." },
+        { "id": "CCC-09", "name": "Change Restoration", "summary": "Maintain the ability to restore cloud services to a known-good state following failed or unauthorized changes, including automated rollback capabilities." }
+      ]
+    },
+    {
+      "id": "CEK",
+      "name": "Cryptography, Encryption & Key Management",
+      "description": "Controls for implementing cryptographic protections for data at rest, in transit, and in use within cloud environments, including encryption algorithm selection, key lifecycle management, and certificate management.",
+      "controlCount": 21,
+      "exampleControls": [
+        { "id": "CEK-01", "name": "Encryption & Key Management Policy", "summary": "Establish and maintain a cryptography policy defining approved algorithms, key lengths, key management procedures, and certificate lifecycle requirements." },
+        { "id": "CEK-03", "name": "Data Encryption", "summary": "Encrypt sensitive data at rest and in transit using industry-standard algorithms and key lengths appropriate to data classification." },
+        { "id": "CEK-06", "name": "Encryption Change Management", "summary": "Manage cryptographic changes through formal change control to prevent service disruption and maintain data protection continuity." },
+        { "id": "CEK-14", "name": "Key Generation", "summary": "Generate cryptographic keys using approved random number generators with sufficient entropy, in accordance with industry standards and regulatory requirements." }
+      ]
+    },
+    {
+      "id": "DSP",
+      "name": "Data Security & Privacy Lifecycle Management",
+      "description": "Controls for protecting data throughout its lifecycle in cloud environments — from classification and creation through storage, use, sharing, and secure disposal. Includes privacy controls for personal data processing.",
+      "controlCount": 19,
+      "exampleControls": [
+        { "id": "DSP-01", "name": "Security & Privacy Policy", "summary": "Establish and maintain a data security and privacy policy addressing data classification, handling requirements, and privacy obligations across all cloud deployments." },
+        { "id": "DSP-04", "name": "Data Classification", "summary": "Classify data according to sensitivity and criticality to determine appropriate protection controls and handling requirements in cloud environments." },
+        { "id": "DSP-07", "name": "Data Protection by Design and Default", "summary": "Implement data protection measures by design and by default in all cloud applications and services, minimising data collection and applying purpose limitation." },
+        { "id": "DSP-17", "name": "Data Protection Impact Assessment", "summary": "Conduct data protection impact assessments for cloud processing activities that present high risk to individuals, particularly for cross-border data transfers." }
+      ]
+    },
+    {
+      "id": "DCS",
+      "name": "Datacenter Security",
+      "description": "Controls for physical security of cloud datacenter facilities, including access controls, environmental protections, equipment security, and secure media handling.",
+      "controlCount": 9,
+      "exampleControls": [
+        { "id": "DCS-01", "name": "Datacenter Security Policy", "summary": "Establish and maintain physical security policies for all datacenter facilities hosting cloud services, defining access zones and protection requirements." },
+        { "id": "DCS-03", "name": "Controlled Access Points", "summary": "Implement controlled access points with multi-factor authentication, visitor management, and audit logging for all datacenter entry points." },
+        { "id": "DCS-06", "name": "Secure Area Authorization", "summary": "Restrict access to sensitive areas within the datacenter (server rooms, network rooms, storage areas) to authorised personnel with documented business need." },
+        { "id": "DCS-09", "name": "Equipment Identification", "summary": "Uniquely identify and track all datacenter equipment assets, maintaining an up-to-date inventory with location and custodian information." }
+      ]
+    },
+    {
+      "id": "GRC",
+      "name": "Governance, Risk Management & Compliance",
+      "description": "Controls for establishing cloud security governance structures, risk management processes, regulatory compliance tracking, and information security management systems for cloud environments.",
+      "controlCount": 8,
+      "exampleControls": [
+        { "id": "GRC-01", "name": "Information Security Program", "summary": "Establish and maintain a cloud security programme aligned with business objectives, regulatory requirements, and industry standards, with executive sponsorship and adequate resourcing." },
+        { "id": "GRC-02", "name": "Risk Management Program", "summary": "Implement a formal risk management programme covering cloud-specific risks including shared responsibility gaps, vendor lock-in, data sovereignty, and multi-tenancy." },
+        { "id": "GRC-03", "name": "Organisational Policy", "summary": "Define and maintain organisational policies governing cloud adoption, usage, and security requirements across all business units." },
+        { "id": "GRC-06", "name": "Information System Regulatory Mapping", "summary": "Map cloud information systems to applicable regulatory and contractual obligations to ensure comprehensive compliance coverage." }
+      ]
+    },
+    {
+      "id": "HRS",
+      "name": "Human Resources Security",
+      "description": "Controls for managing human resource security risks throughout the employment lifecycle — screening, onboarding, awareness training, role changes, and termination — for personnel with access to cloud services.",
+      "controlCount": 13,
+      "exampleControls": [
+        { "id": "HRS-01", "name": "Background Screening Policy", "summary": "Screen all personnel with access to cloud infrastructure and customer data according to applicable laws, regulations, and risk level of their role." },
+        { "id": "HRS-02", "name": "Acceptable Use of Technology Policy", "summary": "Define and communicate acceptable use policies for cloud technologies, devices, and data, including personal device usage and shadow IT restrictions." },
+        { "id": "HRS-09", "name": "Security Awareness Training", "summary": "Provide role-appropriate cloud security awareness training upon hire and at planned intervals, covering cloud-specific threats such as credential phishing, misconfiguration risks, and data leakage." },
+        { "id": "HRS-13", "name": "Return of Assets", "summary": "Ensure return or secure destruction of all cloud access credentials, tokens, and assets upon employment termination or role change." }
+      ]
+    },
+    {
+      "id": "IAM",
+      "name": "Identity & Access Management",
+      "description": "Controls for managing digital identities and access to cloud resources, including authentication, authorisation, privilege management, federation, and access reviews across cloud environments.",
+      "controlCount": 16,
+      "exampleControls": [
+        { "id": "IAM-01", "name": "Identity & Access Management Policy", "summary": "Establish and maintain an identity and access management policy defining requirements for authentication, authorisation, federation, and privilege management in cloud environments." },
+        { "id": "IAM-02", "name": "Strong Password Policy", "summary": "Enforce strong password policies including minimum complexity, length, history, and lockout thresholds for all cloud accounts." },
+        { "id": "IAM-04", "name": "Separation of Duties", "summary": "Implement separation of duties in cloud environments to prevent any single individual from having excessive access that could lead to fraud or error." },
+        { "id": "IAM-10", "name": "Management of Privileged Access", "summary": "Implement enhanced controls for privileged cloud accounts including just-in-time access, session recording, multi-factor authentication, and regular access certification." }
+      ]
+    },
+    {
+      "id": "IPY",
+      "name": "Interoperability & Portability",
+      "description": "Controls for ensuring cloud service interoperability and data portability, enabling organisations to migrate between cloud providers or return to on-premises infrastructure without vendor lock-in.",
+      "controlCount": 4,
+      "exampleControls": [
+        { "id": "IPY-01", "name": "Interoperability & Portability Policy", "summary": "Establish and maintain policies requiring cloud services to support data portability and service interoperability using open standards where available." },
+        { "id": "IPY-02", "name": "Application Portability", "summary": "Design cloud applications using portable architectures (containers, abstraction layers, standard APIs) to minimise vendor lock-in and enable migration." },
+        { "id": "IPY-03", "name": "Data Portability", "summary": "Ensure data stored in cloud services can be exported in standard, machine-readable formats with complete fidelity and within agreed timeframes." },
+        { "id": "IPY-04", "name": "Data Location", "summary": "Define and enforce data residency requirements specifying where cloud data may be stored and processed, based on regulatory, contractual, and organisational requirements." }
+      ]
+    },
+    {
+      "id": "IVS",
+      "name": "Infrastructure & Virtualization Security",
+      "description": "Controls for securing cloud infrastructure components including hypervisors, virtual machines, containers, virtual networks, and storage systems. Covers network segmentation, hardening, and capacity management.",
+      "controlCount": 13,
+      "exampleControls": [
+        { "id": "IVS-01", "name": "Infrastructure & Virtualization Security Policy", "summary": "Establish and maintain security policies for cloud infrastructure covering hypervisor hardening, VM isolation, container security, and virtual network segmentation." },
+        { "id": "IVS-03", "name": "Network Security", "summary": "Implement network security controls including virtual firewalls, security groups, network ACLs, and micro-segmentation to restrict traffic between cloud workloads." },
+        { "id": "IVS-05", "name": "Segmentation and Segregation", "summary": "Segment cloud environments by sensitivity level, workload type, and tenant boundary using virtual network isolation, separate accounts/subscriptions, and landing zone architectures." },
+        { "id": "IVS-09", "name": "Operating System Hardening", "summary": "Harden operating systems deployed in cloud environments using industry benchmarks (CIS Benchmarks), removing unnecessary services, and applying security configurations." }
+      ]
+    },
+    {
+      "id": "LOG",
+      "name": "Logging & Monitoring",
+      "description": "Controls for implementing comprehensive logging, monitoring, and alerting across cloud environments, including audit trail protection, log aggregation, security event correlation, and clock synchronisation.",
+      "controlCount": 13,
+      "exampleControls": [
+        { "id": "LOG-01", "name": "Logging & Monitoring Policy", "summary": "Establish and maintain a logging policy defining what events to log, retention periods, protection requirements, and monitoring responsibilities across cloud services." },
+        { "id": "LOG-03", "name": "Security Monitoring & Alerting", "summary": "Implement security monitoring and alerting for cloud environments, including intrusion detection, anomaly detection, and automated response capabilities." },
+        { "id": "LOG-05", "name": "Audit Log Protection", "summary": "Protect audit logs from unauthorized access, modification, and deletion using immutable storage, separate accounts, and integrity verification." },
+        { "id": "LOG-13", "name": "Failures & Anomalies Reporting", "summary": "Detect, report, and investigate failures and anomalies in cloud logging systems to ensure continuous monitoring coverage." }
+      ]
+    },
+    {
+      "id": "SEF",
+      "name": "Security Incident Management, E-Discovery & Cloud Forensics",
+      "description": "Controls for cloud security incident management including incident response planning, evidence collection, chain of custody, e-discovery support, and cloud-specific forensic investigation procedures.",
+      "controlCount": 8,
+      "exampleControls": [
+        { "id": "SEF-01", "name": "Security Incident Management Policy", "summary": "Establish and maintain a security incident management policy covering cloud-specific scenarios including cross-tenant incidents, provider notification obligations, and shared incident response responsibilities." },
+        { "id": "SEF-02", "name": "Service Management Policy", "summary": "Define service management policies covering incident classification, escalation procedures, SLA requirements, and coordination between cloud provider and consumer during security incidents." },
+        { "id": "SEF-04", "name": "Incident Response Testing", "summary": "Test cloud incident response plans through tabletop exercises and simulations at planned intervals, including scenarios involving cloud provider cooperation and cross-border data handling." },
+        { "id": "SEF-06", "name": "Evidence Collection & Forensics", "summary": "Define procedures for collecting, preserving, and analysing digital evidence in cloud environments, addressing ephemeral resources, shared infrastructure, and multi-jurisdictional legal requirements." }
+      ]
+    },
+    {
+      "id": "STA",
+      "name": "Supply Chain Management, Transparency & Accountability",
+      "description": "Controls for managing cloud supply chain risks including sub-processor oversight, vendor due diligence, transparency of operations, and accountability across the cloud service delivery chain.",
+      "controlCount": 14,
+      "exampleControls": [
+        { "id": "STA-01", "name": "Supply Chain Management Policy", "summary": "Establish and maintain a supply chain management policy addressing cloud service provider selection, sub-processor management, and third-party risk assessment requirements." },
+        { "id": "STA-03", "name": "Sub-Processor Management", "summary": "Maintain visibility and control over cloud sub-processors (fourth-party providers), including notification of changes, security assessment requirements, and contractual flow-down obligations." },
+        { "id": "STA-05", "name": "Supply Chain Inventory", "summary": "Maintain an up-to-date inventory of all cloud supply chain components including service providers, sub-processors, open source dependencies, and third-party integrations." },
+        { "id": "STA-14", "name": "Supply Chain Data Security Assessment", "summary": "Assess data security practices of cloud supply chain participants to verify they meet organisational and regulatory data protection requirements." }
+      ]
+    },
+    {
+      "id": "TVM",
+      "name": "Threat & Vulnerability Management",
+      "description": "Controls for identifying, assessing, and remediating threats and vulnerabilities in cloud environments, including vulnerability scanning, penetration testing, threat intelligence integration, and patch management.",
+      "controlCount": 10,
+      "exampleControls": [
+        { "id": "TVM-01", "name": "Threat & Vulnerability Management Policy", "summary": "Establish and maintain a threat and vulnerability management policy defining scanning frequency, remediation SLAs, exception processes, and responsibility allocation between provider and consumer." },
+        { "id": "TVM-02", "name": "Vulnerability Identification", "summary": "Implement automated vulnerability scanning across all cloud workloads including infrastructure, containers, serverless functions, and application dependencies." },
+        { "id": "TVM-07", "name": "Penetration Testing", "summary": "Conduct regular penetration testing of cloud environments, coordinating with cloud service providers regarding scope, notification, and acceptable testing methods." },
+        { "id": "TVM-10", "name": "Vulnerability Prioritization", "summary": "Prioritise vulnerability remediation based on exploitability, exposure, asset criticality, and threat intelligence, using risk-based scoring rather than CVSS alone." }
+      ]
+    },
+    {
+      "id": "UEM",
+      "name": "Universal Endpoint Management",
+      "description": "Controls for managing and securing endpoints that access cloud services, including mobile devices, laptops, workstations, and IoT devices. Covers device registration, compliance enforcement, and remote management.",
+      "controlCount": 14,
+      "exampleControls": [
+        { "id": "UEM-01", "name": "Endpoint Device Policy", "summary": "Establish and maintain an endpoint management policy defining device registration, compliance requirements, and security configurations for all devices accessing cloud services." },
+        { "id": "UEM-06", "name": "Anti-Malware Detection and Prevention", "summary": "Implement endpoint protection on all devices accessing cloud services, including next-generation anti-malware, behavioural detection, and automated response capabilities." },
+        { "id": "UEM-09", "name": "Remote Wipe", "summary": "Implement the capability to remotely wipe cloud data from endpoint devices upon loss, theft, or employee termination." },
+        { "id": "UEM-14", "name": "Third-Party Endpoint Security Posture", "summary": "Assess and verify the security posture of third-party endpoints before granting access to cloud services, implementing conditional access policies based on device compliance." }
+      ]
+    }
+  ]
+}

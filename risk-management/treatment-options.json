@@ -1,0 +1,147 @@
+{
+  "$schema": "cloud-security-v1",
+  "sourceType": "constructed-indicative",
+  "verificationNote": "Risk treatment options constructed for cloud computing environments based on ISO 31000, ISO 27005, CSA CCM v4, and cloud security best practices. Not endorsed by any standards body -- verify against authoritative sources before use in formal assessments.",
+  "title": "Cloud Security Risk Treatment Options",
+  "description": "Four standard risk treatment strategies applied to cloud computing environments. Critical difference from traditional IT: cloud risk treatment must consider the shared responsibility model -- some risks require CSP-side mitigation, some require customer-side mitigation, and some require both.",
+  "complianceConstraint": {
+    "rule": "Risks involving confirmed regulatory non-compliance (PDPA, BNM RMiT, NACSA Act 854) CANNOT be accepted. They must be mitigated or avoided.",
+    "rationale": "Accepting a known regulatory non-compliance risk exposes the organisation to enforcement action, fines, and reputational damage. Data sovereignty violations, missing mandatory security controls, and failure to implement required notification procedures are examples of risks that cannot be accepted.",
+    "regulatoryNote": "Under NACSA Act 854 s18, NCII operators are obligated to implement appropriate security measures. Under PDPA s7, data users must take practical steps to protect personal data. Accepting a risk that constitutes non-compliance with these obligations is not a legitimate risk treatment."
+  },
+  "strategies": [
+    {
+      "id": "mitigate",
+      "name": "Mitigate (Reduce)",
+      "description": "Implement controls to reduce risk likelihood, impact, or both to an acceptable level. Most common treatment strategy in cloud environments. Cloud-native security services provide powerful mitigation tools that can be deployed at scale through automation.",
+      "whenToUse": "When the risk can be reduced to an acceptable level through practical controls. This is the default strategy for most cloud risks. Cloud environments offer extensive automation for mitigation, making it often the most cost-effective option.",
+      "cloudExamples": [
+        {
+          "risk": "IAM misconfiguration enabling privilege escalation",
+          "mitigation": "Implement least-privilege IAM policies using automated analysis tools (AWS IAM Access Analyzer, Azure AD PIM). Enforce SCPs/permission boundaries at organisation level. Deploy CSPM for continuous IAM posture assessment.",
+          "residualRisk": "Reduced from Critical to High -- residual risk from zero-day IAM bypass or sophisticated policy manipulation remains.",
+          "ccmControls": ["IAM-01", "IAM-02", "IAM-04"]
+        },
+        {
+          "risk": "Data exposure through public cloud storage",
+          "mitigation": "Enable account-level block public access. Deploy CSPM with real-time alerting on public storage detection. Enforce private-only storage through IaC templates and SCPs. Encrypt all data with customer-managed keys.",
+          "residualRisk": "Reduced from Critical to Medium -- residual risk from application-layer data leakage remains even with storage-level controls.",
+          "ccmControls": ["DSP-01", "DSP-02", "DSP-04", "DSP-05"]
+        },
+        {
+          "risk": "Insufficient logging enabling undetected breach",
+          "mitigation": "Enable comprehensive audit logging across all accounts, regions, and services. Centralise in SIEM with cloud-specific detection rules. Implement immutable log storage with tamper protection. Automated alerting for critical events.",
+          "residualRisk": "Reduced from High to Medium -- residual risk from sophisticated adversaries evading detection remains, particularly for data-plane attacks.",
+          "ccmControls": ["LOG-01", "LOG-02", "LOG-03", "LOG-05"]
+        },
+        {
+          "risk": "Container escape in shared environment",
+          "mitigation": "Enforce non-root execution, Pod Security Standards (restricted), runtime security monitoring, and capability restriction. Use gVisor/Kata Containers for sensitive workloads. Dedicated node pools for high-security workloads.",
+          "residualRisk": "Remains Critical despite mitigation due to catastrophic impact of successful container escape -- defence in depth and continuous monitoring required.",
+          "ccmControls": ["IVS-04", "IVS-06", "IVS-09"]
+        }
+      ],
+      "considerations": [
+        "Prefer cloud-native security controls over third-party solutions where CSP provides equivalent functionality",
+        "Implement security controls as code (IaC) to ensure consistent and repeatable deployment across all accounts and regions",
+        "CSPM tools provide continuous mitigation verification -- use them to detect control drift",
+        "Mitigation must address both sides of the shared responsibility model",
+        "Cloud mitigation can be applied at scale rapidly -- this is a significant advantage over on-premises mitigation timelines"
+      ]
+    },
+    {
+      "id": "transfer",
+      "name": "Transfer (Share)",
+      "description": "Transfer the financial impact of the risk to a third party, typically through cyber insurance, contractual arrangements with the CSP, or managed security service providers (MSSPs). Does NOT transfer the compliance obligation or data protection responsibility -- only the financial consequence.",
+      "whenToUse": "When financial loss from risk materialisation is the primary concern and technical mitigation is not cost-effective. Common for business continuity risks and large-scale data breach costs. Must always be combined with technical mitigation -- transfer alone is never sufficient for cloud risks.",
+      "cloudExamples": [
+        {
+          "risk": "Large-scale data breach from cloud compromise",
+          "transfer": "Cyber insurance policy covering breach notification costs, forensic investigation, legal fees, regulatory fines, and business interruption. Policy must explicitly cover cloud-hosted data and multi-cloud environments.",
+          "limitation": "Insurance does not prevent the breach, reduce dwell time, or protect customer trust. Must be combined with technical detection and prevention controls.",
+          "ccmControls": ["GRC-01", "BCR-01"]
+        },
+        {
+          "risk": "CSP outage causing extended service disruption",
+          "transfer": "CSP SLA with financial credits for downtime exceeding committed availability. Multi-cloud or hybrid architecture to provide failover capability. Business interruption insurance for revenue loss during extended outages.",
+          "limitation": "CSP SLA credits are typically capped at a percentage of monthly spend -- far below actual business impact. Multi-cloud adds complexity and cost.",
+          "ccmControls": ["BCR-01", "BCR-02", "BCR-03"]
+        }
+      ],
+      "considerations": [
+        "Cyber insurance for cloud must explicitly cover cloud-hosted data and cloud infrastructure incidents",
+        "Insurance does not transfer PDPA or NACSA compliance obligations -- the data controller/NCII operator retains responsibility",
+        "CSP SLA credits rarely compensate for actual business impact -- calculate the gap and insure it separately",
+        "Transfer should always be combined with mitigation -- insurers increasingly require minimum security controls as policy conditions",
+        "Review cyber insurance policy exclusions: acts of war, nation-state attacks, and inadequate security practices are common exclusions"
+      ]
+    },
+    {
+      "id": "avoid",
+      "name": "Avoid (Eliminate)",
+      "description": "Eliminate the risk entirely by removing the risk source, ceasing the risky activity, or choosing an alternative approach. In cloud environments, avoidance may mean keeping certain workloads on-premises, choosing a different CSP service model, or redesigning the architecture.",
+      "whenToUse": "When the risk cannot be reduced to an acceptable level through mitigation. Required for compliance risks where cloud deployment fundamentally violates regulatory requirements. Also appropriate when the cloud benefit does not justify the security risk.",
+      "cloudExamples": [
+        {
+          "risk": "Data sovereignty violation for NCII-designated data",
+          "avoidance": "Keep NCII-designated data on-premises or in a CSP region with guaranteed Malaysian data residency. Do not use cloud services that replicate data globally if sovereign data is involved.",
+          "tradeoff": "Loss of cloud scalability and managed services. Compensated by guaranteed compliance with NACSA data residency requirements.",
+          "ccmControls": ["DSP-06", "DSP-07", "DSP-19"]
+        },
+        {
+          "risk": "Cross-tenant data leakage for highly classified data",
+          "avoidance": "Deploy on dedicated hardware (AWS Dedicated Hosts, Azure Dedicated Host, GCP Sole-Tenant Nodes) or use private cloud / on-premises for the most sensitive workloads. Eliminate multi-tenancy risk entirely.",
+          "tradeoff": "Higher cost per compute unit. Justified by elimination of cross-tenant risk for highly classified data.",
+          "ccmControls": ["IVS-06", "IVS-09"]
+        },
+        {
+          "risk": "Vendor lock-in with proprietary serverless service",
+          "avoidance": "Use portable container-based architecture (Kubernetes) instead of proprietary serverless services. Accept reduced developer productivity in exchange for portability.",
+          "tradeoff": "Increased operational complexity. Justified by maintaining exit option and multi-cloud flexibility.",
+          "ccmControls": ["STA-09", "BCR-03"]
+        }
+      ],
+      "considerations": [
+        "Avoidance is the strongest treatment but may require significant architecture changes or loss of cloud benefits",
+        "For data sovereignty risks, avoidance may be the only compliant option if CSP cannot guarantee data residency",
+        "Document the risk that was avoided and verify avoidance controls remain effective during periodic review",
+        "Avoidance decisions should involve business stakeholders to assess impact on cloud adoption strategy",
+        "Hybrid cloud architecture (some workloads on-premises, some in cloud) is a common avoidance pattern for high-sensitivity workloads"
+      ]
+    },
+    {
+      "id": "accept",
+      "name": "Accept (Retain)",
+      "description": "Consciously decide to retain the risk without additional controls, based on the judgement that the risk is within acceptable tolerance. In cloud environments, acceptance must be formally documented with management sign-off and is subject to strict constraints for regulated data.",
+      "whenToUse": "When the risk is low and the cost of mitigation significantly exceeds the potential impact. When residual risk after mitigation is within tolerance. NEVER for regulatory compliance risks or data sovereignty violations.",
+      "cloudExamples": [
+        {
+          "risk": "Minor cost overrun from unoptimised cloud resource sizing",
+          "acceptance": "Accept up to 15% cost overrun on development/test cloud environments. Cost optimisation review quarterly rather than continuously.",
+          "signOff": "Cloud Operations Manager"
+        },
+        {
+          "risk": "Temporary monitoring gap during SIEM migration",
+          "acceptance": "Accept 48-hour reduced monitoring coverage during planned SIEM migration, compensated by manual log review and increased on-call staffing.",
+          "signOff": "CISO with SOC Manager concurrence"
+        }
+      ],
+      "constraints": [
+        "Regulatory non-compliance risks (PDPA, BNM RMiT, NACSA Act 854) CANNOT be accepted regardless of likelihood",
+        "Data sovereignty violations CANNOT be accepted -- they are binary compliance failures",
+        "Acceptance requires formal documented sign-off from risk owner (Cloud Security Manager minimum, CISO for High risks)",
+        "Accepted risks must be reviewed at defined intervals (quarterly for Medium, monthly for High)",
+        "Acceptance must include defined triggers for re-evaluation (new CSP vulnerability, sector peer incident, regulatory change)",
+        "Risk acceptance is time-limited -- set an expiry date and re-evaluate",
+        "NACSA s21 audit may challenge risk acceptance decisions -- be prepared to justify with documented rationale"
+      ],
+      "considerations": [
+        "Acceptance is a deliberate, documented decision -- not a failure to assess",
+        "Ensure acceptance is not used as default when mitigation is difficult but possible",
+        "Maintain a risk acceptance register reviewed by CISO quarterly",
+        "Track industry cloud security incidents -- if a peer suffers an incident from an accepted risk category, trigger immediate re-evaluation",
+        "Cloud risks can escalate rapidly (automated exploitation, internet exposure) -- accepted risks require more frequent review than on-premises equivalents"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,139 @@
+{
+  "$schema": "cloud-security-v1",
+  "title": "CSA CCM v4 to NACSA Act 854 Cross-Reference",
+  "description": "Maps CSA Cloud Controls Matrix v4 domains to NACSA Act 854 obligations. For Malaysian NCII-designated operators using cloud services: CCM v4 compliance substantially satisfies the corresponding NACSA Act 854 obligation on the customer side of the shared responsibility model. This mapping is indicative -- verify with qualified legal and cloud security counsel.",
+  "sourceType": "constructed-indicative",
+  "verificationNote": "This mapping is a reasoned interpretation of how CCM v4 domains align with NACSA Act 854 obligations. It has not been validated by NACSA, CSA, or endorsed as the official compliance pathway. Consult qualified legal and cloud security advisors for compliance decisions.",
+  "nacsaActReference": "Cyber Security Act 2024 (Act 854), Federal Gazette P.U.(B) 283/2024",
+  "ccmVersion": "CSA Cloud Controls Matrix v4.0",
+  "mappings": [
+    {
+      "ccmDomain": "A&A",
+      "ccmDomainName": "Audit & Assurance",
+      "nacsaSections": [
+        { "section": "s23", "title": "Cyber security audit", "alignment": "CCM A&A controls (A&A-01 through A&A-06) directly support the s23 audit obligation. CCM-compliant audit processes provide evidence for NACSA-licensed auditor assessments of cloud security posture." },
+        { "section": "s21", "title": "Cyber security risk assessment", "alignment": "A&A-02 (risk-based planning) supports the s21 risk assessment obligation by ensuring cloud risk assessments follow a structured, auditable methodology." }
+      ]
+    },
+    {
+      "ccmDomain": "AIS",
+      "ccmDomainName": "Application & Interface Security",
+      "nacsaSections": [
+        { "section": "s18", "title": "Duties of NCII entity", "alignment": "CCM AIS controls (application security, API security, secure development) implement the s18 duty to maintain appropriate cybersecurity measures for cloud-hosted applications and APIs." },
+        { "section": "s20", "title": "Cybersecurity standards", "alignment": "AIS controls align with secure development standards that NACSA may approve under s20 for cloud application security." }
+      ]
+    },
+    {
+      "ccmDomain": "BCR",
+      "ccmDomainName": "Business Continuity Management & Operational Resilience",
+      "nacsaSections": [
+        { "section": "s18", "title": "Duties of NCII entity", "alignment": "BCR controls (business continuity planning, disaster recovery, backup) implement the s18 duty to maintain operational resilience for cloud-hosted NCII. Availability is a core cybersecurity measure." },
+        { "section": "s25", "title": "Cyber security exercise", "alignment": "BCR-03 (testing) and BCR-04 (DR testing) directly support the s25 exercise obligation by providing tested business continuity and disaster recovery procedures." }
+      ]
+    },
+    {
+      "ccmDomain": "CCC",
+      "ccmDomainName": "Change Control & Configuration Management",
+      "nacsaSections": [
+        { "section": "s18", "title": "Duties of NCII entity", "alignment": "CCC controls (change management, configuration baseline, hardening) implement the s18 duty by ensuring cloud infrastructure changes are controlled, tracked, and do not introduce vulnerabilities." }
+      ]
+    },
+    {
+      "ccmDomain": "CEK",
+      "ccmDomainName": "Cryptography, Encryption & Key Management",
+      "nacsaSections": [
+        { "section": "s18", "title": "Duties of NCII entity", "alignment": "CEK controls implement encryption requirements for NCII data in cloud. Encryption at rest and in transit is a fundamental cybersecurity measure under s18." },
+        { "section": "s20", "title": "Cybersecurity standards", "alignment": "Encryption standards approved under s20 are implemented through CEK domain controls." }
+      ]
+    },
+    {
+      "ccmDomain": "DSP",
+      "ccmDomainName": "Data Security & Privacy Lifecycle Management",
+      "nacsaSections": [
+        { "section": "s18", "title": "Duties of NCII entity", "alignment": "DSP controls (data classification, data residency, privacy) are essential for protecting NCII data in cloud. Data sovereignty (DSP-06, DSP-07) directly implements NACSA data residency expectations." },
+        { "section": "s21", "title": "Cyber security risk assessment", "alignment": "DSP-19 (data residency) and DSP-05 (data flow mapping) support the s21 risk assessment by ensuring NCII data location and flow are documented and assessed." },
+        { "section": "s24", "title": "Sharing of cyber security information", "alignment": "DSP controls ensure that information sharing under s24 is conducted with appropriate data protection controls." }
+      ]
+    },
+    {
+      "ccmDomain": "GRC",
+      "ccmDomainName": "Governance, Risk & Compliance",
+      "nacsaSections": [
+        { "section": "s17", "title": "Designation of NCII entity", "alignment": "GRC controls establish the governance framework for managing NCII cloud security obligations. GRC-01 (governance programme) provides the organisational structure for Act 854 compliance." },
+        { "section": "s18", "title": "Duties of NCII entity", "alignment": "GRC controls provide the overarching governance framework for all s18 cybersecurity measures in cloud." },
+        { "section": "s21", "title": "Cyber security risk assessment", "alignment": "GRC-02 (risk management) and GRC-03 (policy review) directly implement the governance aspects of s21 risk assessment." },
+        { "section": "s22", "title": "Code of practice", "alignment": "GRC controls support compliance with sector-specific codes of practice that may be issued under s22." }
+      ]
+    },
+    {
+      "ccmDomain": "HRS",
+      "ccmDomainName": "Human Resources",
+      "nacsaSections": [
+        { "section": "s18", "title": "Duties of NCII entity", "alignment": "HRS controls (security awareness, background checks, termination procedures) implement the human element of s18 cybersecurity measures for cloud environments." }
+      ]
+    },
+    {
+      "ccmDomain": "IAM",
+      "ccmDomainName": "Identity & Access Management",
+      "nacsaSections": [
+        { "section": "s18", "title": "Duties of NCII entity", "alignment": "IAM controls are the most critical customer-side cloud security measures. IAM-01 through IAM-16 implement access control, MFA, privilege management, and credential lifecycle -- fundamental s18 obligations for cloud." },
+        { "section": "s20", "title": "Cybersecurity standards", "alignment": "IAM standards approved under s20 (MFA requirements, access review frequency, credential policies) are implemented through IAM domain controls." }
+      ]
+    },
+    {
+      "ccmDomain": "IPY",
+      "ccmDomainName": "Interoperability & Portability",
+      "nacsaSections": [
+        { "section": "s18", "title": "Duties of NCII entity", "alignment": "IPY controls support NCII operational resilience by ensuring cloud services can be migrated or replaced if the CSP is compromised or unavailable." }
+      ]
+    },
+    {
+      "ccmDomain": "IVS",
+      "ccmDomainName": "Infrastructure & Virtualization Security",
+      "nacsaSections": [
+        { "section": "s18", "title": "Duties of NCII entity", "alignment": "IVS controls (network security, segmentation, hardening) implement infrastructure-level s18 cybersecurity measures for cloud. IVS-01 (network security) and IVS-06 (segmentation) are essential." },
+        { "section": "s20", "title": "Cybersecurity standards", "alignment": "Infrastructure security standards approved under s20 are implemented through IVS controls." }
+      ]
+    },
+    {
+      "ccmDomain": "LOG",
+      "ccmDomainName": "Logging & Monitoring",
+      "nacsaSections": [
+        { "section": "s18", "title": "Duties of NCII entity", "alignment": "LOG controls implement the logging and monitoring required to detect and respond to cybersecurity incidents in cloud -- a core s18 obligation." },
+        { "section": "s24", "title": "Sharing of cyber security information", "alignment": "LOG controls generate the threat intelligence and incident data that enables s24 information sharing with NACSA." },
+        { "section": "s26", "title": "Notification of cyber security incident", "alignment": "LOG-01 through LOG-13 enable the detection capability required for timely s26 notification. LOG-05 (log retention) directly supports the s26 7-year record retention requirement." }
+      ]
+    },
+    {
+      "ccmDomain": "SEF",
+      "ccmDomainName": "Security Incident Management, E-Discovery, & Cloud Forensics",
+      "nacsaSections": [
+        { "section": "s25", "title": "Cyber security exercise", "alignment": "SEF controls (incident management, forensics) are tested through s25 exercises. SEF procedures should be validated during NACSA-mandated exercises." },
+        { "section": "s26", "title": "Notification of cyber security incident", "alignment": "SEF controls directly implement the s26 incident notification capability. SEF-01 (incident management policy), SEF-02 (incident response plan), SEF-03 (incident reporting), and SEF-04 (incident response testing) map directly to s26 requirements. The 6-hour notification window requires a tested, rehearsed incident response process." }
+      ]
+    },
+    {
+      "ccmDomain": "STA",
+      "ccmDomainName": "Supply Chain Management, Transparency, & Accountability",
+      "nacsaSections": [
+        { "section": "s18", "title": "Duties of NCII entity", "alignment": "STA controls implement supply chain risk management for cloud services. CSP vendor management, subprocessor oversight, and third-party risk assessment are essential s18 measures for cloud-dependent NCII." },
+        { "section": "s21", "title": "Cyber security risk assessment", "alignment": "STA-01 (vendor risk assessment) and STA-05 (third-party audit) directly support the s21 requirement to assess cloud supply chain risks." }
+      ]
+    },
+    {
+      "ccmDomain": "TVM",
+      "ccmDomainName": "Threat & Vulnerability Management",
+      "nacsaSections": [
+        { "section": "s18", "title": "Duties of NCII entity", "alignment": "TVM controls (vulnerability scanning, threat intelligence, penetration testing) implement proactive cybersecurity measures required under s18 for cloud environments." },
+        { "section": "s24", "title": "Sharing of cyber security information", "alignment": "TVM-06 (threat intelligence) supports participation in NACSA threat intelligence sharing programmes under s24." }
+      ]
+    },
+    {
+      "ccmDomain": "UEM",
+      "ccmDomainName": "Universal Endpoint Management",
+      "nacsaSections": [
+        { "section": "s18", "title": "Duties of NCII entity", "alignment": "UEM controls ensure endpoint devices accessing cloud NCII are secured and managed -- extending s18 cybersecurity measures to the endpoint layer." }
+      ]
+    }
+  ]
+}

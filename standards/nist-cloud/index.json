@@ -1,0 +1,156 @@
+{
+  "$schema": "cloud-security-v1",
+  "standard": "NIST Cloud Security",
+  "fullTitle": "NIST Cloud Computing Security Publications — SP 800-144 and SP 800-210",
+  "publisher": "National Institute of Standards and Technology (NIST), United States",
+  "sourceType": "paraphrased-from-standard",
+  "verificationNote": "Content paraphrased from NIST SP 800-144 (2011) and SP 800-210 (2020). Both are publicly available at nvlpubs.nist.gov. Section references provided for source traceability.",
+  "publiclyAvailable": true,
+  "lastUpdated": "2026-03-06",
+  "publications": [
+    {
+      "id": "SP-800-144",
+      "fullTitle": "Guidelines on Security and Privacy in Public Cloud Computing",
+      "publicURL": "https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-144.pdf",
+      "status": "Final — December 2011",
+      "scope": "Provides guidance on the security and privacy challenges of public cloud computing, targeting organisations planning to outsource data, applications, or infrastructure to public cloud environments. While published in 2011, the foundational security principles remain relevant and are referenced by later NIST publications.",
+      "keyRecommendations": [
+        {
+          "area": "Governance",
+          "recommendations": [
+            "Establish a comprehensive cloud governance framework before adoption, defining roles, responsibilities, and risk tolerance for cloud usage",
+            "Extend existing information security and privacy programmes to address cloud-specific risks including multi-tenancy, jurisdictional issues, and shared responsibility",
+            "Ensure organisational security policies explicitly address cloud computing scenarios and are updated as cloud usage evolves"
+          ]
+        },
+        {
+          "area": "Compliance and Legal",
+          "recommendations": [
+            "Assess regulatory implications of cloud deployment, particularly data residency, cross-border data transfer, and sector-specific compliance obligations",
+            "Ensure cloud service agreements include audit rights, breach notification obligations, and data ownership clauses",
+            "Evaluate the legal and regulatory environment of the jurisdiction where cloud data will be stored and processed"
+          ]
+        },
+        {
+          "area": "Trust and Shared Responsibility",
+          "recommendations": [
+            "Clearly define the division of security responsibilities between cloud provider and consumer for each service model (IaaS, PaaS, SaaS)",
+            "Verify cloud provider security practices through independent audits, certifications, and transparency reports rather than relying solely on contractual claims",
+            "Assess the security of the cloud supply chain including sub-processors, datacenter operators, and third-party service components"
+          ]
+        },
+        {
+          "area": "Architecture and Identity",
+          "recommendations": [
+            "Plan cloud architecture to minimise attack surface, including network segmentation, least-privilege access, and defence-in-depth controls",
+            "Implement robust identity and access management with federation support, multi-factor authentication, and centralised credential management",
+            "Design for portability and interoperability to avoid vendor lock-in and enable cloud exit strategies"
+          ]
+        },
+        {
+          "area": "Data Protection",
+          "recommendations": [
+            "Encrypt data at rest and in transit, maintaining control over encryption keys where feasible",
+            "Implement data classification to apply appropriate protection levels based on sensitivity and regulatory requirements",
+            "Establish clear data retention and secure disposal procedures, including verification that data is irrecoverably destroyed when no longer needed"
+          ]
+        },
+        {
+          "area": "Incident Response",
+          "recommendations": [
+            "Develop cloud-specific incident response plans addressing shared responsibility for detection, investigation, and recovery",
+            "Ensure the ability to collect and preserve forensic evidence in cloud environments, accounting for ephemeral resources and shared infrastructure",
+            "Establish clear communication channels and escalation procedures with cloud providers for security incidents"
+          ]
+        }
+      ],
+      "identifiedChallenges": [
+        "Multi-tenancy risks — resource sharing between tenants creates potential for side-channel attacks and data leakage",
+        "Loss of physical control — data and processing are hosted on infrastructure not owned or operated by the organisation",
+        "Dependency on provider — service availability, security posture, and business continuity depend on the cloud provider's practices",
+        "Data residency — data may be stored or processed in jurisdictions with different privacy and data protection laws",
+        "Incident response complexity — shared responsibility creates ambiguity in detection, investigation, and remediation",
+        "Insider threat — cloud provider staff have privileged access to customer infrastructure and data"
+      ]
+    },
+    {
+      "id": "SP-800-210",
+      "fullTitle": "General Access Control Guidance for Cloud Systems",
+      "publicURL": "https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-210.pdf",
+      "status": "Final — July 2020",
+      "scope": "Provides detailed access control guidance for cloud service models (IaaS, PaaS, SaaS), addressing the unique access control challenges introduced by cloud computing including multi-tenancy isolation, abstraction layers, virtualisation, and provider-consumer responsibility boundaries.",
+      "keyRecommendations": [
+        {
+          "area": "IaaS Access Control",
+          "recommendations": [
+            "Implement virtual network isolation using cloud-native constructs (VPCs, VNets, security groups) with deny-by-default policies",
+            "Use cloud-native identity services for workload authentication rather than embedding credentials in instances or images",
+            "Apply security group rules at both the subnet and instance level for defence-in-depth network access control",
+            "Implement separate administrative access paths for infrastructure management and application access",
+            "Control hypervisor and physical access exclusively through cloud provider SLAs, audits, and certifications"
+          ]
+        },
+        {
+          "area": "PaaS Access Control",
+          "recommendations": [
+            "Leverage platform-provided identity and access management services for application authentication and authorisation",
+            "Implement API-level access controls with authentication, rate limiting, and input validation on all platform service interfaces",
+            "Use managed identity or workload identity features to eliminate credential management for platform service interactions",
+            "Apply the principle of least privilege to platform service permissions, scoping access to specific resources and actions",
+            "Ensure development and staging environments have separate access control policies from production"
+          ]
+        },
+        {
+          "area": "SaaS Access Control",
+          "recommendations": [
+            "Integrate SaaS applications with enterprise identity providers through SAML or OIDC federation for centralised authentication",
+            "Configure SaaS application-level access controls (sharing, collaboration, data export) to align with organisational data classification policies",
+            "Monitor and audit SaaS user activities through available audit logs and CASB integration",
+            "Implement conditional access policies restricting SaaS access based on device compliance, network location, and risk level",
+            "Regularly review and certify SaaS application permissions, especially OAuth consent grants and API scopes"
+          ]
+        },
+        {
+          "area": "Cross-Service-Model Access Control",
+          "recommendations": [
+            "Implement centralised identity governance across all cloud service models using a single identity provider with consistent policies",
+            "Apply the principle of least privilege across all service models, regularly reviewing and right-sizing permissions",
+            "Implement just-in-time and just-enough-access for privileged operations across cloud environments",
+            "Use cloud access security brokers (CASBs) for visibility and policy enforcement across multiple cloud services",
+            "Establish break-glass procedures for emergency access with appropriate logging and post-incident review"
+          ]
+        }
+      ],
+      "accessControlPatterns": [
+        {
+          "pattern": "Attribute-Based Access Control (ABAC)",
+          "description": "Access decisions based on attributes of the subject, resource, environment, and action. Highly suited to cloud environments where resources are dynamic and tagged with metadata.",
+          "cloudExample": "AWS IAM policies using condition keys (aws:RequestedRegion, aws:PrincipalOrgID, ec2:ResourceTag) to constrain access based on resource attributes."
+        },
+        {
+          "pattern": "Role-Based Access Control (RBAC)",
+          "description": "Access granted based on predefined roles that bundle permissions. The most common access control model in cloud platforms.",
+          "cloudExample": "Azure built-in roles (Reader, Contributor, Owner) and custom roles assigned at management group, subscription, resource group, or resource scope."
+        },
+        {
+          "pattern": "Policy-Based Access Control",
+          "description": "Centralised policies that enforce access control decisions across multiple cloud services and accounts. Enables organisation-wide guardrails.",
+          "cloudExample": "AWS Service Control Policies (SCPs) applied at the organisational unit level to restrict what actions any account in the OU can perform."
+        },
+        {
+          "pattern": "Identity Federation",
+          "description": "Extending on-premises or centralised identity to cloud services through SAML, OIDC, or WS-Federation protocols. Eliminates cloud-native credential sprawl.",
+          "cloudExample": "SAML federation between on-premises Active Directory and multiple SaaS applications through Azure AD/Entra ID or Okta."
+        }
+      ]
+    }
+  ],
+  "relatedNISTPublications": [
+    { "id": "SP 800-145", "title": "The NIST Definition of Cloud Computing", "relevance": "Foundational definitions of cloud service models (IaaS, PaaS, SaaS), deployment models (public, private, hybrid, community), and essential characteristics." },
+    { "id": "SP 800-146", "title": "Cloud Computing Synopsis and Recommendations", "relevance": "Overview of cloud computing benefits, issues, and suitability assessment guidance for federal agencies." },
+    { "id": "SP 800-53 Rev 5", "title": "Security and Privacy Controls for Information Systems and Organizations", "relevance": "Comprehensive control catalogue applicable to cloud systems. CCM v4 maps extensively to SP 800-53 controls." },
+    { "id": "SP 500-291", "title": "NIST Cloud Computing Standards Roadmap", "relevance": "Identifies standards relevant to cloud computing adoption, including security, interoperability, and portability standards." },
+    { "id": "SP 500-292", "title": "NIST Cloud Computing Reference Architecture", "relevance": "Defines cloud computing actors (provider, consumer, broker, carrier, auditor) and their interactions. Useful for understanding shared responsibility." }
+  ],
+  "malaysiaNexus": "NIST cloud security publications provide supplementary architecture and access control guidance for Malaysian organisations subject to BNM RMiT cloud security requirements (para 10.49-10.65) and NACSA Act 854 NCII obligations. While not directly mandated, NIST SP 800-210 access control patterns align with RMiT requirements for logical access controls, privileged access management, and multi-factor authentication in cloud environments. Organisations running NCII workloads in cloud should reference SP 800-210 alongside CSA CCM for comprehensive coverage."
+}

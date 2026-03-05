@@ -1,0 +1,382 @@
+{
+  "$schema": "cloud-security-v1",
+  "framework": "MITRE ATT&CK Cloud Matrix",
+  "sourceType": "paraphrased-from-framework",
+  "publicURL": "https://attack.mitre.org/matrices/enterprise/cloud/",
+  "lastUpdated": "2026-03-06",
+  "techniques": [
+    {
+      "id": "T1078",
+      "name": "Valid Accounts",
+      "tactic": "TA0001",
+      "description": "Adversaries may obtain and abuse valid cloud account credentials to gain initial access, persistence, or privilege escalation. This includes compromised IAM user credentials, service account keys, federated identity tokens, and root/global admin accounts. Cloud environments are particularly vulnerable because a single set of credentials can provide access to vast amounts of data and compute resources.",
+      "platforms": ["AWS", "Azure", "GCP", "Azure AD", "Office 365", "Google Workspace", "SaaS"],
+      "subtechniques": [
+        { "id": "T1078.001", "name": "Default Accounts", "description": "Using default credentials on cloud-deployed applications or services that were not changed after deployment." },
+        { "id": "T1078.004", "name": "Cloud Accounts", "description": "Using compromised cloud-specific accounts including IAM users, service accounts, and federated identities." }
+      ],
+      "ccmControls": ["IAM-01", "IAM-02", "IAM-04", "IAM-10", "LOG-01", "LOG-03"],
+      "mitigations": ["Enforce MFA on all cloud accounts", "Implement conditional access policies", "Rotate credentials regularly", "Monitor for impossible travel and anomalous login patterns", "Disable unused accounts and service keys"],
+      "knownUse": "Used in virtually every cloud breach. Capital One (2019) involved an IAM role assumption. SolarWinds attackers forged SAML tokens for Azure AD access. Scattered Spider targeted help desks for credential resets."
+    },
+    {
+      "id": "T1537",
+      "name": "Transfer Data to Cloud Account",
+      "tactic": "TA0010",
+      "description": "Adversaries may transfer data from a compromised cloud environment to a separate cloud account under their control. This leverages cloud-native mechanisms such as S3 bucket replication, Azure blob copy, or GCS transfer, which may blend with legitimate cross-account data movement and evade traditional network-based exfiltration detection.",
+      "platforms": ["AWS", "Azure", "GCP"],
+      "ccmControls": ["DSP-01", "DSP-04", "LOG-01", "LOG-03", "IVS-03"],
+      "mitigations": ["Restrict cross-account data transfer permissions", "Monitor CloudTrail/Activity Log for cross-account copy operations", "Implement data loss prevention policies", "Alert on S3 bucket policy changes or new replication rules", "Use VPC/VNet service endpoints to restrict storage access"],
+      "knownUse": "Capital One attacker exfiltrated data from S3 to an external account. Common technique in cloud data theft operations."
+    },
+    {
+      "id": "T1190",
+      "name": "Exploit Public-Facing Application",
+      "tactic": "TA0001",
+      "description": "Adversaries may exploit vulnerabilities in internet-facing cloud applications, APIs, or services to gain initial access. This includes exploiting web application vulnerabilities (SSRF, SQLi, RCE) in cloud-hosted workloads, serverless functions, API gateways, or managed services exposed to the internet.",
+      "platforms": ["AWS", "Azure", "GCP"],
+      "ccmControls": ["AIS-01", "AIS-04", "AIS-06", "TVM-01", "TVM-02", "IVS-03"],
+      "mitigations": ["Deploy web application firewalls", "Implement regular vulnerability scanning and patching", "Use API gateways with rate limiting and authentication", "Restrict instance metadata service access (IMDSv2)", "Perform regular penetration testing"],
+      "knownUse": "Capital One breach began with SSRF against a cloud-hosted WAF. Log4Shell (CVE-2021-44228) exploited across cloud-hosted Java applications. Multiple SSRF attacks targeting cloud metadata services."
+    },
+    {
+      "id": "T1098",
+      "name": "Account Manipulation",
+      "tactic": "TA0003",
+      "description": "Adversaries may manipulate cloud accounts to maintain access, including adding credentials to service principals, modifying IAM policies, adding MFA devices, creating API keys, or changing account recovery settings. In cloud environments, a single account manipulation can provide persistent access across many services.",
+      "platforms": ["AWS", "Azure", "GCP", "Azure AD", "Office 365", "Google Workspace"],
+      "subtechniques": [
+        { "id": "T1098.001", "name": "Additional Cloud Credentials", "description": "Adding additional access keys, service account keys, or certificates to existing cloud accounts for persistent access." },
+        { "id": "T1098.003", "name": "Additional Cloud Roles", "description": "Assigning additional roles or permissions to a compromised account to escalate privileges." },
+        { "id": "T1098.005", "name": "Device Registration", "description": "Registering a new device to a cloud identity to bypass conditional access policies requiring managed devices." }
+      ],
+      "ccmControls": ["IAM-01", "IAM-04", "IAM-10", "LOG-01", "LOG-03", "CCC-01"],
+      "mitigations": ["Monitor for IAM policy changes and new credential creation", "Implement alerts for service principal credential additions", "Enforce just-in-time privileged access", "Conduct regular access reviews and certification", "Restrict who can modify IAM policies using SCPs or management group policies"],
+      "knownUse": "SolarWinds attackers added credentials to Azure AD service principals for persistent access. Scattered Spider added MFA devices to compromised accounts."
+    },
+    {
+      "id": "T1580",
+      "name": "Cloud Infrastructure Discovery",
+      "tactic": "TA0007",
+      "description": "Adversaries may enumerate cloud infrastructure resources including virtual machines, storage buckets, databases, serverless functions, network configurations, and security groups to understand the environment and identify high-value targets. Cloud APIs make this enumeration highly efficient compared to on-premises network scanning.",
+      "platforms": ["AWS", "Azure", "GCP"],
+      "ccmControls": ["IAM-01", "IAM-04", "LOG-01", "LOG-03", "IVS-01"],
+      "mitigations": ["Apply least-privilege IAM policies to restrict enumeration capabilities", "Monitor for broad describe/list API calls from unusual principals", "Use cloud security posture management (CSPM) tools", "Implement detective controls for reconnaissance patterns"],
+      "knownUse": "Standard post-compromise reconnaissance in all cloud intrusions. Tools like ScoutSuite, Prowler, and Pacu automate cloud infrastructure enumeration."
+    },
+    {
+      "id": "T1552",
+      "name": "Unsecured Credentials",
+      "tactic": "TA0006",
+      "description": "Adversaries may search cloud environments for unsecured credentials including API keys in code repositories, access tokens in environment variables, service account keys in metadata, passwords in configuration files, and secrets in cloud storage. Cloud environments are rich targets for credential harvesting due to the prevalence of API keys and service account credentials.",
+      "platforms": ["AWS", "Azure", "GCP", "SaaS"],
+      "subtechniques": [
+        { "id": "T1552.001", "name": "Credentials In Files", "description": "Searching cloud storage, code repos, and configuration files for hardcoded credentials." },
+        { "id": "T1552.005", "name": "Cloud Instance Metadata API", "description": "Accessing the cloud instance metadata service (169.254.169.254) to obtain temporary security credentials assigned to the instance role." },
+        { "id": "T1552.007", "name": "Container API", "description": "Accessing container orchestration APIs (Kubernetes API server) to retrieve secrets, service account tokens, or environment variables." }
+      ],
+      "ccmControls": ["CEK-01", "CEK-03", "IAM-01", "IAM-10", "DSP-01", "AIS-04"],
+      "mitigations": ["Use secrets management services (AWS Secrets Manager, Azure Key Vault, GCP Secret Manager)", "Enforce IMDSv2 to prevent SSRF-based metadata theft", "Scan code repositories for leaked credentials", "Rotate credentials exposed in CI/CD pipelines", "Implement Kubernetes pod security policies restricting service account token mounting"],
+      "knownUse": "Capital One breach exploited SSRF to access EC2 instance metadata credentials. Codecov attack harvested credentials from CI/CD environment variables. Numerous breaches from credentials committed to public GitHub repos."
+    },
+    {
+      "id": "T1535",
+      "name": "Unused/Unsupported Cloud Regions",
+      "tactic": "TA0005",
+      "description": "Adversaries may deploy cloud resources in regions that an organisation does not actively monitor or use, leveraging these neglected regions for command-and-control infrastructure, cryptomining, or staging attacks that evade security monitoring focused on primary regions.",
+      "platforms": ["AWS", "Azure", "GCP"],
+      "ccmControls": ["IVS-01", "IVS-05", "LOG-01", "LOG-03", "GRC-02"],
+      "mitigations": ["Use service control policies (AWS SCPs) or Azure Policy to restrict resource deployment to approved regions", "Monitor all regions for resource creation", "Implement cloud security posture management with global scope", "Alert on resource deployment in unused regions"],
+      "knownUse": "Cryptomining campaigns frequently deploy in rarely monitored regions. Used by adversaries to establish C2 infrastructure in regions outside the defender's monitoring scope."
+    },
+    {
+      "id": "T1136",
+      "name": "Create Account",
+      "tactic": "TA0003",
+      "description": "Adversaries may create new cloud accounts to maintain persistent access. This includes creating IAM users, service accounts, application registrations, or guest accounts in cloud identity providers. Cloud account creation can be difficult to distinguish from legitimate administrative activity without baseline understanding of normal operations.",
+      "platforms": ["AWS", "Azure", "GCP", "Azure AD", "Office 365", "Google Workspace"],
+      "subtechniques": [
+        { "id": "T1136.003", "name": "Cloud Account", "description": "Creating new IAM users, service accounts, or application registrations in cloud environments for persistent access." }
+      ],
+      "ccmControls": ["IAM-01", "IAM-04", "IAM-10", "LOG-01", "LOG-03"],
+      "mitigations": ["Monitor for new account creation events in CloudTrail/Activity Logs", "Implement approval workflows for IAM user and service account creation", "Regularly audit cloud accounts and remove orphaned identities", "Restrict account creation permissions to designated administrators"],
+      "knownUse": "SolarWinds attackers created new Azure AD application registrations. Common persistence technique across cloud intrusions."
+    },
+    {
+      "id": "T1528",
+      "name": "Steal Application Access Token",
+      "tactic": "TA0006",
+      "description": "Adversaries may steal OAuth tokens, SAML assertions, or application access tokens to access cloud services without needing user credentials. Token theft enables access that bypasses MFA since the authentication has already occurred. Cloud environments are heavily token-based, making this a high-value technique.",
+      "platforms": ["Azure AD", "Office 365", "Google Workspace", "SaaS"],
+      "ccmControls": ["IAM-01", "IAM-10", "CEK-01", "LOG-01", "LOG-03", "AIS-01"],
+      "mitigations": ["Implement token lifetime restrictions and frequent refresh", "Use Continuous Access Evaluation (CAE) for near-real-time token revocation", "Monitor for token replay from unusual locations or devices", "Implement device-bound tokens where supported", "Review and restrict OAuth application consent permissions"],
+      "knownUse": "Storm-0558 forged Azure AD tokens to access Exchange Online mailboxes. SolarWinds attackers forged SAML tokens for persistent cloud access. OAuth consent phishing campaigns steal application tokens."
+    },
+    {
+      "id": "T1021.007",
+      "name": "Cloud Services",
+      "tactic": "TA0008",
+      "description": "Adversaries may use legitimate cloud service APIs and management consoles to move laterally within a cloud environment. By leveraging valid credentials with cross-service permissions, adversaries can pivot from one cloud service to another (e.g., from a compromised Lambda function to S3 buckets, or from Azure VMs to Key Vault).",
+      "platforms": ["AWS", "Azure", "GCP"],
+      "ccmControls": ["IAM-01", "IAM-04", "IVS-03", "IVS-05", "LOG-01", "LOG-03"],
+      "mitigations": ["Implement least-privilege IAM policies scoped to specific resources", "Use service control policies to restrict cross-service access", "Monitor for unusual cross-service API call patterns", "Segment cloud environments using separate accounts/subscriptions", "Implement network controls (VPC endpoints, private links) between services"],
+      "knownUse": "Standard lateral movement technique in cloud intrusions. Attackers frequently pivot from compute to storage to identity services using legitimate APIs."
+    },
+    {
+      "id": "T1562.008",
+      "name": "Disable Cloud Logs",
+      "tactic": "TA0005",
+      "description": "Adversaries may disable or modify cloud logging services (AWS CloudTrail, Azure Monitor, GCP Cloud Audit Logs) to prevent detection of their activities. This may include stopping log collection, deleting log data, modifying log destinations, or disabling specific event categories.",
+      "platforms": ["AWS", "Azure", "GCP"],
+      "ccmControls": ["LOG-01", "LOG-03", "LOG-05", "IAM-01", "IAM-10", "CCC-01"],
+      "mitigations": ["Protect CloudTrail/Audit Logs with organisation-level policies that prevent deletion or modification", "Use immutable log storage (S3 Object Lock, WORM storage)", "Alert on any changes to logging configuration", "Restrict log management permissions to a small set of administrators", "Send logs to a separate security account with independent access controls"],
+      "knownUse": "Common early action in cloud intrusions. Attackers disable CloudTrail, delete Azure Activity Logs, or modify GCP audit log sinks before performing data exfiltration."
+    },
+    {
+      "id": "T1530",
+      "name": "Data from Cloud Storage",
+      "tactic": "TA0009",
+      "description": "Adversaries may access data from cloud storage services (S3, Azure Blob Storage, GCS, OneDrive, SharePoint, Google Drive) using compromised credentials or misconfigured access policies. Cloud storage is a primary target because it often contains sensitive data and may be over-permissioned.",
+      "platforms": ["AWS", "Azure", "GCP", "Office 365", "Google Workspace"],
+      "ccmControls": ["DSP-01", "DSP-04", "CEK-03", "IAM-01", "IAM-04", "LOG-01"],
+      "mitigations": ["Implement data classification and apply access controls based on sensitivity", "Enable storage access logging and monitor for bulk data access", "Encrypt data at rest with customer-managed keys", "Use bucket policies and storage firewalls to restrict access by network and identity", "Regularly audit storage permissions for public access or over-permissioned principals"],
+      "knownUse": "Capital One exfiltrated over 100 million records from S3. Publicly exposed S3 buckets have led to numerous data breaches across industries."
+    },
+    {
+      "id": "T1485",
+      "name": "Data Destruction",
+      "tactic": "TA0040",
+      "description": "Adversaries may destroy data stored in cloud environments by deleting cloud storage objects, databases, snapshots, or backups. Cloud APIs enable rapid, large-scale data destruction that can be difficult to recover from if backups are also compromised.",
+      "platforms": ["AWS", "Azure", "GCP", "Office 365"],
+      "ccmControls": ["BCR-01", "BCR-06", "DSP-01", "IAM-01", "IAM-10", "LOG-01"],
+      "mitigations": ["Enable versioning and object lock on cloud storage", "Implement cross-region and cross-account backup replication", "Restrict delete permissions using IAM policies and SCPs", "Enable soft-delete with retention periods", "Protect backups in a separate account with independent credentials"],
+      "knownUse": "Ransomware operators delete cloud backups and snapshots before encryption. Nation-state actors have destroyed cloud infrastructure during geopolitical conflicts."
+    },
+    {
+      "id": "T1496",
+      "name": "Resource Hijacking",
+      "tactic": "TA0040",
+      "description": "Adversaries may hijack cloud compute resources for their own purposes, most commonly cryptocurrency mining. Cloud environments are attractive targets because compromised accounts provide access to elastic, high-performance compute that the victim pays for. Monthly cloud bills can spike to tens or hundreds of thousands of dollars.",
+      "platforms": ["AWS", "Azure", "GCP"],
+      "ccmControls": ["IAM-01", "IAM-10", "LOG-01", "LOG-03", "IVS-01", "GRC-02"],
+      "mitigations": ["Set billing alerts and spending limits on cloud accounts", "Monitor for unexpected resource creation, especially GPU instances", "Restrict instance types and sizes via service control policies", "Implement automated response to shut down unauthorized workloads", "Review cloud resource inventory regularly for unknown deployments"],
+      "knownUse": "Extremely common. TeamTNT, WatchDog, and other groups routinely compromise cloud accounts for cryptomining. Stolen AWS keys from GitHub repos frequently used within minutes for mining operations."
+    },
+    {
+      "id": "T1199",
+      "name": "Trusted Relationship",
+      "tactic": "TA0001",
+      "description": "Adversaries may abuse trusted relationships between cloud accounts, organisations, or services to gain access. This includes cross-account IAM role trust policies, partner API integrations, federated identity trust configurations, and third-party SaaS integrations with broad permissions.",
+      "platforms": ["AWS", "Azure", "GCP", "Azure AD", "Office 365", "SaaS"],
+      "ccmControls": ["STA-01", "STA-03", "IAM-01", "IAM-04", "LOG-01"],
+      "mitigations": ["Regularly audit cross-account trust policies and external identity federation", "Implement external ID requirements for cross-account role assumption", "Restrict OAuth application consent to admin-approved applications", "Monitor for unusual cross-account or cross-tenant activity", "Apply least privilege to third-party integrations"],
+      "knownUse": "SolarWinds attack leveraged federated trust between on-premises AD and Azure AD. Codecov attack exploited trusted CI/CD integration. OAuth consent phishing abuses delegated trust."
+    },
+    {
+      "id": "T1078.004",
+      "name": "Cloud Accounts",
+      "tactic": "TA0001",
+      "description": "Adversaries may obtain and abuse credentials of cloud accounts — IAM users, service accounts, federated identities — as a means of gaining initial access, persistence, or privilege escalation. Cloud accounts are high-value targets because they can provide programmatic access to infrastructure, data, and services.",
+      "platforms": ["AWS", "Azure", "GCP", "Azure AD"],
+      "ccmControls": ["IAM-01", "IAM-02", "IAM-04", "IAM-10", "CEK-01", "LOG-01"],
+      "mitigations": ["Enforce MFA on all human cloud accounts", "Use short-lived credentials and federated access instead of long-lived API keys", "Implement anomaly detection for cloud account usage", "Disable root/global admin account API access", "Conduct regular credential rotation"],
+      "knownUse": "Compromised AWS access keys are the most common initial access vector in AWS breaches. Azure AD global admin compromise enables full tenant takeover."
+    },
+    {
+      "id": "T1059.009",
+      "name": "Cloud API",
+      "tactic": "TA0002",
+      "description": "Adversaries may abuse cloud management APIs (AWS CLI/SDK, Azure PowerShell/CLI, gcloud CLI) to execute commands within cloud environments. These APIs provide programmatic access to create, modify, and delete cloud resources and are the primary execution mechanism in cloud attacks.",
+      "platforms": ["AWS", "Azure", "GCP"],
+      "ccmControls": ["IAM-01", "IAM-04", "IAM-10", "LOG-01", "LOG-03", "AIS-01"],
+      "mitigations": ["Implement least-privilege API permissions", "Monitor API calls via CloudTrail, Azure Activity Log, and GCP Audit Logs", "Use conditional access policies to restrict API access by location, device, and risk level", "Alert on high-risk API calls from unusual user agents or source IPs"],
+      "knownUse": "All cloud intrusions involve API abuse. Attackers use legitimate cloud CLIs and SDKs to interact with cloud services programmatically."
+    },
+    {
+      "id": "T1110",
+      "name": "Brute Force",
+      "tactic": "TA0006",
+      "description": "Adversaries may use brute force or password spraying techniques against cloud authentication endpoints to discover valid credentials. Cloud identity providers are attractive targets because they are internet-accessible and a single successful authentication can provide access to multiple services.",
+      "platforms": ["Azure AD", "Office 365", "Google Workspace", "AWS", "SaaS"],
+      "ccmControls": ["IAM-01", "IAM-02", "LOG-01", "LOG-03"],
+      "mitigations": ["Enforce account lockout policies or smart lockout", "Implement MFA to prevent password-only access", "Deploy cloud-native brute force detection (Azure AD Smart Lockout, GuardDuty)", "Monitor for password spray patterns across multiple accounts", "Use passwordless authentication where possible"],
+      "knownUse": "Password spraying against Azure AD and Microsoft 365 is extremely common. APT groups including APT29 and APT33 have conducted large-scale password spray campaigns against cloud identity providers."
+    },
+    {
+      "id": "T1538",
+      "name": "Cloud Service Dashboard",
+      "tactic": "TA0007",
+      "description": "Adversaries may use cloud service management consoles (AWS Console, Azure Portal, GCP Console) to discover information about the cloud environment. The management console provides a graphical view of all cloud resources, configurations, and settings that can be explored interactively.",
+      "platforms": ["AWS", "Azure", "GCP"],
+      "ccmControls": ["IAM-01", "IAM-10", "LOG-01", "LOG-03"],
+      "mitigations": ["Restrict console access to specific IP ranges via conditional access policies", "Monitor console sign-in events for unusual locations and times", "Implement session duration limits for console access", "Require MFA for all console access"],
+      "knownUse": "Attackers frequently use cloud consoles for initial reconnaissance after gaining credentials, as it provides the broadest view of the environment."
+    },
+    {
+      "id": "T1526",
+      "name": "Cloud Service Discovery",
+      "tactic": "TA0007",
+      "description": "Adversaries may attempt to discover cloud services running within an environment. This includes enumerating enabled services, finding API endpoints, identifying serverless functions, discovering managed databases, and mapping relationships between services.",
+      "platforms": ["AWS", "Azure", "GCP"],
+      "ccmControls": ["IAM-01", "IAM-04", "LOG-01", "LOG-03", "IVS-01"],
+      "mitigations": ["Apply least-privilege IAM policies to restrict list/describe permissions", "Monitor for broad service enumeration API calls", "Use separate accounts/subscriptions to limit blast radius of discovery"],
+      "knownUse": "Automated enumeration tools (ScoutSuite, Prowler, CloudMapper) used by both attackers and defenders for cloud service discovery."
+    },
+    {
+      "id": "T1619",
+      "name": "Cloud Storage Object Discovery",
+      "tactic": "TA0007",
+      "description": "Adversaries may enumerate objects within cloud storage services to identify sensitive files for collection or exfiltration. This includes listing S3 objects, Azure Blob contents, GCS objects, and SaaS file storage (OneDrive, SharePoint, Google Drive).",
+      "platforms": ["AWS", "Azure", "GCP", "Office 365", "Google Workspace"],
+      "ccmControls": ["DSP-01", "DSP-04", "IAM-01", "IAM-04", "LOG-01"],
+      "mitigations": ["Apply least-privilege storage access policies", "Monitor for list/enumerate operations across cloud storage", "Implement data classification to identify and protect sensitive objects", "Use cloud-native data security posture management tools"],
+      "knownUse": "Standard reconnaissance step before data exfiltration from cloud storage. Attackers enumerate bucket contents to identify high-value targets."
+    },
+    {
+      "id": "T1578",
+      "name": "Modify Cloud Compute Infrastructure",
+      "tactic": "TA0005",
+      "description": "Adversaries may modify cloud compute infrastructure to evade defenses, including creating snapshots of victim instances for offline analysis, modifying security groups, reverting security configurations, or deleting virtual machines to cover tracks.",
+      "platforms": ["AWS", "Azure", "GCP"],
+      "subtechniques": [
+        { "id": "T1578.001", "name": "Create Snapshot", "description": "Creating snapshots of cloud instances to copy and analyse data offline in an attacker-controlled environment." },
+        { "id": "T1578.002", "name": "Create Cloud Instance", "description": "Creating new cloud instances with attacker-controlled configurations, potentially from compromised snapshots." },
+        { "id": "T1578.003", "name": "Delete Cloud Instance", "description": "Deleting cloud instances to remove evidence of compromise or disrupt operations." },
+        { "id": "T1578.004", "name": "Revert Cloud Instance", "description": "Reverting cloud instances to a prior state to undo security patches or configuration changes." }
+      ],
+      "ccmControls": ["IVS-01", "CCC-01", "CCC-09", "IAM-01", "IAM-10", "LOG-01"],
+      "mitigations": ["Restrict snapshot creation and instance modification permissions", "Monitor for unusual compute infrastructure changes", "Alert on snapshot sharing to external accounts", "Implement change management for infrastructure modifications"],
+      "knownUse": "Adversaries create snapshots of victim VMs to exfiltrate data. Deletion of instances used to cover tracks after data theft."
+    },
+    {
+      "id": "T1525",
+      "name": "Implant Internal Image",
+      "tactic": "TA0003",
+      "description": "Adversaries may implant backdoors into cloud VM images, container images, or serverless deployment packages that will be deployed as part of normal operations. When the trojanised image is used to launch new instances, the backdoor activates automatically.",
+      "platforms": ["AWS", "Azure", "GCP"],
+      "ccmControls": ["AIS-01", "AIS-04", "CCC-01", "CCC-02", "IVS-01", "STA-01"],
+      "mitigations": ["Scan VM and container images for malware before deployment", "Use image signing and verification (Docker Content Trust, Sigstore)", "Restrict who can publish to shared image registries", "Implement immutable infrastructure patterns", "Monitor for modifications to golden images and base AMIs"],
+      "knownUse": "Supply chain attacks through trojanised container images on public registries. Backdoored AMIs shared in AWS Marketplace."
+    },
+    {
+      "id": "T1550.001",
+      "name": "Application Access Token",
+      "tactic": "TA0005",
+      "description": "Adversaries may use stolen application access tokens (OAuth, SAML, JWT) to bypass normal authentication and access cloud services. Tokens can be replayed from different locations and devices, often bypassing MFA since the token represents a completed authentication.",
+      "platforms": ["Azure AD", "Office 365", "Google Workspace", "SaaS"],
+      "ccmControls": ["IAM-01", "IAM-10", "CEK-01", "LOG-01", "LOG-03"],
+      "mitigations": ["Implement short token lifetimes", "Enable Continuous Access Evaluation for near-real-time revocation", "Monitor for token use from unusual IP addresses or devices", "Implement token binding to specific devices where supported"],
+      "knownUse": "Storm-0558 forged Azure AD tokens. SAML token forgery in SolarWinds attack. OAuth token theft in consent phishing campaigns."
+    },
+    {
+      "id": "T1556.006",
+      "name": "Multi-Factor Authentication Request Generation",
+      "tactic": "TA0006",
+      "description": "Adversaries may repeatedly push MFA requests to a victim's device (MFA fatigue/bombing) to pressure them into approving an authentication request. This technique exploits push-based MFA implementations where approval requires only a single tap.",
+      "platforms": ["Azure AD", "Office 365", "SaaS"],
+      "ccmControls": ["IAM-01", "IAM-02", "LOG-01", "LOG-03"],
+      "mitigations": ["Implement number-matching MFA instead of simple approve/deny", "Set rate limits on MFA push requests", "Alert on excessive MFA push attempts", "Educate users on MFA fatigue attacks", "Consider phishing-resistant MFA (FIDO2, hardware keys)"],
+      "knownUse": "Lapsus$ and Scattered Spider used MFA fatigue attacks extensively against corporate Azure AD environments. Uber breach (2022) involved MFA fatigue."
+    },
+    {
+      "id": "T1556.009",
+      "name": "Conditional Access Policies",
+      "tactic": "TA0005",
+      "description": "Adversaries may modify or disable conditional access policies in cloud identity providers to weaken authentication and authorisation controls, enabling persistent access from locations or devices that would otherwise be blocked.",
+      "platforms": ["Azure AD"],
+      "ccmControls": ["IAM-01", "IAM-10", "LOG-01", "LOG-03", "CCC-01"],
+      "mitigations": ["Monitor for conditional access policy modifications", "Protect conditional access configuration with PIM (Privileged Identity Management)", "Implement backup/export of conditional access policies", "Alert on policy deletion or weakening changes"],
+      "knownUse": "Post-compromise technique to ensure persistent access. Attackers modify or delete conditional access policies after gaining admin access."
+    },
+    {
+      "id": "T1087.004",
+      "name": "Cloud Account Discovery",
+      "tactic": "TA0007",
+      "description": "Adversaries may enumerate cloud accounts and identities to understand the identity landscape, identify high-privilege accounts, and find potential targets for privilege escalation. This includes listing IAM users, service accounts, application registrations, and group memberships.",
+      "platforms": ["AWS", "Azure", "GCP", "Azure AD"],
+      "ccmControls": ["IAM-01", "IAM-04", "LOG-01", "LOG-03"],
+      "mitigations": ["Restrict IAM enumeration permissions to administrators", "Monitor for unusual identity enumeration API calls", "Implement access boundary policies that limit account discovery scope"],
+      "knownUse": "Standard post-compromise reconnaissance. Attackers enumerate IAM users and roles to identify targets for privilege escalation."
+    },
+    {
+      "id": "T1069.003",
+      "name": "Cloud Groups",
+      "tactic": "TA0007",
+      "description": "Adversaries may enumerate cloud groups and their memberships to identify privileged groups (e.g., Global Admins, AWS Administrators) and understand the organisation's access control structure.",
+      "platforms": ["Azure AD", "Office 365", "Google Workspace", "AWS"],
+      "ccmControls": ["IAM-01", "IAM-04", "LOG-01"],
+      "mitigations": ["Restrict group enumeration to authorised administrators", "Monitor for bulk group membership queries", "Use hidden or restricted group memberships for sensitive groups"],
+      "knownUse": "Attackers enumerate Azure AD groups to identify Global Admins, Security Admins, and other privileged roles for targeting."
+    },
+    {
+      "id": "T1613",
+      "name": "Container and Resource Discovery",
+      "tactic": "TA0007",
+      "description": "Adversaries may attempt to discover containers, pods, and container orchestration resources in cloud environments. This includes querying Kubernetes APIs, Docker APIs, or cloud container services (ECS, AKS, GKE) to enumerate running workloads, configurations, and secrets.",
+      "platforms": ["AWS", "Azure", "GCP"],
+      "ccmControls": ["IVS-01", "IAM-01", "IAM-04", "LOG-01"],
+      "mitigations": ["Restrict Kubernetes API access with RBAC", "Implement network policies to limit pod-to-pod communication", "Monitor for unusual kubectl or container API calls", "Use managed Kubernetes services with private API endpoints"],
+      "knownUse": "Container escape and Kubernetes exploitation is a growing attack vector. TeamTNT and other groups target exposed Kubernetes API servers and Docker daemons."
+    },
+    {
+      "id": "T1610",
+      "name": "Deploy Container",
+      "tactic": "TA0005",
+      "description": "Adversaries may deploy new containers within a cloud environment to execute malicious code, establish persistence, or perform resource hijacking. Containers can be deployed using compromised cloud credentials or by exploiting misconfigured container orchestration platforms.",
+      "platforms": ["AWS", "Azure", "GCP"],
+      "ccmControls": ["IVS-01", "CCC-01", "CCC-02", "IAM-01", "IAM-10", "LOG-01"],
+      "mitigations": ["Implement admission controllers to validate container images before deployment", "Restrict container deployment to approved registries", "Monitor for new container deployments from unusual sources", "Use image signing and verification"],
+      "knownUse": "Cryptomining campaigns deploy malicious containers in compromised Kubernetes clusters and ECS environments."
+    },
+    {
+      "id": "T1648",
+      "name": "Serverless Execution",
+      "tactic": "TA0002",
+      "description": "Adversaries may abuse serverless computing services (AWS Lambda, Azure Functions, GCP Cloud Functions) to execute malicious code. Serverless functions can be created or modified to run attacker code triggered by events, API calls, or scheduled execution.",
+      "platforms": ["AWS", "Azure", "GCP"],
+      "ccmControls": ["AIS-01", "AIS-04", "IAM-01", "IAM-10", "LOG-01", "LOG-03"],
+      "mitigations": ["Restrict serverless function creation and modification permissions", "Monitor for new or modified serverless functions", "Implement code signing for serverless deployments", "Apply least-privilege execution roles to serverless functions", "Review serverless function triggers and event sources"],
+      "knownUse": "Attackers create Lambda functions with broad IAM roles for data exfiltration. Backdoored serverless functions used for persistence."
+    },
+    {
+      "id": "T1114.003",
+      "name": "Email Collection: Email Forwarding Rule",
+      "tactic": "TA0009",
+      "description": "Adversaries may create email forwarding rules in cloud email services (Exchange Online, Gmail) to automatically forward copies of incoming and outgoing email to an external address for collection.",
+      "platforms": ["Office 365", "Google Workspace"],
+      "ccmControls": ["DSP-01", "IAM-01", "LOG-01", "LOG-03", "SEF-01"],
+      "mitigations": ["Monitor for creation of email forwarding rules to external domains", "Implement mail flow rules blocking external auto-forwarding", "Conduct regular audits of mailbox forwarding configurations", "Alert on suspicious inbox rules creation via unified audit log"],
+      "knownUse": "Business email compromise (BEC) attacks frequently create forwarding rules. APT groups use email forwarding for long-term intelligence collection from compromised mailboxes."
+    },
+    {
+      "id": "T1567.002",
+      "name": "Exfiltration to Cloud Storage",
+      "tactic": "TA0010",
+      "description": "Adversaries may exfiltrate data to cloud storage services they control or that are difficult to block — including popular services like Google Drive, Dropbox, OneDrive, or attacker-owned S3 buckets. This traffic may blend with legitimate cloud service usage.",
+      "platforms": ["AWS", "Azure", "GCP", "SaaS"],
+      "ccmControls": ["DSP-01", "IVS-03", "LOG-01", "LOG-03", "DCS-01"],
+      "mitigations": ["Implement data loss prevention (DLP) policies for cloud services", "Monitor and restrict uploads to unauthorized cloud storage services", "Use CASB (Cloud Access Security Broker) for shadow IT visibility", "Implement egress filtering at the network level"],
+      "knownUse": "Common exfiltration technique. Attackers use legitimate cloud storage to avoid network-based detection of data transfers."
+    },
+    {
+      "id": "T1531",
+      "name": "Account Access Removal",
+      "tactic": "TA0040",
+      "description": "Adversaries may remove legitimate user access to cloud services by deleting accounts, revoking permissions, disabling MFA, or changing passwords. This can lock administrators out of their own environments during a ransomware attack or destructive operation.",
+      "platforms": ["AWS", "Azure", "GCP", "Azure AD", "Office 365"],
+      "ccmControls": ["IAM-01", "IAM-10", "BCR-01", "LOG-01", "LOG-03"],
+      "mitigations": ["Maintain break-glass accounts with independent credentials stored securely offline", "Monitor for mass account modifications or permission changes", "Implement alerts for MFA deregistration events", "Keep emergency access procedures documented and tested"],
+      "knownUse": "Ransomware operators lock out administrators by resetting passwords and disabling MFA before deploying encryption. Used in destructive attacks to prevent recovery."
+    },
+    {
+      "id": "T1562.001",
+      "name": "Disable or Modify Tools",
+      "tactic": "TA0005",
+      "description": "Adversaries may disable or modify cloud security tools including cloud-native security services (AWS GuardDuty, Azure Defender, GCP Security Command Center), CSPM agents, and endpoint protection on cloud workloads to avoid detection.",
+      "platforms": ["AWS", "Azure", "GCP"],
+      "ccmControls": ["LOG-01", "LOG-03", "TVM-01", "IAM-01", "IAM-10"],
+      "mitigations": ["Protect security tool configurations with organisation-level policies", "Monitor for security service disablement events", "Use separate security accounts to manage detection tools", "Alert on any modifications to GuardDuty, Defender, or SCC configurations"],
+      "knownUse": "Attackers disable GuardDuty before launching cryptomining. Ransomware operators disable cloud-native security services before data destruction."
+    }
+  ]
+}

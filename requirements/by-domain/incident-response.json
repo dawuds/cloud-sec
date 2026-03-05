@@ -1,0 +1,66 @@
+{
+  "$schema": "cloud-security-v1",
+  "sourceType": "constructed-indicative",
+  "verificationNote": "Requirements constructed from CSA CCM v4, NIST CSF 2.0, and Malaysia Act 854 obligations. Verify against authoritative sources before use in formal assessments.",
+  "domain": {
+    "id": "incident-response",
+    "name": "Incident Response",
+    "description": "Requirements for cloud-specific incident response planning, forensic readiness, containment, and regulatory notification. Cloud IR differs from traditional IR due to ephemeral resources, shared responsibility, and API-driven containment.",
+    "ccmDomains": ["SEF"],
+    "nacsa": ["s26"]
+  },
+  "requirements": [
+    {
+      "id": "SEF-R1",
+      "title": "Cloud Incident Response Plan",
+      "description": "Develop and maintain a cloud-specific incident response plan covering common cloud attack scenarios: credential compromise, data exposure, cryptomining, supply chain attack, and misconfiguration exploitation. Define roles, escalation paths, CSP engagement procedures, and cloud-specific containment techniques.",
+      "priority": "critical",
+      "ccmControls": ["SEF-01", "SEF-02", "SEF-04"],
+      "nacsa": ["s26"],
+      "cspGuidance": {
+        "aws": "Document procedures for IAM credential compromise, S3 data exposure, EC2 compromise, and Lambda abuse. Use AWS Incident Manager for runbook automation. Define AWS Support engagement escalation.",
+        "azure": "Document procedures for Entra ID compromise, Storage Account exposure, VM compromise, and App Service abuse. Use Microsoft Sentinel playbooks for automated response.",
+        "gcp": "Document procedures for service account compromise, GCS exposure, GCE compromise, and Cloud Function abuse. Use Security Command Center for investigation and tracking."
+      }
+    },
+    {
+      "id": "SEF-R2",
+      "title": "Cloud Forensic Readiness",
+      "description": "Pre-configure cloud environments for forensic investigation. Enable comprehensive logging, maintain disk snapshot capability, deploy forensic tooling in isolated environments, and document evidence preservation procedures. Chain of custody must be maintained for all forensic evidence.",
+      "priority": "high",
+      "ccmControls": ["SEF-03", "SEF-05"],
+      "nacsa": ["s26"],
+      "cspGuidance": {
+        "aws": "Enable CloudTrail data events for all S3 buckets. Pre-configure EBS snapshot automation. Deploy forensic EC2 in isolated VPC. Use Step Functions for automated evidence collection. Enable VPC Traffic Mirroring.",
+        "azure": "Enable diagnostic logs on all resources. Configure disk snapshot automation via Azure Automation. Deploy forensic VM in isolated VNet. Use Sentinel investigation graph for analysis.",
+        "gcp": "Enable all Data Access audit logs. Configure persistent disk snapshot scheduling. Deploy forensic GCE in isolated VPC. Use Packet Mirroring for network capture. Export logs to locked Cloud Storage."
+      }
+    },
+    {
+      "id": "SEF-R3",
+      "title": "Cloud Incident Containment",
+      "description": "Define and test cloud-specific containment procedures that leverage API-driven controls. Containment actions include: IAM policy deny, security group isolation, resource access block, session revocation, and key disablement. Automate containment for high-confidence detections.",
+      "priority": "critical",
+      "ccmControls": ["SEF-04", "SEF-06"],
+      "nacsa": ["s26"],
+      "cspGuidance": {
+        "aws": "Apply IAM deny policies to isolate compromised users. Replace security groups with deny-all for instance isolation. Use S3 Block Public Access. Automate via Lambda triggered by GuardDuty findings.",
+        "azure": "Block sign-in via Conditional Access for compromised accounts. Apply deny-all NSG to isolate VMs. Disable public access on Storage Accounts. Automate via Logic Apps triggered by Defender alerts.",
+        "gcp": "Disable compromised service account keys. Apply deny firewall rules to isolate instances. Remove public IAM bindings. Automate via Cloud Functions triggered by SCC findings."
+      }
+    },
+    {
+      "id": "SEF-R4",
+      "title": "Incident Notification and Regulatory Reporting",
+      "description": "Establish procedures for regulatory incident notification within required timeframes. For Malaysian NCII entities, NACSA notification is required within 6 hours of a significant incident under Act 854 s26. Maintain pre-populated templates, tested decision matrices, and current contact lists.",
+      "priority": "critical",
+      "ccmControls": ["SEF-02", "SEF-07"],
+      "nacsa": ["s26"],
+      "cspGuidance": {
+        "aws": "Document AWS Abuse Team engagement procedure. Configure AWS Health events for CSP-side incidents. Integrate Security Hub findings with notification workflow. Test notification procedure in tabletop exercises.",
+        "azure": "Document MSRC engagement procedure. Configure Azure Service Health alerts. Use Sentinel incident management for notification tracking. Maintain Entra ID admin contact list.",
+        "gcp": "Document Google Cloud Security Team engagement. Configure Personalized Service Health alerts. Use SCC for incident tracking. Maintain notification audit trail."
+      }
+    }
+  ]
+}

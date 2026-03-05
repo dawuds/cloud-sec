@@ -1,0 +1,239 @@
+{
+  "$schema": "cloud-security-v1",
+  "description": "Cloud-focused threat actor profiles. Includes groups with demonstrated cloud exploitation capability — from social engineering specialists to nation-state actors with advanced cloud persistence techniques.",
+  "sourceType": "paraphrased-from-public-sources",
+  "verificationNote": "Threat actor profiles based on publicly available threat intelligence reports from Mandiant, CrowdStrike, Microsoft Threat Intelligence, Unit42, and CISA advisories. MITRE ATT&CK technique IDs reference the Enterprise matrix (cloud-relevant techniques).",
+  "threatActors": [
+    {
+      "id": "CTA-001",
+      "name": "SCATTERED SPIDER",
+      "aliases": ["UNC3944", "Starfraud", "Octo Tempest", "0ktapus"],
+      "attribution": "Loosely organised group of English-speaking threat actors, primarily US and UK based, aged 16-25. Some members linked to The Com (online criminal community). Multiple arrests in 2023-2024.",
+      "motivation": "Financial — ransomware deployment, data extortion, cryptocurrency theft, SIM swapping",
+      "targetedCSPs": ["Azure/Microsoft 365", "AWS", "Google Workspace", "Okta", "Any SaaS with SSO"],
+      "typicalTTPs": [
+        "SMS phishing (smishing) impersonating IT helpdesk with fake SSO login pages",
+        "Social engineering calls to IT helpdesks to reset MFA or add attacker device",
+        "SIM swapping to intercept SMS-based MFA codes",
+        "MFA fatigue attacks (push notification spam)",
+        "Okta admin console compromise to create persistent access",
+        "Azure AD/Entra ID manipulation — adding federated identity providers for persistent access",
+        "Cross-tenant lateral movement via compromised MSP/reseller accounts",
+        "Deployment of BlackCat/ALPHV ransomware in cloud environments",
+        "Living-off-the-land using native cloud tools (Azure Run Commands, AWS SSM)"
+      ],
+      "keyIncidents": [
+        "MGM Resorts (Sep 2023) — social engineered IT helpdesk to reset Okta MFA, deployed BlackCat ransomware, $100M+ impact",
+        "Caesars Entertainment (Sep 2023) — social engineering attack, $15M ransom paid",
+        "Twilio (Aug 2022) — smishing campaign against employees, accessed customer data including Authy/Signal",
+        "Cloudflare (Aug 2022) — smishing attack against employees, blocked by FIDO2 hardware keys",
+        "0ktapus campaign (2022) — phished over 130 organisations targeting Okta SSO credentials"
+      ],
+      "mitreTechniques": ["T1566.004", "T1078.004", "T1556.006", "T1098.001", "T1136.003", "T1484.002", "T1059.009", "T1021.007"],
+      "preventiveControls": {
+        "primary": [
+          "Phishing-resistant MFA (FIDO2/WebAuthn) — eliminates SMS, push, and TOTP phishing entirely. Cloudflare's use of hardware keys blocked Scattered Spider when other companies fell.",
+          "Helpdesk identity verification procedures — out-of-band verification for all MFA resets and account changes",
+          "Conditional access policies requiring compliant devices and trusted locations"
+        ],
+        "secondary": [
+          "Number matching for push MFA (reduces fatigue attacks, but does not eliminate them)",
+          "SIM swap protection with carrier PIN/passphrase",
+          "Privileged Identity Management (PIM) with approval workflows for admin role activation",
+          "Cloud audit log monitoring for IdP configuration changes (federation, MFA policy changes)"
+        ]
+      }
+    },
+    {
+      "id": "CTA-002",
+      "name": "APT29 / Cozy Bear",
+      "aliases": ["Nobelium", "Midnight Blizzard", "The Dukes", "BlueBravo", "UNC2452"],
+      "attribution": "Russia — Foreign Intelligence Service (SVR). Attributed by US, UK, and EU governments.",
+      "motivation": "Strategic intelligence collection — foreign policy, government communications, technology sector intelligence",
+      "targetedCSPs": ["Microsoft Azure / Microsoft 365", "AWS", "Google Workspace"],
+      "typicalTTPs": [
+        "Supply chain compromise (SolarWinds SUNBURST — most significant cloud supply chain attack to date)",
+        "Golden SAML — forging SAML tokens using stolen AD FS signing certificates for persistent Azure AD access",
+        "OAuth application abuse — creating malicious OAuth apps with mail.read permissions for persistent mailbox access",
+        "Password spraying against cloud authentication endpoints at scale",
+        "Residential proxy networks to evade geographic-based conditional access policies",
+        "Compromising cloud service providers and MSPs to access downstream customer environments",
+        "Token theft and session replay for cloud service access",
+        "Long-term persistent access — dwelling for months to years in victim cloud environments"
+      ],
+      "keyIncidents": [
+        "SolarWinds/SUNBURST (2020) — supply chain compromise affecting 18,000 organisations, Golden SAML used for Azure AD persistence at US government agencies",
+        "Microsoft corporate breach (Jan 2024) — password spraying against legacy test account without MFA, accessed senior leadership email via OAuth application permissions",
+        "TeamViewer corporate breach (Jun 2024) — compromised employee account to access corporate IT environment",
+        "Multiple European government and diplomatic entity compromises (2021-2024) — persistent cloud email access via OAuth apps"
+      ],
+      "mitreTechniques": ["T1195.002", "T1606.002", "T1550.001", "T1078.004", "T1098.003", "T1110.003", "T1199"],
+      "preventiveControls": {
+        "primary": [
+          "Protect SAML/OIDC signing keys with HSM — never allow signing key material in crash dumps, backups, or accessible file systems",
+          "Audit all OAuth/enterprise application consent grants — alert on new applications with mail.read, mail.readwrite, or directory.read permissions",
+          "Eliminate legacy authentication protocols (basic auth, SMTP AUTH) — APT29 exploits these to bypass MFA"
+        ],
+        "secondary": [
+          "Conditional access requiring MFA for all accounts including service accounts",
+          "CloudTrail / Entra audit log monitoring for token anomalies and impossible travel",
+          "Regular review of federated identity provider configurations",
+          "Supply chain security — verify software integrity, monitor build pipelines"
+        ]
+      }
+    },
+    {
+      "id": "CTA-003",
+      "name": "LAPSUS$",
+      "aliases": ["DEV-0537", "Strawberry Tempest"],
+      "attribution": "Loosely organised group of young threat actors, initially based in UK and Brazil. Multiple members arrested in 2022, including a 16-year-old from Oxford, UK.",
+      "motivation": "Notoriety, financial gain, and destruction — primarily motivated by attention and demonstrating capability rather than pure financial return",
+      "targetedCSPs": ["Azure/Microsoft 365", "AWS", "Okta", "GitHub", "Slack"],
+      "typicalTTPs": [
+        "Purchasing credentials and session tokens from insiders and dark web markets",
+        "SIM swapping for MFA bypass",
+        "Social engineering IT helpdesks for credential and MFA resets",
+        "Searching internal code repositories and wikis for hardcoded credentials after initial access",
+        "Enrolling personal devices in corporate MDM/MFA to establish persistent access",
+        "Joining internal Slack/Teams channels to monitor incident response in real time",
+        "Publicly announcing breaches on Telegram for attention and pressure"
+      ],
+      "keyIncidents": [
+        "Microsoft (Mar 2022) — compromised employee account, accessed Azure DevOps repos containing partial source code for Bing, Cortana, and Bing Maps",
+        "Okta (Jan 2022) — compromised a Sitel (support subcontractor) engineer's workstation, accessed Okta customer support tools affecting ~2.5% of customers",
+        "NVIDIA (Feb 2022) — stole 1TB of data including proprietary GPU designs and employee credentials",
+        "Samsung (Mar 2022) — exfiltrated 190GB of source code including Galaxy device security software",
+        "Uber (Sep 2022) — MFA fatigue attack on contractor, accessed AWS, GWorkspace, Slack, HackerOne (attributed to LAPSUS$-affiliated individual)",
+        "Rockstar Games (Sep 2022) — leaked GTA VI development footage, arrested"
+      ],
+      "mitreTechniques": ["T1566.004", "T1078.004", "T1552.001", "T1098.005", "T1530", "T1213"],
+      "preventiveControls": {
+        "primary": [
+          "Phishing-resistant MFA (FIDO2) — eliminates SIM swap and social engineering MFA bypass",
+          "Zero trust architecture — device compliance checks, no VPN-only perimeter",
+          "Secrets scanning in code repositories (GitHub Advanced Security, GitGuardian) to detect hardcoded credentials before attackers find them"
+        ],
+        "secondary": [
+          "Insider threat monitoring — alert on bulk data downloads, unusual repository access",
+          "Contractor and third-party access segmentation — contractors should not have broad internal access",
+          "Incident response channel security — assume adversary is monitoring Slack/Teams during incidents",
+          "SIM swap protection with carrier-level controls"
+        ]
+      }
+    },
+    {
+      "id": "CTA-004",
+      "name": "TeamTNT",
+      "aliases": ["TeamTNT", "Hildegard"],
+      "attribution": "Financially motivated cybercriminal group, suspected German-speaking members based on code comments and infrastructure.",
+      "motivation": "Financial — cryptocurrency mining using stolen cloud compute resources, credential theft for further access",
+      "targetedCSPs": ["AWS", "GCP", "Azure", "Any cloud running Docker/Kubernetes"],
+      "typicalTTPs": [
+        "Scanning for exposed Docker daemons (TCP 2375/2376) and Kubernetes API servers",
+        "Exploiting misconfigured Docker API to deploy cryptomining containers",
+        "Stealing AWS credentials from instance metadata (IMDSv1) and ~/.aws/credentials files",
+        "Deploying XMRig (Monero) cryptocurrency miners on compromised containers and VMs",
+        "Worm-like propagation scanning internal networks for additional Docker/K8s targets",
+        "Using Weave Scope (legitimate Kubernetes monitoring tool) as backdoor dashboard",
+        "DNS-over-HTTPS for C2 communication to evade network monitoring",
+        "Credential scraping from environment variables, Docker configs, and Kubernetes secrets"
+      ],
+      "keyIncidents": [
+        "Hildegard campaign (2021) — targeted misconfigured Kubernetes clusters, deployed cryptominers, stole cloud credentials, used IRC-based C2",
+        "AWS credential theft campaign (2020) — first threat group publicly documented stealing AWS credentials from compromised Docker instances",
+        "Chimaera campaign (2021) — expanded targeting to include Windows containers, Redis, and Kubernetes orchestrators",
+        "Multiple cryptojacking campaigns (2020-2023) — continuous operations targeting exposed container infrastructure globally"
+      ],
+      "mitreTechniques": ["T1610", "T1552.005", "T1078.004", "T1496", "T1071.001", "T1046"],
+      "preventiveControls": {
+        "primary": [
+          "Never expose Docker daemon to the network — Docker API must require authentication and TLS",
+          "Kubernetes API server must not be publicly accessible — use private cluster endpoints",
+          "IMDSv2 enforcement on all EC2 instances to prevent metadata credential theft"
+        ],
+        "secondary": [
+          "Container runtime security (Falco) detecting cryptominer deployment and unexpected network scanning",
+          "Network egress filtering blocking mining pool connections",
+          "Regular scanning for exposed Docker/K8s endpoints (Shodan, internal scanning)",
+          "Pod security standards preventing privileged containers and host namespace access"
+        ]
+      }
+    },
+    {
+      "id": "CTA-005",
+      "name": "ShinyHunters",
+      "aliases": ["ShinyHunters"],
+      "attribution": "Cybercriminal group, with at least one confirmed member (Sebastien Raoult, French national, extradited to US and sentenced in 2024). Multiple other members believed active.",
+      "motivation": "Financial — data theft and sale on dark web markets, extortion of victim organisations",
+      "targetedCSPs": ["AWS", "Azure", "GitHub", "Various SaaS platforms"],
+      "typicalTTPs": [
+        "Targeting misconfigured cloud storage (S3 buckets, Azure Blob containers) for data theft",
+        "Compromising developer accounts on GitHub to access private repositories containing credentials",
+        "Exploiting exposed .git directories on web servers to recover source code and embedded secrets",
+        "Phishing campaigns targeting developers with access to cloud infrastructure",
+        "Accessing cloud databases through credentials found in source code repositories",
+        "Bulk data exfiltration and sale on BreachForums, RaidForums (defunct), and Telegram"
+      ],
+      "keyIncidents": [
+        "AT&T / Snowflake (2024) — part of the broader Snowflake customer breach campaign, accessed 109 million AT&T phone records",
+        "Ticketmaster / Snowflake (2024) — accessed 560 million customer records from Ticketmaster's Snowflake instance",
+        "Microsoft GitHub (2022) — claimed to have stolen 37GB of Microsoft source code from internal repositories",
+        "Tokopedia (2020) — 91 million user records stolen and sold",
+        "Wattpad (2020) — 270 million user records compromised",
+        "Mashable (2020) — database breach and leak",
+        "Multiple cryptocurrency exchanges — targeting hot wallet credentials in cloud environments"
+      ],
+      "mitreTechniques": ["T1530", "T1552.001", "T1213.003", "T1078.004", "T1567", "T1190"],
+      "preventiveControls": {
+        "primary": [
+          "Block public access on all cloud storage at organisation level (S3 BPA, Azure storage account public access disabled)",
+          "Secrets scanning in all repositories — pre-commit hooks and CI/CD pipeline scanning (GitHub Advanced Security, GitGuardian, TruffleHog)",
+          "MFA on all developer accounts — especially GitHub, GitLab, and cloud console accounts"
+        ],
+        "secondary": [
+          "Regular external attack surface assessment (exposed .git directories, misconfigured storage, leaked credentials)",
+          "CASB for shadow SaaS discovery and data exfiltration monitoring",
+          "Developer security training emphasising credential hygiene and cloud security basics",
+          "Automated rotation of any credential detected in source code"
+        ]
+      }
+    },
+    {
+      "id": "CTA-006",
+      "name": "Muddled Libra",
+      "aliases": ["UNC3944 (overlaps with Scattered Spider)", "0ktapus (campaign name)"],
+      "attribution": "English-speaking threat actors, significant overlap with Scattered Spider. Mandiant tracks as UNC3944. The distinction is primarily analytical — Muddled Libra emphasises the identity-centric cloud attack pattern while Scattered Spider emphasises the social engineering tradecraft.",
+      "motivation": "Financial — data theft, extortion, ransomware deployment. Specific focus on identity provider compromise as enabler for broad cloud access.",
+      "targetedCSPs": ["Okta", "Azure/Entra ID", "AWS", "Google Workspace", "CyberArk", "Any IdP"],
+      "typicalTTPs": [
+        "Identity provider (IdP) targeting as the primary objective — compromising Okta, Entra ID, or other IdP grants access to all federated applications",
+        "Helpdesk social engineering for MFA reset — impersonating employees with spoofed caller ID and personal details from OSINT",
+        "Registering new MFA devices on compromised accounts for persistent access",
+        "Creating new admin accounts in IdP for backdoor access surviving password resets",
+        "Abusing SSO trust relationships to pivot from one SaaS application to all federated applications",
+        "Targeting IT administrators and security team members specifically (highest-value targets for IdP access)",
+        "Using cloud-native tools for reconnaissance (Azure AD Graph API, AWS IAM enumeration)",
+        "Data exfiltration from SaaS applications (SharePoint, Confluence, Slack) accessed via compromised IdP"
+      ],
+      "keyIncidents": [
+        "0ktapus campaign (2022) — phishing campaign targeting Okta credentials at over 130 organisations, compromising approximately 10,000 user credentials",
+        "Multiple BPO/MSP compromises (2022-2024) — targeting business process outsourcing firms and managed service providers to access downstream customer environments",
+        "Cryptocurrency platform targeting (2022-2024) — systematic targeting of crypto exchanges and DeFi platforms via employee IdP compromise"
+      ],
+      "mitreTechniques": ["T1078.004", "T1556.006", "T1098.001", "T1098.003", "T1484.002", "T1199", "T1566.004"],
+      "preventiveControls": {
+        "primary": [
+          "Phishing-resistant MFA (FIDO2/WebAuthn) for all IdP administrator accounts — non-negotiable",
+          "Hardened helpdesk verification procedures — video call verification, manager approval, and out-of-band confirmation for all MFA resets",
+          "IdP configuration monitoring — real-time alerting on new admin accounts, MFA policy changes, federation configuration changes, and new OAuth application grants"
+        ],
+        "secondary": [
+          "Privileged Identity Management (PIM) with approval workflows for IdP admin role activation",
+          "Break-glass account procedures for IdP admin access (separate from daily operations, hardware-key MFA, monitored)",
+          "SSO session duration limits with forced re-authentication",
+          "Segment IdP admin access to dedicated, hardened workstations with no email or web browsing"
+        ]
+      }
+    }
+  ]
+}

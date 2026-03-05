@@ -1,0 +1,24 @@
+{
+  "$schema": "cloud-security-v1",
+  "sourceType": "constructed-indicative",
+  "description": "CSA CCM v4 control domains mapped to Google Cloud Platform security services",
+  "mappings": [
+    { "ccmDomain": "AIS", "ccmDomainName": "Application & Interface Security", "services": ["Cloud Armor", "reCAPTCHA Enterprise", "Web Security Scanner", "Apigee API Management"] },
+    { "ccmDomain": "AAC", "ccmDomainName": "Audit & Assurance", "services": ["Cloud Audit Logs", "Access Transparency", "Assured Workloads"] },
+    { "ccmDomain": "BCR", "ccmDomainName": "Business Continuity & Resilience", "services": ["Cloud Storage (multi-region)", "Persistent Disk snapshots", "Cloud SQL backups", "GKE backup"] },
+    { "ccmDomain": "CCC", "ccmDomainName": "Change Control & Configuration", "services": ["Cloud Build", "Artifact Registry", "Binary Authorization", "Cloud Deploy"] },
+    { "ccmDomain": "CEK", "ccmDomainName": "Cryptography, Encryption & Key Mgmt", "services": ["Cloud KMS", "Cloud HSM", "Secret Manager", "Certificate Authority Service", "Confidential Computing"] },
+    { "ccmDomain": "DSP", "ccmDomainName": "Data Security & Privacy", "services": ["Cloud DLP", "VPC Service Controls", "Data Catalog", "Sensitive Data Protection"] },
+    { "ccmDomain": "DCS", "ccmDomainName": "Datacenter Security", "services": ["Google infrastructure security", "Titan security chips", "Shielded VMs"] },
+    { "ccmDomain": "GRC", "ccmDomainName": "Governance, Risk & Compliance", "services": ["Assured Workloads", "Organization Policy Service", "Risk Manager", "Compliance Reports Manager"] },
+    { "ccmDomain": "HRS", "ccmDomainName": "Human Resources", "services": ["Identity-Aware Proxy (workforce)", "BeyondCorp Enterprise"] },
+    { "ccmDomain": "IAM", "ccmDomainName": "Identity & Access Management", "services": ["Cloud IAM", "Identity-Aware Proxy", "BeyondCorp Enterprise", "Workforce Identity Federation", "Workload Identity Federation"] },
+    { "ccmDomain": "IPY", "ccmDomainName": "Interoperability & Portability", "services": ["Anthos", "GKE Enterprise", "Cloud Run", "Migrate to Containers"] },
+    { "ccmDomain": "IVS", "ccmDomainName": "Infrastructure & Virtualization", "services": ["VPC", "Cloud Firewall", "Cloud NAT", "Private Google Access", "Cloud Interconnect", "Packet Mirroring"] },
+    { "ccmDomain": "LOG", "ccmDomainName": "Logging & Monitoring", "services": ["Cloud Logging", "Cloud Monitoring", "Chronicle SIEM", "Cloud Audit Logs", "Error Reporting"] },
+    { "ccmDomain": "SEF", "ccmDomainName": "Security Incident Mgmt", "services": ["Chronicle SOAR", "Security Command Center (Event Threat Detection)", "Cloud Armor Adaptive Protection"] },
+    { "ccmDomain": "STA", "ccmDomainName": "Supply Chain, Transparency & Accountability", "services": ["Binary Authorization", "Artifact Analysis", "Software Delivery Shield", "SLSA framework support"] },
+    { "ccmDomain": "TVM", "ccmDomainName": "Threat & Vulnerability Mgmt", "services": ["Security Command Center", "Web Security Scanner", "Container Analysis", "VM Manager (OS patch management)"] },
+    { "ccmDomain": "UEM", "ccmDomainName": "Universal Endpoint Mgmt", "services": ["BeyondCorp Enterprise", "Chrome Enterprise", "Endpoint Verification"] }
+  ]
+}

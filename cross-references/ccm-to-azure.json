@@ -1,0 +1,152 @@
+{
+  "$schema": "cloud-security-v1",
+  "title": "CSA CCM v4 to Azure Security Services Cross-Reference",
+  "description": "Maps CSA Cloud Controls Matrix v4 domains to Microsoft Azure security services and features that implement or support each domain's control objectives. Use to identify which Azure services satisfy CCM requirements for cloud security assessments.",
+  "sourceType": "constructed-indicative",
+  "verificationNote": "Azure service mappings are based on publicly documented service capabilities as of 2025. Azure services evolve frequently -- verify current capabilities against Microsoft documentation. Not endorsed by CSA or Microsoft.",
+  "ccmVersion": "CSA Cloud Controls Matrix v4.0",
+  "cspProvider": "Microsoft Azure",
+  "mappings": [
+    {
+      "ccmDomain": "A&A",
+      "ccmDomainName": "Audit & Assurance",
+      "azureServices": [
+        { "service": "Microsoft Purview Compliance Manager", "description": "Compliance assessment and management with pre-built templates for ISO 27001, SOC 2, GDPR, PCI DSS. Implements A&A-01 (audit planning) and A&A-05 (regulatory mapping)." },
+        { "service": "Azure Policy", "description": "Policy-based compliance enforcement and auditing. Built-in compliance initiative definitions. Supports A&A-03 (risk-based planning)." },
+        { "service": "Microsoft Service Trust Portal", "description": "Access to Microsoft compliance reports (SOC 2, ISO 27001, PCI DSS). Supports A&A-05." }
+      ]
+    },
+    {
+      "ccmDomain": "AIS",
+      "ccmDomainName": "Application & Interface Security",
+      "azureServices": [
+        { "service": "Microsoft Defender for Cloud (DevOps Security)", "description": "Code-to-cloud security with SAST, secrets scanning, and IaC scanning. Implements AIS-02 (application security testing)." },
+        { "service": "Azure WAF (Application Gateway WAF / Front Door WAF)", "description": "Web Application Firewall with OWASP 3.2 managed rule sets. Implements AIS-01 (application security) for web apps." },
+        { "service": "Azure API Management", "description": "Managed API gateway with throttling, OAuth 2.0, request validation, and subscription keys. Supports AIS-04 (secure application design)." },
+        { "service": "Azure DevOps / GitHub Advanced Security", "description": "CI/CD with integrated security scanning (Dependabot, CodeQL, secret scanning). Supports AIS-02." }
+      ]
+    },
+    {
+      "ccmDomain": "BCR",
+      "ccmDomainName": "Business Continuity Management & Operational Resilience",
+      "azureServices": [
+        { "service": "Azure Backup", "description": "Centralised backup for VMs, SQL, files, and Kubernetes. Cross-region backup vault. Implements BCR-01 and BCR-04." },
+        { "service": "Azure Site Recovery", "description": "Disaster recovery orchestration with automated failover and failback. Implements BCR-02 (business continuity testing)." },
+        { "service": "Azure Immutable Blob Storage", "description": "WORM-compliant immutable storage for backup protection. Implements BCR-04 (backup integrity)." },
+        { "service": "Availability Zones and Paired Regions", "description": "Infrastructure redundancy for high availability and DR. Supports BCR-01." }
+      ]
+    },
+    {
+      "ccmDomain": "CCC",
+      "ccmDomainName": "Change Control & Configuration Management",
+      "azureServices": [
+        { "service": "Azure Policy", "description": "Policy enforcement for resource configuration compliance. Deny, audit, and remediation effects. Implements CCC-03 (configuration management)." },
+        { "service": "Azure Resource Manager (ARM) / Bicep", "description": "Infrastructure as Code for controlled deployments. Implements CCC-01 (change management) through code-based changes." },
+        { "service": "Azure Automation (Update Management)", "description": "Automated patching and configuration management. Supports CCC-03." },
+        { "service": "Azure Blueprints", "description": "Repeatable environment provisioning with governance constraints. Supports CCC-02 (quality testing) through pre-approved configurations." }
+      ]
+    },
+    {
+      "ccmDomain": "CEK",
+      "ccmDomainName": "Cryptography, Encryption & Key Management",
+      "azureServices": [
+        { "service": "Azure Key Vault", "description": "Customer-managed key, secret, and certificate management. HSM-backed keys available. Implements EKM-01 through EKM-04." },
+        { "service": "Azure Dedicated HSM / Managed HSM", "description": "FIPS 140-2 Level 3 dedicated HSM for cryptographic key storage. Implements EKM-02 for highest assurance." },
+        { "service": "Azure Disk Encryption / Storage Service Encryption", "description": "Encryption at rest with Azure-managed or customer-managed keys. Implements DSP-01." },
+        { "service": "Azure App Service TLS / Application Gateway SSL", "description": "TLS termination and enforcement. Implements DSP-02 (encryption in transit)." }
+      ]
+    },
+    {
+      "ccmDomain": "DSP",
+      "ccmDomainName": "Data Security & Privacy Lifecycle Management",
+      "azureServices": [
+        { "service": "Microsoft Purview (Data Map / Data Catalog)", "description": "Automated data discovery, classification, and labelling across Azure services. Implements DSP-01 (data classification)." },
+        { "service": "Microsoft Purview Data Loss Prevention", "description": "DLP for Microsoft 365, Teams, SharePoint, and Exchange. Implements DSP-02 (data protection) and DSP-05 (data flow control)." },
+        { "service": "Azure Information Protection (AIP)", "description": "Document-level classification and protection with persistent encryption. Supports DSP-01." },
+        { "service": "Azure Policy (allowed locations)", "description": "Resource location restriction policy. Implements DSP-06 (data residency) by preventing resource creation outside approved regions." },
+        { "service": "Azure Storage Lifecycle Management", "description": "Automated tiering, retention, and deletion policies. Implements DSP-17 (data retention)." }
+      ]
+    },
+    {
+      "ccmDomain": "GRC",
+      "ccmDomainName": "Governance, Risk & Compliance",
+      "azureServices": [
+        { "service": "Azure Management Groups", "description": "Hierarchical governance structure for subscriptions. Policy inheritance. Implements GRC-01 (governance programme)." },
+        { "service": "Microsoft Defender for Cloud (Regulatory Compliance)", "description": "Compliance dashboard against ISO 27001, PCI DSS, SOC 2, CIS benchmarks. Supports GRC-02 (risk management)." },
+        { "service": "Azure Landing Zones", "description": "Prescriptive architecture with built-in governance, security, and networking. Implements GRC-01 and GRC-03." }
+      ]
+    },
+    {
+      "ccmDomain": "IAM",
+      "ccmDomainName": "Identity & Access Management",
+      "azureServices": [
+        { "service": "Microsoft Entra ID (Azure AD)", "description": "Core identity platform. Users, groups, conditional access, app registrations. Implements IAM-01, IAM-02, IAM-04." },
+        { "service": "Microsoft Entra Privileged Identity Management (PIM)", "description": "Just-in-time privileged access with approval workflows and time-limited elevation. Implements IAM-02, IAM-06, IAM-09." },
+        { "service": "Microsoft Entra Conditional Access", "description": "Risk-based access policies evaluating user, device, location, and risk signals. Implements IAM-12 (access control)." },
+        { "service": "Microsoft Entra ID Protection", "description": "ML-based identity threat detection (risky sign-ins, compromised credentials). Implements IAM-12." },
+        { "service": "Microsoft Entra Workload Identity", "description": "Managed identity for Azure resources eliminating credential management. Implements IAM-10." }
+      ]
+    },
+    {
+      "ccmDomain": "IVS",
+      "ccmDomainName": "Infrastructure & Virtualization Security",
+      "azureServices": [
+        { "service": "Azure Virtual Network (VNet)", "description": "Virtual network with subnets, NSGs, ASGs, and VNet peering. Implements IVS-01 (network security) and IVS-06 (segmentation)." },
+        { "service": "Azure DDoS Protection (Standard)", "description": "Volumetric and protocol DDoS protection with mitigation metrics. Implements IVS-04." },
+        { "service": "Azure Firewall (Premium)", "description": "Managed cloud firewall with TLS inspection, IDPS, and URL filtering. Implements IVS-01 and IVS-04." },
+        { "service": "Microsoft Defender for Cloud", "description": "CSPM and CWPP with security recommendations, threat detection, and vulnerability assessment. Implements IVS-09." },
+        { "service": "Azure Private Link / Private Endpoints", "description": "Private connectivity to Azure PaaS services without public internet. Implements IVS-06." }
+      ]
+    },
+    {
+      "ccmDomain": "LOG",
+      "ccmDomainName": "Logging & Monitoring",
+      "azureServices": [
+        { "service": "Azure Activity Log", "description": "Subscription-level management plane logging. Implements LOG-01 (logging policy)." },
+        { "service": "Microsoft Sentinel", "description": "Cloud-native SIEM and SOAR with ML-based detection, hunting, and automated response. Implements LOG-03 (monitoring) and LOG-13 (alerting)." },
+        { "service": "Azure Monitor (Log Analytics)", "description": "Centralised log collection, query, and analysis. Implements LOG-02 (log centralisation)." },
+        { "service": "Azure NSG Flow Logs", "description": "Network traffic logging for NSGs. Implements LOG-01 for network visibility." },
+        { "service": "Azure Immutable Blob Storage", "description": "Tamper-proof log storage with WORM compliance. Implements LOG-05 (log integrity and retention)." }
+      ]
+    },
+    {
+      "ccmDomain": "SEF",
+      "ccmDomainName": "Security Incident Management, E-Discovery, & Cloud Forensics",
+      "azureServices": [
+        { "service": "Microsoft Sentinel (Incidents and Automation)", "description": "Incident management with case management, playbooks (Logic Apps), and automated response. Implements SEF-01 and SEF-02." },
+        { "service": "Microsoft Defender for Cloud (Security Alerts)", "description": "Threat detection and security alerting across Azure resources. Supports SEF-01." },
+        { "service": "Microsoft Purview eDiscovery", "description": "Legal hold and eDiscovery for Microsoft 365 content. Supports SEF cloud forensics." },
+        { "service": "Azure Disk Snapshots for forensic preservation", "description": "VM disk snapshots for forensic evidence preservation. Supports cloud forensics capability." }
+      ]
+    },
+    {
+      "ccmDomain": "STA",
+      "ccmDomainName": "Supply Chain Management, Transparency, & Accountability",
+      "azureServices": [
+        { "service": "Microsoft Service Trust Portal", "description": "Access to Microsoft compliance documentation and audit reports. Supports STA-05 (vendor audit)." },
+        { "service": "Azure Container Registry", "description": "Private container registry with vulnerability scanning (Defender for Containers). Supports STA-06." },
+        { "service": "Azure Marketplace", "description": "Vetted third-party software and services marketplace. Supports STA-01." },
+        { "service": "GitHub Advanced Security (Dependabot)", "description": "Automated dependency vulnerability scanning and updates. Supports STA-06 (supply chain security)." }
+      ]
+    },
+    {
+      "ccmDomain": "TVM",
+      "ccmDomainName": "Threat & Vulnerability Management",
+      "azureServices": [
+        { "service": "Microsoft Defender for Cloud (CSPM)", "description": "Cloud security posture management with vulnerability assessment and security recommendations. Implements TVM-01 and TVM-02." },
+        { "service": "Microsoft Defender Vulnerability Management", "description": "Continuous vulnerability assessment for VMs, containers, and applications. Implements TVM-01." },
+        { "service": "Azure Automation (Update Management)", "description": "Automated OS patching and update compliance. Implements TVM-01 (vulnerability remediation)." },
+        { "service": "Microsoft Defender Threat Intelligence", "description": "Threat intelligence feeds and indicators. Implements TVM-06 (threat intelligence)." }
+      ]
+    },
+    {
+      "ccmDomain": "UEM",
+      "ccmDomainName": "Universal Endpoint Management",
+      "azureServices": [
+        { "service": "Microsoft Intune", "description": "Mobile device and endpoint management with compliance policies. Implements UEM controls for device trust and security." },
+        { "service": "Microsoft Entra Conditional Access (device compliance)", "description": "Device compliance-based access policies for cloud services. Supports UEM through device trust evaluation." },
+        { "service": "Azure Virtual Desktop", "description": "Managed virtual desktop infrastructure with security controls. Supports UEM through controlled endpoint environments." }
+      ]
+    }
+  ]
+}

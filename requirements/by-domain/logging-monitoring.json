@@ -1,0 +1,79 @@
+{
+  "$schema": "cloud-security-v1",
+  "sourceType": "constructed-indicative",
+  "verificationNote": "Requirements constructed from CSA CCM v4, NIST CSF 2.0, and Malaysia Act 854 obligations. Verify against authoritative sources before use in formal assessments.",
+  "domain": {
+    "id": "logging-monitoring",
+    "name": "Logging and Monitoring",
+    "description": "Requirements for comprehensive cloud security logging, monitoring, alerting, and threat detection. Covers audit trail generation, SIEM integration, and cloud-native threat detection services.",
+    "ccmDomains": ["LOG"],
+    "nacsa": ["s18", "s26"]
+  },
+  "requirements": [
+    {
+      "id": "LOG-R1",
+      "title": "Cloud Audit Logging",
+      "description": "Enable comprehensive audit logging for all cloud management plane operations across all accounts, subscriptions, and projects. Capture identity, action, resource, timestamp, and source IP. Protect logs from tampering and ensure they cannot be disabled by account-level administrators.",
+      "priority": "critical",
+      "ccmControls": ["LOG-01", "LOG-03", "LOG-05"],
+      "nacsa": ["s18", "s26"],
+      "cspGuidance": {
+        "aws": "Enable CloudTrail as organisation trail in all regions. Enable S3 data events for sensitive buckets. Store logs in dedicated log archive account with S3 Object Lock. Enable log file integrity validation.",
+        "azure": "Azure Activity Log is enabled by default. Configure Diagnostic Settings to send to centralised Log Analytics workspace. Enable resource-level diagnostic logging for all critical services.",
+        "gcp": "Admin Activity audit logs are always enabled. Enable Data Access audit logs for sensitive services (Cloud Storage, BigQuery, Cloud SQL). Export to dedicated log project with retention lock."
+      }
+    },
+    {
+      "id": "LOG-R2",
+      "title": "SIEM Integration",
+      "description": "Integrate all cloud log sources with a SIEM platform for correlation, detection, and investigation. Cloud logs must be normalised and enriched for analysis alongside on-premises security data. Deploy cloud-specific detection rules.",
+      "priority": "high",
+      "ccmControls": ["LOG-02", "LOG-09"],
+      "nacsa": ["s18", "s26"],
+      "cspGuidance": {
+        "aws": "Stream CloudTrail, VPC Flow Logs, GuardDuty, WAF, and Security Hub findings to SIEM via EventBridge, Kinesis Data Firehose, or Amazon Security Lake (OCSF format).",
+        "azure": "Use Microsoft Sentinel as cloud-native SIEM or export via Event Hub to external SIEM. Enable all available data connectors for Azure, Microsoft 365, and Entra ID logs.",
+        "gcp": "Export Cloud Audit Logs and Security Command Center findings via Pub/Sub to SIEM. Use Chronicle SIEM for Google-native detection. Export VPC Flow Logs, Cloud Armor, and DNS logs."
+      }
+    },
+    {
+      "id": "LOG-R3",
+      "title": "Security Alerting and Escalation",
+      "description": "Configure automated alerting for security-relevant cloud events. Define alert tiers with severity-based routing and escalation. Critical alerts must be routed to on-call personnel within minutes. Alerts must be actionable with defined response procedures.",
+      "priority": "high",
+      "ccmControls": ["LOG-08", "LOG-10"],
+      "nacsa": ["s18"],
+      "cspGuidance": {
+        "aws": "Use EventBridge rules for CloudTrail events. Configure GuardDuty finding notifications via SNS. Route to PagerDuty/Slack/email. Aggregate in Security Hub with automated severity-based routing.",
+        "azure": "Configure Azure Monitor Alerts on Activity Log and diagnostic log events. Enable Defender for Cloud alert notifications. Use Logic Apps for enrichment and routing to on-call tools.",
+        "gcp": "Use Cloud Monitoring alerting policies with notification channels. Enable SCC finding notifications via Pub/Sub. Configure escalation through integration with PagerDuty or custom Cloud Functions."
+      }
+    },
+    {
+      "id": "LOG-R4",
+      "title": "Log Retention and Integrity",
+      "description": "Define and enforce log retention periods for all cloud log types. Minimum 12 months online retention for audit logs. Use immutable storage (WORM) for forensic and compliance logs. Ensure retention meets regulatory requirements including NACSA s26 obligations.",
+      "priority": "high",
+      "ccmControls": ["LOG-06", "LOG-11"],
+      "nacsa": ["s18", "s26"],
+      "cspGuidance": {
+        "aws": "Store CloudTrail logs in S3 with Object Lock (Compliance mode). Enable log file integrity validation (SHA-256 digest). Use S3 Lifecycle policies for tiered retention. Dedicated log archive account.",
+        "azure": "Configure Log Analytics workspace retention (up to 730 days interactive, 12 years archive). Use immutable Storage Account for long-term archive. Enforce via Azure Policy.",
+        "gcp": "Configure Cloud Logging retention per log bucket (up to 3650 days). Export to Cloud Storage with Bucket Lock for immutability. Use BigQuery for long-term queryable retention."
+      }
+    },
+    {
+      "id": "LOG-R5",
+      "title": "Cloud-Native Threat Detection",
+      "description": "Enable cloud-native threat detection services in all accounts and regions. These services analyse audit logs, network flows, and DNS for indicators of compromise. Enable all available protection plans including compute, storage, container, and serverless.",
+      "priority": "critical",
+      "ccmControls": ["LOG-08", "LOG-10"],
+      "nacsa": ["s18"],
+      "cspGuidance": {
+        "aws": "Enable Amazon GuardDuty in all accounts and regions via Organizations. Enable all protection plans: S3, EKS, EC2, Lambda, Malware, RDS Login. Aggregate findings in Security Hub.",
+        "azure": "Enable Microsoft Defender for Cloud on all subscriptions. Activate Defender plans for Servers, Storage, SQL, Containers, Key Vault, Resource Manager, DNS, and App Service.",
+        "gcp": "Enable Security Command Center Premium. Activate Event Threat Detection, Container Threat Detection, VM Threat Detection, and Cryptomining Detection. Configure findings notifications."
+      }
+    }
+  ]
+}

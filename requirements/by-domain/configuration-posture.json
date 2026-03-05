@@ -1,0 +1,66 @@
+{
+  "$schema": "cloud-security-v1",
+  "sourceType": "constructed-indicative",
+  "verificationNote": "Requirements constructed from CSA CCM v4, NIST CSF 2.0, and Malaysia Act 854 obligations. Verify against authoritative sources before use in formal assessments.",
+  "domain": {
+    "id": "configuration-posture",
+    "name": "Configuration and Posture Management",
+    "description": "Requirements for continuous assessment and enforcement of cloud security configurations. Covers CSPM tooling, CIS benchmark compliance, configuration drift detection, and resource tagging governance.",
+    "ccmDomains": ["CCC", "DCS"],
+    "nacsa": ["s18"]
+  },
+  "requirements": [
+    {
+      "id": "DCS-R1",
+      "title": "Cloud Security Posture Management (CSPM)",
+      "description": "Deploy CSPM tooling to continuously assess cloud configurations against security benchmarks. CSPM provides visibility into misconfigurations that create exposure: public storage, overly permissive IAM, unencrypted resources, and missing logging. Define remediation SLAs by severity.",
+      "priority": "critical",
+      "ccmControls": ["CCC-01", "DCS-01", "DCS-06"],
+      "nacsa": ["s18"],
+      "cspGuidance": {
+        "aws": "Enable Security Hub with CIS and AWS Foundational Security Best Practices standards. Aggregate across accounts via Organizations. Configure automated remediation for common findings via EventBridge and Lambda.",
+        "azure": "Enable Defender for Cloud CSPM plan. Apply Azure Security Benchmark initiative. Configure continuous export to Log Analytics. Use Governance rules for remediation assignment and tracking.",
+        "gcp": "Enable Security Command Center Premium with Security Health Analytics. Activate misconfiguration detection for all services. Configure findings notifications and remediation workflows."
+      }
+    },
+    {
+      "id": "DCS-R2",
+      "title": "CIS Benchmark Compliance",
+      "description": "Assess all cloud accounts against CIS Benchmarks for the relevant platform (CIS AWS Foundations, CIS Azure Foundations, CIS GCP Foundations). Implement CIS Level 1 controls for all accounts and Level 2 for production workloads. Maintain exception register for non-compliant items with risk acceptance.",
+      "priority": "high",
+      "ccmControls": ["DCS-01", "DCS-02"],
+      "nacsa": ["s18"],
+      "cspGuidance": {
+        "aws": "Enable CIS AWS Foundations Benchmark in Security Hub. Run Prowler for comprehensive CIS scanning. Configure Config conformance packs for CIS rules. Track compliance percentage over time.",
+        "azure": "Apply CIS Microsoft Azure Foundations Benchmark in Defender for Cloud. Use Azure Policy CIS initiative for enforcement. Run ScoutSuite for independent validation.",
+        "gcp": "Enable CIS Google Cloud Foundation Benchmark in Security Command Center. Apply Organization Policy constraints for CIS requirements. Run ScoutSuite or Forseti for independent scanning."
+      }
+    },
+    {
+      "id": "DCS-R3",
+      "title": "Configuration Drift Detection",
+      "description": "Detect when cloud resource configurations drift from their approved baseline or IaC-defined state. Alert on security-relevant configuration changes that bypass the change management process. Reconcile detected drift within defined SLAs.",
+      "priority": "high",
+      "ccmControls": ["DCS-03", "CCC-02"],
+      "nacsa": ["s18"],
+      "cspGuidance": {
+        "aws": "Enable Config with recording for all resource types. Deploy Config rules for security baselines. Use CloudFormation drift detection. Alert via EventBridge on non-compliant resource changes.",
+        "azure": "Use Azure Policy with audit and deny effects. Enable Change Analysis in Azure Monitor. Use Terraform Cloud drift detection. Configure Activity Log alerts for security-relevant changes.",
+        "gcp": "Enable Cloud Asset Inventory with real-time feed. Use Config Connector for desired-state reconciliation. Alert on Security Command Center findings for unexpected configuration changes."
+      }
+    },
+    {
+      "id": "DCS-R4",
+      "title": "Resource Tagging Governance",
+      "description": "Enforce mandatory resource tags on all cloud resources for cost allocation, ownership, environment identification, data classification, and compliance scope. Deny creation of resources without required tags. Tags enable automated policy enforcement, incident scoping, and cost attribution.",
+      "priority": "medium",
+      "ccmControls": ["DCS-05", "CCC-01"],
+      "nacsa": ["s18"],
+      "cspGuidance": {
+        "aws": "Use Organizations tag policies for mandatory tags. Deploy Config rule required-tags. Use SCPs to deny resource creation without mandatory tags (owner, environment, data-classification, cost-centre).",
+        "azure": "Use Azure Policy to require tags on resource groups and resources. Configure tag inheritance policies. Use Resource Graph queries for tag compliance reporting.",
+        "gcp": "Use Organization Policy for label requirements. Deploy custom constraints for mandatory labels. Use Cloud Asset Inventory for label compliance reporting across all projects."
+      }
+    }
+  ]
+}

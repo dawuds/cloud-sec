@@ -1,0 +1,79 @@
+{
+  "$schema": "cloud-security-v1",
+  "sourceType": "constructed-indicative",
+  "verificationNote": "Requirements constructed from CSA CCM v4, NIST CSF 2.0, and Malaysia Act 854 obligations. Verify against authoritative sources before use in formal assessments.",
+  "domain": {
+    "id": "data-protection-encryption",
+    "name": "Data Protection and Encryption",
+    "description": "Requirements for protecting cloud-hosted data through encryption, classification, access controls, and data loss prevention. Covers the full data lifecycle from creation through disposal.",
+    "ccmDomains": ["DSP", "CEK"],
+    "nacsa": ["s18"]
+  },
+  "requirements": [
+    {
+      "id": "DSP-R1",
+      "title": "Encryption at Rest for All Cloud Storage and Databases",
+      "description": "Encrypt all data at rest across all cloud storage services, databases, and compute volumes. Use cloud provider default encryption as a minimum baseline. Use customer-managed keys (CMKs) for sensitive and regulated data to maintain key control.",
+      "priority": "critical",
+      "ccmControls": ["DSP-01", "DSP-10", "CEK-03"],
+      "nacsa": ["s18"],
+      "cspGuidance": {
+        "aws": "Enable default SSE on all S3 buckets (SSE-S3 minimum, SSE-KMS for sensitive data). Enable EBS encryption by default in account settings. Use KMS CMKs for RDS, EFS, DynamoDB. Deploy Config rule to detect unencrypted resources.",
+        "azure": "Azure Storage, Azure SQL, and Managed Disks are encrypted by default with Microsoft-managed keys. Upgrade to customer-managed keys in Key Vault for sensitive data. Use Azure Policy to enforce encryption.",
+        "gcp": "All GCP data encrypted at rest by default with Google-managed keys. Use Cloud KMS CMEK for sensitive data in Cloud Storage, BigQuery, GCE Persistent Disks. Use Organization Policy to enforce CMEK."
+      }
+    },
+    {
+      "id": "DSP-R2",
+      "title": "Encryption in Transit",
+      "description": "Enforce TLS 1.2 or higher for all data in transit. Disable legacy TLS versions (1.0, 1.1) and weak cipher suites. Apply to client-to-service, service-to-service, and cross-region communications. Use mutual TLS for service mesh communications.",
+      "priority": "critical",
+      "ccmControls": ["DSP-03", "CEK-04"],
+      "nacsa": ["s18"],
+      "cspGuidance": {
+        "aws": "Set minimum TLS version on ALB, NLB, CloudFront, API Gateway. Configure S3 bucket policy to deny non-HTTPS (aws:SecureTransport). Enforce SSL on RDS connections. Use ACM for certificate lifecycle.",
+        "azure": "Set minimum TLS to 1.2 on App Service, Storage Accounts, Azure SQL, Azure Cache for Redis. Configure Application Gateway with TLS policy. Use App Service managed certificates.",
+        "gcp": "Set SSL policies on Cloud Load Balancer to MODERN or RESTRICTED profile. Enforce HTTPS on Cloud Run and App Engine. Use Certificate Manager for lifecycle management."
+      }
+    },
+    {
+      "id": "DSP-R3",
+      "title": "Encryption Key Rotation",
+      "description": "Enable automatic rotation for all encryption keys managed in cloud KMS. Define rotation periods based on data sensitivity: 90 days for highly sensitive data, 365 days for standard data. Ensure old key versions remain available for decryption during grace period.",
+      "priority": "high",
+      "ccmControls": ["CEK-04", "CEK-05"],
+      "nacsa": ["s18"],
+      "cspGuidance": {
+        "aws": "Enable automatic key rotation on KMS CMKs (annual rotation). Use Secrets Manager with custom rotation Lambda for application secrets. Monitor rotation compliance via Config.",
+        "azure": "Enable automatic key rotation in Key Vault with configurable rotation period. Set expiry notifications. Use certificate auto-rotation for TLS certificates.",
+        "gcp": "Enable automatic rotation in Cloud KMS with configurable period (default 90 days). Use Secret Manager with automatic version rotation. Monitor compliance via Security Command Center."
+      }
+    },
+    {
+      "id": "DSP-R4",
+      "title": "Data Classification and Labelling",
+      "description": "Classify all cloud-hosted data by sensitivity level (public, internal, confidential, restricted). Apply resource tags/labels that drive automated policy enforcement for encryption, access controls, retention, and geographic restrictions.",
+      "priority": "high",
+      "ccmControls": ["DSP-04", "DSP-05"],
+      "nacsa": ["s18"],
+      "cspGuidance": {
+        "aws": "Use Amazon Macie for automated S3 data discovery and classification. Apply resource tags for classification levels. Use Config rules and SCPs to enforce tag-based policies.",
+        "azure": "Use Microsoft Purview for automated data discovery, classification, and sensitivity labelling. Apply labels across Azure, Microsoft 365, and third-party SaaS. Enforce via Azure Policy.",
+        "gcp": "Use Cloud DLP API for data discovery and classification. Apply resource labels for classification. Use Data Catalog for metadata governance. Enforce via Organization Policy."
+      }
+    },
+    {
+      "id": "DSP-R5",
+      "title": "Data Loss Prevention",
+      "description": "Deploy DLP controls to detect and prevent unauthorised exfiltration of sensitive data from cloud environments. Monitor data movement across storage, APIs, email, and collaboration tools. Block transfers of classified data to unapproved destinations.",
+      "priority": "high",
+      "ccmControls": ["DSP-08", "DSP-17"],
+      "nacsa": ["s18"],
+      "cspGuidance": {
+        "aws": "Use Amazon Macie for S3 sensitive data detection. Configure VPC endpoints to control data egress paths. Enable S3 Block Public Access at account level. Use CloudTrail data events for monitoring.",
+        "azure": "Deploy Microsoft Purview DLP across SharePoint, OneDrive, Exchange, Teams, Azure Storage, and endpoints. Configure DLP policies with blocking actions for critical violations.",
+        "gcp": "Use Cloud DLP API with inspection and de-identification jobs. Configure VPC Service Controls to create security perimeters preventing data exfiltration. Enable Data Access audit logs."
+      }
+    }
+  ]
+}

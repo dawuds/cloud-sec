@@ -1,0 +1,79 @@
+{
+  "$schema": "cloud-security-v1",
+  "sourceType": "constructed-indicative",
+  "verificationNote": "Requirements constructed from CSA CCM v4, NIST CSF 2.0, and Malaysia Act 854 obligations. Verify against authoritative sources before use in formal assessments.",
+  "domain": {
+    "id": "network-security",
+    "name": "Network Security",
+    "description": "Requirements for securing cloud virtual networks including VPC design, segmentation, access controls, web application protection, and DDoS mitigation.",
+    "ccmDomains": ["IVS"],
+    "nacsa": ["s18"]
+  },
+  "requirements": [
+    {
+      "id": "IVS-R1",
+      "title": "Virtual Network Design and Segmentation",
+      "description": "Design cloud virtual networks with defence-in-depth architecture. Separate workloads into public, private, and data subnets. Use hub-and-spoke or transit gateway topology for multi-VPC environments. Isolate production, staging, and development in separate VPCs/VNets.",
+      "priority": "critical",
+      "ccmControls": ["IVS-01", "IVS-03", "IVS-09"],
+      "nacsa": ["s18"],
+      "cspGuidance": {
+        "aws": "Use AWS Transit Gateway for multi-VPC connectivity. Define public, private, and isolated subnets per VPC. Enable VPC Flow Logs for all VPCs. Use Network Firewall for advanced filtering.",
+        "azure": "Deploy hub-and-spoke topology with VNet Peering. Place Azure Firewall in hub VNet. Use NSGs on all subnets with deny-by-default. Enable Network Watcher for monitoring.",
+        "gcp": "Use Shared VPC for multi-project networking. Configure Cloud NAT for private subnet egress. Apply VPC firewall rules with priority ordering. Enable VPC Flow Logs for analysis."
+      }
+    },
+    {
+      "id": "IVS-R2",
+      "title": "Security Group and Firewall Rule Governance",
+      "description": "Configure cloud security groups and firewall rules with deny-by-default posture. Prohibit 0.0.0.0/0 ingress on management ports (SSH, RDP, database). Document business justification for all allow rules. Review rules quarterly and remove stale entries.",
+      "priority": "critical",
+      "ccmControls": ["IVS-04", "IVS-06"],
+      "nacsa": ["s18"],
+      "cspGuidance": {
+        "aws": "Use Security Groups with least-privilege rules referencing other security groups where possible. Deploy Config rules (restricted-ssh, restricted-common-ports). Use Firewall Manager for org-wide policy.",
+        "azure": "Configure NSGs with explicit deny-all default rule. Use Application Security Groups for role-based rules. Deploy Azure Firewall for centralised east-west filtering. Enforce via Azure Policy.",
+        "gcp": "Use VPC Firewall Rules with deny-all implicit rule. Enable Hierarchical Firewall Policies at organisation level. Use Firewall Insights to identify overly permissive and unused rules."
+      }
+    },
+    {
+      "id": "IVS-R3",
+      "title": "Private Endpoints for Cloud Services",
+      "description": "Use private endpoints to access cloud PaaS services without traversing the public internet. Disable public network access on databases, storage, and internal APIs where private endpoints are deployed. Route cloud API traffic through private connectivity.",
+      "priority": "high",
+      "ccmControls": ["IVS-01", "IVS-09"],
+      "nacsa": ["s18"],
+      "cspGuidance": {
+        "aws": "Deploy VPC Interface Endpoints for S3, DynamoDB, KMS, ECR, SQS, SNS. Use endpoint policies to restrict accessible resources. Configure S3 bucket policies requiring VPC endpoint origin.",
+        "azure": "Deploy Private Endpoints for Azure SQL, Storage, Key Vault, ACR, Cosmos DB. Disable public network access on PaaS resources. Use Private DNS Zones for name resolution.",
+        "gcp": "Enable Private Google Access on VPC subnets. Use Private Service Connect for Google APIs. Configure Cloud SQL with private IP only. Deploy VPC Service Controls for API boundaries."
+      }
+    },
+    {
+      "id": "IVS-R4",
+      "title": "Web Application Firewall",
+      "description": "Deploy WAF in front of all internet-facing web applications and APIs. Enable managed rule sets covering OWASP Top 10. Configure rate limiting and bot detection. Tune rules to minimise false positives while maintaining protection.",
+      "priority": "high",
+      "ccmControls": ["IVS-06", "IVS-08"],
+      "nacsa": ["s18"],
+      "cspGuidance": {
+        "aws": "Deploy AWS WAF on CloudFront, ALB, or API Gateway. Enable AWS Managed Rules (Core Rule Set, SQL injection, XSS, known bad inputs). Configure rate-based rules. Enable logging to S3.",
+        "azure": "Deploy Azure WAF on Application Gateway or Front Door. Use OWASP 3.2 DRS rule set. Configure custom rules for rate limiting and geo-blocking. Enable WAF diagnostics logging.",
+        "gcp": "Deploy Cloud Armor on external HTTP(S) Load Balancer. Use preconfigured WAF rules for OWASP Top 10. Enable Adaptive Protection for ML-based DDoS detection."
+      }
+    },
+    {
+      "id": "IVS-R5",
+      "title": "DDoS Protection",
+      "description": "Enable DDoS protection for all internet-facing cloud workloads. Use cloud-native DDoS mitigation services for volumetric, protocol, and application-layer protection. Define DDoS response procedures and test incident response capability.",
+      "priority": "high",
+      "ccmControls": ["IVS-06", "IVS-08"],
+      "nacsa": ["s18"],
+      "cspGuidance": {
+        "aws": "AWS Shield Standard is automatic. Enable Shield Advanced for critical workloads (24/7 DDoS Response Team, cost protection). Combine with CloudFront and WAF for multi-layer protection.",
+        "azure": "Azure DDoS Network Protection is basic and automatic. Deploy DDoS Protection Plan on production VNets for advanced features. Configure diagnostic logging and rapid response support.",
+        "gcp": "Cloud Armor provides DDoS protection. Enable Adaptive Protection for ML-based threat detection. Use Cloud CDN for edge-level absorption. Configure rate limiting policies."
+      }
+    }
+  ]
+}

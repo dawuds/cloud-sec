@@ -1,0 +1,124 @@
+{
+  "$schema": "cloud-security-v1",
+  "concept": "Cloud Shared Responsibility Model",
+  "sourceType": "paraphrased-from-standard",
+  "verificationNote": "Based on publicly documented shared responsibility models from AWS, Microsoft Azure, and Google Cloud. CSA CCM v4 maps controls to responsibility boundaries. Malaysian regulatory references from NACSA Act 854 and BNM RMiT public documents.",
+  "description": "The shared responsibility model defines the division of security obligations between a Cloud Service Provider (CSP) and the customer. The fundamental principle is that the CSP secures the infrastructure OF the cloud, while the customer secures what they put IN the cloud. The exact boundary shifts depending on the service model — IaaS gives the customer the most responsibility, SaaS gives the least. Misunderstanding this boundary is the root cause of the majority of cloud security incidents.",
+  "keyInsight": "Responsibility shifts upward as you move from IaaS to SaaS. In IaaS, the customer manages the OS, middleware, runtime, data, and access. In PaaS, the customer manages only the application, data, and access. In SaaS, the customer manages only data classification, access control, and endpoint protection. The CSP never assumes responsibility for the customer's data classification, identity governance, or regulatory compliance — these remain with the customer in every model.",
+  "models": [
+    {
+      "id": "SRM-IAAS",
+      "name": "Infrastructure as a Service (IaaS)",
+      "description": "The CSP provides virtualised compute, storage, and networking. The customer is responsible for everything above the hypervisor — operating systems, middleware, runtime, applications, and data. This model offers maximum control but maximum security responsibility. Examples: AWS EC2, Azure Virtual Machines, Google Compute Engine, Alibaba ECS.",
+      "customerResponsibility": [
+        "Operating system patching and hardening",
+        "Middleware and runtime configuration",
+        "Application security and code review",
+        "Data encryption at rest and in transit",
+        "Identity and access management (IAM policies, MFA, RBAC)",
+        "Network security (security groups, NACLs, firewall rules)",
+        "Endpoint protection on VMs",
+        "Logging configuration and SIEM integration",
+        "Backup and disaster recovery",
+        "Compliance evidence collection and audit response"
+      ],
+      "cspResponsibility": [
+        "Physical data centre security (perimeter, CCTV, biometrics)",
+        "Hypervisor security and isolation between tenants",
+        "Hardware lifecycle management (servers, storage, network equipment)",
+        "Network backbone and DDoS mitigation at infrastructure level",
+        "Power, cooling, and environmental controls",
+        "Hardware firmware and microcode patching",
+        "Availability zone and region infrastructure"
+      ],
+      "sharedResponsibility": [
+        "Network configuration — CSP provides VPC/VNet primitives, customer configures them securely",
+        "Encryption — CSP provides KMS and encryption services, customer must enable and manage keys",
+        "Monitoring — CSP provides CloudTrail/Activity Log/Cloud Audit Logs, customer must enable and review them",
+        "Incident response — CSP handles infrastructure-level incidents, customer handles application-level incidents"
+      ]
+    },
+    {
+      "id": "SRM-PAAS",
+      "name": "Platform as a Service (PaaS)",
+      "description": "The CSP manages the operating system, middleware, and runtime in addition to the infrastructure. The customer deploys and manages applications and data. This model reduces operational burden but the customer retains responsibility for application security, data protection, and identity management. Examples: AWS Elastic Beanstalk, Azure App Service, Google App Engine, AWS RDS, Azure SQL Database.",
+      "customerResponsibility": [
+        "Application code security (SAST, DAST, dependency scanning)",
+        "Data classification, encryption, and access control",
+        "Identity and access management (application-level RBAC, MFA)",
+        "API security (authentication, rate limiting, input validation)",
+        "Application-level logging and monitoring",
+        "Secure CI/CD pipeline configuration",
+        "Database access policies and query security",
+        "Compliance with data residency and sovereignty requirements"
+      ],
+      "cspResponsibility": [
+        "All IaaS CSP responsibilities",
+        "Operating system patching and hardening",
+        "Middleware and runtime updates",
+        "Platform availability and scaling",
+        "Network-level DDoS protection",
+        "Container/runtime isolation between tenants"
+      ],
+      "sharedResponsibility": [
+        "Network security — CSP provides platform networking, customer configures service endpoints and access restrictions",
+        "Encryption — CSP provides TLS termination and encryption options, customer must configure and manage",
+        "Vulnerability management — CSP patches OS/runtime, customer patches application dependencies",
+        "Disaster recovery — CSP provides platform redundancy, customer must configure application-level DR"
+      ]
+    },
+    {
+      "id": "SRM-SAAS",
+      "name": "Software as a Service (SaaS)",
+      "description": "The CSP manages everything except the customer's data and access configuration. The customer consumes the application as a service. Security responsibility is minimal but critical — identity governance, data classification, and access control remain entirely with the customer. Misconfigured SaaS access is a leading cause of data breaches. Examples: Microsoft 365, Salesforce, ServiceNow, Workday, Google Workspace, Atlassian Cloud.",
+      "customerResponsibility": [
+        "Identity and access management (SSO integration, MFA enforcement, role assignment)",
+        "Data classification and labelling",
+        "Data loss prevention (DLP) policy configuration",
+        "User provisioning and deprovisioning (joiner/mover/leaver)",
+        "Sharing and collaboration permissions",
+        "Endpoint security for devices accessing SaaS",
+        "Audit log review and security monitoring",
+        "Compliance with data protection regulations (PDPA, GDPR)"
+      ],
+      "cspResponsibility": [
+        "All PaaS CSP responsibilities",
+        "Application security and patching",
+        "Multi-tenancy isolation",
+        "Infrastructure and application availability (SLA)",
+        "Default encryption at rest and in transit",
+        "Security certifications (SOC 2, ISO 27001, CSA STAR)",
+        "Incident notification to customers"
+      ],
+      "sharedResponsibility": [
+        "Configuration — CSP provides security settings, customer must enable and tune them",
+        "Monitoring — CSP provides audit logs and security dashboards, customer must review and act on findings",
+        "Incident response — CSP handles platform incidents, customer handles account-level incidents (compromised credentials, insider threats)",
+        "Data protection — CSP encrypts by default, customer controls classification, retention, and sharing"
+      ]
+    }
+  ],
+  "malaysiaRegulatoryNexus": {
+    "nacsaAct854": "NCII (National Critical Information Infrastructure) designation under NACSA Act 854 does not transfer security responsibility to the CSP. An NCII-designated entity that migrates to cloud remains fully accountable for security outcomes under s17 (duty to implement measures), s18 (data security), and s21 (risk assessment). The CSP is a service provider, not a substitute for the NCII entity's security obligations. NACSA auditors (s23) will audit the NCII entity, not the CSP.",
+    "bnmRmit": "Bank Negara Malaysia's Risk Management in Technology (RMiT) framework explicitly states that financial institutions remain fully accountable for security and compliance even when outsourcing to cloud service providers. RMiT requires: (1) board-level approval for cloud adoption, (2) comprehensive risk assessment before cloud migration, (3) ongoing monitoring of CSP security posture, (4) contractual requirements for audit access and data residency, (5) exit strategy and data portability. The shared responsibility model does not reduce the financial institution's regulatory obligation — it only changes the operational model for meeting it.",
+    "pdpa2010": "Malaysia's Personal Data Protection Act 2010 (PDPA) places data protection obligations on the data user (the organisation), not the data processor (the CSP). Cloud adoption does not transfer PDPA obligations. The data user must ensure the CSP processes personal data in compliance with PDPA principles, particularly the Security Principle (Principle 7)."
+  },
+  "commonMisunderstandings": [
+    {
+      "misconception": "The CSP is responsible for securing my data because it is stored on their infrastructure",
+      "reality": "The CSP secures the infrastructure. The customer is responsible for data classification, encryption key management, access control, and ensuring data is not publicly exposed. S3 bucket misconfigurations are the customer's responsibility, not AWS's."
+    },
+    {
+      "misconception": "If the CSP is SOC 2 certified, my environment is compliant",
+      "reality": "CSP certifications cover the infrastructure and platform controls. The customer's configuration, access policies, and data handling must be separately assessed and certified. A SOC 2 certified CSP does not make the customer SOC 2 compliant."
+    },
+    {
+      "misconception": "Moving to SaaS eliminates security responsibility",
+      "reality": "SaaS shifts operational responsibility to the CSP but identity governance, data classification, access control, and compliance remain entirely with the customer. The Snowflake breaches (2024) demonstrated that SaaS with no MFA enforcement is trivially compromised."
+    },
+    {
+      "misconception": "The CSP will notify me of all security incidents",
+      "reality": "CSPs have incident notification obligations for infrastructure-level incidents. Compromised customer credentials, misconfigured resources, and data exfiltration through legitimate API calls are customer-side incidents that the CSP may not detect or report."
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "$schema": "cloud-security-v1",
+  "framework": "MITRE ATT&CK for Cloud",
+  "fullTitle": "MITRE ATT&CK Cloud Matrix (Enterprise ATT&CK — Cloud Platform)",
+  "publisher": "MITRE Corporation",
+  "sourceType": "paraphrased-from-framework",
+  "publiclyAvailable": true,
+  "publicURL": "https://attack.mitre.org/matrices/enterprise/cloud/",
+  "version": "v16 (2024)",
+  "lastUpdated": "2026-03-06",
+  "description": "The MITRE ATT&CK Cloud Matrix is a subset of the Enterprise ATT&CK framework focused on adversary tactics and techniques targeting cloud environments. Unlike the full Enterprise matrix, the Cloud matrix specifically covers techniques applicable to IaaS, SaaS, and Identity Provider platforms including AWS, Azure, Google Cloud Platform (GCP), Microsoft 365, Google Workspace, and cloud identity services. It documents real-world adversary behaviour observed in cloud intrusions and provides a common language for threat modelling, detection engineering, and security assessments in cloud environments.",
+  "useInThisRepo": "Each ATT&CK Cloud technique is mapped to CSA CCM v4 control domains that mitigate it, enabling defenders to navigate from known attack techniques to the controls that defend against them. This provides the adversary perspective for validating CCM control coverage and identifying gaps.",
+  "cloudPlatforms": [
+    { "id": "aws", "name": "Amazon Web Services (AWS)", "description": "IaaS/PaaS platform — EC2, S3, IAM, Lambda, RDS, CloudTrail, GuardDuty" },
+    { "id": "azure", "name": "Microsoft Azure", "description": "IaaS/PaaS platform — VMs, Blob Storage, Azure AD/Entra ID, Functions, SQL Database, Azure Monitor" },
+    { "id": "gcp", "name": "Google Cloud Platform (GCP)", "description": "IaaS/PaaS platform — Compute Engine, Cloud Storage, Cloud IAM, Cloud Functions, BigQuery, Cloud Audit Logs" },
+    { "id": "azure-ad", "name": "Microsoft Entra ID (Azure AD)", "description": "Identity Provider — SSO, MFA, Conditional Access, application registrations, service principals" },
+    { "id": "office-365", "name": "Microsoft 365", "description": "SaaS platform — Exchange Online, SharePoint Online, OneDrive, Teams, Microsoft Purview" },
+    { "id": "google-workspace", "name": "Google Workspace", "description": "SaaS platform — Gmail, Google Drive, Google Admin, Google Vault" },
+    { "id": "saas", "name": "SaaS (Generic)", "description": "General SaaS platform techniques applicable across multiple SaaS services" }
+  ],
+  "tacticCount": 11,
+  "tactics": [
+    { "id": "TA0001", "name": "Initial Access", "description": "Techniques adversaries use to gain an initial foothold in a cloud environment, including compromised credentials, exploiting public-facing applications, and abusing trusted relationships" },
+    { "id": "TA0002", "name": "Execution", "description": "Techniques for running adversary-controlled code in cloud environments, including serverless function execution, cloud API abuse, and deployment of malicious workloads" },
+    { "id": "TA0003", "name": "Persistence", "description": "Techniques to maintain access to cloud environments across credential rotations and session expirations, including account creation, OAuth app registration, and role manipulation" },
+    { "id": "TA0004", "name": "Privilege Escalation", "description": "Techniques to gain higher-level permissions within cloud environments, including IAM policy manipulation, role assumption, and exploitation of overly permissive policies" },
+    { "id": "TA0005", "name": "Defense Evasion", "description": "Techniques to avoid detection in cloud environments, including disabling logging, modifying security configurations, and using legitimate cloud services for malicious purposes" },
+    { "id": "TA0006", "name": "Credential Access", "description": "Techniques for stealing cloud credentials including API keys, access tokens, service account keys, and secrets from metadata services or configuration stores" },
+    { "id": "TA0007", "name": "Discovery", "description": "Techniques for enumerating cloud infrastructure, permissions, storage, and services to understand the environment and identify targets" },
+    { "id": "TA0008", "name": "Lateral Movement", "description": "Techniques for moving between cloud services, accounts, subscriptions, and from cloud to on-premises environments" },
+    { "id": "TA0009", "name": "Collection", "description": "Techniques for gathering data from cloud storage, email services, databases, and other cloud-hosted repositories" },
+    { "id": "TA0010", "name": "Exfiltration", "description": "Techniques for extracting data from cloud environments, including transfer to attacker-controlled cloud accounts and abuse of cloud storage sharing features" },
+    { "id": "TA0040", "name": "Impact", "description": "Techniques for disrupting cloud service availability, destroying data, or hijacking cloud resources for adversary purposes such as cryptomining" }
+  ],
+  "keyIncidentMappings": [
+    { "incident": "Capital One Breach (2019)", "primaryTactics": ["Initial Access", "Privilege Escalation", "Collection", "Exfiltration"], "description": "SSRF vulnerability in WAF exploited to access EC2 instance metadata, assume IAM role, and exfiltrate 100M+ customer records from S3." },
+    { "incident": "SolarWinds/SUNBURST — Cloud Phase (2020)", "primaryTactics": ["Initial Access", "Persistence", "Credential Access", "Lateral Movement"], "description": "After on-premises compromise, adversary forged SAML tokens to access Microsoft 365 and Azure AD, created backdoor service principals, and exfiltrated emails." },
+    { "incident": "Codecov Supply Chain (2021)", "primaryTactics": ["Initial Access", "Credential Access", "Collection"], "description": "Compromised CI/CD tool exfiltrated environment variables containing cloud credentials, API keys, and tokens from thousands of customer build environments." },
+    { "incident": "Microsoft Exchange Online / Storm-0558 (2023)", "primaryTactics": ["Initial Access", "Credential Access", "Collection"], "description": "Adversary obtained Microsoft signing key, forged Azure AD tokens to access Exchange Online mailboxes of government agencies." },
+    { "incident": "Scattered Spider / Octo Tempest (2023-2024)", "primaryTactics": ["Initial Access", "Persistence", "Privilege Escalation", "Impact"], "description": "Social engineering of help desks for MFA resets, followed by Azure AD persistence, privilege escalation, and ransomware deployment in cloud environments." }
+  ],
+  "relationToEnterprise": "The Cloud matrix is not a separate ATT&CK matrix — it is a filtered view of Enterprise ATT&CK showing only techniques with cloud platform applicability. Technique IDs are shared with the Enterprise matrix (e.g., T1078 Valid Accounts appears in both). Some techniques are cloud-exclusive (e.g., T1535 Unused/Unsupported Cloud Regions), while others are shared with on-premises contexts."
+}

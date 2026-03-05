@@ -1,0 +1,146 @@
+{
+  "$schema": "cloud-security-v1",
+  "title": "MITRE ATT&CK Cloud -- Technique to Defensive Controls Mapping",
+  "description": "Maps MITRE ATT&CK Cloud techniques to CSA CCM v4 controls, defensive measures, and detection methods. Use to prioritise cloud security controls based on threat actor TTPs or to understand which controls address specific cloud attack scenarios.",
+  "sourceType": "constructed-indicative",
+  "verificationNote": "MITRE ATT&CK Cloud technique IDs are public domain from attack.mitre.org. Control mappings are reasoned assessments -- not normatively specified by MITRE or CSA.",
+  "mitreVersion": "MITRE ATT&CK v15 (Cloud Matrix)",
+  "ccmVersion": "CSA Cloud Controls Matrix v4.0",
+  "mappings": [
+    {
+      "techniqueId": "T1078",
+      "techniqueName": "Valid Accounts",
+      "tactic": "Initial Access / Persistence / Privilege Escalation",
+      "description": "Adversary obtains and uses valid cloud account credentials (compromised, leaked, or purchased) to gain access to cloud services. Most common initial access vector in cloud environments.",
+      "defensiveControls": ["Enforce phishing-resistant MFA (FIDO2/WebAuthn) on all accounts", "Implement conditional access policies (device compliance, location, risk score)", "Deploy credential exposure monitoring (darkweb, paste sites)", "Enforce password complexity and rotation policies", "Implement impossible travel detection"],
+      "ccmControls": ["IAM-01", "IAM-02", "IAM-03", "IAM-04", "IAM-12", "HRS-09"],
+      "detectionMethods": ["Monitor for anomalous login patterns (new location, device, time)", "Alert on impossible travel (login from geographically distant locations within short timeframe)", "Detect credential stuffing through authentication failure rate analysis", "Monitor for logins from known malicious IPs (threat intelligence integration)"]
+    },
+    {
+      "techniqueId": "T1078.004",
+      "techniqueName": "Valid Accounts: Cloud Accounts",
+      "tactic": "Initial Access / Persistence",
+      "description": "Adversary specifically targets cloud service accounts (AWS IAM, Azure AD, GCP IAM) through phishing, credential theft, or API key exposure.",
+      "defensiveControls": ["Eliminate long-lived API keys in favour of temporary credentials (STS, Managed Identity)", "Implement just-in-time privileged access", "Pre-commit secret scanning for API keys", "Monitor for API key usage from unexpected sources"],
+      "ccmControls": ["IAM-02", "IAM-04", "IAM-10", "DSP-01"],
+      "detectionMethods": ["Alert on API key usage from new IP addresses or regions", "Monitor for service account credential usage outside normal patterns", "Detect API key creation for existing service accounts"]
+    },
+    {
+      "techniqueId": "T1190",
+      "techniqueName": "Exploit Public-Facing Application",
+      "tactic": "Initial Access",
+      "description": "Adversary exploits vulnerabilities in internet-facing cloud applications, APIs, or services to gain initial access. Includes web application vulnerabilities, API injection, and cloud service misconfigurations.",
+      "defensiveControls": ["Deploy WAF with OWASP Top 10 rule sets", "Implement API gateway with request validation", "Conduct regular vulnerability scanning and penetration testing", "Apply timely patching for cloud-hosted applications", "Implement rate limiting and bot detection"],
+      "ccmControls": ["AIS-01", "AIS-02", "AIS-04", "IVS-01", "IVS-04", "TVM-01", "TVM-02"],
+      "detectionMethods": ["WAF alert correlation for attack patterns", "Application-layer anomaly detection", "Monitor for unexpected outbound connections from web servers", "API call pattern analysis for injection attempts"]
+    },
+    {
+      "techniqueId": "T1199",
+      "techniqueName": "Trusted Relationship",
+      "tactic": "Initial Access",
+      "description": "Adversary compromises a trusted third party (SaaS vendor, CI/CD service, managed service provider) that has access to the target's cloud environment through cross-account roles or API integrations.",
+      "defensiveControls": ["Minimize cross-account trust relationships", "Implement external ID conditions on cross-account roles", "Regularly audit third-party access permissions", "Require MFA for third-party access", "Monitor third-party security posture"],
+      "ccmControls": ["STA-01", "STA-03", "STA-05", "STA-08", "IAM-04", "IAM-06"],
+      "detectionMethods": ["Monitor cross-account role assumption events", "Alert on new cross-account trust relationships", "Detect unusual API calls from third-party principals", "Monitor for third-party vendor security advisories"]
+    },
+    {
+      "techniqueId": "T1530",
+      "techniqueName": "Data from Cloud Storage",
+      "tactic": "Collection",
+      "description": "Adversary accesses data stored in cloud storage services (S3, Blob Storage, GCS) through misconfigured permissions, stolen credentials, or exploited access policies. The Capital One breach (2019) is the canonical example.",
+      "defensiveControls": ["Enable account-level block public access on all storage", "Implement CMEK encryption for sensitive data", "Deploy CSPM to detect public storage continuously", "Enforce least-privilege storage access policies", "Enable server access logging on all buckets"],
+      "ccmControls": ["DSP-01", "DSP-02", "DSP-04", "DSP-05", "IAM-04", "LOG-01"],
+      "detectionMethods": ["Alert on storage policy changes (especially public access)", "Monitor for bulk download patterns from storage services", "Detect unusual cross-account storage access", "Monitor server access logs for anomalous source IPs"]
+    },
+    {
+      "techniqueId": "T1537",
+      "techniqueName": "Transfer Data to Cloud Account",
+      "tactic": "Exfiltration",
+      "description": "Adversary exfiltrates data by transferring it to an attacker-controlled cloud account. Difficult to detect because the traffic appears as normal cloud-to-cloud data transfer.",
+      "defensiveControls": ["Implement VPC endpoints to restrict cloud API calls to specific VPCs", "Block cross-account data transfer through SCPs/policies", "Implement DLP for cloud storage and egress", "Restrict S3/Blob copy operations to known accounts"],
+      "ccmControls": ["DSP-01", "DSP-02", "DSP-05", "IVS-06", "LOG-01"],
+      "detectionMethods": ["Monitor CloudTrail/audit logs for cross-account copy operations", "Alert on storage replication to unknown accounts", "Detect data transfer volume anomalies", "Monitor for snapshot sharing to external accounts"]
+    },
+    {
+      "techniqueId": "T1535",
+      "techniqueName": "Unused/Unsupported Cloud Regions",
+      "tactic": "Defense Evasion",
+      "description": "Adversary deploys resources in cloud regions where the organisation has no monitoring or security controls. Unused regions are blind spots for detection.",
+      "defensiveControls": ["Restrict resource creation to approved regions via SCPs/policies", "Enable CloudTrail/audit logging in ALL regions", "Deploy CSPM with full-region coverage", "Alert on any activity in non-approved regions"],
+      "ccmControls": ["DSP-06", "GRC-01", "LOG-01", "IVS-06"],
+      "detectionMethods": ["Alert on any API call or resource creation in non-approved regions", "Monitor for IAM role creation in unused regions", "CSPM scan for resources in all regions"]
+    },
+    {
+      "techniqueId": "T1578",
+      "techniqueName": "Modify Cloud Compute Infrastructure",
+      "tactic": "Defense Evasion",
+      "description": "Adversary modifies cloud compute resources (create snapshot, create instance from snapshot, revert instance) to evade security controls or establish persistence.",
+      "defensiveControls": ["Restrict compute modification permissions to authorized roles", "Implement tagging requirements for all compute resources", "Deploy IaC drift detection", "Monitor for unauthorized snapshot creation/sharing"],
+      "ccmControls": ["CCC-01", "CCC-03", "IAM-04", "LOG-01", "LOG-03"],
+      "detectionMethods": ["Alert on snapshot creation, sharing, or copying to external accounts", "Monitor for instance launches from non-approved AMIs/images", "Detect compute instances created outside IaC pipeline", "Alert on security group modifications on compute instances"]
+    },
+    {
+      "techniqueId": "T1552.005",
+      "techniqueName": "Unsecured Credentials: Cloud Instance Metadata API",
+      "tactic": "Credential Access",
+      "description": "Adversary exploits SSRF or application vulnerability to access cloud instance metadata API (169.254.169.254) and retrieve temporary credentials. This was the attack vector in the Capital One breach (2019).",
+      "defensiveControls": ["Enable IMDSv2 (Instance Metadata Service v2) on all EC2 instances", "Implement network-level SSRF protection", "Restrict metadata API access through iptables/network policy", "Use IAM roles with minimal permissions on compute instances"],
+      "ccmControls": ["IVS-04", "IAM-04", "AIS-01", "CCC-03"],
+      "detectionMethods": ["Monitor for metadata API calls from application processes", "Alert on credential usage from unexpected source IPs", "Detect SSRF patterns in application WAF logs", "Monitor for metadata API access attempts blocked by IMDSv2"]
+    },
+    {
+      "techniqueId": "T1098",
+      "techniqueName": "Account Manipulation",
+      "tactic": "Persistence",
+      "description": "Adversary modifies cloud account properties (add credentials, modify permissions, create backdoor users) to maintain persistent access. Includes adding API keys to existing users, modifying IAM policies, or creating new privileged accounts.",
+      "defensiveControls": ["Enforce MFA for all IAM changes", "Implement SCPs preventing IAM modification outside approved pipelines", "Deploy real-time alerting on IAM changes", "Conduct daily IAM drift detection"],
+      "ccmControls": ["IAM-01", "IAM-02", "IAM-04", "IAM-06", "LOG-01", "LOG-03"],
+      "detectionMethods": ["Alert on new IAM user/role creation", "Detect API key creation for existing users", "Monitor IAM policy modifications (especially privilege escalation patterns)", "Alert on MFA device changes for privileged accounts"]
+    },
+    {
+      "techniqueId": "T1580",
+      "techniqueName": "Cloud Infrastructure Discovery",
+      "tactic": "Discovery",
+      "description": "Adversary enumerates cloud infrastructure (instances, storage, databases, networking) using compromised credentials to map the environment before further exploitation.",
+      "defensiveControls": ["Implement least-privilege IAM -- no broad read permissions", "Segment cloud accounts to limit discovery scope", "Deploy real-time anomaly detection on API calls", "Implement VPC endpoints to restrict API call sources"],
+      "ccmControls": ["IAM-04", "IAM-06", "IVS-06", "LOG-01", "LOG-03"],
+      "detectionMethods": ["Detect enumeration API call patterns (list-*, describe-*, get-*)", "Alert on API calls from new user agents or SDKs", "Monitor for rapid-fire API calls across multiple services", "Detect enumeration from non-standard source IPs"]
+    },
+    {
+      "techniqueId": "T1567.002",
+      "techniqueName": "Exfiltration Over Web Service: Exfiltration to Cloud Storage",
+      "tactic": "Exfiltration",
+      "description": "Adversary exfiltrates data to cloud storage services (attacker-owned S3 bucket, Dropbox, Google Drive, OneDrive) to blend with normal cloud traffic.",
+      "defensiveControls": ["Implement egress controls blocking access to unauthorized cloud storage endpoints", "Deploy DLP with content inspection on egress", "CASB to detect and block unauthorized cloud storage uploads", "Restrict outbound access to approved cloud service domains"],
+      "ccmControls": ["DSP-01", "DSP-02", "IVS-01", "IVS-06", "LOG-01"],
+      "detectionMethods": ["Monitor DNS queries for cloud storage service domains", "Detect large outbound data transfers to cloud storage APIs", "Alert on egress traffic to unknown cloud storage endpoints", "DLP alerts on sensitive data movement to external cloud services"]
+    },
+    {
+      "techniqueId": "T1562.008",
+      "techniqueName": "Impair Defenses: Disable Cloud Logs",
+      "tactic": "Defense Evasion",
+      "description": "Adversary disables or modifies cloud logging (CloudTrail, Azure Activity Log, GCP Audit Log) to prevent detection of subsequent malicious activity.",
+      "defensiveControls": ["Protect logging configuration with SCPs/policies -- prevent trail deletion or modification", "Centralise logs in separate account with restricted access", "Implement immutable log storage (Object Lock)", "Alert immediately on any logging configuration change"],
+      "ccmControls": ["LOG-01", "LOG-02", "LOG-03", "LOG-05", "IAM-04"],
+      "detectionMethods": ["Real-time alerting on CloudTrail/audit log modification or deletion", "Monitor for StopLogging, DeleteTrail, or equivalent API calls", "Alert on log destination bucket policy changes", "Secondary monitoring system as backup detection"]
+    },
+    {
+      "techniqueId": "T1496",
+      "techniqueName": "Resource Hijacking",
+      "tactic": "Impact",
+      "description": "Adversary uses compromised cloud resources for cryptocurrency mining (cryptojacking), sending spam, or launching attacks against other targets. Generates unexpected costs and indicates broader compromise.",
+      "defensiveControls": ["Implement billing anomaly detection with automated alerts", "Restrict compute instance types and quantities through SCPs/quotas", "Deploy CSP threat detection (GuardDuty, Defender, SCC)", "Block egress to known mining pool IPs"],
+      "ccmControls": ["TVM-01", "IVS-04", "IVS-09", "CCC-03", "LOG-03"],
+      "detectionMethods": ["Billing anomaly detection (unexpected compute charges)", "CSP threat detection alerts (GuardDuty CryptoCurrency finding)", "High CPU utilisation alerts on non-compute-intensive workloads", "Network flow analysis for connections to mining pools"]
+    },
+    {
+      "techniqueId": "T1486",
+      "techniqueName": "Data Encrypted for Impact",
+      "tactic": "Impact",
+      "description": "Adversary encrypts cloud data (EBS volumes, S3 objects, databases) with attacker-controlled keys, rendering data inaccessible. Cloud-specific ransomware variant that leverages CSP encryption APIs.",
+      "defensiveControls": ["Implement immutable backups (Object Lock, vault lock) in separate account", "Restrict KMS key creation/import permissions", "Deploy deletion protection on critical databases", "Implement versioning on cloud storage"],
+      "ccmControls": ["BCR-01", "BCR-02", "BCR-04", "DSP-01", "EKM-01", "IAM-04"],
+      "detectionMethods": ["Alert on unusual KMS key creation or import", "Monitor for mass encryption operations on storage", "Detect unusual S3 PutObject with server-side encryption using non-standard keys", "Alert on database snapshot deletion or modification"]
+    }
+  ]
+}

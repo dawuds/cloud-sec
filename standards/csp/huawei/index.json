@@ -1,0 +1,57 @@
+{
+  "csp": "huawei",
+  "name": "Huawei Cloud",
+  "slug": "huawei",
+  "description": "Huawei Cloud is a major cloud provider with 70+ availability zones across 29+ regions, with strong presence in Asia Pacific, Africa, Latin America, and Europe. As part of Huawei Technologies, it leverages decades of telecommunications and enterprise IT expertise. Huawei Cloud has invested significantly in Southeast Asian markets including Malaysia, where it operates a local region.",
+  "securityModel": {
+    "name": "Huawei Cloud Shared Responsibility Model",
+    "description": "Huawei Cloud secures the infrastructure layer including physical security, hypervisor, storage systems, and network fabric. Customers are responsible for their workload security including IAM configuration, data protection, network security group rules, OS patching, and application security. Huawei Cloud provides security services to help customers fulfill their responsibilities.",
+    "layers": [
+      {
+        "owner": "huawei",
+        "scope": "Physical datacenter security, network infrastructure, hypervisor, storage encryption infrastructure, DDoS basic protection, platform services"
+      },
+      {
+        "owner": "customer",
+        "scope": "IAM policies and credentials, data classification and encryption, security group rules, OS hardening and patching, application security, audit log management"
+      }
+    ]
+  },
+  "frameworks": [
+    {
+      "name": "Huawei Cloud Security White Paper",
+      "version": "2023",
+      "description": "Huawei-authored document describing the security architecture, controls, and compliance posture of Huawei Cloud. Covers infrastructure security, platform security, data security, identity management, and operational security.",
+      "url": "https://www.huaweicloud.com/intl/en-us/securecenter/resource.html"
+    },
+    {
+      "name": "Huawei Cloud Well-Architected Framework",
+      "version": "2023",
+      "description": "Huawei Cloud's framework for building reliable, secure, efficient, and cost-effective systems. The security pillar covers identity management, detection, infrastructure protection, data protection, and incident response.",
+      "url": "https://www.huaweicloud.com/intl/en-us/solution/well-architected/"
+    }
+  ],
+  "malaysiaContext": {
+    "nearestRegion": "ap-southeast-3",
+    "regionName": "Asia Pacific (Kuala Lumpur)",
+    "hasLocalRegion": true,
+    "notes": "Huawei Cloud has a dedicated Malaysia region (ap-southeast-3) in Kuala Lumpur. This makes Huawei Cloud one of the few hyperscale providers with a local Malaysian presence, which is advantageous for PDPA 2010 data residency requirements. Additional nearby regions include Singapore (ap-southeast-1), Bangkok (ap-southeast-2), and Jakarta (ap-southeast-4). Huawei has partnered with Malaysian government agencies and telecommunications companies for digital transformation initiatives.",
+    "complianceCertifications": [
+      "ISO 27001",
+      "ISO 27017",
+      "ISO 27018",
+      "SOC 1/2",
+      "PCI DSS",
+      "CSA STAR",
+      "MLPS Level 3",
+      "CC EAL3+"
+    ]
+  },
+  "keyLinks": {
+    "securityCenter": "https://www.huaweicloud.com/intl/en-us/product/securitycenter.html",
+    "trustCenter": "https://www.huaweicloud.com/intl/en-us/securecenter/",
+    "complianceCertifications": "https://www.huaweicloud.com/intl/en-us/securecenter/compliance.html",
+    "documentation": "https://support.huaweicloud.com/intl/en-us/security/",
+    "bestPractices": "https://support.huaweicloud.com/intl/en-us/bestpractice-security/"
+  }
+}

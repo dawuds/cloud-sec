@@ -1,0 +1,254 @@
+{
+  "$schema": "cloud-security-v1",
+  "model": "Cloud Reference Architecture",
+  "sourceType": "paraphrased-from-standard",
+  "verificationNote": "Based on CSA Enterprise Architecture guidance, NIST SP 800-210 (General Access Control Guidance for Cloud Systems), AWS Well-Architected Framework, Azure Cloud Adoption Framework, and Google Cloud Architecture Framework. Layer definitions synthesised from common patterns across all major CSPs.",
+  "description": "A layered reference architecture for cloud environments, analogous to the Purdue Model for OT environments. This model defines seven functional layers — from the internet-facing edge to the management plane — each with distinct security characteristics, attack surfaces, and control requirements. Unlike the Purdue Model's strict hierarchical data flow, cloud architecture allows and requires cross-layer communication through APIs, IAM, and service mesh — making identity the primary security boundary rather than network segmentation alone.",
+  "modernConsiderations": "Cloud architecture is API-driven and identity-centric. Network boundaries still matter (VPCs, subnets, security groups) but identity and access management is the primary control plane. Zero-trust principles apply: never trust network location alone, always verify identity, enforce least privilege, and assume breach. Service mesh and API gateways replace traditional firewalls as the primary traffic control mechanism.",
+  "layers": [
+    {
+      "level": "1",
+      "name": "Edge / CDN Layer",
+      "description": "The internet-facing edge of the cloud architecture. Content delivery networks, DNS, and DDoS protection services that sit in front of all customer-facing resources. This layer absorbs volumetric attacks, terminates TLS, caches static content, and routes traffic to the application layer. It is the first line of defence and the first point of contact for all external traffic.",
+      "typicalComponents": [
+        {
+          "type": "Content Delivery Network (CDN)",
+          "examples": ["Amazon CloudFront", "Azure Front Door / Azure CDN", "Google Cloud CDN", "Cloudflare CDN", "Akamai"],
+          "protocols": ["HTTPS", "HTTP/2", "HTTP/3 (QUIC)", "WebSocket"]
+        },
+        {
+          "type": "DNS Service",
+          "examples": ["Amazon Route 53", "Azure DNS", "Google Cloud DNS", "Cloudflare DNS"],
+          "protocols": ["DNS", "DNSSEC", "DNS-over-HTTPS"]
+        },
+        {
+          "type": "DDoS Protection",
+          "examples": ["AWS Shield Standard/Advanced", "Azure DDoS Protection", "Google Cloud Armor", "Cloudflare DDoS Protection"],
+          "protocols": ["Layer 3/4 scrubbing", "Layer 7 rate limiting"]
+        },
+        {
+          "type": "Bot Management",
+          "examples": ["AWS WAF Bot Control", "Azure Bot Protection", "Cloudflare Bot Management", "Akamai Bot Manager"],
+          "protocols": ["JavaScript challenge", "CAPTCHA", "Behavioral analysis"]
+        }
+      ],
+      "securityCharacteristics": {
+        "attackSurface": "Directly internet-facing — exposed to the full spectrum of internet threats including DDoS, DNS hijacking, BGP manipulation, TLS downgrade attacks, and web scraping",
+        "vulnerabilities": "Misconfigured CDN caching sensitive content, TLS certificate mismanagement, DNS zone transfer exposure, CDN origin IP leakage allowing attackers to bypass CDN protections, subdomain takeover via dangling DNS records",
+        "primaryControls": ["TLS 1.2+ enforcement with modern cipher suites", "DNSSEC for DNS integrity", "DDoS protection enabled for all public endpoints", "Origin cloaking — CDN should be the only path to origin servers", "Certificate automation and monitoring (CT logs)", "Regular subdomain audit to prevent takeover"]
+      }
+    },
+    {
+      "level": "2",
+      "name": "Web / Application Layer",
+      "description": "Load balancers, API gateways, and web application firewalls that receive traffic from the edge layer and distribute it to compute resources. This layer handles request routing, SSL termination, authentication enforcement, rate limiting, and application-level security filtering. It is the primary enforcement point for API security policies.",
+      "typicalComponents": [
+        {
+          "type": "Load Balancer",
+          "examples": ["AWS Application Load Balancer (ALB)", "AWS Network Load Balancer (NLB)", "Azure Application Gateway", "Azure Load Balancer", "Google Cloud Load Balancing"],
+          "protocols": ["HTTPS", "HTTP/2", "gRPC", "TCP", "WebSocket"]
+        },
+        {
+          "type": "API Gateway",
+          "examples": ["Amazon API Gateway", "Azure API Management", "Google Cloud Endpoints", "Google Apigee", "Kong Gateway"],
+          "protocols": ["REST", "GraphQL", "gRPC", "WebSocket", "OpenAPI/Swagger"]
+        },
+        {
+          "type": "Web Application Firewall (WAF)",
+          "examples": ["AWS WAF", "Azure Web Application Firewall", "Google Cloud Armor (WAF rules)", "Cloudflare WAF"],
+          "protocols": ["HTTP/HTTPS inspection", "OWASP Top 10 rule sets", "Custom rules"]
+        },
+        {
+          "type": "Service Mesh",
+          "examples": ["AWS App Mesh", "Azure Service Fabric", "Istio on GKE", "Linkerd", "Consul Connect"],
+          "protocols": ["mTLS", "gRPC", "HTTP/2", "Envoy proxy protocol"]
+        }
+      ],
+      "securityCharacteristics": {
+        "attackSurface": "Application-layer attacks (OWASP Top 10), API abuse, authentication bypass, SSRF through web applications, request smuggling, GraphQL introspection and batching attacks",
+        "vulnerabilities": "Misconfigured WAF rules (bypass via encoding or HTTP/2), API gateway allowing unauthenticated access, load balancer health check endpoints exposing internal state, overly permissive CORS policies, missing rate limiting enabling credential stuffing",
+        "primaryControls": ["WAF with managed rule sets (OWASP CRS) plus custom rules", "API authentication on all endpoints (OAuth 2.0, API keys, mutual TLS)", "Rate limiting and throttling per client", "Request validation (schema validation, input sanitisation)", "mTLS between services via service mesh", "Health check endpoints restricted to internal networks"]
+      }
+    },
+    {
+      "level": "3",
+      "name": "Compute Layer",
+      "description": "The processing tier where application code executes — virtual machines, containers, and serverless functions. This layer is the primary target for attackers seeking code execution, lateral movement, and data access. Security characteristics vary dramatically between VMs (full OS attack surface), containers (shared kernel), and serverless (ephemeral, no OS access).",
+      "typicalComponents": [
+        {
+          "type": "Virtual Machines",
+          "examples": ["AWS EC2", "Azure Virtual Machines", "Google Compute Engine", "Alibaba ECS"],
+          "protocols": ["SSH (Linux)", "RDP (Windows)", "HTTP/HTTPS (application)", "Instance metadata API"]
+        },
+        {
+          "type": "Container Orchestration",
+          "examples": ["AWS ECS", "AWS EKS", "Azure AKS", "Azure Container Instances", "Google GKE", "Google Cloud Run"],
+          "protocols": ["Kubernetes API", "Docker API", "Container runtime (containerd, CRI-O)", "gRPC"]
+        },
+        {
+          "type": "Serverless Functions",
+          "examples": ["AWS Lambda", "Azure Functions", "Google Cloud Functions", "Cloudflare Workers"],
+          "protocols": ["Event-driven (triggers)", "HTTP", "gRPC", "Message queue consumption"]
+        },
+        {
+          "type": "Batch and HPC Compute",
+          "examples": ["AWS Batch", "Azure Batch", "Google Cloud Batch"],
+          "protocols": ["Job scheduling API", "MPI", "SSH"]
+        }
+      ],
+      "securityCharacteristics": {
+        "attackSurface": "VM: full OS attack surface (unpatched CVEs, privilege escalation, credential theft via instance metadata). Container: container escape, vulnerable base images, Kubernetes API exploitation, pod-to-pod lateral movement. Serverless: function code vulnerabilities, event injection, overprivileged execution roles",
+        "vulnerabilities": "Instance metadata service (IMDS) v1 allowing SSRF-based credential theft (Capital One attack vector), Kubernetes dashboard exposed without authentication, container images with known CVEs, privileged containers with host namespace access, function roles with excessive permissions, SSH keys shared across instances",
+        "primaryControls": ["IMDSv2 enforcement (AWS) / metadata concealment (GCP) / IMDS restrictions (Azure)", "CIS Benchmark hardening for VM images", "Container image scanning in CI/CD and registry", "Pod security standards (restricted profile) in Kubernetes", "Least-privilege IAM roles for all compute (one role per workload)", "No SSH/RDP in production — use SSM Session Manager or serial console", "Runtime security monitoring (Falco, GuardDuty Runtime Monitoring)"]
+      }
+    },
+    {
+      "level": "4",
+      "name": "Data Layer",
+      "description": "Databases, object storage, data warehouses, and caching services. This layer contains the organisation's most valuable asset — its data. Security at this layer focuses on encryption, access control, data classification, and preventing unauthorised data exfiltration. Every cloud security breach ultimately targets this layer.",
+      "typicalComponents": [
+        {
+          "type": "Object Storage",
+          "examples": ["AWS S3", "Azure Blob Storage", "Google Cloud Storage", "Alibaba OSS"],
+          "apis": ["REST API", "SDK", "CLI", "Pre-signed URLs"]
+        },
+        {
+          "type": "Relational Database",
+          "examples": ["AWS RDS (MySQL, PostgreSQL, Oracle, SQL Server)", "AWS Aurora", "Azure SQL Database", "Azure Database for PostgreSQL", "Google Cloud SQL", "Google AlloyDB"],
+          "apis": ["SQL protocol (MySQL/PostgreSQL wire protocol)", "TLS-encrypted connections"]
+        },
+        {
+          "type": "NoSQL Database",
+          "examples": ["AWS DynamoDB", "Azure Cosmos DB", "Google Cloud Firestore", "Google Cloud Bigtable", "MongoDB Atlas"],
+          "apis": ["REST API", "SDK", "gRPC (Bigtable/Firestore)"]
+        },
+        {
+          "type": "Data Warehouse",
+          "examples": ["AWS Redshift", "Azure Synapse Analytics", "Google BigQuery", "Snowflake"],
+          "apis": ["SQL/JDBC/ODBC", "REST API", "Proprietary connectors"]
+        },
+        {
+          "type": "Caching / In-Memory",
+          "examples": ["AWS ElastiCache (Redis, Memcached)", "Azure Cache for Redis", "Google Memorystore"],
+          "apis": ["Redis protocol", "Memcached protocol"]
+        }
+      ],
+      "securityCharacteristics": {
+        "attackSurface": "Public bucket/blob exposure, SQL injection through application layer, database credential theft, data exfiltration through authorised API calls, snapshot/backup exposure, cross-account data sharing misconfiguration",
+        "vulnerabilities": "Publicly accessible S3 buckets (the single most common cloud misconfiguration), database instances with public endpoints, unencrypted database snapshots shared across accounts, overly permissive IAM policies granting broad data access, missing VPC endpoints causing data to traverse the internet, Snowflake accounts without MFA (2024 breaches)",
+        "primaryControls": ["Block public access at account/organisation level (S3 Block Public Access, Azure storage account settings)", "Encryption at rest with customer-managed keys (CMK) via KMS", "Encryption in transit (TLS) for all database connections", "VPC endpoints / private endpoints for all data services — no public internet exposure", "Data classification and tagging (Macie, Purview, SCC)", "Database audit logging enabled and forwarded to SIEM", "Backup encryption and access controls matching production data"]
+      }
+    },
+    {
+      "level": "5",
+      "name": "Identity Layer",
+      "description": "The identity and access management layer spans all other layers — it is the control plane for who can do what to which resource. In cloud environments, identity is the new perimeter. A compromised identity with broad permissions is more dangerous than a network breach. This layer includes identity providers, SSO, MFA, privileged access management, and service-to-service authentication.",
+      "typicalComponents": [
+        {
+          "type": "Identity Provider (IdP)",
+          "examples": ["Microsoft Entra ID", "Okta", "Google Cloud Identity", "Ping Identity", "AWS IAM Identity Center"],
+          "protocols": ["SAML 2.0", "OIDC", "OAuth 2.0", "WS-Federation", "SCIM"]
+        },
+        {
+          "type": "Cloud IAM",
+          "examples": ["AWS IAM", "Azure RBAC", "Google Cloud IAM", "Alibaba Cloud RAM"],
+          "protocols": ["IAM Policy (JSON)", "Role-based access", "Attribute-based access (ABAC)"]
+        },
+        {
+          "type": "Privileged Access Management (PAM)",
+          "examples": ["Microsoft Entra PIM", "CyberArk Privilege Cloud", "HashiCorp Boundary", "AWS IAM Roles Anywhere"],
+          "protocols": ["Just-in-time access", "Session recording", "Approval workflows"]
+        },
+        {
+          "type": "Service-to-Service Authentication",
+          "examples": ["AWS IAM Roles", "Azure Managed Identities", "Google Workload Identity Federation", "SPIFFE/SPIRE"],
+          "protocols": ["Instance profiles", "Managed identities", "Workload identity", "mTLS"]
+        }
+      ],
+      "securityCharacteristics": {
+        "attackSurface": "Credential theft (phishing, infostealers, dark web credential dumps), MFA bypass (MFA fatigue, SIM swapping, adversary-in-the-middle), session hijacking, OAuth token theft, SAML assertion forging (SolarWinds Golden SAML), service account key exposure",
+        "vulnerabilities": "No MFA enforcement (single biggest identity risk), overprivileged service accounts and roles, stale credentials not rotated, long-lived API keys, shared service account credentials, federated identity trust misconfiguration, insufficient conditional access policies",
+        "primaryControls": ["MFA enforcement for all human users — phishing-resistant MFA (FIDO2/WebAuthn) preferred", "Conditional access policies (device compliance, location, risk-based)", "Just-in-time privileged access with approval workflows", "No long-lived access keys — use short-lived credentials (STS, managed identities, workload identity)", "Regular access reviews with automated revocation", "Service account key rotation or elimination (use workload identity federation)", "Identity threat detection (Entra ID Protection, GuardDuty IAM findings)"]
+      }
+    },
+    {
+      "level": "6",
+      "name": "Network Layer",
+      "description": "Virtual network infrastructure including VPCs/VNets, subnets, security groups, firewalls, VPN gateways, and private connectivity. While identity is the primary security boundary in cloud, network segmentation remains essential for defence-in-depth. Network controls limit blast radius, enforce micro-segmentation, and prevent lateral movement even when identity controls are bypassed.",
+      "typicalComponents": [
+        {
+          "type": "Virtual Private Cloud / Virtual Network",
+          "examples": ["AWS VPC", "Azure VNet", "Google VPC", "Alibaba VPC"],
+          "protocols": ["IP routing", "Subnet segmentation", "VPC peering", "Transit gateway"]
+        },
+        {
+          "type": "Security Groups / Firewall Rules",
+          "examples": ["AWS Security Groups + NACLs", "Azure NSGs", "Google VPC Firewall Rules", "Google Hierarchical Firewall Policies"],
+          "protocols": ["Stateful (SG) / Stateless (NACL) packet filtering", "L3/L4 rules"]
+        },
+        {
+          "type": "Cloud Firewall",
+          "examples": ["AWS Network Firewall", "Azure Firewall", "Google Cloud Firewall Plus (with IPS)", "Palo Alto VM-Series"],
+          "protocols": ["Stateful inspection", "IDS/IPS", "TLS inspection", "FQDN filtering"]
+        },
+        {
+          "type": "Private Connectivity",
+          "examples": ["AWS PrivateLink / VPC Endpoints", "Azure Private Link / Private Endpoints", "Google Private Service Connect"],
+          "protocols": ["Private IP routing (no internet exposure)", "AWS PrivateLink (interface endpoints)"]
+        },
+        {
+          "type": "Hybrid Connectivity",
+          "examples": ["AWS Direct Connect", "Azure ExpressRoute", "Google Cloud Interconnect", "AWS Site-to-Site VPN"],
+          "protocols": ["BGP", "IPSec VPN", "MACsec (Direct Connect/ExpressRoute)"]
+        }
+      ],
+      "securityCharacteristics": {
+        "attackSurface": "Overly permissive security groups (0.0.0.0/0 on management ports), VPC peering without traffic filtering, public subnets with unnecessary internet exposure, DNS-based data exfiltration, VPN credential compromise for hybrid connectivity",
+        "vulnerabilities": "Security groups allowing SSH/RDP from anywhere, public subnets containing databases or backend services, missing VPC Flow Logs, no DNS logging, transit gateway with flat routing allowing full inter-VPC lateral movement, Network ACLs ignored or set to allow-all",
+        "primaryControls": ["Deny-all default security groups — explicit permit only", "Private subnets for all non-edge resources", "VPC Flow Logs enabled and forwarded to SIEM", "DNS logging enabled (Route 53 Resolver Query Logging, VPC DNS)", "VPC endpoints for all AWS service access (eliminate internet dependency)", "Network segmentation by workload/environment (separate VPCs for production/staging)", "Micro-segmentation via security groups at instance level"]
+      }
+    },
+    {
+      "level": "7",
+      "name": "Management / Control Plane Layer",
+      "description": "The management plane — the API surface through which all cloud resources are created, configured, monitored, and destroyed. This is the most critical layer because compromise of the management plane enables an attacker to modify any resource in any other layer. Includes cloud console access, CLI access, infrastructure-as-code pipelines, logging, monitoring, and CSPM.",
+      "typicalComponents": [
+        {
+          "type": "Cloud Console and CLI",
+          "examples": ["AWS Management Console / AWS CLI", "Azure Portal / Azure CLI", "Google Cloud Console / gcloud CLI"],
+          "apis": ["HTTPS (console)", "REST API (CLI/SDK)", "CloudFormation/ARM/Terraform API"]
+        },
+        {
+          "type": "Infrastructure as Code (IaC)",
+          "examples": ["Terraform", "AWS CloudFormation", "Azure Bicep / ARM Templates", "Google Deployment Manager", "Pulumi"],
+          "apis": ["HCL/JSON/YAML configuration", "State file management", "Drift detection"]
+        },
+        {
+          "type": "Audit Logging",
+          "examples": ["AWS CloudTrail", "Azure Activity Log / Entra Audit Logs", "Google Cloud Audit Logs"],
+          "apis": ["JSON event logs", "Log delivery to storage/SIEM", "Event-driven alerting"]
+        },
+        {
+          "type": "Monitoring and Observability",
+          "examples": ["Amazon CloudWatch", "Azure Monitor", "Google Cloud Monitoring", "Datadog", "Grafana Cloud"],
+          "apis": ["Metrics API", "Log API", "Trace API", "Alert/notification API"]
+        },
+        {
+          "type": "Cloud Security Posture Management (CSPM)",
+          "examples": ["AWS Security Hub", "Microsoft Defender for Cloud", "Google Security Command Center", "Wiz", "Prisma Cloud", "Orca Security"],
+          "apis": ["Findings API", "Compliance reporting", "Remediation automation"]
+        },
+        {
+          "type": "Organisation and Account Management",
+          "examples": ["AWS Organizations / Control Tower", "Azure Management Groups / Landing Zones", "Google Cloud Organization / Resource Manager"],
+          "apis": ["SCP (Service Control Policies)", "Azure Policies", "Organization Policy Constraints"]
+        }
+      ],
+      "securityCharacteristics": {
+        "attackSurface": "Cloud console credential theft, API key compromise, IaC pipeline injection (supply chain), Terraform state file exposure (contains secrets), CloudTrail tampering or deletion, organisation admin account takeover",
+        "vulnerabilities": "Root/global admin accounts without MFA, CloudTrail disabled or logs deleted by attacker, Terraform state files stored in unencrypted S3 buckets, IaC pipelines with overprivileged service principals, CSPM findings ignored or not triaged, drift between IaC definition and actual state allowing shadow configuration",
+        "primaryControls": ["Root account MFA + no routine use (AWS Organizations root)", "CloudTrail enabled in all regions with log file integrity validation", "Terraform state encrypted and access-controlled (S3 + DynamoDB lock with KMS encryption)", "IaC pipeline least-privilege — CI/CD service principals scoped to specific resources", "Service Control Policies / Organization Policies as guardrails (preventive controls)", "CSPM with automated remediation for critical findings", "Break-glass procedures for emergency admin access (documented, audited, rarely used)"]
+      }
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "$schema": "cloud-security-v1",
+  "standard": "CSA CCM v4",
+  "fullTitle": "Cloud Security Alliance Cloud Controls Matrix v4",
+  "publisher": "Cloud Security Alliance (CSA)",
+  "sourceType": "paraphrased-from-standard",
+  "verificationNote": "Content paraphrased from CSA CCM v4.0.10 (2023). The CCM is publicly available at cloudsecurityalliance.org/research/cloud-controls-matrix. Obtain the normative spreadsheet for authoritative control text.",
+  "publiclyAvailable": true,
+  "publicURL": "https://cloudsecurityalliance.org/research/cloud-controls-matrix/",
+  "version": "4.0.10",
+  "lastUpdated": "2026-03-06",
+  "scope": "Provides a comprehensive cloud-specific security controls framework for cloud service providers and cloud consumers. Covers 17 control domains spanning governance, technical controls, operations, and compliance. Designed to be mapped to existing standards (ISO 27001, NIST SP 800-53, PCI DSS, AICPA TSC) to reduce audit complexity through the CSA STAR programme. Applicable to IaaS, PaaS, and SaaS deployment models across public, private, and hybrid clouds.",
+  "jurisdiction": "International — widely adopted across APAC, EMEA, and North America. CSA STAR certification recognised by cloud-consuming organisations worldwide.",
+  "malaysiaNexus": "NACSA Act 854 applies to cloud-hosted National Critical Information Infrastructure (NCII) — operators running NCII workloads in cloud environments must demonstrate security controls equivalent to NCII sector codes of practice. CCM v4 provides a structured mapping to meet these requirements. Bank Negara Malaysia (BNM) Risk Management in Technology (RMiT) para 10.49-10.65 mandates specific cloud security controls for financial institutions, including data residency, access controls, encryption, and exit strategies — all of which map directly to CCM domains (DSP, CEK, BCR, IAM, GRC).",
+  "csaStarProgramme": {
+    "description": "The CSA Security, Trust, Assurance, and Risk (STAR) programme provides three levels of cloud provider assurance based on CCM v4 controls.",
+    "levels": [
+      { "level": 1, "name": "Self-Assessment", "description": "Cloud provider publishes a self-assessment questionnaire (CAIQ) against CCM controls. Free, publicly searchable on CSA STAR Registry." },
+      { "level": 2, "name": "Third-Party Audit", "description": "Independent third-party assessment against CCM controls. Available as SOC 2 + CCM (STAR Attestation) or ISO 27001 + CCM (STAR Certification)." },
+      { "level": 3, "name": "Continuous Monitoring", "description": "Continuous, automated monitoring of CCM control effectiveness. Provides near-real-time assurance rather than point-in-time audit." }
+    ]
+  },
+  "domainCount": 17,
+  "totalControlCount": 197,
+  "domains": [
+    { "id": "AIS", "name": "Application & Interface Security", "controlCount": 7 },
+    { "id": "AAC", "name": "Audit & Assurance", "controlCount": 3 },
+    { "id": "BCR", "name": "Business Continuity Management & Operational Resilience", "controlCount": 11 },
+    { "id": "CCC", "name": "Change Control & Configuration Management", "controlCount": 9 },
+    { "id": "CEK", "name": "Cryptography, Encryption & Key Management", "controlCount": 21 },
+    { "id": "DSP", "name": "Data Security & Privacy Lifecycle Management", "controlCount": 19 },
+    { "id": "DCS", "name": "Datacenter Security", "controlCount": 9 },
+    { "id": "GRC", "name": "Governance, Risk Management & Compliance", "controlCount": 8 },
+    { "id": "HRS", "name": "Human Resources Security", "controlCount": 13 },
+    { "id": "IAM", "name": "Identity & Access Management", "controlCount": 16 },
+    { "id": "IPY", "name": "Interoperability & Portability", "controlCount": 4 },
+    { "id": "IVS", "name": "Infrastructure & Virtualization Security", "controlCount": 13 },
+    { "id": "LOG", "name": "Logging & Monitoring", "controlCount": 13 },
+    { "id": "SEF", "name": "Security Incident Management, E-Discovery & Cloud Forensics", "controlCount": 8 },
+    { "id": "STA", "name": "Supply Chain Management, Transparency & Accountability", "controlCount": 14 },
+    { "id": "TVM", "name": "Threat & Vulnerability Management", "controlCount": 10 },
+    { "id": "UEM", "name": "Universal Endpoint Management", "controlCount": 14 }
+  ],
+  "sharedResponsibilityModel": {
+    "description": "CCM v4 explicitly maps each control to responsibility by cloud service model (IaaS, PaaS, SaaS). Controls are designated as CSP-owned, CSC-owned, or shared, enabling clear delineation of security obligations between cloud service providers and cloud service consumers.",
+    "models": [
+      { "model": "IaaS", "cspResponsibility": "Physical security, hypervisor, network fabric, storage infrastructure", "cscResponsibility": "OS hardening, application security, identity management, data classification, encryption key management" },
+      { "model": "PaaS", "cspResponsibility": "All IaaS responsibilities plus OS, middleware, runtime environment", "cscResponsibility": "Application security, identity management, data classification, some encryption key management" },
+      { "model": "SaaS", "cspResponsibility": "All PaaS responsibilities plus application logic, data processing", "cscResponsibility": "Data classification, user access management, configuration of provider-offered security features" }
+    ]
+  }
+}

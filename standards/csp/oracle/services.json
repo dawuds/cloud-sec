@@ -1,0 +1,133 @@
+{
+  "csp": "oracle",
+  "version": "2024-01",
+  "serviceCount": 14,
+  "services": [
+    {
+      "id": "oci-iam",
+      "name": "OCI Identity and Access Management (IAM with Identity Domains)",
+      "category": "identity",
+      "description": "Unified IAM service for managing users, groups, dynamic groups, policies, and identity federation. OCI uses a unique compartment-based resource isolation model where IAM policies are written in a human-readable policy language (e.g., 'Allow group SecurityAdmins to manage all-resources in compartment Security'). Identity Domains provide SSO, MFA, adaptive security, and application integration.",
+      "ccmMapping": ["IAM-01", "IAM-02", "IAM-03", "IAM-04", "IAM-06", "IAM-12"],
+      "tier": "free",
+      "keyFeatures": ["Human-readable policy language", "Compartment-based resource isolation", "Identity Domains (SSO, MFA)", "Dynamic groups for instance principals", "Federation with SAML 2.0 and OIDC", "Adaptive security policies"]
+    },
+    {
+      "id": "oci-cloud-guard",
+      "name": "Cloud Guard",
+      "category": "detection",
+      "description": "OCI's native CSPM and threat detection service. Continuously monitors tenancy configuration and activity for security weaknesses and risky operator actions. Uses detector recipes (configuration, activity, and threat detectors) to identify problems and responder recipes to automatically remediate them. Included free with OCI.",
+      "ccmMapping": ["TVM-01", "TVM-02", "TVM-03", "GRC-01", "GRC-02", "SEF-02"],
+      "tier": "free",
+      "keyFeatures": ["Configuration detectors (misconfiguration)", "Activity detectors (risky actions)", "Threat detectors (anomalous activity)", "Automatic remediation (responder recipes)", "Risk score dashboard", "CIS benchmark compliance checks"]
+    },
+    {
+      "id": "oci-security-zones",
+      "name": "Security Zones",
+      "category": "compliance",
+      "description": "Preventive security service that enforces security policies on compartments. When a compartment is associated with a Security Zone, resources in that compartment must comply with the zone's security recipe (e.g., all storage must be encrypted with customer-managed keys, no public subnets). Prevents insecure configurations at creation time.",
+      "ccmMapping": ["GRC-01", "GRC-02", "CCC-01", "CCC-02", "DSP-01"],
+      "tier": "free",
+      "keyFeatures": ["Preventive policy enforcement", "Pre-built security recipes", "Custom security recipes", "Compartment-level application", "Blocks non-compliant resources at creation", "Integration with Cloud Guard"]
+    },
+    {
+      "id": "oci-vault",
+      "name": "OCI Vault",
+      "category": "encryption",
+      "description": "Managed key management service for creating and managing encryption keys and secrets. Supports software-protected vaults (multi-tenant HSM) and dedicated virtual private vaults (single-tenant HSM partition, FIPS 140-2 Level 3). Keys integrate with OCI services for BYOK encryption of block volumes, object storage, databases, and file storage.",
+      "ccmMapping": ["CEK-01", "CEK-02", "CEK-03", "CEK-04", "CEK-05", "DSP-01"],
+      "tier": "free",
+      "keyFeatures": ["Software-protected keys (free)", "Virtual Private Vault (HSM, paid)", "AES, RSA, and ECDSA keys", "Automatic key rotation", "Secret management (passwords, tokens)", "Integration with all OCI storage and database services"]
+    },
+    {
+      "id": "oci-logging-analytics",
+      "name": "OCI Logging Analytics",
+      "category": "logging",
+      "description": "Cloud-based log management and analytics service with machine learning capabilities. Collects logs from OCI services, on-premises systems, and third-party sources. Provides 300+ pre-built log parsers, ML-based anomaly detection, and cluster analysis for pattern discovery. Includes 10 GB/day free tier.",
+      "ccmMapping": ["LOG-01", "LOG-03", "LOG-05", "LOG-09", "SEF-02"],
+      "tier": "free",
+      "keyFeatures": ["300+ pre-built log parsers", "ML-based anomaly detection", "Log cluster analysis", "Custom parser builder", "Saved searches and dashboards", "10 GB/day free tier"]
+    },
+    {
+      "id": "oci-bastion",
+      "name": "OCI Bastion",
+      "category": "protection",
+      "description": "Managed bastion service that provides restricted and time-limited SSH and SSH-tunneled access to target resources in private subnets. No need to deploy and maintain bastion hosts. Sessions are time-limited (max 3 hours) and logged in OCI Audit. Supports managed SSH, port forwarding, and dynamic port forwarding.",
+      "ccmMapping": ["IAM-01", "IAM-14", "IVS-01", "IVS-06"],
+      "tier": "free",
+      "keyFeatures": ["Managed SSH sessions", "Port forwarding sessions", "Time-limited access (max 3 hours)", "No public IP required on targets", "Audit logging of all sessions", "CIDR-based access control"]
+    },
+    {
+      "id": "oci-waf",
+      "name": "OCI Web Application Firewall (WAF)",
+      "category": "protection",
+      "description": "Web application firewall integrated with OCI Load Balancer and flexible load balancer. Protects web applications against OWASP Top 10 vulnerabilities, bots, and layer 7 DDoS attacks. Supports pre-built protection rules, custom rules, access control (geo-blocking, IP allowlisting), and JavaScript challenge for bot detection.",
+      "ccmMapping": ["IVS-04", "IVS-06", "IVS-09", "TVM-01"],
+      "tier": "paid",
+      "keyFeatures": ["OWASP CRS protection rules", "Bot management", "Access control rules", "Rate limiting", "JavaScript challenge", "Integration with OCI Load Balancer"]
+    },
+    {
+      "id": "oci-network-firewall",
+      "name": "OCI Network Firewall",
+      "category": "protection",
+      "description": "Managed next-generation firewall service powered by Palo Alto Networks technology. Provides stateful inspection, intrusion detection and prevention (IDPS), URL filtering, TLS/SSL inspection, and application-level traffic control for VCN traffic. Deployed as a firewall subnet in the VCN.",
+      "ccmMapping": ["IVS-04", "IVS-06", "IVS-09"],
+      "tier": "paid",
+      "keyFeatures": ["Stateful packet inspection", "Intrusion detection and prevention (IDPS)", "URL filtering", "TLS/SSL inspection", "Application identification", "Palo Alto Networks threat intelligence"]
+    },
+    {
+      "id": "oci-data-safe",
+      "name": "Oracle Data Safe",
+      "category": "protection",
+      "description": "Unified control center for Oracle Database security. Provides security assessment (CIS benchmarks), user assessment (privilege analysis), data discovery and classification, data masking, activity auditing, and SQL firewall. Supports Autonomous Database, DB Systems, ExaDB-D, and on-premises Oracle databases.",
+      "ccmMapping": ["DSP-01", "DSP-02", "DSP-04", "DSP-05", "LOG-01", "LOG-03"],
+      "tier": "free",
+      "keyFeatures": ["Security assessment (CIS checks)", "User assessment (privilege analysis)", "Sensitive data discovery", "Data masking (static and on-the-fly)", "Activity auditing", "SQL Firewall (Autonomous DB 23ai)"]
+    },
+    {
+      "id": "oci-certificates",
+      "name": "OCI Certificates",
+      "category": "encryption",
+      "description": "Certificate management service including a managed private Certificate Authority (CA), certificate lifecycle management, and integration with OCI services. Supports creating private CAs, issuing certificates, automatic renewal, and deployment to OCI Load Balancers and API Gateways. Up to 5 CAs free.",
+      "ccmMapping": ["CEK-01", "CEK-04", "IVS-06"],
+      "tier": "free",
+      "keyFeatures": ["Managed private Certificate Authority", "Certificate lifecycle management", "Automatic certificate renewal", "Integration with Load Balancer", "Up to 5 CAs free", "Certificate revocation lists (CRL)"]
+    },
+    {
+      "id": "oci-audit",
+      "name": "OCI Audit",
+      "category": "logging",
+      "description": "Built-in audit service that automatically records all API calls made to OCI services. Audit events are retained for 365 days at no additional cost. Events include caller identity, timestamp, source IP, request parameters, and response. Supports archiving to Object Storage and streaming to third-party SIEMs.",
+      "ccmMapping": ["LOG-01", "LOG-02", "LOG-03", "LOG-05", "LOG-08", "LOG-09"],
+      "tier": "free",
+      "keyFeatures": ["Automatic API call recording", "365-day retention (free)", "No configuration needed", "Tenancy-wide coverage", "Archive to Object Storage", "Service Connector Hub for SIEM export"]
+    },
+    {
+      "id": "oci-vulnerability-scanning",
+      "name": "OCI Vulnerability Scanning Service (VSS)",
+      "category": "detection",
+      "description": "Automated vulnerability scanning for compute instances and container images. Scans for OS vulnerabilities (CVEs), CIS benchmark compliance, and open ports. Agent-based scanning provides deep OS-level vulnerability assessment. Container image scanning integrates with OCI Container Registry (OCIR).",
+      "ccmMapping": ["TVM-01", "TVM-02", "TVM-03", "TVM-09"],
+      "tier": "free",
+      "keyFeatures": ["OS vulnerability scanning (CVEs)", "CIS benchmark compliance checks", "Open port detection", "Container image scanning", "Agent-based and agentless options", "Integration with Cloud Guard"]
+    },
+    {
+      "id": "oci-vcn",
+      "name": "Virtual Cloud Network (VCN)",
+      "category": "protection",
+      "description": "Software-defined network for OCI resources with full control over IP addressing, subnets, route tables, and gateways. Security lists provide stateful subnet-level rules. Network Security Groups (NSGs) provide stateful rules applied to individual VNICs. OCI's off-box network virtualization keeps the hypervisor isolated from customer traffic.",
+      "ccmMapping": ["IVS-01", "IVS-03", "IVS-06", "IVS-09", "LOG-01"],
+      "tier": "free",
+      "keyFeatures": ["Security lists (subnet-level)", "Network Security Groups (VNIC-level)", "VCN flow logs", "DRG for inter-region and hybrid connectivity", "Service Gateway (access OCI services privately)", "Network Visualizer"]
+    },
+    {
+      "id": "oci-max-security-zone",
+      "name": "Maximum Security Zone",
+      "category": "compliance",
+      "description": "Pre-configured Security Zone recipe with the most restrictive security policies. Enforces encryption with customer-managed keys, prevents public access, requires security list restrictions, and blocks insecure configurations. Designed for workloads with the highest security requirements where no exceptions are acceptable.",
+      "ccmMapping": ["GRC-01", "GRC-02", "GRC-03", "DSP-01", "CCC-01"],
+      "tier": "free",
+      "keyFeatures": ["Maximum security policies enforced", "Customer-managed key encryption required", "No public subnets allowed", "No public IP addresses allowed", "No public Object Storage buckets", "Block volume backup required"]
+    }
+  ]
+}

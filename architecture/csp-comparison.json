@@ -1,0 +1,174 @@
+{
+  "$schema": "cloud-security-v1",
+  "concept": "Cloud Service Provider Security Service Comparison",
+  "sourceType": "paraphrased-from-public-sources",
+  "verificationNote": "Service names from official CSP documentation as of early 2026. Service capabilities evolve rapidly — verify current offerings against CSP documentation. Alibaba Cloud and Huawei Cloud included for ASEAN/Malaysia relevance.",
+  "description": "Side-by-side comparison of security services across major cloud service providers. This mapping enables organisations to identify equivalent controls when operating in multi-cloud environments or evaluating CSP alternatives. Service names are current but CSPs frequently rename, rebrand, or consolidate services.",
+  "categories": [
+    {
+      "category": "Identity and Access Management",
+      "description": "Core identity platform for authentication, authorization, RBAC, and federation",
+      "aws": "AWS IAM, AWS IAM Identity Center (formerly SSO)",
+      "azure": "Microsoft Entra ID (formerly Azure AD), Azure RBAC",
+      "gcp": "Google Cloud IAM, Cloud Identity",
+      "alibaba": "Alibaba Cloud RAM (Resource Access Management)",
+      "huawei": "Huawei Cloud IAM",
+      "oracle": "Oracle Cloud Infrastructure IAM, Oracle Identity Cloud Service",
+      "ccmDomain": "IAM"
+    },
+    {
+      "category": "Privileged Access Management",
+      "description": "Just-in-time privileged access, break-glass accounts, session management",
+      "aws": "AWS IAM Roles Anywhere, AWS Systems Manager Session Manager",
+      "azure": "Microsoft Entra Privileged Identity Management (PIM), Azure Bastion",
+      "gcp": "Google Cloud Privileged Access Manager, IAP (Identity-Aware Proxy)",
+      "alibaba": "Alibaba Cloud Bastionhost",
+      "huawei": "Huawei Cloud Bastionhost (CBH)",
+      "oracle": "Oracle Cloud Infrastructure Bastion",
+      "ccmDomain": "IAM"
+    },
+    {
+      "category": "Multi-Factor Authentication",
+      "description": "MFA enforcement for console and API access",
+      "aws": "AWS IAM MFA (virtual, hardware FIDO2, TOTP)",
+      "azure": "Microsoft Entra MFA (Authenticator, FIDO2, SMS, phone)",
+      "gcp": "Google 2-Step Verification (Titan Security Key, TOTP, prompts)",
+      "alibaba": "Alibaba Cloud MFA (virtual MFA, U2F)",
+      "huawei": "Huawei Cloud MFA (virtual MFA)",
+      "oracle": "Oracle Cloud Infrastructure MFA (TOTP, FIDO2)",
+      "ccmDomain": "IAM"
+    },
+    {
+      "category": "Threat Detection and Security Monitoring",
+      "description": "Cloud-native threat detection, anomaly detection, and security analytics",
+      "aws": "Amazon GuardDuty",
+      "azure": "Microsoft Defender for Cloud, Microsoft Sentinel",
+      "gcp": "Google Security Command Center (SCC), Chronicle Security Operations",
+      "alibaba": "Alibaba Cloud Security Center",
+      "huawei": "Huawei Cloud Security Brain (SA)",
+      "oracle": "Oracle Cloud Guard, Oracle Cloud Infrastructure Security Zones",
+      "ccmDomain": "TVM"
+    },
+    {
+      "category": "Cloud Security Posture Management (CSPM)",
+      "description": "Continuous assessment of cloud resource configuration against security benchmarks",
+      "aws": "AWS Security Hub, AWS Config",
+      "azure": "Microsoft Defender for Cloud (CSPM), Defender Cloud Security Posture Management",
+      "gcp": "Google Security Command Center Premium (SCC Premium)",
+      "alibaba": "Alibaba Cloud Security Center (Config Assessment)",
+      "huawei": "Huawei Cloud Config (RFS)",
+      "oracle": "Oracle Cloud Guard",
+      "ccmDomain": "TVM"
+    },
+    {
+      "category": "Encryption and Key Management",
+      "description": "Key management service, encryption at rest, customer-managed keys, HSM",
+      "aws": "AWS KMS, AWS CloudHSM, AWS ACM (Certificate Manager)",
+      "azure": "Azure Key Vault, Azure Dedicated HSM, Azure Managed HSM",
+      "gcp": "Google Cloud KMS, Cloud HSM, Cloud External Key Manager (EKM)",
+      "alibaba": "Alibaba Cloud KMS, Data Encryption Service",
+      "huawei": "Huawei Cloud KMS, Dedicated HSM",
+      "oracle": "Oracle Cloud Infrastructure Vault, Oracle Key Management",
+      "ccmDomain": "EKM"
+    },
+    {
+      "category": "Network Security",
+      "description": "Virtual network isolation, firewalls, security groups, network ACLs",
+      "aws": "AWS VPC, Security Groups, Network ACLs, AWS Network Firewall",
+      "azure": "Azure VNet, NSG (Network Security Groups), Azure Firewall",
+      "gcp": "Google VPC, Firewall Rules, Cloud Armor, Hierarchical Firewall Policies",
+      "alibaba": "Alibaba Cloud VPC, Security Groups, Cloud Firewall",
+      "huawei": "Huawei Cloud VPC, Security Groups, Cloud Firewall (CFW)",
+      "oracle": "Oracle VCN, Security Lists, Network Security Groups, OCI Network Firewall",
+      "ccmDomain": "IVS"
+    },
+    {
+      "category": "Web Application Firewall (WAF)",
+      "description": "Layer 7 application protection for web applications and APIs",
+      "aws": "AWS WAF",
+      "azure": "Azure Web Application Firewall (on Application Gateway / Front Door)",
+      "gcp": "Google Cloud Armor",
+      "alibaba": "Alibaba Cloud WAF",
+      "huawei": "Huawei Cloud WAF",
+      "oracle": "Oracle Cloud Infrastructure WAF",
+      "ccmDomain": "IVS"
+    },
+    {
+      "category": "DDoS Protection",
+      "description": "Distributed denial-of-service protection at network and application layers",
+      "aws": "AWS Shield Standard (free), AWS Shield Advanced",
+      "azure": "Azure DDoS Protection (Basic free, Standard paid)",
+      "gcp": "Google Cloud Armor (DDoS protection included)",
+      "alibaba": "Alibaba Cloud Anti-DDoS",
+      "huawei": "Huawei Cloud Anti-DDoS (AAD)",
+      "oracle": "Oracle Cloud Infrastructure DDoS Protection",
+      "ccmDomain": "IVS"
+    },
+    {
+      "category": "Audit Logging and Cloud Trail",
+      "description": "API activity logging, management plane audit trail, data access logging",
+      "aws": "AWS CloudTrail, AWS CloudTrail Lake",
+      "azure": "Azure Activity Log, Azure Monitor, Microsoft Entra Audit Logs",
+      "gcp": "Google Cloud Audit Logs (Admin Activity, Data Access, System Event)",
+      "alibaba": "Alibaba Cloud ActionTrail",
+      "huawei": "Huawei Cloud Cloud Trace Service (CTS)",
+      "oracle": "Oracle Cloud Infrastructure Audit Service",
+      "ccmDomain": "LOG"
+    },
+    {
+      "category": "Centralised Logging and SIEM",
+      "description": "Log aggregation, search, analysis, and security information and event management",
+      "aws": "Amazon CloudWatch Logs, Amazon OpenSearch Service, Amazon Security Lake",
+      "azure": "Azure Monitor Logs (Log Analytics), Microsoft Sentinel",
+      "gcp": "Google Cloud Logging, Chronicle Security Operations, BigQuery (for log analytics)",
+      "alibaba": "Alibaba Cloud Log Service (SLS)",
+      "huawei": "Huawei Cloud Log Tank Service (LTS)",
+      "oracle": "Oracle Cloud Infrastructure Logging, Oracle Logging Analytics",
+      "ccmDomain": "LOG"
+    },
+    {
+      "category": "Secrets Management",
+      "description": "Secure storage and rotation of application secrets, API keys, database credentials",
+      "aws": "AWS Secrets Manager, AWS Systems Manager Parameter Store",
+      "azure": "Azure Key Vault (Secrets), Azure App Configuration",
+      "gcp": "Google Secret Manager",
+      "alibaba": "Alibaba Cloud KMS (Secrets Manager)",
+      "huawei": "Huawei Cloud CSMS (Cloud Secret Management Service)",
+      "oracle": "Oracle Cloud Infrastructure Vault (Secrets)",
+      "ccmDomain": "EKM"
+    },
+    {
+      "category": "Container Security",
+      "description": "Container image scanning, runtime protection, registry security, Kubernetes security",
+      "aws": "Amazon ECR Image Scanning, Amazon Inspector (container), Amazon GuardDuty EKS Protection",
+      "azure": "Microsoft Defender for Containers, Azure Container Registry vulnerability scanning",
+      "gcp": "Google Artifact Analysis, GKE Security Posture, Binary Authorization",
+      "alibaba": "Alibaba Cloud Container Registry (ACR) Image Scanning, Security Center Container Protection",
+      "huawei": "Huawei Cloud Container Guard Service (CGS)",
+      "oracle": "Oracle Cloud Infrastructure Vulnerability Scanning (container images)",
+      "ccmDomain": "CCC"
+    },
+    {
+      "category": "Data Loss Prevention (DLP)",
+      "description": "Discovery, classification, and protection of sensitive data in cloud storage and services",
+      "aws": "Amazon Macie",
+      "azure": "Microsoft Purview Data Loss Prevention, Microsoft Purview Information Protection",
+      "gcp": "Google Cloud DLP (Sensitive Data Protection)",
+      "alibaba": "Alibaba Cloud Sensitive Data Discovery and Protection (SDDP)",
+      "huawei": "Huawei Cloud Data Security Center (DSC)",
+      "oracle": "Oracle Cloud Infrastructure Data Safe",
+      "ccmDomain": "DSP"
+    },
+    {
+      "category": "Vulnerability Management",
+      "description": "Automated vulnerability scanning for compute instances, containers, and serverless functions",
+      "aws": "Amazon Inspector",
+      "azure": "Microsoft Defender for Cloud (Vulnerability Assessment), Microsoft Defender Vulnerability Management",
+      "gcp": "Google Security Command Center (vulnerability findings), VM Manager OS Patch Compliance",
+      "alibaba": "Alibaba Cloud Security Center (Vulnerability Management)",
+      "huawei": "Huawei Cloud Vulnerability Scan Service (VSS)",
+      "oracle": "Oracle Cloud Infrastructure Vulnerability Scanning Service",
+      "ccmDomain": "TVM"
+    }
+  ]
+}

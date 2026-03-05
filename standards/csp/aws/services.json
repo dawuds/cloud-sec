@@ -1,0 +1,223 @@
+{
+  "csp": "aws",
+  "version": "2024-01",
+  "serviceCount": 24,
+  "services": [
+    {
+      "id": "aws-iam",
+      "name": "AWS Identity and Access Management (IAM)",
+      "category": "identity",
+      "description": "Centralized identity and access control for all AWS services. Supports users, groups, roles, and policies with fine-grained permissions. Enables federation with external identity providers via SAML 2.0 and OIDC. Supports attribute-based access control (ABAC) and service control policies in Organizations.",
+      "ccmMapping": ["IAM-01", "IAM-02", "IAM-03", "IAM-04", "IAM-06", "IAM-12", "HRS-04"],
+      "tier": "free",
+      "keyFeatures": ["Policy-based access control", "Roles for cross-account access", "MFA enforcement", "Permission boundaries", "Service-linked roles", "Identity federation"]
+    },
+    {
+      "id": "aws-organizations",
+      "name": "AWS Organizations",
+      "category": "compliance",
+      "description": "Centralized management of multiple AWS accounts with hierarchical organizational units (OUs). Service Control Policies (SCPs) provide guardrails that restrict permissions across member accounts regardless of IAM policies. Essential for multi-account security strategies.",
+      "ccmMapping": ["IAM-01", "IAM-04", "GRC-01", "GRC-02"],
+      "tier": "free",
+      "keyFeatures": ["Service Control Policies", "Organizational Units", "Consolidated billing", "Delegated administration", "Account factory integration"]
+    },
+    {
+      "id": "aws-guardduty",
+      "name": "Amazon GuardDuty",
+      "category": "detection",
+      "description": "Managed threat detection service that continuously monitors for malicious activity and unauthorized behavior. Analyzes CloudTrail management and data events, VPC Flow Logs, DNS logs, EKS audit logs, RDS login activity, Lambda network activity, and S3 data plane events using machine learning and threat intelligence.",
+      "ccmMapping": ["TVM-01", "TVM-02", "LOG-03", "SEF-02", "SEF-04"],
+      "tier": "paid",
+      "keyFeatures": ["ML-based anomaly detection", "Threat intelligence feeds", "Multi-account management", "EKS/S3/RDS/Lambda protection", "Malware scanning for EC2/EBS", "30-day free trial"]
+    },
+    {
+      "id": "aws-security-hub",
+      "name": "AWS Security Hub",
+      "category": "compliance",
+      "description": "Central security findings aggregator that collects, normalizes, and prioritizes findings from GuardDuty, Inspector, Macie, Firewall Manager, IAM Access Analyzer, and third-party tools using AWS Security Finding Format (ASFF). Runs automated compliance checks against CIS AWS Foundations, AWS Foundational Security Best Practices, PCI DSS, and NIST 800-53.",
+      "ccmMapping": ["GRC-01", "GRC-02", "GRC-03", "TVM-01", "LOG-09"],
+      "tier": "paid",
+      "keyFeatures": ["ASFF normalization", "Automated compliance checks", "Cross-account aggregation", "Automated response via EventBridge", "Custom insights", "Integration with 70+ partners"]
+    },
+    {
+      "id": "aws-cloudtrail",
+      "name": "AWS CloudTrail",
+      "category": "logging",
+      "description": "Records all API calls made in an AWS account as events, providing a complete audit trail of actions taken through the console, CLI, SDKs, and other AWS services. Management events are logged by default for 90 days. Trail creation enables long-term storage in S3 with optional CloudWatch Logs integration.",
+      "ccmMapping": ["LOG-01", "LOG-02", "LOG-03", "LOG-05", "LOG-08", "LOG-09", "LOG-13"],
+      "tier": "free",
+      "keyFeatures": ["Management event logging (free)", "Data event logging (paid)", "CloudTrail Lake (SQL queries)", "Organization trails", "Log file integrity validation", "Insights for anomaly detection"]
+    },
+    {
+      "id": "aws-config",
+      "name": "AWS Config",
+      "category": "compliance",
+      "description": "Continuously records AWS resource configurations and evaluates them against desired configurations using Config Rules. Provides a configuration timeline showing how resources changed over time. Conformance packs bundle related rules for frameworks like CIS, PCI DSS, and NIST.",
+      "ccmMapping": ["GRC-01", "GRC-02", "GRC-03", "CCC-01", "CCC-02"],
+      "tier": "paid",
+      "keyFeatures": ["Resource configuration recording", "Managed and custom rules", "Conformance packs", "Remediation actions", "Multi-account aggregation", "Advanced queries"]
+    },
+    {
+      "id": "aws-macie",
+      "name": "Amazon Macie",
+      "category": "protection",
+      "description": "ML-powered data security service that automatically discovers, classifies, and protects sensitive data stored in Amazon S3. Identifies PII, financial data, credentials, and custom data types. Generates findings when sensitive data is found in buckets with public access or lacking encryption.",
+      "ccmMapping": ["DSP-01", "DSP-02", "DSP-04", "DSP-05", "DSP-10"],
+      "tier": "paid",
+      "keyFeatures": ["Automated sensitive data discovery", "Custom data identifiers", "S3 bucket inventory", "Policy and sensitive data findings", "Multi-account support", "30-day free trial"]
+    },
+    {
+      "id": "aws-kms",
+      "name": "AWS Key Management Service (KMS)",
+      "category": "encryption",
+      "description": "Managed service for creating and controlling cryptographic keys used to encrypt data across AWS services. Supports symmetric and asymmetric keys, automatic key rotation, and key policies for fine-grained access control. Integrated with 100+ AWS services for server-side encryption.",
+      "ccmMapping": ["CEK-01", "CEK-02", "CEK-03", "CEK-04", "CEK-05", "DSP-01"],
+      "tier": "paid",
+      "keyFeatures": ["AWS-managed and customer-managed keys", "Automatic annual key rotation", "Key policies and grants", "Multi-region keys", "FIPS 140-2 Level 3 HSMs (CloudHSM)", "Envelope encryption"]
+    },
+    {
+      "id": "aws-inspector",
+      "name": "Amazon Inspector",
+      "category": "detection",
+      "description": "Automated vulnerability management service that continually scans EC2 instances, container images in ECR, and Lambda functions for software vulnerabilities and unintended network exposure. Uses the CVE database and network reachability analysis to generate prioritized findings with risk scores.",
+      "ccmMapping": ["TVM-01", "TVM-02", "TVM-03", "TVM-04", "TVM-09"],
+      "tier": "paid",
+      "keyFeatures": ["Continuous automated scanning", "EC2/ECR/Lambda coverage", "CVE-based findings", "Risk score prioritization", "SBOM export", "Integration with Security Hub"]
+    },
+    {
+      "id": "aws-waf",
+      "name": "AWS WAF",
+      "category": "protection",
+      "description": "Web application firewall that protects web applications from common exploits. Deployed on CloudFront, ALB, API Gateway, AppSync, or Cognito. Supports managed rule groups (AWS, marketplace), custom rules with rate limiting, geo-blocking, IP reputation lists, and bot control.",
+      "ccmMapping": ["IVS-04", "IVS-06", "IVS-09", "TVM-01"],
+      "tier": "paid",
+      "keyFeatures": ["Managed rule groups", "Custom rules with conditions", "Rate-based rules", "Bot Control", "Account Takeover Prevention", "Fraud Control"]
+    },
+    {
+      "id": "aws-shield",
+      "name": "AWS Shield",
+      "category": "protection",
+      "description": "Managed DDoS protection service. Shield Standard provides automatic protection against common L3/L4 attacks for all AWS customers at no cost. Shield Advanced adds L7 protection, real-time visibility, DDoS Response Team access, and cost protection for scaling during attacks.",
+      "ccmMapping": ["IVS-04", "IVS-06", "IVS-09"],
+      "tier": "free",
+      "keyFeatures": ["Shield Standard (free, automatic)", "Shield Advanced (paid, L7 protection)", "DDoS Response Team (DRT)", "Cost protection", "Health-based detection", "Proactive engagement"]
+    },
+    {
+      "id": "aws-vpc",
+      "name": "Amazon Virtual Private Cloud (VPC)",
+      "category": "protection",
+      "description": "Isolated virtual network for AWS resources with full control over IP addressing, subnets, route tables, and gateways. Security groups provide stateful instance-level firewalling. Network ACLs provide stateless subnet-level controls. VPC Flow Logs capture network traffic metadata.",
+      "ccmMapping": ["IVS-01", "IVS-03", "IVS-06", "IVS-09", "LOG-01"],
+      "tier": "free",
+      "keyFeatures": ["Security groups (stateful)", "Network ACLs (stateless)", "VPC Flow Logs", "Public and private subnets", "NAT Gateways", "VPC peering and Transit Gateway"]
+    },
+    {
+      "id": "aws-privatelink",
+      "name": "AWS PrivateLink",
+      "category": "protection",
+      "description": "Provides private connectivity between VPCs, AWS services, and on-premises networks without exposing traffic to the public internet. Creates interface VPC endpoints powered by ENIs in your subnets. Eliminates the need for internet gateways, NAT devices, or VPN connections for accessing supported AWS services.",
+      "ccmMapping": ["IVS-01", "IVS-03", "IVS-06"],
+      "tier": "paid",
+      "keyFeatures": ["Private connectivity to AWS services", "Interface VPC endpoints", "Gateway endpoints (S3, DynamoDB - free)", "Endpoint policies", "Cross-account access", "On-premises access via Direct Connect/VPN"]
+    },
+    {
+      "id": "aws-secrets-manager",
+      "name": "AWS Secrets Manager",
+      "category": "encryption",
+      "description": "Securely stores, rotates, and retrieves database credentials, API keys, and other secrets. Supports automatic rotation with built-in Lambda functions for RDS, Redshift, and DocumentDB. Secrets are encrypted with KMS and can be replicated across regions.",
+      "ccmMapping": ["CEK-01", "CEK-03", "IAM-02", "DSP-01"],
+      "tier": "paid",
+      "keyFeatures": ["Automatic secret rotation", "Cross-region replication", "Fine-grained IAM policies", "Versioning", "Resource-based policies", "Integration with RDS, Redshift, DocumentDB"]
+    },
+    {
+      "id": "aws-acm",
+      "name": "AWS Certificate Manager (ACM)",
+      "category": "encryption",
+      "description": "Provisions, manages, and deploys SSL/TLS certificates for use with AWS services. Public certificates are free and auto-renew. Private CA capability enables issuing private certificates for internal resources. Integrated with ELB, CloudFront, API Gateway, and other services.",
+      "ccmMapping": ["CEK-01", "CEK-04", "IVS-06"],
+      "tier": "free",
+      "keyFeatures": ["Free public SSL/TLS certificates", "Automatic renewal", "Private Certificate Authority", "Domain validation", "Integration with ALB/CloudFront/API GW", "Certificate transparency logging"]
+    },
+    {
+      "id": "aws-detective",
+      "name": "Amazon Detective",
+      "category": "detection",
+      "description": "Analyzes and visualizes security data to rapidly investigate potential security issues. Automatically collects log data from CloudTrail, VPC Flow Logs, GuardDuty findings, and EKS audit logs, then uses ML and graph analysis to build a unified interactive view for root cause analysis.",
+      "ccmMapping": ["SEF-02", "SEF-04", "SEF-05", "LOG-09"],
+      "tier": "paid",
+      "keyFeatures": ["Automatic log collection", "Graph-based analysis", "Entity profiling", "Finding group investigation", "Integration with GuardDuty and Security Hub", "30-day free trial"]
+    },
+    {
+      "id": "aws-access-analyzer",
+      "name": "IAM Access Analyzer",
+      "category": "identity",
+      "description": "Analyzes resource-based policies to identify resources shared with external entities. Validates IAM policies against best practices and generates policies based on access activity. Identifies unused access (roles, access keys, passwords) to support least privilege.",
+      "ccmMapping": ["IAM-01", "IAM-02", "IAM-04", "IAM-06"],
+      "tier": "free",
+      "keyFeatures": ["External access findings", "Policy validation", "Policy generation from activity", "Unused access analysis", "Custom policy checks", "Multi-account via Organizations"]
+    },
+    {
+      "id": "aws-firewall-manager",
+      "name": "AWS Firewall Manager",
+      "category": "protection",
+      "description": "Central security management service that allows you to configure and manage firewall rules across accounts and resources in AWS Organizations. Manages WAF rules, Shield Advanced protections, VPC security groups, Network Firewall policies, and Route 53 Resolver DNS Firewall rules from a single pane.",
+      "ccmMapping": ["IVS-04", "IVS-06", "IVS-09", "GRC-01"],
+      "tier": "paid",
+      "keyFeatures": ["Cross-account policy management", "WAF rule management", "Security group auditing", "Shield Advanced management", "Network Firewall policies", "Automatic remediation"]
+    },
+    {
+      "id": "aws-control-tower",
+      "name": "AWS Control Tower",
+      "category": "compliance",
+      "description": "Service for setting up and governing a secure, multi-account AWS environment based on AWS best practices. Provides a landing zone with pre-configured accounts, mandatory and elective guardrails (preventive SCPs and detective Config rules), and account factory for standardized provisioning.",
+      "ccmMapping": ["GRC-01", "GRC-02", "GRC-03", "IAM-01"],
+      "tier": "free",
+      "keyFeatures": ["Landing zone setup", "Mandatory guardrails", "Elective guardrails", "Account Factory", "Dashboard for compliance status", "Integration with Organizations and SSO"]
+    },
+    {
+      "id": "aws-audit-manager",
+      "name": "AWS Audit Manager",
+      "category": "compliance",
+      "description": "Continuously audits AWS usage to simplify risk and compliance assessment. Maps AWS activity to controls in frameworks like CIS, PCI DSS, SOC 2, GDPR, HIPAA, and custom frameworks. Automates evidence collection from Config, CloudTrail, Security Hub, and manual uploads.",
+      "ccmMapping": ["GRC-01", "GRC-02", "GRC-03", "GRC-05", "A&A-01", "A&A-02"],
+      "tier": "paid",
+      "keyFeatures": ["Pre-built framework assessments", "Automated evidence collection", "Custom frameworks", "Delegation workflows", "Assessment reports", "Integration with Config and Security Hub"]
+    },
+    {
+      "id": "aws-network-firewall",
+      "name": "AWS Network Firewall",
+      "category": "protection",
+      "description": "Managed network firewall service for VPCs providing stateful inspection, intrusion prevention (IPS), and web filtering. Supports Suricata-compatible IPS rules, domain filtering, and custom rule groups. Deployed in firewall subnets with traffic routing via VPC route tables.",
+      "ccmMapping": ["IVS-04", "IVS-06", "IVS-09"],
+      "tier": "paid",
+      "keyFeatures": ["Stateful packet inspection", "Suricata-compatible IPS rules", "Domain name filtering", "TLS inspection", "Centralized management via Firewall Manager", "VPC-level deployment"]
+    },
+    {
+      "id": "aws-verified-access",
+      "name": "AWS Verified Access",
+      "category": "identity",
+      "description": "Provides secure access to corporate applications without requiring a VPN. Validates each access request in real-time against identity and device security policies using trust providers (IAM Identity Center, Okta, CrowdStrike, Jamf). Implements zero-trust network access principles.",
+      "ccmMapping": ["IAM-01", "IAM-02", "IAM-14", "IVS-01"],
+      "tier": "paid",
+      "keyFeatures": ["VPN-less application access", "Per-request policy evaluation", "Identity trust providers", "Device trust providers", "Access logs for auditing", "Zero-trust architecture"]
+    },
+    {
+      "id": "aws-identity-center",
+      "name": "AWS IAM Identity Center (SSO)",
+      "category": "identity",
+      "description": "Centrally manages workforce access to multiple AWS accounts and business applications. Provides single sign-on with built-in identity store or federation with external IdPs (Active Directory, Okta, Azure AD). Permission sets define access levels for AWS accounts.",
+      "ccmMapping": ["IAM-01", "IAM-02", "IAM-04", "IAM-12"],
+      "tier": "free",
+      "keyFeatures": ["Multi-account SSO", "Built-in identity store", "External IdP federation", "Permission sets", "ABAC support", "Application assignments"]
+    },
+    {
+      "id": "aws-cloudwatch",
+      "name": "Amazon CloudWatch",
+      "category": "logging",
+      "description": "Monitoring and observability service that collects metrics, logs, and events from AWS resources and applications. CloudWatch Logs stores and queries log data. CloudWatch Alarms trigger notifications and automated actions. Contributor Insights identifies top contributors to operational issues.",
+      "ccmMapping": ["LOG-01", "LOG-03", "LOG-05", "LOG-09", "SEF-02"],
+      "tier": "free",
+      "keyFeatures": ["Metrics collection and dashboards", "Log aggregation and queries", "Alarms and notifications", "Anomaly detection", "Contributor Insights", "Log Insights query language"]
+    }
+  ]
+}

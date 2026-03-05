@@ -1,0 +1,53 @@
+{
+  "$schema": "cloud-security-v1",
+  "sourceType": "constructed-indicative",
+  "verificationNote": "Requirements constructed from CSA CCM v4, NIST CSF 2.0, and Malaysia Act 854 obligations. Verify against authoritative sources before use in formal assessments.",
+  "domain": {
+    "id": "serverless-security",
+    "name": "Serverless Security",
+    "description": "Requirements for securing serverless compute (functions-as-a-service) and API gateway architectures. Serverless shifts infrastructure security responsibility to the CSP but introduces new attack vectors around function configuration, event injection, and dependency management.",
+    "ccmDomains": ["AIS"],
+    "nacsa": ["s18"]
+  },
+  "requirements": [
+    {
+      "id": "AIS-R1",
+      "title": "Serverless Function Security Configuration",
+      "description": "Secure serverless functions with dedicated least-privilege IAM roles, encrypted environment variables, appropriate timeout and memory limits, and VPC placement for functions accessing private resources. Implement input validation for all event sources to prevent injection attacks.",
+      "priority": "high",
+      "ccmControls": ["AIS-01", "AIS-04"],
+      "nacsa": ["s18"],
+      "cspGuidance": {
+        "aws": "Create per-function IAM roles with minimal policies (no * resources). Store secrets in Secrets Manager or Parameter Store. Place functions in VPC when accessing RDS or ElastiCache. Set concurrency limits.",
+        "azure": "Use Managed Identity per Function App (system-assigned preferred). Reference secrets from Key Vault. Deploy in VNet-integrated App Service Plan for private resource access. Configure CORS and authentication.",
+        "gcp": "Use per-function service accounts with minimal permissions. Mount secrets from Secret Manager. Use VPC connectors for private resource access. Set maximum instances and timeout limits."
+      }
+    },
+    {
+      "id": "AIS-R2",
+      "title": "API Gateway Security",
+      "description": "Secure API gateways with authentication (OAuth 2.0/OIDC), request schema validation, rate limiting, and TLS enforcement. Apply WAF rules to API endpoints. Implement per-client throttling and usage plans to prevent abuse.",
+      "priority": "high",
+      "ccmControls": ["AIS-02", "AIS-03"],
+      "nacsa": ["s18"],
+      "cspGuidance": {
+        "aws": "Use API Gateway with Cognito or Lambda authorizers. Configure usage plans with API keys for rate limiting. Enable request validation. Deploy WAF on API Gateway for OWASP protection.",
+        "azure": "Use Azure API Management with OAuth 2.0 inbound policies. Configure rate limiting and throttling policies. Enable request validation. Integrate with Entra ID for authentication.",
+        "gcp": "Use Cloud Endpoints or Apigee. Configure API keys and OAuth with Identity Platform. Apply quota policies per client. Deploy Cloud Armor for API protection."
+      }
+    },
+    {
+      "id": "AIS-R3",
+      "title": "Serverless Dependency Scanning",
+      "description": "Scan serverless function dependencies for known vulnerabilities in CI/CD pipelines. Monitor deployed functions for newly disclosed CVEs in their dependency tree. Block deployment of functions with unresolved critical vulnerabilities. Generate SBOM for all serverless deployments.",
+      "priority": "medium",
+      "ccmControls": ["AIS-04", "STA-03"],
+      "nacsa": ["s18"],
+      "cspGuidance": {
+        "aws": "Use Inspector for Lambda function scanning. Integrate Snyk or OWASP Dependency-Check in CodePipeline. Enable Lambda code signing to verify deployment integrity.",
+        "azure": "Use Defender for Cloud DevOps security for function scanning. Integrate Snyk or GitHub Dependabot in Azure Pipelines. Enable function app authentication and HTTPS-only.",
+        "gcp": "Use Artifact Analysis for dependency scanning. Integrate in Cloud Build. Enable Software Delivery Shield for supply chain visibility. Scan Cloud Functions deployment packages."
+      }
+    }
+  ]
+}

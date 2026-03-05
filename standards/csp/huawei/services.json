@@ -1,0 +1,115 @@
+{
+  "csp": "huawei",
+  "version": "2024-01",
+  "serviceCount": 12,
+  "services": [
+    {
+      "id": "huawei-iam",
+      "name": "Identity and Access Management (IAM)",
+      "category": "identity",
+      "description": "Centralized identity service for managing users, user groups, and permissions for Huawei Cloud resources. Supports fine-grained permission policies, federated identity via SAML 2.0 and OIDC, agency-based cross-account delegation, and MFA enforcement. The IAM console provides a security scorecard with recommendations.",
+      "ccmMapping": ["IAM-01", "IAM-02", "IAM-03", "IAM-04", "IAM-06"],
+      "tier": "free",
+      "keyFeatures": ["Users, user groups, and agencies", "System and custom policies", "SAML 2.0 and OIDC federation", "MFA (virtual and hardware)", "Access key management", "Security settings and password policies"]
+    },
+    {
+      "id": "huawei-hss",
+      "name": "Host Security Service (HSS)",
+      "category": "detection",
+      "description": "Server workload protection platform providing asset management, vulnerability scanning, baseline checking, intrusion detection, and ransomware prevention. Agent-based service that protects ECS instances, BMSs, and containers. Premium edition adds web tamper protection, application whitelisting, and file integrity monitoring.",
+      "ccmMapping": ["TVM-01", "TVM-02", "TVM-03", "SEF-02", "SEF-04"],
+      "tier": "paid",
+      "keyFeatures": ["Vulnerability scanning and fixing", "Security baseline checks (CIS)", "Intrusion detection (brute force, webshell, reverse shell)", "Ransomware prevention", "Container security scanning", "Web tamper protection (Premium)"]
+    },
+    {
+      "id": "huawei-dew",
+      "name": "Data Encryption Workshop (DEW)",
+      "category": "encryption",
+      "description": "Encryption key management service including KMS (Key Management Service), Dedicated HSM, and Key Pair Service. KMS provides managed encryption key creation, rotation, and usage. Dedicated HSM offers FIPS 140-2 Level 3 certified hardware security modules. Integrates with OBS, EVS, RDS, and other services for BYOK encryption.",
+      "ccmMapping": ["CEK-01", "CEK-02", "CEK-03", "CEK-04", "CEK-05"],
+      "tier": "paid",
+      "keyFeatures": ["Key Management Service (KMS)", "Dedicated HSM instances", "Key Pair Service for SSH", "Automatic key rotation", "Customer-managed keys (CMK)", "Envelope encryption support"]
+    },
+    {
+      "id": "huawei-cts",
+      "name": "Cloud Trace Service (CTS)",
+      "category": "logging",
+      "description": "Audit logging service that records operations on Huawei Cloud resources. Captures management events (console, API, system) for 7 days by default. Tracker creation enables long-term export to OBS (Object Storage Service) for compliance and forensic analysis. Equivalent to AWS CloudTrail.",
+      "ccmMapping": ["LOG-01", "LOG-02", "LOG-03", "LOG-05", "LOG-08", "LOG-09"],
+      "tier": "free",
+      "keyFeatures": ["Management trace recording", "Data trace recording", "7-day default retention", "Export to OBS for long-term storage", "Real-time event notification via SMN", "Multi-project trace aggregation"]
+    },
+    {
+      "id": "huawei-cfw",
+      "name": "Cloud Firewall (CFW)",
+      "category": "protection",
+      "description": "Cloud-native network firewall providing traffic control for internet-facing (north-south) and inter-VPC (east-west) traffic. Supports access control lists, intrusion prevention system (IPS), domain name filtering, and traffic analysis. Centralized policy management across multiple VPCs.",
+      "ccmMapping": ["IVS-04", "IVS-06", "IVS-09"],
+      "tier": "paid",
+      "keyFeatures": ["Internet border firewall", "VPC border firewall (east-west)", "Intrusion Prevention System (IPS)", "Domain name filtering", "Traffic analysis and logs", "Access control policies"]
+    },
+    {
+      "id": "huawei-waf",
+      "name": "Web Application Firewall (WAF)",
+      "category": "protection",
+      "description": "Protects web applications from common web attacks including SQL injection, XSS, command injection, and web shells. Supports OWASP Top 10 protection, bot management, CC attack protection, precise access control, and anti-crawler capabilities. Deployed as cloud WAF (CNAME) or dedicated WAF (in-VPC).",
+      "ccmMapping": ["IVS-04", "IVS-06", "IVS-09", "TVM-01"],
+      "tier": "paid",
+      "keyFeatures": ["OWASP Top 10 protection", "Bot and crawler management", "CC attack protection", "IP reputation and geo-blocking", "Custom protection rules", "Dedicated WAF instances (Premium)"]
+    },
+    {
+      "id": "huawei-anti-ddos",
+      "name": "Anti-DDoS Service",
+      "category": "protection",
+      "description": "Multi-tier DDoS protection service. Anti-DDoS provides free basic L3/L4 protection for all Huawei Cloud resources. Advanced Anti-DDoS provides dedicated scrubbing with higher mitigation capacity. CNAD (Cloud Native Anti-DDoS) provides enhanced protection without traffic diversion for reduced latency.",
+      "ccmMapping": ["IVS-04", "IVS-06", "IVS-09"],
+      "tier": "free",
+      "keyFeatures": ["Basic protection (free, automatic)", "Advanced protection (dedicated scrubbing)", "CNAD (cloud-native, no traffic diversion)", "L3/L4/L7 attack mitigation", "Attack event dashboard", "Traffic baseline learning"]
+    },
+    {
+      "id": "huawei-dbss",
+      "name": "Database Security Service (DBSS)",
+      "category": "protection",
+      "description": "Database audit and protection service that monitors database activity in real time. Captures all SQL operations for compliance auditing. Provides SQL injection detection, sensitive data access alerts, and risk behavior analysis. Supports RDS, GaussDB, DDS, and self-built databases on ECS.",
+      "ccmMapping": ["LOG-01", "LOG-03", "DSP-01", "DSP-04", "DSP-05"],
+      "tier": "paid",
+      "keyFeatures": ["Real-time SQL audit logging", "SQL injection detection", "Sensitive data access monitoring", "Risk behavior analysis", "Compliance reports (PCI DSS, SOX)", "Support for 20+ database types"]
+    },
+    {
+      "id": "huawei-cbh",
+      "name": "Cloud Bastion Host (CBH)",
+      "category": "identity",
+      "description": "Managed bastion host for centralized operations and maintenance access control. Provides a single entry point for SSH, RDP, and database access to cloud resources. All sessions are recorded for audit compliance. Supports multi-factor authentication, access approval workflows, and command filtering.",
+      "ccmMapping": ["IAM-01", "IAM-14", "LOG-01", "LOG-03"],
+      "tier": "paid",
+      "keyFeatures": ["Centralized O&M access gateway", "Session recording (video + commands)", "Multi-factor authentication", "Access approval workflows", "Command filtering and blocking", "Credential vault for managed accounts"]
+    },
+    {
+      "id": "huawei-sa",
+      "name": "Situation Awareness (SA)",
+      "category": "detection",
+      "description": "Security operations center platform providing unified threat detection, security posture assessment, and incident investigation. Aggregates security events from HSS, WAF, Anti-DDoS, CFW, and other security services. Provides threat intelligence integration, attack chain analysis, and compliance dashboards.",
+      "ccmMapping": ["SEF-02", "SEF-04", "SEF-05", "TVM-01", "GRC-01"],
+      "tier": "paid",
+      "keyFeatures": ["Unified security dashboard", "Threat detection and alerts", "Attack chain analysis", "Threat intelligence feeds", "Compliance assessment (baseline checks)", "Security report generation"]
+    },
+    {
+      "id": "huawei-vpc",
+      "name": "Virtual Private Cloud (VPC)",
+      "category": "protection",
+      "description": "Isolated virtual network for Huawei Cloud resources with configurable IP addressing, subnets, route tables, and gateways. Security groups provide stateful instance-level access control. Network ACLs provide stateless subnet-level filtering. VPC flow logs enable network traffic analysis.",
+      "ccmMapping": ["IVS-01", "IVS-03", "IVS-06", "IVS-09", "LOG-01"],
+      "tier": "free",
+      "keyFeatures": ["Security groups (stateful)", "Network ACLs (stateless)", "VPC flow logs", "VPC peering and Enterprise Router", "NAT Gateway", "VPC Endpoint (PrivateLink equivalent)"]
+    },
+    {
+      "id": "huawei-lts",
+      "name": "Log Tank Service (LTS)",
+      "category": "logging",
+      "description": "Centralized log management service for collecting, storing, and analyzing logs from Huawei Cloud services and applications. Provides real-time log query, structured log analysis, alerting, and visualization dashboards. Integrates with CTS, ECS, ELB, VPC flow logs, and container services for comprehensive logging.",
+      "ccmMapping": ["LOG-01", "LOG-03", "LOG-05", "LOG-09"],
+      "tier": "paid",
+      "keyFeatures": ["Real-time log collection and indexing", "Structured log query language", "Log-based alerting", "Dashboard visualization", "Log transfer to OBS for archival", "Integration with 30+ cloud services"]
+    }
+  ]
+}

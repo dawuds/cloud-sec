@@ -1,0 +1,405 @@
+{
+  "framework": "CIS Microsoft Azure Foundations Benchmark",
+  "version": "2.1.0",
+  "releaseDate": "2024-02",
+  "csp": "azure",
+  "description": "The CIS Microsoft Azure Foundations Benchmark provides prescriptive guidance for configuring security options for Azure subscriptions. It covers identity, Microsoft Defender for Cloud, storage accounts, database services, logging and monitoring, networking, virtual machines, key management, and App Service.",
+  "levels": {
+    "1": "Basic security settings recommended for all Azure subscriptions. Can be implemented without significant operational impact.",
+    "2": "Advanced security settings for high-security environments. May have operational or cost implications."
+  },
+  "sections": [
+    {
+      "id": "1",
+      "title": "Identity and Access Management",
+      "description": "Controls for managing Azure identities through Microsoft Entra ID, including authentication strength, conditional access, privileged access management, and guest user restrictions.",
+      "checks": [
+        {
+          "id": "1.1.1",
+          "title": "Ensure Security Defaults is disabled on Azure Active Directory",
+          "level": 1,
+          "automated": true,
+          "description": "Security Defaults provide basic identity security but are mutually exclusive with Conditional Access policies. Organizations using Conditional Access for more granular control should disable Security Defaults to avoid conflicts. This assumes Conditional Access policies are properly configured."
+        },
+        {
+          "id": "1.1.4",
+          "title": "Ensure that 'Number of methods required to reset' is set to '2'",
+          "level": 1,
+          "automated": true,
+          "description": "Self-service password reset (SSPR) should require at least two authentication methods to reset a password. This prevents an attacker from resetting a user's password using a single compromised authentication method."
+        },
+        {
+          "id": "1.2.1",
+          "title": "Ensure Trusted Locations Are Defined",
+          "level": 1,
+          "automated": true,
+          "description": "Define trusted locations (known IP ranges or countries) in Conditional Access. Trusted locations enable policies that reduce MFA friction for users in known locations while requiring stronger authentication from unknown locations."
+        },
+        {
+          "id": "1.2.2",
+          "title": "Ensure that an exclusionary Geographic Access Policy is considered",
+          "level": 1,
+          "automated": false,
+          "description": "Consider creating Conditional Access policies that block sign-ins from countries or regions where the organization does not operate. This reduces exposure to credential stuffing and brute force attacks from untrusted geographies."
+        },
+        {
+          "id": "1.2.5",
+          "title": "Ensure Multi-Factor Authentication is Required for Azure Management",
+          "level": 1,
+          "automated": true,
+          "description": "Create a Conditional Access policy that requires MFA when accessing Azure management (portal, CLI, PowerShell, ARM). This protects administrative access to Azure resources from compromised credentials."
+        },
+        {
+          "id": "1.2.6",
+          "title": "Ensure that account lockout threshold is set to a value less than or equal to 10",
+          "level": 1,
+          "automated": true,
+          "description": "Configure the Entra ID Smart Lockout threshold to lock accounts after 10 or fewer failed sign-in attempts. This provides brute force protection while balancing user experience."
+        },
+        {
+          "id": "1.3",
+          "title": "Ensure that 'Restrict non-admin users from creating tenants' is set to 'Yes'",
+          "level": 1,
+          "automated": true,
+          "description": "Prevent non-administrator users from creating new Entra ID tenants. Unrestricted tenant creation can lead to shadow IT environments that are outside organizational security controls."
+        }
+      ]
+    },
+    {
+      "id": "2",
+      "title": "Microsoft Defender for Cloud",
+      "description": "Controls for configuring Microsoft Defender for Cloud plans, security contacts, and integration settings to ensure comprehensive threat protection across Azure resources.",
+      "checks": [
+        {
+          "id": "2.1.1",
+          "title": "Ensure That Microsoft Defender for Servers Is Set to 'On'",
+          "level": 2,
+          "automated": true,
+          "description": "Enable Defender for Servers to get threat detection for Azure VMs, Azure Arc servers, and on-premises machines. Provides vulnerability assessment, adaptive application controls, file integrity monitoring, and just-in-time VM access."
+        },
+        {
+          "id": "2.1.2",
+          "title": "Ensure That Microsoft Defender for App Service Is Set to 'On'",
+          "level": 2,
+          "automated": true,
+          "description": "Enable Defender for App Service to detect attacks targeting web applications hosted on Azure App Service. Detects injection attacks, command execution, web shell deployment, and anomalous access patterns."
+        },
+        {
+          "id": "2.1.3",
+          "title": "Ensure That Microsoft Defender for Azure SQL Database Servers Is Set to 'On'",
+          "level": 2,
+          "automated": true,
+          "description": "Enable Defender for Azure SQL to detect anomalous database activities, SQL injection attempts, and potential vulnerabilities. Provides advanced threat protection and vulnerability assessment for SQL databases."
+        },
+        {
+          "id": "2.1.7",
+          "title": "Ensure That Microsoft Defender for Storage Is Set to 'On'",
+          "level": 2,
+          "automated": true,
+          "description": "Enable Defender for Storage to detect unusual and potentially harmful access or exploitation of Azure Storage accounts. Detects anomalous access patterns, data exfiltration, and malware uploads."
+        },
+        {
+          "id": "2.1.10",
+          "title": "Ensure That Microsoft Defender for Key Vault Is Set to 'On'",
+          "level": 2,
+          "automated": true,
+          "description": "Enable Defender for Key Vault to detect unusual and potentially harmful access to key vaults. Detects suspicious access patterns, unusual secret/key/certificate operations, and access from anomalous locations."
+        },
+        {
+          "id": "2.1.15",
+          "title": "Ensure that Auto provisioning of 'Log Analytics agent for Azure VMs' is Set to 'On'",
+          "level": 1,
+          "automated": true,
+          "description": "Enable automatic provisioning of the Log Analytics agent on Azure VMs to collect security data. This ensures Defender for Cloud has the telemetry needed for threat detection and security recommendations."
+        },
+        {
+          "id": "2.1.17",
+          "title": "Ensure that 'All users with the following roles' is set to 'Owner'",
+          "level": 1,
+          "automated": true,
+          "description": "Configure Defender for Cloud email notifications to alert subscription owners. This ensures that security alerts are delivered to the people with the authority and context to take remediation actions."
+        }
+      ]
+    },
+    {
+      "id": "3",
+      "title": "Storage Accounts",
+      "description": "Controls for securing Azure Storage accounts including encryption, access controls, network restrictions, and data protection settings.",
+      "checks": [
+        {
+          "id": "3.1",
+          "title": "Ensure that 'Secure transfer required' is set to 'Enabled'",
+          "level": 1,
+          "automated": true,
+          "description": "Enforce HTTPS-only access to storage accounts by enabling the 'Secure transfer required' setting. This ensures all requests to the storage account use TLS encryption, preventing data interception over HTTP."
+        },
+        {
+          "id": "3.2",
+          "title": "Ensure that 'Enable Infrastructure Encryption' for Each Storage Account in Azure Storage is Set to 'enabled'",
+          "level": 2,
+          "automated": true,
+          "description": "Enable infrastructure encryption (double encryption) for storage accounts. This provides a second layer of encryption using a different algorithm and key, offering defense in depth against encryption compromise."
+        },
+        {
+          "id": "3.7",
+          "title": "Ensure that 'Public access level' is disabled for storage accounts with blob containers",
+          "level": 1,
+          "automated": true,
+          "description": "Disable anonymous public read access to blob containers and blobs. Public blob access is a common source of data leaks. Unless there is an explicit business requirement, all containers should be private."
+        },
+        {
+          "id": "3.8",
+          "title": "Ensure Default Network Access Rule for Storage Accounts is Set to Deny",
+          "level": 1,
+          "automated": true,
+          "description": "Configure storage account network rules to deny access by default and allow only from specific VNets, IP addresses, or trusted Azure services. This prevents unauthorized network-level access to storage data."
+        },
+        {
+          "id": "3.9",
+          "title": "Ensure 'Allow Azure services on the trusted services list to access this storage account' is Enabled for Storage Account Access",
+          "level": 2,
+          "automated": true,
+          "description": "When network rules restrict access, allow trusted Azure services (Monitor, Backup, Defender, etc.) to still access the storage account. This maintains security monitoring and backup capabilities while restricting general network access."
+        },
+        {
+          "id": "3.10",
+          "title": "Ensure Private Endpoints are used to access Storage Accounts",
+          "level": 1,
+          "automated": true,
+          "description": "Use private endpoints to access storage accounts over a private IP within the VNet. This eliminates exposure to the public internet and ensures data flows over the Microsoft backbone network."
+        },
+        {
+          "id": "3.15",
+          "title": "Ensure the 'Minimum TLS version' for storage accounts is set to 'Version 1.2'",
+          "level": 1,
+          "automated": true,
+          "description": "Configure storage accounts to require TLS 1.2 as the minimum version. Older TLS versions (1.0, 1.1) have known vulnerabilities and should not be permitted for storage access."
+        }
+      ]
+    },
+    {
+      "id": "4",
+      "title": "Database Services",
+      "description": "Controls for securing Azure SQL Database, PostgreSQL, MySQL, and Cosmos DB services including auditing, encryption, and access restrictions.",
+      "checks": [
+        {
+          "id": "4.1.1",
+          "title": "Ensure that 'Auditing' is set to 'On'",
+          "level": 1,
+          "automated": true,
+          "description": "Enable auditing for Azure SQL Database servers to track database events and write them to an audit log in Azure Storage, Log Analytics, or Event Hubs. Auditing helps maintain regulatory compliance and detect anomalous activities."
+        },
+        {
+          "id": "4.1.3",
+          "title": "Ensure that 'Data encryption' is set to 'On' on a SQL Database",
+          "level": 1,
+          "automated": true,
+          "description": "Enable Transparent Data Encryption (TDE) on all SQL databases. TDE encrypts the storage of an entire database at rest using a symmetric key called the database encryption key, protecting data on disk from physical media theft."
+        },
+        {
+          "id": "4.2.1",
+          "title": "Ensure that Advanced Threat Protection (ATP) on a SQL Server is Set to 'Enabled'",
+          "level": 2,
+          "automated": true,
+          "description": "Enable Advanced Threat Protection for SQL servers to detect anomalous activities indicating unusual and potentially harmful attempts to access or exploit databases. Detects SQL injection, anomalous access patterns, and brute force attacks."
+        },
+        {
+          "id": "4.3.1",
+          "title": "Ensure 'Enforce SSL connection' is set to 'ENABLED' for PostgreSQL Database Server",
+          "level": 1,
+          "automated": true,
+          "description": "Enforce SSL connections to Azure Database for PostgreSQL to ensure all data in transit between the database server and client applications is encrypted. Unencrypted connections can be intercepted by network attacks."
+        },
+        {
+          "id": "4.4.1",
+          "title": "Ensure 'Enforce SSL connection' is set to 'Enabled' for Standard MySQL Database Server",
+          "level": 1,
+          "automated": true,
+          "description": "Enforce SSL connections to Azure Database for MySQL to protect data in transit. MySQL connections without SSL transmit data including credentials in plaintext, which can be intercepted by network-level attackers."
+        },
+        {
+          "id": "4.5.1",
+          "title": "Ensure That 'Firewalls & Networks' Is Limited to Use Selected Networks Instead of All Networks",
+          "level": 2,
+          "automated": true,
+          "description": "Configure Cosmos DB accounts to restrict network access to selected VNets and IP ranges rather than allowing all networks. This limits the attack surface and prevents unauthorized network-level access to the database."
+        }
+      ]
+    },
+    {
+      "id": "5",
+      "title": "Logging and Monitoring",
+      "description": "Controls for ensuring comprehensive logging and monitoring across Azure subscriptions including Activity Log, diagnostic settings, and alerting.",
+      "checks": [
+        {
+          "id": "5.1.2",
+          "title": "Ensure Diagnostic Setting captures appropriate categories",
+          "level": 1,
+          "automated": true,
+          "description": "Configure Azure Monitor diagnostic settings to capture Administrative, Security, Alert, and Policy categories from the Activity Log. These categories provide visibility into control plane operations, security events, and policy compliance changes."
+        },
+        {
+          "id": "5.1.4",
+          "title": "Ensure the storage account containing the container with activity logs is encrypted with Customer Managed Key",
+          "level": 2,
+          "automated": true,
+          "description": "Encrypt the storage account that stores Activity Log exports with a customer-managed key (CMK) in Key Vault. This provides additional control over the encryption keys protecting audit data and enables key access auditing."
+        },
+        {
+          "id": "5.2.1",
+          "title": "Ensure that Activity Log Alert exists for Create Policy Assignment",
+          "level": 1,
+          "automated": true,
+          "description": "Create an Activity Log alert for the 'Create Policy Assignment' operation to be notified when new Azure Policy assignments are created. Policy changes can affect the security posture of the subscription."
+        },
+        {
+          "id": "5.2.4",
+          "title": "Ensure that Activity Log Alert exists for Create or Update Network Security Group",
+          "level": 1,
+          "automated": true,
+          "description": "Create an Activity Log alert for 'Create or Update Network Security Group' operations. NSG changes directly affect network access controls and should be monitored to detect unauthorized modifications."
+        },
+        {
+          "id": "5.2.7",
+          "title": "Ensure that Activity Log Alert exists for Create or Update Security Solution",
+          "level": 1,
+          "automated": true,
+          "description": "Create an Activity Log alert for 'Create or Update Security Solution' operations. Changes to security solutions (partner integrations, Defender plans) should be tracked to ensure security coverage is maintained."
+        },
+        {
+          "id": "5.3.1",
+          "title": "Ensure Application Insights are Configured",
+          "level": 2,
+          "automated": true,
+          "description": "Enable Application Insights for web applications to collect performance metrics, request traces, exceptions, and dependency tracking. Application Insights can detect anomalous behavior patterns that may indicate security issues."
+        }
+      ]
+    },
+    {
+      "id": "6",
+      "title": "Networking",
+      "description": "Controls for securing Azure networking including Network Security Groups, access restrictions, and network flow logging.",
+      "checks": [
+        {
+          "id": "6.1",
+          "title": "Ensure that RDP access from the Internet is evaluated and restricted",
+          "level": 1,
+          "automated": true,
+          "description": "Network Security Groups should not allow unrestricted inbound access on port 3389 (RDP) from the Internet (0.0.0.0/0 or ::/0). Use Azure Bastion, Just-In-Time VM access, or VPN for remote administration instead."
+        },
+        {
+          "id": "6.2",
+          "title": "Ensure that SSH access from the Internet is evaluated and restricted",
+          "level": 1,
+          "automated": true,
+          "description": "Network Security Groups should not allow unrestricted inbound access on port 22 (SSH) from the Internet. Use Azure Bastion, Just-In-Time VM access, or VPN for secure remote access to Linux VMs."
+        },
+        {
+          "id": "6.3",
+          "title": "Ensure no SQL Databases allow ingress from 0.0.0.0/0 (ANY IP)",
+          "level": 1,
+          "automated": true,
+          "description": "SQL Database firewall rules should not include 0.0.0.0 to 255.255.255.255 ranges. The 'Allow Azure services' rule (0.0.0.0) permits access from any Azure resource, including other tenants. Use VNet rules or private endpoints instead."
+        },
+        {
+          "id": "6.5",
+          "title": "Ensure that Network Security Group Flow Log retention period is 'greater than 90 days'",
+          "level": 2,
+          "automated": true,
+          "description": "Configure NSG flow log retention to at least 90 days. Flow logs are critical for network forensics, compliance auditing, and security investigation. Retention periods should align with organizational and regulatory requirements."
+        },
+        {
+          "id": "6.6",
+          "title": "Ensure that Network Watcher is 'Enabled'",
+          "level": 1,
+          "automated": true,
+          "description": "Enable Network Watcher in all regions where Azure resources are deployed. Network Watcher provides NSG flow logs, packet capture, connection troubleshooting, and traffic analytics essential for network security monitoring."
+        }
+      ]
+    },
+    {
+      "id": "7",
+      "title": "Virtual Machines",
+      "description": "Controls for securing Azure Virtual Machines including disk encryption, endpoint protection, and access management.",
+      "checks": [
+        {
+          "id": "7.1",
+          "title": "Ensure Virtual Machines are utilizing Managed Disks",
+          "level": 1,
+          "automated": true,
+          "description": "Use Managed Disks for all VMs instead of unmanaged disks in storage accounts. Managed Disks provide built-in encryption, RBAC access control, and higher reliability without requiring storage account management."
+        },
+        {
+          "id": "7.2",
+          "title": "Ensure that 'OS and Data' disks are encrypted with Customer Managed Key (CMK)",
+          "level": 2,
+          "automated": true,
+          "description": "Encrypt VM OS and data disks with customer-managed keys (CMK) stored in Key Vault. CMK encryption provides control over the encryption key lifecycle and enables compliance with key management requirements."
+        },
+        {
+          "id": "7.4",
+          "title": "Ensure that Only Approved Extensions Are Installed",
+          "level": 1,
+          "automated": false,
+          "description": "Audit and restrict VM extensions to only approved extensions. VM extensions run with elevated privileges and can execute arbitrary code. Unauthorized extensions could be used for persistence or lateral movement."
+        },
+        {
+          "id": "7.5",
+          "title": "Ensure that the Latest OS Patches for All Virtual Machines Are Applied",
+          "level": 1,
+          "automated": true,
+          "description": "Ensure all VMs have the latest operating system patches applied. Unpatched VMs are vulnerable to known exploits. Use Azure Update Management or Azure Update Manager to automate patch assessment and deployment."
+        },
+        {
+          "id": "7.6",
+          "title": "Ensure that Endpoint Protection for all Virtual Machines is installed",
+          "level": 1,
+          "automated": true,
+          "description": "Install and enable endpoint protection (Microsoft Defender for Endpoint, or approved third-party solution) on all VMs. Endpoint protection provides anti-malware, behavioral detection, and EDR capabilities."
+        }
+      ]
+    },
+    {
+      "id": "8",
+      "title": "Key Vault",
+      "description": "Controls for securing Azure Key Vault including access policies, network restrictions, key management, and audit logging.",
+      "checks": [
+        {
+          "id": "8.1",
+          "title": "Ensure that the Expiration Date is set for all Keys in RBAC Key Vaults",
+          "level": 1,
+          "automated": true,
+          "description": "Set expiration dates on all keys stored in Key Vault. Keys without expiration dates remain valid indefinitely, which increases the risk if they are compromised. Regular key rotation is a cryptographic best practice."
+        },
+        {
+          "id": "8.2",
+          "title": "Ensure that the Expiration Date is set for all Keys in Non-RBAC Key Vaults",
+          "level": 1,
+          "automated": true,
+          "description": "For Key Vaults using access policies (non-RBAC), ensure all keys have expiration dates set. This applies to both software-protected and HSM-protected keys."
+        },
+        {
+          "id": "8.5",
+          "title": "Ensure that the Expiration Date is set for all Secrets in RBAC Key Vaults",
+          "level": 1,
+          "automated": true,
+          "description": "Set expiration dates on all secrets stored in Key Vault. Secrets without expiration persist indefinitely. Expiration dates enforce regular rotation and reduce the window of exposure if a secret is leaked."
+        },
+        {
+          "id": "8.7",
+          "title": "Ensure that Azure Key Vaults Use Private Link",
+          "level": 2,
+          "automated": true,
+          "description": "Configure Key Vault with private endpoints to access it over a private IP address within the VNet. This ensures that Key Vault traffic does not traverse the public internet, reducing the risk of credential and key interception."
+        },
+        {
+          "id": "8.8",
+          "title": "Ensure Automatic Key Rotation is Enabled within Azure Key Vault for the Supported Services",
+          "level": 2,
+          "automated": true,
+          "description": "Enable automatic key rotation in Key Vault with a defined rotation policy. Automatic rotation reduces the operational burden of manual key management and ensures cryptographic keys are regularly refreshed."
+        }
+      ]
+    }
+  ]
+}

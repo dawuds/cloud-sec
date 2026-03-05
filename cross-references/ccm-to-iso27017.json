@@ -1,0 +1,137 @@
+{
+  "$schema": "cloud-security-v1",
+  "title": "CSA CCM v4 to ISO 27017:2015 Cross-Reference",
+  "description": "Maps CSA Cloud Controls Matrix v4 domains to ISO/IEC 27017:2015 cloud-specific security controls. ISO 27017 extends ISO 27002 with additional guidance for cloud service providers and cloud service customers. This mapping shows where CCM controls implement ISO 27017 requirements.",
+  "sourceType": "constructed-indicative",
+  "verificationNote": "Mapping constructed from analysis of CCM v4 control objectives and ISO 27017:2015 control descriptions. Not normatively specified by either CSA or ISO. ISO 27017 clause numbers reference the ISO 27002 structure with cloud-specific extensions.",
+  "ccmVersion": "CSA Cloud Controls Matrix v4.0",
+  "isoVersion": "ISO/IEC 27017:2015 (Code of practice for information security controls based on ISO/IEC 27002 for cloud services)",
+  "mappings": [
+    {
+      "ccmDomain": "A&A",
+      "ccmDomainName": "Audit & Assurance",
+      "iso27017Controls": [
+        { "clause": "18.2.1", "name": "Independent review of information security", "applicability": "cloud-customer", "alignment": "CCM A&A controls implement independent audit requirements for cloud security. A&A-01 (audit planning) and A&A-02 (independent assessments) directly map." },
+        { "clause": "CLD.12.4.5", "name": "Monitoring of Cloud Services", "applicability": "cloud-customer", "alignment": "A&A-05 (information system regulatory mapping) supports monitoring of cloud service compliance." }
+      ]
+    },
+    {
+      "ccmDomain": "AIS",
+      "ccmDomainName": "Application & Interface Security",
+      "iso27017Controls": [
+        { "clause": "14.1.1", "name": "Information security requirements analysis and specification", "applicability": "both", "alignment": "AIS-01 (application security) and AIS-02 (application security testing) implement secure application development for cloud." },
+        { "clause": "14.2.1", "name": "Secure development policy", "applicability": "cloud-provider", "alignment": "AIS-04 (secure application design) maps to secure development policy requirements." },
+        { "clause": "CLD.9.5.1", "name": "Segregation in virtual computing environments", "applicability": "cloud-provider", "alignment": "AIS controls support application-level segregation in multi-tenant cloud environments." }
+      ]
+    },
+    {
+      "ccmDomain": "BCR",
+      "ccmDomainName": "Business Continuity Management & Operational Resilience",
+      "iso27017Controls": [
+        { "clause": "17.1.1", "name": "Planning information security continuity", "applicability": "both", "alignment": "BCR-01 (business continuity planning) directly implements continuity planning for cloud services." },
+        { "clause": "17.1.2", "name": "Implementing information security continuity", "applicability": "both", "alignment": "BCR-02 (business continuity testing) and BCR-03 (backup) implement continuity measures." },
+        { "clause": "17.2.1", "name": "Availability of information processing facilities", "applicability": "cloud-provider", "alignment": "BCR controls address redundancy and availability requirements for cloud-hosted services." }
+      ]
+    },
+    {
+      "ccmDomain": "CCC",
+      "ccmDomainName": "Change Control & Configuration Management",
+      "iso27017Controls": [
+        { "clause": "12.1.2", "name": "Change management", "applicability": "both", "alignment": "CCC-01 (change management policy) and CCC-02 (quality testing) implement change control for cloud infrastructure." },
+        { "clause": "14.2.2", "name": "System change control procedures", "applicability": "both", "alignment": "CCC controls ensure cloud configuration changes follow controlled procedures." },
+        { "clause": "CLD.12.1.5", "name": "Administrator's operational security", "applicability": "cloud-provider", "alignment": "CCC-03 (configuration management) supports secure administrative operations." }
+      ]
+    },
+    {
+      "ccmDomain": "CEK",
+      "ccmDomainName": "Cryptography, Encryption & Key Management",
+      "iso27017Controls": [
+        { "clause": "10.1.1", "name": "Policy on the use of cryptographic controls", "applicability": "both", "alignment": "CEK controls (EKM-01 through EKM-04) implement cryptographic policy for cloud data protection." },
+        { "clause": "10.1.2", "name": "Key management", "applicability": "both", "alignment": "CEK key management controls address the cloud-specific challenge of key ownership, key residency, and CSP access to keys." },
+        { "clause": "CLD.10.1.1", "name": "Shared roles and responsibilities within a cloud computing environment", "applicability": "both", "alignment": "CEK controls clarify encryption responsibilities in the shared responsibility model (who manages keys, who encrypts)." }
+      ]
+    },
+    {
+      "ccmDomain": "DSP",
+      "ccmDomainName": "Data Security & Privacy Lifecycle Management",
+      "iso27017Controls": [
+        { "clause": "8.2.1", "name": "Classification of information", "applicability": "cloud-customer", "alignment": "DSP-01 (data classification) and DSP-05 (data flow documentation) implement data classification for cloud." },
+        { "clause": "CLD.8.1.5", "name": "Removal of cloud service customer assets", "applicability": "cloud-provider", "alignment": "DSP-17 (data retention and deletion) addresses data removal and secure deletion in cloud." },
+        { "clause": "CLD.9.5.2", "name": "Cloud service customer data access", "applicability": "cloud-provider", "alignment": "DSP-04 and DSP-05 address data access controls and data flow in multi-tenant cloud." }
+      ]
+    },
+    {
+      "ccmDomain": "GRC",
+      "ccmDomainName": "Governance, Risk & Compliance",
+      "iso27017Controls": [
+        { "clause": "5.1.1", "name": "Policies for information security", "applicability": "both", "alignment": "GRC-01 (governance program) and GRC-03 (policy review) implement the overarching security governance for cloud." },
+        { "clause": "6.1.1", "name": "Information security roles and responsibilities", "applicability": "both", "alignment": "GRC controls define cloud security roles and responsibilities, particularly the shared responsibility model." },
+        { "clause": "18.1.1", "name": "Identification of applicable legislation", "applicability": "both", "alignment": "GRC-02 (risk management) includes regulatory compliance identification for cloud." }
+      ]
+    },
+    {
+      "ccmDomain": "IAM",
+      "ccmDomainName": "Identity & Access Management",
+      "iso27017Controls": [
+        { "clause": "9.1.2", "name": "Access to networks and network services", "applicability": "both", "alignment": "IAM controls implement cloud network and service access management." },
+        { "clause": "9.2.1", "name": "User registration and de-registration", "applicability": "both", "alignment": "IAM-04 (provisioning/deprovisioning) and IAM-06 (access reviews) implement user lifecycle." },
+        { "clause": "9.2.3", "name": "Management of privileged access rights", "applicability": "both", "alignment": "IAM-02 (strong authentication) and IAM-09 (segregation of duties) manage cloud privileged access." },
+        { "clause": "9.4.1", "name": "Information access restriction", "applicability": "both", "alignment": "IAM-01 (access control policy) implements information access restriction in cloud." },
+        { "clause": "CLD.9.5.1", "name": "Segregation in virtual computing environments", "applicability": "cloud-provider", "alignment": "IAM controls contribute to tenant segregation through access management." }
+      ]
+    },
+    {
+      "ccmDomain": "IVS",
+      "ccmDomainName": "Infrastructure & Virtualization Security",
+      "iso27017Controls": [
+        { "clause": "13.1.3", "name": "Segregation in networks", "applicability": "both", "alignment": "IVS-06 (network segmentation) and IVS-09 (isolation) implement network segregation in cloud." },
+        { "clause": "CLD.9.5.1", "name": "Segregation in virtual computing environments", "applicability": "cloud-provider", "alignment": "IVS controls address virtualisation security including hypervisor hardening and virtual network isolation." },
+        { "clause": "CLD.13.1.4", "name": "Alignment of security management for virtual and physical networks", "applicability": "cloud-provider", "alignment": "IVS-01 (infrastructure security) and IVS-04 (network security) address virtual-physical network alignment." }
+      ]
+    },
+    {
+      "ccmDomain": "LOG",
+      "ccmDomainName": "Logging & Monitoring",
+      "iso27017Controls": [
+        { "clause": "12.4.1", "name": "Event logging", "applicability": "both", "alignment": "LOG-01 (logging policy) and LOG-03 (security monitoring) implement event logging for cloud." },
+        { "clause": "12.4.3", "name": "Administrator and operator logs", "applicability": "both", "alignment": "LOG controls capture privileged cloud administrative activity." },
+        { "clause": "12.4.4", "name": "Clock synchronisation", "applicability": "both", "alignment": "LOG-08 (log timestamps) addresses time synchronisation for cloud audit trails." },
+        { "clause": "CLD.12.4.5", "name": "Monitoring of Cloud Services", "applicability": "cloud-customer", "alignment": "LOG-03 (security monitoring) and LOG-13 (monitoring) implement continuous cloud service monitoring." }
+      ]
+    },
+    {
+      "ccmDomain": "SEF",
+      "ccmDomainName": "Security Incident Management, E-Discovery, & Cloud Forensics",
+      "iso27017Controls": [
+        { "clause": "16.1.1", "name": "Responsibilities and procedures", "applicability": "both", "alignment": "SEF-01 (incident management policy) and SEF-02 (incident response plan) implement incident management for cloud." },
+        { "clause": "16.1.2", "name": "Reporting information security events", "applicability": "both", "alignment": "SEF-03 (incident reporting) implements security event reporting for cloud incidents." },
+        { "clause": "16.1.5", "name": "Response to information security incidents", "applicability": "both", "alignment": "SEF controls address the cloud-specific challenge of incident response when infrastructure is shared with the CSP." }
+      ]
+    },
+    {
+      "ccmDomain": "STA",
+      "ccmDomainName": "Supply Chain Management, Transparency, & Accountability",
+      "iso27017Controls": [
+        { "clause": "15.1.1", "name": "Information security policy for supplier relationships", "applicability": "cloud-customer", "alignment": "STA-01 (vendor risk assessment) and STA-03 (supply chain governance) implement CSP relationship management." },
+        { "clause": "15.2.1", "name": "Monitoring and review of supplier services", "applicability": "cloud-customer", "alignment": "STA-05 (third-party audit) and STA-08 (supply chain monitoring) implement ongoing CSP monitoring." },
+        { "clause": "CLD.6.3.1", "name": "Shared roles and responsibilities within a cloud computing environment", "applicability": "both", "alignment": "STA controls clarify and document the shared responsibility model between CSP and customer." }
+      ]
+    },
+    {
+      "ccmDomain": "TVM",
+      "ccmDomainName": "Threat & Vulnerability Management",
+      "iso27017Controls": [
+        { "clause": "12.6.1", "name": "Management of technical vulnerabilities", "applicability": "both", "alignment": "TVM-01 (vulnerability management) and TVM-02 (vulnerability scanning) implement vulnerability management for cloud resources." },
+        { "clause": "12.2.1", "name": "Controls against malware", "applicability": "both", "alignment": "TVM controls address cloud-specific malware protection (container scanning, serverless security, endpoint protection)." }
+      ]
+    },
+    {
+      "ccmDomain": "UEM",
+      "ccmDomainName": "Universal Endpoint Management",
+      "iso27017Controls": [
+        { "clause": "6.2.1", "name": "Mobile device policy", "applicability": "cloud-customer", "alignment": "UEM controls implement endpoint security for devices accessing cloud services." },
+        { "clause": "11.2.6", "name": "Security of equipment and assets off-premises", "applicability": "cloud-customer", "alignment": "UEM controls address security of endpoint devices accessing cloud from any location." }
+      ]
+    }
+  ]
+}

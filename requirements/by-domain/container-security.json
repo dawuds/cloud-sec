@@ -1,0 +1,66 @@
+{
+  "$schema": "cloud-security-v1",
+  "sourceType": "constructed-indicative",
+  "verificationNote": "Requirements constructed from CSA CCM v4, NIST CSF 2.0, and Malaysia Act 854 obligations. Verify against authoritative sources before use in formal assessments.",
+  "domain": {
+    "id": "container-security",
+    "name": "Container Security",
+    "description": "Requirements for securing containerised workloads across the lifecycle: image build, registry management, orchestrator hardening, and runtime monitoring.",
+    "ccmDomains": ["CCC"],
+    "nacsa": ["s18"]
+  },
+  "requirements": [
+    {
+      "id": "CCC-R1",
+      "title": "Container Image Scanning",
+      "description": "Scan all container images for known vulnerabilities, malware, embedded secrets, and misconfigurations before deployment. Block images with critical or high vulnerabilities from production deployment. Enable continuous scanning for running images to detect newly disclosed CVEs.",
+      "priority": "critical",
+      "ccmControls": ["CCC-01", "CCC-04"],
+      "nacsa": ["s18"],
+      "cspGuidance": {
+        "aws": "Enable ECR image scanning (basic + enhanced via Inspector). Configure EventBridge rules to alert on critical findings. Block unscanned image deployment via admission controller.",
+        "azure": "Enable Defender for Containers for ACR scanning. Deploy Azure Policy to deny deployment of images with critical vulnerabilities. Integrate Trivy or Snyk in CI/CD pipeline.",
+        "gcp": "Enable Artifact Registry vulnerability scanning. Use Binary Authorization to enforce scan-before-deploy. Configure Container Analysis API for continuous scanning of deployed images."
+      }
+    },
+    {
+      "id": "CCC-R2",
+      "title": "Container Runtime Security",
+      "description": "Monitor container runtime behaviour for anomalous activity including unexpected process execution, network connections to external addresses, file system modifications outside expected paths, and privilege escalation attempts. Detect container escape and lateral movement.",
+      "priority": "high",
+      "ccmControls": ["CCC-02", "CCC-05"],
+      "nacsa": ["s18"],
+      "cspGuidance": {
+        "aws": "Enable GuardDuty EKS Runtime Monitoring with managed agent. Deploy Falco for deep runtime detection. Enforce EKS Pod Security Standards (restricted profile for production).",
+        "azure": "Enable Defender for Containers runtime protection on AKS. Deploy Azure Policy with pod security standards. Use Falco or Prisma Cloud for eBPF-based runtime monitoring.",
+        "gcp": "Enable Container Threat Detection in Security Command Center. Use GKE Autopilot for opinionated security baseline. Deploy Binary Authorization for admission control."
+      }
+    },
+    {
+      "id": "CCC-R3",
+      "title": "Container Registry Security",
+      "description": "Secure container registries with authentication, RBAC, image signing, and provenance verification. Use private registries for all internal images. Restrict which external registries can be used as image sources. Implement content trust for image integrity.",
+      "priority": "high",
+      "ccmControls": ["CCC-01", "CCC-03"],
+      "nacsa": ["s18"],
+      "cspGuidance": {
+        "aws": "Use ECR with IAM-based access control. Enable tag immutability. Configure ECR lifecycle policies for image retention. Use AWS Signer for image signing and verification.",
+        "azure": "Use ACR with RBAC. Enable content trust for image signing. Deploy ACR tasks for automated base image patching. Restrict allowed registries via Azure Policy.",
+        "gcp": "Use Artifact Registry with IAM access control. Enable Binary Authorization attestations. Deploy signed images with Cloud Build provenance. Restrict image sources via Organization Policy."
+      }
+    },
+    {
+      "id": "CCC-R4",
+      "title": "Container Orchestrator Hardening",
+      "description": "Harden Kubernetes and container orchestrator configurations following CIS Kubernetes Benchmark. Restrict API server access to private networks, enforce pod security standards, configure RBAC with least privilege, encrypt secrets at rest, and enable comprehensive audit logging.",
+      "priority": "critical",
+      "ccmControls": ["CCC-02", "CCC-05"],
+      "nacsa": ["s18"],
+      "cspGuidance": {
+        "aws": "Use EKS with private API endpoint. Enable envelope encryption for Secrets with KMS. Run kube-bench for CIS compliance. Deploy OPA Gatekeeper for policy enforcement.",
+        "azure": "Use AKS with private cluster and authorised IP ranges. Enable Key Vault CSI driver for secrets. Apply CIS benchmark via Azure Policy for AKS. Enable AKS Defender profile.",
+        "gcp": "Use GKE Autopilot for fully managed security. Enable Shielded GKE Nodes. Apply Workload Identity for pod-level IAM. Enable GKE security posture dashboard and audit logging."
+      }
+    }
+  ]
+}

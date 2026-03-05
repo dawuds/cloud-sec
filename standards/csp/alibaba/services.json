@@ -1,0 +1,133 @@
+{
+  "csp": "alibaba",
+  "version": "2024-01",
+  "serviceCount": 14,
+  "services": [
+    {
+      "id": "alibaba-ram",
+      "name": "Resource Access Management (RAM)",
+      "category": "identity",
+      "description": "Identity and access management service for Alibaba Cloud. Manages RAM users, groups, and roles with policy-based permissions. Supports federated login via SAML 2.0, STS temporary credentials for cross-account access, and fine-grained resource-level authorization. Equivalent to AWS IAM.",
+      "ccmMapping": ["IAM-01", "IAM-02", "IAM-03", "IAM-04", "IAM-06"],
+      "tier": "free",
+      "keyFeatures": ["RAM users, groups, and roles", "Policy-based authorization", "SAML 2.0 federation", "STS temporary credentials", "MFA enforcement", "Cross-account access via roles"]
+    },
+    {
+      "id": "alibaba-security-center",
+      "name": "Security Center (Threat Detection Service)",
+      "category": "detection",
+      "description": "Unified cloud security management platform providing CSPM, CWPP, and vulnerability management. Basic tier offers free vulnerability scanning and baseline checks. Advanced/Enterprise tiers add agent-based threat detection, anti-ransomware, container security, file integrity monitoring, and compliance assessments against CIS and MLPS.",
+      "ccmMapping": ["TVM-01", "TVM-02", "TVM-03", "GRC-01", "SEF-02", "SEF-04"],
+      "tier": "free",
+      "keyFeatures": ["Vulnerability scanning (CVE, web, baseline)", "Threat detection (agent-based)", "Security score and recommendations", "Anti-ransomware (Enterprise)", "Container image scanning", "Compliance assessment (CIS, MLPS)"]
+    },
+    {
+      "id": "alibaba-actiontrail",
+      "name": "ActionTrail",
+      "category": "logging",
+      "description": "Audit logging service that records API calls and console operations across Alibaba Cloud services. Captures management events for 90 days by default. Trail creation enables long-term export to OSS (Object Storage) or SLS (Log Service) for analysis and compliance. Equivalent to AWS CloudTrail.",
+      "ccmMapping": ["LOG-01", "LOG-02", "LOG-03", "LOG-05", "LOG-08", "LOG-09"],
+      "tier": "free",
+      "keyFeatures": ["Management event logging (free)", "Data event logging (paid)", "Multi-account trail via Resource Directory", "Export to OSS or SLS", "Event query and search", "90-day default retention"]
+    },
+    {
+      "id": "alibaba-kms",
+      "name": "Key Management Service (KMS)",
+      "category": "encryption",
+      "description": "Managed cryptographic key service for creating, managing, and using encryption keys. Supports symmetric keys (AES, SM4) and asymmetric keys (RSA, EC, SM2). Dedicated KMS instances provide HSM-backed key management (FIPS 140-2 Level 3). Integrates with ECS, RDS, OSS, and other services for BYOK encryption.",
+      "ccmMapping": ["CEK-01", "CEK-02", "CEK-03", "CEK-04", "CEK-05"],
+      "tier": "paid",
+      "keyFeatures": ["Software-backed and HSM-backed keys", "Chinese cryptographic algorithms (SM2/SM4)", "Automatic key rotation", "Envelope encryption", "Secrets Manager integration", "BYOK for Alibaba Cloud services"]
+    },
+    {
+      "id": "alibaba-cloud-firewall",
+      "name": "Cloud Firewall",
+      "category": "protection",
+      "description": "Cloud-native firewall service providing network traffic control between the internet, VPCs, and between VPCs. Supports access control policies, intrusion prevention system (IPS) with threat intelligence, and traffic analysis with visualization. Provides centralized policy management across all VPCs in an account.",
+      "ccmMapping": ["IVS-04", "IVS-06", "IVS-09"],
+      "tier": "paid",
+      "keyFeatures": ["Internet firewall (north-south)", "VPC firewall (east-west)", "Intrusion prevention system (IPS)", "Threat intelligence integration", "Traffic analysis and visualization", "Centralized policy management"]
+    },
+    {
+      "id": "alibaba-waf",
+      "name": "Web Application Firewall (WAF)",
+      "category": "protection",
+      "description": "Web application firewall protecting web applications from common web attacks. Supports OWASP Top 10 protection, bot management, API security, account security (anti-crawler, anti-fraud), and custom rules. Deployed as a reverse proxy with automatic origin protection. Supports both Chinese mainland and international editions.",
+      "ccmMapping": ["IVS-04", "IVS-06", "IVS-09", "TVM-01"],
+      "tier": "paid",
+      "keyFeatures": ["OWASP Top 10 protection", "Bot management", "API security", "Custom protection rules", "Rate limiting", "IP reputation and geo-blocking"]
+    },
+    {
+      "id": "alibaba-anti-ddos",
+      "name": "Anti-DDoS",
+      "category": "protection",
+      "description": "Multi-tier DDoS protection. Anti-DDoS Basic provides free L3/L4 protection (up to 5 Gbps) for all Alibaba Cloud resources. Anti-DDoS Pro/Premium provides advanced protection with dedicated scrubbing centers, L7 protection, and mitigation capacity up to Tbps for volumetric attacks. Anti-DDoS Origin provides enhanced native protection.",
+      "ccmMapping": ["IVS-04", "IVS-06", "IVS-09"],
+      "tier": "free",
+      "keyFeatures": ["Basic protection (free, up to 5 Gbps)", "Pro/Premium (dedicated scrubbing)", "Origin (enhanced native protection)", "L3/L4/L7 attack mitigation", "Intelligent protection mode", "Global Anycast network (Premium)"]
+    },
+    {
+      "id": "alibaba-bastionhost",
+      "name": "Bastionhost",
+      "category": "identity",
+      "description": "Managed bastion host service for centralized O&M access control and audit. Provides a single entry point for SSH/RDP access to ECS instances, databases, and Kubernetes clusters. Records all sessions (video and command logging) for compliance audit. Supports MFA, just-in-time access, and approval workflows.",
+      "ccmMapping": ["IAM-01", "IAM-14", "LOG-01", "LOG-03"],
+      "tier": "paid",
+      "keyFeatures": ["Centralized server access gateway", "Session recording (video + commands)", "MFA and access approval workflows", "Credential management (password vault)", "O&M command control and blocking", "Database and Kubernetes access proxy"]
+    },
+    {
+      "id": "alibaba-data-security-center",
+      "name": "Data Security Center (DSC)",
+      "category": "protection",
+      "description": "Data security governance platform for discovering, classifying, and protecting sensitive data. Scans OSS, RDS, MaxCompute, PolarDB, and other data stores for PII, financial data, and custom sensitive data types. Provides data masking, anomaly detection, and compliance reporting aligned with PDPA, GDPR, and Chinese data protection laws.",
+      "ccmMapping": ["DSP-01", "DSP-02", "DSP-04", "DSP-05", "DSP-10"],
+      "tier": "paid",
+      "keyFeatures": ["Sensitive data discovery and classification", "Built-in and custom data rules", "Static and dynamic data masking", "Data access anomaly detection", "Cross-service data lineage", "Compliance reporting (GDPR, PDPA)"]
+    },
+    {
+      "id": "alibaba-ssl-certificates",
+      "name": "SSL Certificates Service",
+      "category": "encryption",
+      "description": "Certificate management service for purchasing, deploying, and managing SSL/TLS certificates. Supports DV, OV, and EV certificates from GlobalSign, DigiCert, and other CAs. One-click deployment to SLB, CDN, WAF, and other Alibaba Cloud services. Provides free DV certificates and certificate lifecycle management.",
+      "ccmMapping": ["CEK-01", "CEK-04", "IVS-06"],
+      "tier": "free",
+      "keyFeatures": ["Free DV certificates", "One-click deployment to Alibaba services", "Certificate lifecycle management", "Certificate expiration monitoring", "Multiple CA vendor support", "PCA (Private Certificate Authority)"]
+    },
+    {
+      "id": "alibaba-sls",
+      "name": "Simple Log Service (SLS)",
+      "category": "logging",
+      "description": "Fully managed log management and analytics platform. Collects logs from 50+ Alibaba Cloud services, servers, containers, and mobile applications. Provides real-time query and analysis, alerting, dashboards, and machine learning-based anomaly detection. Serves as the centralized logging platform for security operations.",
+      "ccmMapping": ["LOG-01", "LOG-03", "LOG-05", "LOG-09", "SEF-02"],
+      "tier": "paid",
+      "keyFeatures": ["Real-time log collection and indexing", "SQL-compatible query language", "Built-in dashboards and alerting", "ML-based anomaly detection", "Scheduled SQL for data processing", "Cross-region log shipping"]
+    },
+    {
+      "id": "alibaba-resource-directory",
+      "name": "Resource Directory",
+      "category": "compliance",
+      "description": "Multi-account management service for organizing Alibaba Cloud accounts into a hierarchical structure with folders. Enables centralized governance with control policies (equivalent to AWS SCPs) that restrict what actions member accounts can perform. Essential for enterprise multi-account security strategies.",
+      "ccmMapping": ["IAM-01", "IAM-04", "GRC-01", "GRC-02"],
+      "tier": "free",
+      "keyFeatures": ["Hierarchical account organization", "Control policies (SCP equivalent)", "Trusted service integration", "Centralized billing", "Member account provisioning", "Tag policies"]
+    },
+    {
+      "id": "alibaba-config",
+      "name": "Cloud Config",
+      "category": "compliance",
+      "description": "Configuration auditing service that continuously evaluates resource configurations against compliance rules. Provides 100+ managed rules aligned with CIS, MLPS, and custom compliance frameworks. Supports remediation templates for automatic rule violation correction. Multi-account support via Resource Directory.",
+      "ccmMapping": ["GRC-01", "GRC-02", "GRC-03", "CCC-01", "CCC-02"],
+      "tier": "paid",
+      "keyFeatures": ["Continuous configuration monitoring", "100+ managed compliance rules", "Custom rule creation", "Compliance packs (CIS, MLPS)", "Auto-remediation templates", "Multi-account aggregation"]
+    },
+    {
+      "id": "alibaba-vpc",
+      "name": "Virtual Private Cloud (VPC)",
+      "category": "protection",
+      "description": "Isolated virtual network for Alibaba Cloud resources with full control over IP addressing, subnets, route tables, and gateways. Security groups provide stateful instance-level firewalling. Network ACLs provide stateless subnet-level controls. VPC flow logs capture network traffic metadata for security analysis.",
+      "ccmMapping": ["IVS-01", "IVS-03", "IVS-06", "IVS-09", "LOG-01"],
+      "tier": "free",
+      "keyFeatures": ["Security groups (stateful)", "Network ACLs (stateless)", "VPC flow logs", "VPC peering and CEN (transit)", "NAT Gateway", "PrivateLink for service access"]
+    }
+  ]
+}

@@ -1,0 +1,152 @@
+{
+  "$schema": "cloud-security-v1",
+  "sector": "healthcare",
+  "sectorName": "Healthcare",
+  "sourceType": "constructed-indicative",
+  "verificationNote": "Healthcare cloud security requirements constructed from Malaysia PDPA 2010, Private Healthcare Facilities and Services Act 1998, international best practices (HIPAA reference), and healthcare cybersecurity guidance. These are indicative -- verify against current KKM directives and NACSA sector lead guidance.",
+  "nacsaSectorLead": "Ministry of Health Malaysia (KKM)",
+  "nacsaSectorNumber": 3,
+  "applicableStandards": [
+    "Malaysia PDPA 2010 (Act 709) -- primary personal data protection for patient data",
+    "CSA Cloud Controls Matrix v4 (CCM v4)",
+    "ISO 27799:2016 (Health informatics -- information security management)",
+    "ISO 27017:2015 (Cloud-specific security controls)",
+    "HL7 FHIR security guidance (interoperability security)",
+    "NACSA Act 854 (for NCII-designated healthcare infrastructure)",
+    "HIPAA (reference standard for international healthcare cloud -- not Malaysian mandate)"
+  ],
+  "patientDataProtection": {
+    "description": "Patient health data is classified as sensitive personal data under Malaysia PDPA s4. It requires enhanced protection measures, explicit consent for processing, and strict purpose limitation. Cloud hosting of patient data must comply with these requirements.",
+    "pdpaSensitiveData": {
+      "section": "s4 PDPA 2010",
+      "definition": "Sensitive personal data includes information about physical or mental health -- all patient health records, EMR/EHR data, diagnostic results, prescriptions, and treatment plans are classified as sensitive personal data.",
+      "requirements": [
+        "Explicit consent required for processing health data (s6 PDPA)",
+        "Purpose limitation -- health data may only be processed for the stated purpose (s6(1) PDPA)",
+        "Security principle -- practical steps to protect personal data from loss, misuse, and unauthorised access (s9 PDPA)",
+        "Retention limitation -- health data must not be kept longer than necessary (s10 PDPA)",
+        "Data integrity principle -- health data must be accurate and kept up to date (s8 PDPA)",
+        "Access principle -- data subjects have right to access their health data (s12 PDPA)"
+      ]
+    },
+    "cloudRequirements": [
+      "Patient data encrypted at rest (AES-256) and in transit (TLS 1.2+) in all cloud services",
+      "Access to patient data restricted to authorised healthcare personnel with role-based access control",
+      "Audit logging of all access to patient data with minimum 7-year retention",
+      "Patient data residency in Malaysia or approved jurisdiction (with PDPA cross-border transfer approval under s129)",
+      "Data minimisation -- only necessary patient data stored in cloud; full EMR may remain on-premises",
+      "Pseudonymisation or anonymisation for analytics and research workloads"
+    ]
+  },
+  "telemedicineSecurity": {
+    "description": "Telemedicine platforms enabling remote consultations require specific security controls to protect patient-doctor communication, prescription data, and consultation records.",
+    "requirements": [
+      {
+        "id": "TM-01",
+        "name": "End-to-end encryption for telemedicine sessions",
+        "description": "Video, audio, and chat communications between patient and healthcare provider must be end-to-end encrypted. The CSP must not have access to unencrypted consultation content.",
+        "ccmControls": ["DSP-01", "DSP-02", "DSP-10", "EKM-01"]
+      },
+      {
+        "id": "TM-02",
+        "name": "Patient identity verification for remote consultations",
+        "description": "Strong identity verification for patients accessing telemedicine platforms. Two-factor authentication recommended. Verify patient identity before sharing medical information or issuing prescriptions.",
+        "ccmControls": ["IAM-01", "IAM-02", "IAM-03"]
+      },
+      {
+        "id": "TM-03",
+        "name": "Telemedicine session recording and retention",
+        "description": "If telemedicine sessions are recorded (with patient consent), recordings must be encrypted, stored with access controls, and retained per medical records retention requirements.",
+        "ccmControls": ["DSP-01", "DSP-05", "DSP-17", "LOG-01"]
+      },
+      {
+        "id": "TM-04",
+        "name": "Prescription data integrity in cloud",
+        "description": "Electronic prescriptions generated through telemedicine must have integrity protection to prevent tampering. Digital signatures recommended for prescription authenticity.",
+        "ccmControls": ["DSP-10", "AIS-01", "AIS-04"]
+      },
+      {
+        "id": "TM-05",
+        "name": "Telemedicine platform availability and resilience",
+        "description": "Telemedicine platforms must maintain high availability as clinical decisions depend on platform access. Cloud architecture should include multi-AZ deployment and failover capabilities.",
+        "ccmControls": ["BCR-01", "BCR-02", "BCR-03", "IVS-04"]
+      }
+    ]
+  },
+  "emrCloudSecurity": {
+    "description": "Electronic Medical Record (EMR) and Electronic Health Record (EHR) cloud hosting requirements.",
+    "requirements": [
+      {
+        "id": "EMR-01",
+        "name": "EMR access control and audit trail",
+        "description": "Role-based access control (RBAC) for all EMR access. Complete audit trail of who accessed which patient record, when, and what action was performed. Break-glass emergency access with post-use review.",
+        "ccmControls": ["IAM-01", "IAM-02", "IAM-04", "IAM-06", "LOG-01", "LOG-03"]
+      },
+      {
+        "id": "EMR-02",
+        "name": "EMR data backup and recovery",
+        "description": "Cloud-hosted EMR data must be backed up with cross-region redundancy. Backup data encrypted with customer-managed keys. Recovery procedures tested quarterly. RTO and RPO aligned with clinical requirements.",
+        "ccmControls": ["BCR-01", "BCR-02", "BCR-04", "DSP-01", "DSP-04"]
+      },
+      {
+        "id": "EMR-03",
+        "name": "EMR interoperability security (HL7 FHIR)",
+        "description": "Healthcare data exchange using HL7 FHIR APIs must implement OAuth 2.0 with SMART on FHIR security profile. API endpoints must be protected by authentication, authorisation, and rate limiting.",
+        "ccmControls": ["AIS-01", "AIS-02", "IAM-02", "IAM-04"]
+      }
+    ]
+  },
+  "pdpaConsiderations": {
+    "description": "Malaysia PDPA 2010 specific considerations for healthcare cloud adoption.",
+    "requirements": [
+      {
+        "id": "PDPA-H1",
+        "name": "Cross-border transfer of health data",
+        "description": "Transfer of patient health data outside Malaysia requires compliance with PDPA s129 (cross-border data transfer). The Minister must specify countries deemed to have adequate data protection. Cloud hosting in non-Malaysian CSP regions constitutes cross-border transfer.",
+        "guidance": "Until s129 country list is finalised, health data should be hosted in Malaysian CSP regions where available. If offshore hosting is necessary, implement contractual safeguards equivalent to PDPA requirements.",
+        "ccmControls": ["DSP-06", "DSP-07", "DSP-19"]
+      },
+      {
+        "id": "PDPA-H2",
+        "name": "Patient consent for cloud processing",
+        "description": "Explicit patient consent is required for processing sensitive health data in the cloud. The consent must be informed -- patients must understand that their data will be processed in cloud infrastructure.",
+        "guidance": "Update patient consent forms to include cloud data processing disclosure. Consent must be freely given, specific, and informed. Maintain consent records.",
+        "ccmControls": ["GRC-01", "DSP-19"]
+      },
+      {
+        "id": "PDPA-H3",
+        "name": "Data subject access requests in cloud",
+        "description": "Patients have the right to access their personal data under PDPA s12. Healthcare organisations must be able to retrieve and provide patient data from cloud storage within the prescribed timeframe.",
+        "guidance": "Implement data retrieval procedures for cloud-hosted patient data. Test data export functionality. Ensure data format is accessible to patients.",
+        "ccmControls": ["DSP-05", "DSP-17", "GRC-01"]
+      }
+    ]
+  },
+  "medicalDeviceSecurity": {
+    "description": "Internet of Medical Things (IoMT) cloud connectivity security requirements.",
+    "requirements": [
+      "Medical devices connecting to cloud must use authenticated and encrypted channels",
+      "Medical device cloud data should be segregated from general EMR cloud infrastructure",
+      "Firmware updates for cloud-connected medical devices must use signed images from verified sources",
+      "Medical device cloud APIs must enforce authentication and rate limiting",
+      "Alert mechanisms for medical device connectivity failures or data integrity issues"
+    ],
+    "ccmControls": ["IVS-01", "IVS-04", "DSP-01", "DSP-02", "TVM-01"]
+  },
+  "nacsaObligations": {
+    "description": "NACSA obligations for NCII-designated healthcare infrastructure using cloud services.",
+    "applicability": "Applies to healthcare infrastructure designated as NCII under NACSA Act 854. Major hospitals, national health information systems, and critical healthcare platforms may be designated.",
+    "obligations": [
+      "s18: Cloud-hosted healthcare NCII must have appropriate cybersecurity measures",
+      "s21: Annual risk assessment covering cloud-hosted healthcare systems",
+      "s23: Biennial audit including cloud security posture",
+      "s26: 6-hour notification for significant cloud security incidents affecting NCII healthcare systems"
+    ]
+  },
+  "sectorSpecificThreats": [
+    { "threat": "Ransomware targeting cloud-hosted EMR systems", "ccmControls": ["BCR-01", "BCR-04", "TVM-01", "DSP-01"], "impact": "Patient care disruption; inability to access medical records during treatment" },
+    { "threat": "Patient data exfiltration from cloud storage", "ccmControls": ["DSP-01", "DSP-02", "DSP-05", "IAM-04", "LOG-01"], "impact": "PDPA breach notification; patient privacy violation; reputational damage" },
+    { "threat": "Telemedicine platform compromise enabling prescription fraud", "ccmControls": ["IAM-01", "IAM-02", "AIS-01", "AIS-04"], "impact": "Patient safety risk; controlled substance abuse; regulatory action" },
+    { "threat": "Medical device cloud injection leading to false readings", "ccmControls": ["IVS-01", "AIS-01", "DSP-10"], "impact": "Incorrect clinical decisions; patient safety risk" }
+  ]
+}

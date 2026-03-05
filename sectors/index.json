@@ -1,0 +1,153 @@
+{
+  "$schema": "cloud-security-v1",
+  "sourceType": "constructed-indicative",
+  "verificationNote": "Sector profiles constructed from Malaysian regulatory landscape, CSA CCM v4, and sector-specific cloud security best practices. Regulatory references are indicative -- verify against current legislation and regulatory guidance.",
+  "description": "Cloud security sectors covered in this repository -- aligned with NACSA Act 854 NCII sectors and key industries with significant cloud adoption in Malaysia. Each sector has distinct cloud security requirements, regulatory overlaps, and risk profiles.",
+  "totalSectors": 6,
+  "nacsaAlignment": "NACSA Act 854 Schedule defines 11 NCII sectors. Several of these sectors are actively adopting cloud services, and NACSA obligations apply to NCII assets regardless of whether they are hosted on-premises or in the cloud. Cloud adoption does not remove NACSA obligations.",
+  "sectors": [
+    {
+      "id": "financial-services",
+      "name": "Financial Services",
+      "description": "Banking, insurance, capital markets, and payment services. Key operators: Maybank, CIMB, Public Bank, RHB, AmBank, Hong Leong Bank, Bursa Malaysia, Bank Negara Malaysia (BNM). Highly regulated with BNM Risk Management in Technology (RMiT) imposing specific cloud outsourcing requirements. Cloud adoption is accelerating under BNM's digital banking framework.",
+      "cloudAdoption": "high",
+      "keyCloudRisks": [
+        "Data residency non-compliance (BNM RMiT requires Malaysian data residency for critical data)",
+        "Vendor concentration risk (single CSP dependency for core banking)",
+        "API security for open banking integration",
+        "Regulatory audit access to CSP infrastructure",
+        "Incident reporting timeline mismatch (BNM 24h vs NACSA 6h for NCII-designated)"
+      ],
+      "regulatoryOverlap": [
+        "BNM Risk Management in Technology (RMiT) -- primary cloud governance requirement for financial institutions",
+        "PDPA 2010 (Act 709) -- personal data protection for customer data",
+        "NACSA Act 854 -- NCII designation for critical financial infrastructure",
+        "Financial Services Act 2013 (Act 758) -- governance and operational resilience",
+        "Islamic Financial Services Act 2013 (Act 759) -- governance for Islamic banking",
+        "Capital Markets and Services Act 2007 (Act 671) -- Bursa Malaysia and capital markets",
+        "Anti-Money Laundering, Anti-Terrorism Financing and Proceeds of Unlawful Activities Act 2001 (AMLA)"
+      ],
+      "nacsaSectorNumber": 1,
+      "nacsaSectorLead": "Bank Negara Malaysia (BNM) / Securities Commission Malaysia (SC)",
+      "detailFile": "sectors/requirements/financial-services.json"
+    },
+    {
+      "id": "healthcare",
+      "name": "Healthcare",
+      "description": "Public and private hospitals, clinics, telemedicine platforms, medical devices, and health information systems. Key operators: Ministry of Health (KKM), major private hospital groups (IHH Healthcare, KPJ Healthcare, Sunway Medical, Ramsay Sime Darby). Cloud adoption driven by telemedicine growth post-COVID, electronic medical records, and health analytics.",
+      "cloudAdoption": "medium",
+      "keyCloudRisks": [
+        "Patient data exposure (EMR/EHR in cloud)",
+        "Telemedicine platform security (video, chat, prescription data)",
+        "Medical device cloud connectivity (IoMT -- Internet of Medical Things)",
+        "Data sovereignty for health records",
+        "Interoperability security (HL7 FHIR APIs)"
+      ],
+      "regulatoryOverlap": [
+        "PDPA 2010 (Act 709) -- patient data as sensitive personal data",
+        "NACSA Act 854 -- healthcare as NCII sector",
+        "Private Healthcare Facilities and Services Act 1998 (Act 586) -- governs private healthcare facilities",
+        "Malaysian Medical Council guidelines on telemedicine",
+        "Personal Data Protection Standards 2015 (healthcare data handling)"
+      ],
+      "nacsaSectorNumber": 3,
+      "nacsaSectorLead": "Ministry of Health Malaysia (KKM)",
+      "detailFile": "sectors/requirements/healthcare.json"
+    },
+    {
+      "id": "government",
+      "name": "Government",
+      "description": "Federal and state government agencies, statutory bodies, and government-linked companies. Key stakeholders: MAMPU (Malaysian Administrative Modernisation and Management Planning Unit), MyGov, MDEC (Malaysia Digital Economy Corporation), MyDigital initiative. Cloud adoption driven by MyDigital cloud-first policy and government digital transformation.",
+      "cloudAdoption": "medium",
+      "keyCloudRisks": [
+        "Data sovereignty for government classified data",
+        "Citizen data privacy in cloud services",
+        "Government cloud procurement compliance (MyGovCloud)",
+        "Inter-agency data sharing security",
+        "National security data handling in cloud"
+      ],
+      "regulatoryOverlap": [
+        "NACSA Act 854 -- government as NCII sector (sector 2)",
+        "PDPA 2010 (Act 709) -- citizen personal data protection",
+        "Official Secrets Act 1972 (Act 88) -- classified government information",
+        "MAMPU cloud security guidelines (ICTSO directives)",
+        "MyDigital blueprint -- cloud-first policy for government",
+        "Pekeliling Am Bil. 3/2000 -- IT security classification for government"
+      ],
+      "nacsaSectorNumber": 2,
+      "nacsaSectorLead": "National Cyber Security Agency (NACSA)",
+      "detailFile": "sectors/requirements/government.json"
+    },
+    {
+      "id": "e-commerce",
+      "name": "E-Commerce and Digital Services",
+      "description": "Online marketplaces, payment gateways, digital wallets, ride-hailing, food delivery, and SaaS platforms. Key operators: Shopee, Lazada, Grab, Touch 'n Go eWallet, Boost, various fintech startups. Cloud-native by design -- most e-commerce platforms are built on public cloud from inception.",
+      "cloudAdoption": "high",
+      "keyCloudRisks": [
+        "Payment card data exposure (PCI DSS cloud compliance)",
+        "Customer PII exposure at scale",
+        "Credential stuffing and account takeover",
+        "API abuse and scraping",
+        "Third-party payment gateway integration security"
+      ],
+      "regulatoryOverlap": [
+        "PDPA 2010 (Act 709) -- customer personal data protection",
+        "PCI DSS v4.0 -- payment card data security (applies regardless of cloud/on-premises)",
+        "Consumer Protection Act 1999 (Act 599) -- consumer data handling",
+        "Electronic Commerce Act 2006 (Act 658) -- electronic transaction security",
+        "BNM e-money guidelines -- for digital wallet operators",
+        "NACSA Act 854 -- potential NCII designation for critical digital infrastructure"
+      ],
+      "nacsaSectorNumber": "Not explicit NCII sector -- subset of Trade, Industry and Economy sector (sector 10)",
+      "nacsaSectorLead": "Ministry of Domestic Trade and Cost of Living / MDEC",
+      "detailFile": "sectors/requirements/e-commerce.json"
+    },
+    {
+      "id": "education",
+      "name": "Education",
+      "description": "Public and private universities, polytechnics, schools, and edtech platforms. Key operators: Ministry of Education (MOE), Ministry of Higher Education (MOHE), public universities (UM, UKM, USM, UTM, UPM), private universities (Taylor's, Sunway, Monash Malaysia, INTI). Cloud adoption driven by online learning platforms, student information systems, and research computing.",
+      "cloudAdoption": "medium",
+      "keyCloudRisks": [
+        "Student PII exposure (academic records, financial data)",
+        "Research data protection (intellectual property, grant data)",
+        "Online learning platform availability",
+        "Minor student data special protection requirements",
+        "Shared cloud environments with research workloads"
+      ],
+      "regulatoryOverlap": [
+        "PDPA 2010 (Act 709) -- student personal data (especially minors)",
+        "Education Act 1996 (Act 550) -- education institution governance",
+        "Private Higher Educational Institutions Act 1996 (Act 555) -- private university governance",
+        "NACSA Act 854 -- potential NCII designation for critical education infrastructure",
+        "MOHE IT security guidelines for public universities"
+      ],
+      "nacsaSectorNumber": 7,
+      "nacsaSectorLead": "Ministry of Education Malaysia",
+      "detailFile": "sectors/requirements/education.json"
+    },
+    {
+      "id": "telecommunications",
+      "name": "Telecommunications",
+      "description": "Fixed and mobile telecommunications operators, internet service providers, and digital infrastructure. Key operators: TM (Telekom Malaysia), Celcom Digi (merged), Maxis, U Mobile, Digital Nasional Berhad (DNB -- 5G), TIME dotCom. Cloud adoption for network function virtualisation (NFV), 5G core, and enterprise cloud services offered to customers.",
+      "cloudAdoption": "high",
+      "keyCloudRisks": [
+        "Telecommunications data sovereignty (call records, subscriber data)",
+        "5G core network function security in cloud",
+        "Lawful interception compliance in cloud architecture",
+        "Network function virtualisation (NFV) security",
+        "Customer enterprise cloud service chain liability"
+      ],
+      "regulatoryOverlap": [
+        "Communications and Multimedia Act 1998 (Act 588) -- primary telecom regulation",
+        "NACSA Act 854 -- telecommunications as NCII sector",
+        "PDPA 2010 (Act 709) -- subscriber personal data",
+        "MCMC General Consumer Code of Practice -- subscriber data handling",
+        "Interception of Communications Act 2024 -- lawful interception obligations",
+        "MCMC Technical Standards -- network security requirements"
+      ],
+      "nacsaSectorNumber": 6,
+      "nacsaSectorLead": "Malaysian Communications and Multimedia Commission (MCMC)",
+      "detailFile": "sectors/requirements/telecommunications.json"
+    }
+  ]
+}

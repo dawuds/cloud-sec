@@ -1,0 +1,66 @@
+{
+  "$schema": "cloud-security-v1",
+  "sourceType": "constructed-indicative",
+  "verificationNote": "Requirements constructed from CSA CCM v4, NIST CSF 2.0, and Malaysia Act 854 obligations. Verify against authoritative sources before use in formal assessments.",
+  "domain": {
+    "id": "supply-chain-devsecops",
+    "name": "Supply Chain and DevSecOps",
+    "description": "Requirements for securing the software supply chain and CI/CD pipelines. Covers pipeline hardening, dependency management, infrastructure-as-code scanning, and software bill of materials generation.",
+    "ccmDomains": ["STA"],
+    "nacsa": ["s18"]
+  },
+  "requirements": [
+    {
+      "id": "STA-R1",
+      "title": "CI/CD Pipeline Security",
+      "description": "Secure CI/CD pipelines against tampering, credential theft, and supply chain injection. Use OIDC federation instead of long-lived credentials. Enforce branch protection and code review. Sign build artifacts and maintain build provenance.",
+      "priority": "critical",
+      "ccmControls": ["STA-01", "STA-02"],
+      "nacsa": ["s18"],
+      "cspGuidance": {
+        "aws": "Use CodePipeline with CodeBuild in isolated VPC. Authenticate to AWS via OIDC federation (no access keys). Store secrets in Secrets Manager. Enable CodeBuild artifact encryption.",
+        "azure": "Use Azure DevOps with Workload Identity Federation for service connections. Store secrets in Key Vault. Enable pipeline approvals and gates. Use environment protection rules.",
+        "gcp": "Use Cloud Build with Workload Identity Federation. Store secrets in Secret Manager. Enable Binary Authorization for deployment gating. Generate SLSA provenance attestations."
+      }
+    },
+    {
+      "id": "STA-R2",
+      "title": "Software Dependency Management",
+      "description": "Manage third-party software dependencies to prevent supply chain attacks. Use private package registries proxying public registries. Pin dependency versions with lock files. Scan dependencies for known vulnerabilities and block malicious packages.",
+      "priority": "high",
+      "ccmControls": ["STA-03", "STA-07"],
+      "nacsa": ["s18"],
+      "cspGuidance": {
+        "aws": "Use CodeArtifact as private registry for npm, pip, Maven. Integrate Inspector in CodePipeline. Configure upstream repository filtering. Enable package version immutability.",
+        "azure": "Use Azure Artifacts as private package feed. Integrate GitHub Advanced Security or Snyk. Configure upstream sources with approval gates. Enable package retention policies.",
+        "gcp": "Use Artifact Registry for private package management (Docker, npm, pip, Maven). Use Assured Open Source Software for curated packages. Integrate vulnerability scanning in Cloud Build."
+      }
+    },
+    {
+      "id": "STA-R3",
+      "title": "Infrastructure as Code Security Scanning",
+      "description": "Scan all IaC templates (Terraform, CloudFormation, Bicep, Pulumi) for security misconfigurations before deployment. Block merge of templates with critical misconfigurations. Implement policy-as-code for organisation-specific security requirements.",
+      "priority": "high",
+      "ccmControls": ["STA-05", "DCS-01"],
+      "nacsa": ["s18"],
+      "cspGuidance": {
+        "aws": "Use CloudFormation Guard for template validation. Integrate checkov or tfsec in CI/CD. Deploy Terraform Sentinel for policy enforcement. Use Config for deployed-state drift detection.",
+        "azure": "Use Azure Policy with deny effects as runtime guardrails. Integrate checkov, tfsec, or Terrascan in Azure Pipelines. Use Terraform Sentinel or OPA for pre-apply validation.",
+        "gcp": "Use gcloud terraform vet for validation. Integrate checkov in Cloud Build. Deploy Config Connector for declarative state management. Use Organization Policy for runtime guardrails."
+      }
+    },
+    {
+      "id": "STA-R4",
+      "title": "Software Bill of Materials (SBOM)",
+      "description": "Generate and maintain SBOMs for all production applications and container images. SBOMs must follow SPDX or CycloneDX format. Use SBOMs for rapid vulnerability response when new CVEs are disclosed. Store SBOMs in a central repository with lifecycle management.",
+      "priority": "medium",
+      "ccmControls": ["STA-06", "STA-08"],
+      "nacsa": ["s18"],
+      "cspGuidance": {
+        "aws": "Use Inspector for automated SBOM generation. Integrate Syft in CodeBuild. Store SBOMs in S3 alongside build artifacts. Use Security Hub for CVE-to-deployment correlation.",
+        "azure": "Use Defender for Cloud DevOps Security for SBOM. Integrate Syft or Microsoft SBOM Tool in Azure Pipelines. Store in Azure Artifacts. Use GitHub dependency graph for visibility.",
+        "gcp": "Use Artifact Analysis for SBOM generation in Artifact Registry. Integrate Syft in Cloud Build. Use Software Delivery Shield for end-to-end supply chain visibility."
+      }
+    }
+  ]
+}

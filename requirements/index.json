@@ -1,0 +1,20 @@
+{
+  "$schema": "cloud-security-v1",
+  "sourceType": "constructed-indicative",
+  "verificationNote": "Requirements constructed from CSA Cloud Controls Matrix v4, NIST CSF 2.0, and Malaysia Act 854 (NACSA) obligations. CCM control IDs are from the public CSA CCM v4 specification. Verify against authoritative sources before use in formal assessments.",
+  "description": "Master requirements index for cloud security. Requirements are organised by security domain -- each domain consolidates requirements from CSA CCM, NIST CSF, and applicable Malaysian regulatory obligations. Requirements are cross-referenced to standards, MITRE ATT&CK Cloud techniques, and CSP-specific implementation guidance.",
+  "domains": [
+    { "id": "identity-access-management", "name": "Identity and Access Management", "description": "Authentication, authorisation, federation, privileged access, and service account management for cloud workloads", "requirementCount": 5, "ccmDomains": ["IAM"] },
+    { "id": "data-protection-encryption", "name": "Data Protection and Encryption", "description": "Data classification, encryption at rest and in transit, data loss prevention, and secure data lifecycle management", "requirementCount": 5, "ccmDomains": ["DSP", "CEK"] },
+    { "id": "network-security", "name": "Network Security", "description": "Virtual network design, segmentation, security groups, private connectivity, WAF, and DDoS protection", "requirementCount": 5, "ccmDomains": ["IVS"] },
+    { "id": "logging-monitoring", "name": "Logging and Monitoring", "description": "Cloud audit logging, SIEM integration, alerting, log retention, and threat detection services", "requirementCount": 5, "ccmDomains": ["LOG"] },
+    { "id": "incident-response", "name": "Incident Response", "description": "Cloud incident response planning, forensic readiness, containment procedures, and regulatory notification", "requirementCount": 4, "ccmDomains": ["SEF"] },
+    { "id": "container-security", "name": "Container Security", "description": "Container image scanning, runtime security, registry hardening, and orchestrator security configuration", "requirementCount": 4, "ccmDomains": ["CCC"] },
+    { "id": "serverless-security", "name": "Serverless Security", "description": "Function security configuration, API gateway protection, and serverless dependency management", "requirementCount": 3, "ccmDomains": ["AIS"] },
+    { "id": "supply-chain-devsecops", "name": "Supply Chain and DevSecOps", "description": "CI/CD pipeline security, dependency management, infrastructure as code scanning, and software bill of materials", "requirementCount": 4, "ccmDomains": ["STA"] },
+    { "id": "key-management", "name": "Key Management", "description": "Cloud KMS usage, key rotation policies, HSM-backed keys for sensitive workloads, and bring-your-own-key strategies", "requirementCount": 4, "ccmDomains": ["CEK"] },
+    { "id": "configuration-posture", "name": "Configuration and Posture Management", "description": "Cloud security posture management, CIS benchmark compliance, drift detection, and resource tagging governance", "requirementCount": 4, "ccmDomains": ["CCC", "DCS"] },
+    { "id": "backup-disaster-recovery", "name": "Backup and Disaster Recovery", "description": "Backup strategy, cross-region replication, disaster recovery testing, and RTO/RPO definition", "requirementCount": 4, "ccmDomains": ["BCR"] },
+    { "id": "compliance-governance", "name": "Compliance and Governance", "description": "Cloud governance framework, policy as code, audit readiness, and cloud vendor security assessment", "requirementCount": 4, "ccmDomains": ["GRC"] }
+  ]
+}

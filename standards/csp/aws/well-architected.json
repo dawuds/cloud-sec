@@ -1,0 +1,206 @@
+{
+  "framework": "AWS Well-Architected Framework - Security Pillar",
+  "version": "2023",
+  "csp": "aws",
+  "description": "The Security Pillar of the AWS Well-Architected Framework describes how to take advantage of cloud technologies to protect data, systems, and assets in a way that can improve your security posture. It is organized around seven design principles and six best practice areas.",
+  "url": "https://docs.aws.amazon.com/wellarchitected/latest/security-pillar/",
+  "designPrinciples": [
+    {
+      "id": "sec-dp-1",
+      "title": "Implement a strong identity foundation",
+      "description": "Implement the principle of least privilege and enforce separation of duties with appropriate authorization for each interaction with your AWS resources. Centralize identity management and aim to eliminate reliance on long-term static credentials. Use IAM roles, temporary credentials, and identity federation."
+    },
+    {
+      "id": "sec-dp-2",
+      "title": "Maintain traceability",
+      "description": "Monitor, alert, and audit actions and changes to your environment in real time. Integrate log and metric collection with systems to automatically investigate and take action. Ensure all API calls and resource changes are captured in CloudTrail and that logs are centralized for analysis."
+    },
+    {
+      "id": "sec-dp-3",
+      "title": "Apply security at all layers",
+      "description": "Apply a defense-in-depth approach with multiple security controls at every layer: edge network, VPC, load balancer, instance, operating system, application, and data. Do not rely on a single security mechanism. Each layer should independently enforce security policies."
+    },
+    {
+      "id": "sec-dp-4",
+      "title": "Automate security best practices",
+      "description": "Automated software-based security mechanisms improve your ability to securely scale more rapidly and cost-effectively. Create secure architectures and implement controls as code in version-controlled templates. Use Infrastructure as Code, automated patching, and automated compliance checks."
+    },
+    {
+      "id": "sec-dp-5",
+      "title": "Protect data in transit and at rest",
+      "description": "Classify your data into sensitivity levels and use mechanisms such as encryption, tokenization, and access control where appropriate. Encrypt data at rest with KMS, enforce TLS for data in transit, and use VPC endpoints to keep traffic within the AWS network."
+    },
+    {
+      "id": "sec-dp-6",
+      "title": "Keep people away from data",
+      "description": "Use mechanisms and tools to reduce or eliminate the need for direct access or manual processing of data. This reduces the risk of mishandling, modification, or human error when dealing with sensitive data. Use automated ETL pipelines, dashboards for viewing rather than direct database access, and CI/CD for deployments."
+    },
+    {
+      "id": "sec-dp-7",
+      "title": "Prepare for security events",
+      "description": "Prepare for security incidents by implementing incident management and investigation policies and processes. Run incident response simulations and use tools with automation to increase your speed for detection, investigation, and recovery. Develop runbooks and playbooks for common scenarios."
+    }
+  ],
+  "bestPracticeAreas": [
+    {
+      "id": "sec-bp-1",
+      "title": "Security Foundations",
+      "description": "Foundational practices that underpin all other security areas. Includes shared responsibility understanding, AWS account management strategy, and operating securely.",
+      "questions": [
+        {
+          "id": "SEC01",
+          "title": "How do you securely operate your workload?",
+          "practices": [
+            "Separate workloads using accounts and organizational units",
+            "Secure AWS account root user and properties",
+            "Identify and validate control objectives from regulatory frameworks",
+            "Keep up to date with security threats and recommendations",
+            "Reduce security management scope using AWS managed services",
+            "Automate testing and validation of security controls"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sec-bp-2",
+      "title": "Identity and Access Management",
+      "description": "Ensuring that only authenticated and authorized users and components can access resources, and only in the manner intended.",
+      "questions": [
+        {
+          "id": "SEC02",
+          "title": "How do you manage identities for people and machines?",
+          "practices": [
+            "Use a centralized identity provider (IAM Identity Center, external IdP)",
+            "Use strong sign-in mechanisms (MFA for all human users)",
+            "Leverage temporary credentials from IAM roles instead of long-term keys",
+            "Store and use secrets securely (Secrets Manager, Parameter Store)",
+            "Audit and rotate credentials regularly",
+            "Use user groups and attributes for scalable permission management"
+          ]
+        },
+        {
+          "id": "SEC03",
+          "title": "How do you manage permissions for people and machines?",
+          "practices": [
+            "Define access requirements and grant least privilege",
+            "Establish permission guardrails with SCPs and permission boundaries",
+            "Establish emergency access processes for break-glass scenarios",
+            "Reduce permissions continuously based on access analysis",
+            "Define permission guardrails for your organization",
+            "Manage access based on lifecycle (onboard, role change, offboard)"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sec-bp-3",
+      "title": "Detection",
+      "description": "Identifying potential security misconfigurations, threats, or unexpected behavior through monitoring and detective controls.",
+      "questions": [
+        {
+          "id": "SEC04",
+          "title": "How do you detect and investigate security events?",
+          "practices": [
+            "Configure service and application logging (CloudTrail, VPC Flow Logs, S3 access logs)",
+            "Analyze logs, findings, and metrics centrally (Security Hub, CloudWatch)",
+            "Automate response to events (EventBridge rules, Lambda functions)",
+            "Implement actionable security events with clear ownership",
+            "Use threat intelligence feeds to enrich findings (GuardDuty threat lists)",
+            "Run detective controls as code (Config Rules, custom Lambda checks)"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sec-bp-4",
+      "title": "Infrastructure Protection",
+      "description": "Protecting systems and services within your workload through defense-in-depth strategies at multiple network and compute layers.",
+      "questions": [
+        {
+          "id": "SEC05",
+          "title": "How do you protect your network resources?",
+          "practices": [
+            "Create network layers using public/private subnets",
+            "Control traffic at all layers (security groups, NACLs, WAF, Shield)",
+            "Automate network protection (Network Firewall, WAF managed rules)",
+            "Use VPC endpoints for AWS service access (PrivateLink)",
+            "Implement inspection and protection at ingress points",
+            "Encrypt and authenticate all network communications"
+          ]
+        },
+        {
+          "id": "SEC06",
+          "title": "How do you protect your compute resources?",
+          "practices": [
+            "Perform vulnerability management (Inspector, SSM Patch Manager)",
+            "Reduce attack surface by hardening OS and minimizing software",
+            "Automate compute protection (EC2 Image Builder, Lambda layers)",
+            "Use managed compute services to reduce management burden",
+            "Enable advanced protection features (IMDSv2, Nitro Enclaves)",
+            "Validate software integrity using code signing"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sec-bp-5",
+      "title": "Data Protection",
+      "description": "Maintaining confidentiality and integrity of data at rest and in transit through encryption, access controls, and data classification.",
+      "questions": [
+        {
+          "id": "SEC07",
+          "title": "How do you classify your data?",
+          "practices": [
+            "Identify the data within your workload and classify by sensitivity",
+            "Apply data protection controls based on classification level",
+            "Automate identification and classification (Macie for S3)",
+            "Define data lifecycle management requirements",
+            "Define scalable data protection mechanisms"
+          ]
+        },
+        {
+          "id": "SEC08",
+          "title": "How do you protect your data at rest?",
+          "practices": [
+            "Implement encryption at rest for all data stores (KMS, SSE)",
+            "Enforce encryption at rest using SCPs and Config Rules",
+            "Automate data at rest protection mechanisms",
+            "Enforce access control (IAM policies, S3 bucket policies, VPC endpoints)",
+            "Use key management (KMS CMKs with rotation, CloudHSM for FIPS)"
+          ]
+        },
+        {
+          "id": "SEC09",
+          "title": "How do you protect your data in transit?",
+          "practices": [
+            "Implement TLS for all external and internal communications",
+            "Enforce encryption in transit using HTTPS-only policies",
+            "Automate detection of unintended data exposure",
+            "Authenticate network communications using certificates (ACM)",
+            "Use VPN or Direct Connect for hybrid connectivity"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sec-bp-6",
+      "title": "Incident Response",
+      "description": "Preparing for, detecting, containing, and recovering from security incidents in an automated and repeatable manner.",
+      "questions": [
+        {
+          "id": "SEC10",
+          "title": "How do you anticipate, respond to, and recover from incidents?",
+          "practices": [
+            "Identify key personnel and external resources for incident response",
+            "Develop incident management plans and playbooks",
+            "Prepare forensic capabilities (isolated forensic accounts, pre-provisioned tooling)",
+            "Automate containment and recovery actions",
+            "Pre-provision access for incident responders",
+            "Run game days and simulations to test incident response regularly",
+            "Establish a framework for learning from incidents (post-mortems)"
+          ]
+        }
+      ]
+    }
+  ]
+}

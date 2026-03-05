@@ -1,0 +1,293 @@
+{
+  "framework": "CIS Amazon Web Services Foundations Benchmark",
+  "version": "3.0",
+  "releaseDate": "2024-01",
+  "csp": "aws",
+  "description": "The CIS AWS Foundations Benchmark provides prescriptive guidance for configuring security options for a subset of AWS services. It focuses on foundational, testable, and architecture-agnostic settings that any AWS account should implement.",
+  "levels": {
+    "1": "Basic security settings that can be configured without significant performance impact. Recommended for all environments.",
+    "2": "Advanced security settings that may have performance or operational implications. Recommended for high-security environments."
+  },
+  "sections": [
+    {
+      "id": "1",
+      "title": "Identity and Access Management",
+      "description": "Controls for managing AWS identities, authentication, and authorization. Focuses on root account protection, MFA enforcement, password policies, and least-privilege access.",
+      "checks": [
+        {
+          "id": "1.1",
+          "title": "Maintain current contact details",
+          "level": 1,
+          "automated": false,
+          "description": "Ensure the contact information associated with the AWS account is current and maps to more than one individual in your organization. Contact information should include email address, phone number, and mailing address."
+        },
+        {
+          "id": "1.4",
+          "title": "Ensure no 'root' user account access key exists",
+          "level": 1,
+          "automated": true,
+          "description": "The root user account has unrestricted access to all AWS resources. Access keys for the root account should be deleted. Use IAM roles or individual IAM users for programmatic access instead."
+        },
+        {
+          "id": "1.5",
+          "title": "Ensure MFA is enabled for the 'root' user account",
+          "level": 1,
+          "automated": true,
+          "description": "Multi-Factor Authentication adds an extra layer of protection on top of a username and password. Enable MFA for the root account to reduce the risk of unauthorized access if root credentials are compromised."
+        },
+        {
+          "id": "1.6",
+          "title": "Ensure hardware MFA is enabled for the 'root' user account",
+          "level": 2,
+          "automated": true,
+          "description": "Hardware MFA devices (e.g., YubiKey, Gemalto token) provide stronger authentication than virtual MFA. A hardware MFA device should be used for the root account for maximum protection."
+        },
+        {
+          "id": "1.8",
+          "title": "Ensure IAM password policy requires minimum length of 14 or greater",
+          "level": 1,
+          "automated": true,
+          "description": "IAM password policy should enforce a minimum password length of 14 characters. Longer passwords are exponentially harder to brute force and provide better security than complexity requirements alone."
+        },
+        {
+          "id": "1.10",
+          "title": "Ensure multi-factor authentication (MFA) is enabled for all IAM users that have a console password",
+          "level": 1,
+          "automated": true,
+          "description": "All IAM users with console access should have MFA enabled. This prevents unauthorized access even if passwords are compromised through phishing, credential stuffing, or other attacks."
+        },
+        {
+          "id": "1.15",
+          "title": "Ensure IAM Users Receive Permissions Only Through Groups",
+          "level": 1,
+          "automated": true,
+          "description": "IAM policies should be attached to groups rather than directly to users. This simplifies access management, makes it easier to audit permissions, and ensures consistent policy application across users with similar roles."
+        },
+        {
+          "id": "1.17",
+          "title": "Ensure a support role has been created to manage incidents with AWS Support",
+          "level": 1,
+          "automated": true,
+          "description": "Create an IAM role with the AWSSupportAccess policy attached. This ensures that AWS Support cases can be opened and managed by designated personnel without granting broader administrative access."
+        }
+      ]
+    },
+    {
+      "id": "2",
+      "title": "Storage",
+      "description": "Controls for securing data at rest in S3 buckets and EBS volumes. Focuses on encryption, access controls, and preventing unintended public exposure of data.",
+      "checks": [
+        {
+          "id": "2.1.1",
+          "title": "Ensure S3 Bucket Policy is set to deny HTTP requests",
+          "level": 2,
+          "automated": true,
+          "description": "S3 bucket policies should include a condition to deny all requests that do not use TLS (HTTPS). This prevents data in transit from being transmitted unencrypted. Use the aws:SecureTransport condition key."
+        },
+        {
+          "id": "2.1.2",
+          "title": "Ensure MFA Delete is enabled on S3 buckets",
+          "level": 2,
+          "automated": true,
+          "description": "MFA Delete requires a second authentication factor before objects can be permanently deleted or bucket versioning can be disabled. This protects against accidental or malicious deletion of critical data."
+        },
+        {
+          "id": "2.1.4",
+          "title": "Ensure that S3 Buckets are configured with 'Block public access (bucket settings)'",
+          "level": 1,
+          "automated": true,
+          "description": "S3 Block Public Access settings should be enabled at the bucket level to prevent public access via ACLs or bucket policies. This provides a safety net against accidental public exposure of sensitive data."
+        },
+        {
+          "id": "2.2.1",
+          "title": "Ensure EBS Volume Encryption is Enabled in all Regions",
+          "level": 1,
+          "automated": true,
+          "description": "Enable default EBS encryption in all regions to ensure all new EBS volumes are automatically encrypted at rest. This uses AWS-managed or customer-managed KMS keys and protects data from unauthorized access to the underlying storage."
+        },
+        {
+          "id": "2.3.1",
+          "title": "Ensure that encryption is enabled for RDS Instances",
+          "level": 1,
+          "automated": true,
+          "description": "RDS DB instances should have encryption at rest enabled using KMS. Encryption protects the underlying storage, automated backups, read replicas, and snapshots. Once enabled, encryption cannot be disabled."
+        },
+        {
+          "id": "2.3.2",
+          "title": "Ensure Auto Minor Version Upgrade feature is Enabled for RDS Instances",
+          "level": 1,
+          "automated": true,
+          "description": "RDS instances should have auto minor version upgrade enabled to automatically receive minor engine version upgrades during maintenance windows. This ensures security patches are applied in a timely manner."
+        },
+        {
+          "id": "2.3.3",
+          "title": "Ensure that public access is not given to RDS Instance",
+          "level": 1,
+          "automated": true,
+          "description": "RDS instances should not have the 'Publicly Accessible' setting enabled. Database instances should be deployed in private subnets and accessed only from within the VPC or via secure connectivity (VPN, Direct Connect)."
+        }
+      ]
+    },
+    {
+      "id": "3",
+      "title": "Logging",
+      "description": "Controls for ensuring comprehensive audit logging across AWS services. Focuses on CloudTrail configuration, log integrity, and centralized log management.",
+      "checks": [
+        {
+          "id": "3.1",
+          "title": "Ensure CloudTrail is enabled in all regions",
+          "level": 1,
+          "automated": true,
+          "description": "CloudTrail should be configured with a multi-region trail to capture API activity in all AWS regions. This ensures that actions taken in any region, including regions not actively used, are logged for security analysis."
+        },
+        {
+          "id": "3.2",
+          "title": "Ensure CloudTrail log file validation is enabled",
+          "level": 2,
+          "automated": true,
+          "description": "CloudTrail log file validation creates a digitally signed digest file containing a hash of each log file delivered to S3. This enables detection of log file modification, deletion, or forgery after delivery."
+        },
+        {
+          "id": "3.3",
+          "title": "Ensure the S3 bucket used to store CloudTrail logs is not publicly accessible",
+          "level": 1,
+          "automated": true,
+          "description": "The S3 bucket where CloudTrail delivers log files must not be publicly accessible. Public access to audit logs could expose sensitive information about AWS resource configurations and API activity."
+        },
+        {
+          "id": "3.4",
+          "title": "Ensure CloudTrail trails are integrated with CloudWatch Logs",
+          "level": 1,
+          "automated": true,
+          "description": "CloudTrail logs should be sent to CloudWatch Logs to enable real-time monitoring, alarm creation, and automated response to API activity. This complements S3 log storage with real-time analysis capabilities."
+        },
+        {
+          "id": "3.6",
+          "title": "Ensure S3 bucket access logging is enabled on the CloudTrail S3 bucket",
+          "level": 1,
+          "automated": true,
+          "description": "S3 server access logging should be enabled on the bucket storing CloudTrail logs. This provides an audit trail of who accessed the audit logs themselves, enabling detection of unauthorized access to log data."
+        },
+        {
+          "id": "3.7",
+          "title": "Ensure CloudTrail logs are encrypted at rest using KMS CMKs",
+          "level": 2,
+          "automated": true,
+          "description": "CloudTrail logs stored in S3 should be encrypted using a customer-managed KMS key (CMK) rather than default S3 encryption. This provides additional access controls via KMS key policies and enables envelope encryption."
+        },
+        {
+          "id": "3.9",
+          "title": "Ensure VPC flow logging is enabled in all VPCs",
+          "level": 2,
+          "automated": true,
+          "description": "VPC Flow Logs capture IP traffic information for network interfaces in a VPC. Enable flow logging for all VPCs to monitor accepted and rejected traffic, detect anomalies, and support forensic investigation of security incidents."
+        }
+      ]
+    },
+    {
+      "id": "4",
+      "title": "Monitoring",
+      "description": "Controls for establishing monitoring and alerting on critical security events. Focuses on CloudWatch metric filters and alarms for detecting unauthorized activity and configuration changes.",
+      "checks": [
+        {
+          "id": "4.1",
+          "title": "Ensure a log metric filter and alarm exist for unauthorized API calls",
+          "level": 1,
+          "automated": true,
+          "description": "Create a CloudWatch metric filter and alarm to detect unauthorized API calls (AccessDenied, UnauthorizedAccess). High volumes of unauthorized calls may indicate credential compromise, misconfigured applications, or reconnaissance activity."
+        },
+        {
+          "id": "4.2",
+          "title": "Ensure a log metric filter and alarm exist for Management Console sign-in without MFA",
+          "level": 1,
+          "automated": true,
+          "description": "Monitor for console logins that do not use multi-factor authentication. Console sign-in without MFA is a higher risk and may indicate compromised credentials being used by an attacker who does not have the MFA device."
+        },
+        {
+          "id": "4.3",
+          "title": "Ensure a log metric filter and alarm exist for usage of 'root' user",
+          "level": 1,
+          "automated": true,
+          "description": "Monitor all usage of the root account. The root user should only be used for initial account setup and rare administrative tasks. Any unexpected root activity may indicate account compromise."
+        },
+        {
+          "id": "4.4",
+          "title": "Ensure a log metric filter and alarm exist for IAM policy changes",
+          "level": 1,
+          "automated": true,
+          "description": "Monitor changes to IAM policies (CreatePolicy, DeletePolicy, AttachRolePolicy, DetachRolePolicy, etc.). Unauthorized IAM changes could grant excessive permissions or create backdoor access."
+        },
+        {
+          "id": "4.5",
+          "title": "Ensure a log metric filter and alarm exist for CloudTrail configuration changes",
+          "level": 1,
+          "automated": true,
+          "description": "Monitor changes to CloudTrail configuration (StopLogging, DeleteTrail, UpdateTrail). An attacker with sufficient access may attempt to disable or modify logging to cover their tracks."
+        },
+        {
+          "id": "4.8",
+          "title": "Ensure a log metric filter and alarm exist for S3 bucket policy changes",
+          "level": 1,
+          "automated": true,
+          "description": "Monitor S3 bucket policy changes (PutBucketPolicy, PutBucketAcl, DeleteBucketPolicy). Unauthorized changes could expose sensitive data by making buckets publicly accessible."
+        },
+        {
+          "id": "4.12",
+          "title": "Ensure a log metric filter and alarm exist for changes to network gateways",
+          "level": 1,
+          "automated": true,
+          "description": "Monitor changes to internet gateways, NAT gateways, and customer gateways. Unauthorized gateway changes could create unintended network paths or enable data exfiltration."
+        },
+        {
+          "id": "4.14",
+          "title": "Ensure a log metric filter and alarm exist for VPC changes",
+          "level": 1,
+          "automated": true,
+          "description": "Monitor VPC changes (CreateVpc, DeleteVpc, ModifyVpcAttribute, CreateVpcPeeringConnection). VPC modifications could compromise network segmentation and security boundaries."
+        }
+      ]
+    },
+    {
+      "id": "5",
+      "title": "Networking",
+      "description": "Controls for securing VPC networking configurations. Focuses on restricting inbound access, securing default VPC components, and ensuring network segmentation.",
+      "checks": [
+        {
+          "id": "5.1",
+          "title": "Ensure no Network ACLs allow ingress from 0.0.0.0/0 to remote server administration ports",
+          "level": 1,
+          "automated": true,
+          "description": "Network ACLs should not allow unrestricted inbound access (0.0.0.0/0 or ::/0) to remote administration ports such as SSH (22) and RDP (3389). Restrict access to known IP ranges or use bastion hosts."
+        },
+        {
+          "id": "5.2",
+          "title": "Ensure no security groups allow ingress from 0.0.0.0/0 to remote server administration ports",
+          "level": 1,
+          "automated": true,
+          "description": "Security groups should not allow unrestricted inbound access to SSH (22), RDP (3389), or other administrative ports. Use the principle of least privilege and restrict source IP ranges to known trusted networks."
+        },
+        {
+          "id": "5.3",
+          "title": "Ensure no security groups allow ingress from ::/0 to remote server administration ports",
+          "level": 1,
+          "automated": true,
+          "description": "Security groups should also restrict IPv6 access (::/0) to administrative ports. Both IPv4 and IPv6 ingress rules must be reviewed to prevent unauthorized remote administration access."
+        },
+        {
+          "id": "5.4",
+          "title": "Ensure the default security group of every VPC restricts all traffic",
+          "level": 2,
+          "automated": true,
+          "description": "The default security group in each VPC should have all inbound and outbound rules removed. Resources should use custom security groups with explicit rules. The default group cannot be deleted but should restrict all traffic."
+        },
+        {
+          "id": "5.6",
+          "title": "Ensure that EC2 Metadata Service only allows IMDSv2",
+          "level": 1,
+          "automated": true,
+          "description": "EC2 instances should be configured to require IMDSv2 (Instance Metadata Service Version 2) which uses session-oriented requests. IMDSv1 is vulnerable to SSRF attacks that can steal instance credentials. IMDSv2 mitigates this with a PUT request token requirement."
+        }
+      ]
+    }
+  ]
+}

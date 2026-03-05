@@ -1,0 +1,156 @@
+{
+  "$schema": "cloud-security-v1",
+  "sourceType": "constructed-indicative",
+  "verificationNote": "Cloud risk assessment methodology constructed from ISO 27005, NIST RMF (SP 800-37), CSA CCM v4, and cloud security best practices. Not endorsed by any standards body -- verify against authoritative sources before use in formal assessments.",
+  "title": "Cloud Security Risk Assessment Methodology",
+  "description": "Risk assessment methodology tailored for cloud computing environments. The critical difference from traditional IT risk assessment is that cloud risk must account for SHARED RESPONSIBILITY, MULTI-TENANCY, DATA SOVEREIGNTY, and THIRD-PARTY DEPENDENCY as primary risk dimensions -- the organisation no longer has full control of the infrastructure stack.",
+  "keyPrinciple": "In cloud environments, the organisation delegates infrastructure control to the cloud service provider (CSP) but retains accountability for data protection, access management, and compliance. Risk assessment must therefore evaluate both the organisation's controls and the CSP's controls across the shared responsibility boundary.",
+  "standardsAlignment": [
+    "ISO 27005:2022 (Information security risk management)",
+    "NIST SP 800-37 Rev 2 (Risk Management Framework for Information Systems)",
+    "NIST SP 800-144 (Guidelines on Security and Privacy in Public Cloud Computing)",
+    "CSA Cloud Controls Matrix v4 (CCM v4)",
+    "ISO 27017:2015 (Cloud-specific security controls)",
+    "ISO 27018:2019 (Protection of PII in public clouds)",
+    "NACSA Act 854 s21 (Risk assessment obligation for NCII operators)",
+    "ENISA Cloud Computing Risk Assessment"
+  ],
+  "approach": {
+    "description": "Cloud-specific risk assessment aligned with ISO 27005 and NIST RMF. Extends traditional risk assessment with cloud-specific threat modelling, shared responsibility analysis, and CSP dependency evaluation.",
+    "phases": [
+      {
+        "phase": 1,
+        "name": "Context Establishment",
+        "description": "Define the cloud risk assessment scope, including cloud deployment models (IaaS, PaaS, SaaS), service inventory, data classification, shared responsibility boundaries, and regulatory obligations. Identify stakeholders and risk appetite.",
+        "outputs": ["Cloud service inventory with deployment models", "Data classification register for cloud-hosted data", "Shared responsibility matrix per CSP", "Regulatory obligation register"],
+        "cloudConsiderations": [
+          "Map each cloud service to IaaS/PaaS/SaaS -- the shared responsibility boundary shifts with each model",
+          "Identify all data residency requirements before assessing data sovereignty risks",
+          "Document CSP certifications (SOC 2, ISO 27001, CSA STAR) as baseline assurance evidence",
+          "Identify all shadow cloud usage -- unmanaged cloud accounts are a primary risk source"
+        ]
+      },
+      {
+        "phase": 2,
+        "name": "Risk Identification",
+        "description": "Identify cloud-specific threats, vulnerabilities, and potential impact scenarios. Use CSA Top Threats, MITRE ATT&CK Cloud, and ENISA Cloud Risk Assessment as threat catalogues. Consider both CSP-side and customer-side risks.",
+        "outputs": ["Cloud threat register", "Vulnerability register per cloud service", "Attack scenario descriptions", "CSP dependency risk register"],
+        "cloudConsiderations": [
+          "Include CSP-side risks: CSP outage, CSP data breach, CSP insolvency, CSP policy change",
+          "Include customer-side risks: IAM misconfiguration, data exposure, insecure APIs, shadow IT",
+          "Consider cross-tenant risks specific to multi-tenant cloud architecture",
+          "Evaluate supply chain risks through the CSP's own vendor dependencies"
+        ]
+      },
+      {
+        "phase": 3,
+        "name": "Risk Analysis",
+        "description": "Assess likelihood and impact for each identified risk using the 5x5 risk matrix. Apply cloud-specific weighting factors for multi-tenancy exposure, API attack surface, and data sovereignty constraints.",
+        "outputs": ["Likelihood assessment per risk", "Impact assessment per risk (across all impact dimensions)", "Inherent risk score per risk"],
+        "cloudConsiderations": [
+          "Internet-exposed cloud services have inherently higher likelihood than on-premises equivalents",
+          "Multi-tenancy increases both likelihood (larger attack surface) and impact (cross-tenant breach)",
+          "Consider cascading impact: a single misconfigured IAM policy can expose all cloud resources",
+          "Factor in CSP transparency: limited visibility into CSP infrastructure increases uncertainty"
+        ]
+      },
+      {
+        "phase": 4,
+        "name": "Risk Evaluation",
+        "description": "Compare analysed risks against risk acceptance criteria. Prioritise risks for treatment based on risk rating, regulatory obligation, and business impact. Identify risks that exceed organisational risk appetite.",
+        "outputs": ["Prioritised risk list", "Risks exceeding appetite flagged for mandatory treatment", "Risk heat map"],
+        "cloudConsiderations": [
+          "Compliance-driven risks (PDPA, BNM RMiT, NACSA) cannot be accepted regardless of score",
+          "Data sovereignty violations are binary -- they either comply or they do not",
+          "Consider reputational impact of cloud data breaches given public visibility",
+          "Evaluate risk appetite differently for regulated vs non-regulated workloads"
+        ]
+      },
+      {
+        "phase": 5,
+        "name": "Risk Treatment",
+        "description": "Assign treatment strategy (mitigate, transfer, avoid, accept) per risk. Implement cloud-native security controls aligned with CSA CCM v4 domains. Document treatment plans with owner, timeline, and verification criteria.",
+        "outputs": ["Treatment plan per risk with CCM control mappings", "Residual risk assessment", "Risk acceptance register", "Treatment implementation timeline"],
+        "cloudConsiderations": [
+          "Prefer cloud-native security controls (CSP security services) over third-party bolt-ons where possible",
+          "For IaaS/PaaS, leverage Infrastructure as Code (IaC) to enforce security controls consistently",
+          "Consider CSPM (Cloud Security Posture Management) as a continuous mitigation tool",
+          "Treatment plans must address both CSP-side and customer-side of the shared responsibility model"
+        ]
+      }
+    ]
+  },
+  "cloudSpecificFactors": {
+    "description": "Additional factors that must be considered when assessing cloud risk -- these factors are unique to or significantly amplified in cloud computing environments.",
+    "factors": [
+      {
+        "id": "multi-tenancy",
+        "name": "Multi-Tenancy Exposure",
+        "description": "Cloud infrastructure is shared among multiple tenants. Hypervisor escapes, side-channel attacks, and noisy neighbour effects create risks that do not exist in single-tenant on-premises environments.",
+        "guidance": "For workloads processing sensitive data (PDPA-classified, financial, healthcare), evaluate whether dedicated/isolated instances are required. Multi-tenancy risks are highest in IaaS compute and shared database services.",
+        "riskAmplification": "Increases likelihood of cross-tenant data exposure by 1 level compared to single-tenant deployment."
+      },
+      {
+        "id": "shared-responsibility",
+        "name": "Shared Responsibility Model",
+        "description": "Security responsibility is divided between the CSP and the customer. The boundary shifts depending on the service model (IaaS vs PaaS vs SaaS). Misunderstanding the boundary is the leading cause of cloud security incidents.",
+        "guidance": "Document the shared responsibility boundary for every cloud service in use. Verify that the customer is implementing all controls on their side of the boundary. CSP certifications (SOC 2, ISO 27001) provide assurance for the CSP side only.",
+        "riskAmplification": "Misunderstood responsibility boundaries create control gaps -- the most common cloud security failure."
+      },
+      {
+        "id": "data-sovereignty",
+        "name": "Data Sovereignty and Residency",
+        "description": "Cloud data may be stored, processed, or replicated across jurisdictions. Malaysia's PDPA, BNM RMiT, and NACSA Act 854 impose data residency requirements that may conflict with CSP default data replication behaviour.",
+        "guidance": "Verify data residency configuration for all cloud services. Some CSP services replicate metadata globally even when data region is configured. For NCII-designated data, Malaysian data residency is mandatory under NACSA.",
+        "riskAmplification": "Non-compliance with data sovereignty is a binary regulatory risk -- there is no partial compliance."
+      },
+      {
+        "id": "vendor-lock-in",
+        "name": "Vendor Lock-In",
+        "description": "Deep integration with CSP-proprietary services creates dependency that increases switching costs and limits exit options. Lock-in affects both technical (proprietary APIs, data formats) and commercial (long-term commitments, egress fees) dimensions.",
+        "guidance": "Evaluate lock-in risk for each CSP service. Maintain data export capability and documented exit strategy. Use open standards (Kubernetes, Terraform, SQL) where possible to reduce proprietary dependency.",
+        "riskAmplification": "High lock-in increases the impact of CSP-side risks (outage, insolvency, policy change) because alternatives are costly."
+      },
+      {
+        "id": "api-exposure",
+        "name": "API Exposure and Attack Surface",
+        "description": "Cloud services are managed primarily through APIs, creating a large internet-exposed attack surface. Compromised API keys or misconfigured API permissions can expose the entire cloud estate. Every cloud action is an API call.",
+        "guidance": "Treat API keys and service account credentials as high-value targets. Implement least-privilege for all API access. Monitor API call logs (CloudTrail, Azure Activity Log, GCP Audit Log) for anomalous activity.",
+        "riskAmplification": "API-based management means a single compromised credential can have estate-wide blast radius."
+      },
+      {
+        "id": "ephemeral-infrastructure",
+        "name": "Ephemeral and Dynamic Infrastructure",
+        "description": "Cloud resources are created and destroyed rapidly through automation. Traditional asset inventories and security scanning cannot keep pace with dynamic infrastructure. Security controls must be embedded in deployment pipelines.",
+        "guidance": "Implement security-as-code: embed security policies in IaC templates and CI/CD pipelines. Use CSPM tools for continuous posture assessment. Traditional periodic scanning is insufficient for cloud environments.",
+        "riskAmplification": "Dynamic infrastructure increases the likelihood of configuration drift and transient misconfigurations."
+      }
+    ]
+  },
+  "nacsa": {
+    "description": "Mapping of cloud risk assessment to NACSA Act 854 s21 risk assessment obligation for NCII operators using cloud services.",
+    "section": "s21",
+    "title": "Cyber security risk assessment",
+    "alignment": "A cloud-specific risk assessment following this methodology substantially satisfies the NACSA Act 854 s21 obligation for NCII operators with cloud workloads. The risk assessment must cover all NCII assets regardless of whether they are hosted on-premises or in the cloud.",
+    "requirements": [
+      "Cloud-hosted NCII assets must be included in the s21 risk assessment scope",
+      "CSP shared responsibility boundaries must be documented and assessed",
+      "Data sovereignty compliance must be verified for all NCII data in cloud",
+      "CSP certifications (SOC 2, ISO 27001, CSA STAR) should be reviewed as part of third-party risk assessment",
+      "Risk assessment must be conducted at minimum annually per Cyber Security (Risk Assessment and Audit) Regulations",
+      "Cloud-specific risks (multi-tenancy, API exposure, vendor lock-in) must be explicitly addressed"
+    ],
+    "frequency": "At least annually; and after significant changes to cloud architecture or CSP service adoption"
+  },
+  "reviewCadence": {
+    "standard": "Annual full reassessment",
+    "triggers": [
+      "Any cloud security incident or data breach",
+      "Significant change to cloud architecture (new CSP, new region, new service model)",
+      "CSP security incident affecting the organisation's tenant or region",
+      "New regulatory requirement affecting cloud usage (PDPA amendment, BNM directive, NACSA code of practice)",
+      "Migration of new workloads to cloud",
+      "CSP service discontinuation or significant terms of service change"
+    ]
+  }
+}

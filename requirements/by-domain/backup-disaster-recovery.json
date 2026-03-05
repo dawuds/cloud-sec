@@ -1,0 +1,66 @@
+{
+  "$schema": "cloud-security-v1",
+  "sourceType": "constructed-indicative",
+  "verificationNote": "Requirements constructed from CSA CCM v4, NIST CSF 2.0, and Malaysia Act 854 obligations. Verify against authoritative sources before use in formal assessments.",
+  "domain": {
+    "id": "backup-disaster-recovery",
+    "name": "Backup and Disaster Recovery",
+    "description": "Requirements for cloud backup strategy, cross-region replication, disaster recovery testing, and RTO/RPO definition. Ensures cloud workloads can be restored within business-acceptable timeframes after data loss, corruption, or regional failure.",
+    "ccmDomains": ["BCR"],
+    "nacsa": ["s18"]
+  },
+  "requirements": [
+    {
+      "id": "BCR-R1",
+      "title": "Cloud Backup Strategy",
+      "description": "Define and implement a comprehensive backup strategy for all cloud workloads including compute instances, databases, object storage, configuration state, and secrets. Align backup frequency to RPO requirements. Use immutable backups to protect against ransomware and insider threats.",
+      "priority": "critical",
+      "ccmControls": ["BCR-01", "BCR-03"],
+      "nacsa": ["s18"],
+      "cspGuidance": {
+        "aws": "Use AWS Backup for centralised backup management across EC2, RDS, EFS, DynamoDB, S3. Configure backup plans per data classification. Enable Backup Vault Lock for immutability.",
+        "azure": "Use Azure Backup for VMs, SQL, Files, and Blobs. Configure backup policies per classification tier. Enable soft delete and immutability on Recovery Services vaults.",
+        "gcp": "Use Backup and DR for GCE. Enable automated backups on Cloud SQL. Use Object Versioning on Cloud Storage. Configure snapshot schedules for persistent disks."
+      }
+    },
+    {
+      "id": "BCR-R2",
+      "title": "Cross-Region Replication",
+      "description": "Replicate critical data and backups to a secondary cloud region for disaster recovery. Cross-region replication protects against regional outages and disaster events. Ensure replication does not violate data residency requirements. Monitor replication lag.",
+      "priority": "high",
+      "ccmControls": ["BCR-02", "BCR-05"],
+      "nacsa": ["s18"],
+      "cspGuidance": {
+        "aws": "Enable S3 Cross-Region Replication. Configure RDS cross-region read replicas. Use AWS Backup with cross-region copy rules. Deploy multi-region infrastructure via CloudFormation StackSets.",
+        "azure": "Enable Geo-Redundant Storage (GRS) or Read-Access GRS. Configure Azure SQL geo-replication. Use Azure Site Recovery for VM replication to paired region.",
+        "gcp": "Enable dual-region or multi-region Cloud Storage buckets. Configure Cloud SQL cross-region read replicas. Use regional persistent disk snapshots. Deploy GKE multi-cluster for HA."
+      }
+    },
+    {
+      "id": "BCR-R3",
+      "title": "Disaster Recovery Testing",
+      "description": "Conduct regular DR tests to validate that cloud workloads can be restored within defined RTO/RPO. DR testing must include full failover exercises, not just backup restore verification. Document test results, gaps identified, and remediation actions.",
+      "priority": "high",
+      "ccmControls": ["BCR-04", "BCR-06"],
+      "nacsa": ["s18"],
+      "cspGuidance": {
+        "aws": "Use Elastic Disaster Recovery for automated failover testing. Run Resilience Hub assessments. Use Fault Injection Simulator for chaos testing. Document actual vs target RTO/RPO.",
+        "azure": "Use Azure Site Recovery test failover capability. Run Chaos Studio experiments. Document recovery metrics against targets. Use Business Continuity Center for DR orchestration.",
+        "gcp": "Test Cloud SQL failover to read replica. Validate GCE recreation from snapshots. Test Cloud Storage cross-region access. Document actual vs target RTO/RPO in exercise report."
+      }
+    },
+    {
+      "id": "BCR-R4",
+      "title": "RTO/RPO Definition and Validation",
+      "description": "Define Recovery Time Objective and Recovery Point Objective for every cloud workload based on business impact analysis. RTO/RPO targets must be validated through DR testing and drive architecture decisions for backup frequency, replication strategy, and failover design.",
+      "priority": "high",
+      "ccmControls": ["BCR-01", "BCR-04"],
+      "nacsa": ["s18"],
+      "cspGuidance": {
+        "aws": "Use Resilience Hub to set and validate RTO/RPO targets per application. Configure Backup plans aligned to RPO. Track actual recovery times in DR tests. Publish in service catalogue.",
+        "azure": "Define RTO/RPO in Site Recovery replication policies. Configure backup frequency in Azure Backup aligned to RPO. Track metrics in Business Continuity Center dashboard.",
+        "gcp": "Define RTO/RPO per service in architecture documentation. Configure backup schedules aligned to RPO. Validate in DR exercises. Use SLO monitoring for availability target tracking."
+      }
+    }
+  ]
+}

@@ -1,0 +1,639 @@
+{
+  "$schema": "cloud-security-v1",
+  "sourceType": "constructed-indicative",
+  "verificationNote": "Evidence items are constructed guidance for cloud security audits based on CSA CCM v4, NIST CSF 2.0, and NACSA Act 854 obligations. Not endorsed by any standards body -- verify against authoritative sources before use in formal assessments.",
+  "description": "Evidence items for cloud security audit -- mapped to CCM control domains, requirements, and applicable regulatory obligations. For auditors conducting cloud security assessments and for security teams preparing for audit.",
+  "totalDomains": 12,
+  "evidenceByDomain": [
+    {
+      "domainId": "identity-access-management",
+      "domainName": "Identity and Access Management",
+      "items": [
+        {
+          "id": "E-IAM-01",
+          "name": "MFA enforcement configuration and compliance report",
+          "description": "Evidence that MFA is enforced for all human users accessing cloud management consoles and APIs.",
+          "howToVerify": "Export IAM user list and verify MFA device status for each user. Check conditional access policies for MFA enforcement. Attempt console login without MFA to confirm block.",
+          "whatGoodLooksLike": [
+            "100% MFA enrollment for all human IAM identities",
+            "Conditional access or SCP enforcing MFA for all actions",
+            "Hardware security keys on root/owner accounts",
+            "Phishing-resistant MFA (FIDO2) for administrator accounts"
+          ],
+          "commonGaps": [
+            "MFA not enforced via policy -- relies on user voluntary enrollment",
+            "Service accounts with console access but no MFA",
+            "Root account MFA enabled but using virtual MFA instead of hardware key",
+            "Break-glass accounts without MFA"
+          ]
+        },
+        {
+          "id": "E-IAM-02",
+          "name": "Least privilege access review records",
+          "description": "Evidence of periodic access reviews demonstrating least privilege enforcement across cloud identities.",
+          "howToVerify": "Review access review records for last 12 months. Sample 10 IAM policies and check for wildcard (*) actions. Verify IAM Access Analyzer or Recommender findings are actioned.",
+          "whatGoodLooksLike": [
+            "Quarterly access reviews completed with documented actions",
+            "No wildcard (*) actions in production IAM policies",
+            "Unused permissions identified and removed via Access Analyzer",
+            "Custom roles used where built-in roles are too broad"
+          ],
+          "commonGaps": [
+            "Broad built-in roles (Administrator, Owner) assigned to multiple users",
+            "Access reviews conducted but remediation not completed",
+            "No tooling for unused permission detection",
+            "Wildcard actions in policies with no review"
+          ]
+        },
+        {
+          "id": "E-IAM-03",
+          "name": "Service account and non-human identity inventory",
+          "description": "Evidence that all service accounts, managed identities, and API keys are inventoried, reviewed, and managed with appropriate lifecycle controls.",
+          "howToVerify": "Export service account list across all accounts/projects. Verify each has an owner. Check for long-lived access keys and their last usage date. Confirm workload identity federation where applicable.",
+          "whatGoodLooksLike": [
+            "Complete service account inventory with assigned owners",
+            "No access keys older than 90 days without documented exception",
+            "Workload identity federation replacing static credentials",
+            "Unused service accounts disabled or deleted"
+          ],
+          "commonGaps": [
+            "Orphaned service accounts with no owner",
+            "Access keys older than 1 year still active",
+            "Static credentials in CI/CD pipelines instead of OIDC federation",
+            "Service accounts with admin-level permissions"
+          ]
+        }
+      ]
+    },
+    {
+      "domainId": "data-protection-encryption",
+      "domainName": "Data Protection and Encryption",
+      "items": [
+        {
+          "id": "E-DSP-01",
+          "name": "Encryption at rest configuration evidence",
+          "description": "Evidence that all data at rest is encrypted across storage, databases, and compute volumes.",
+          "howToVerify": "Run CSPM scan for unencrypted resources. Check S3/Storage default encryption settings. Verify EBS/Disk encryption defaults. Confirm KMS CMK usage for sensitive data.",
+          "whatGoodLooksLike": [
+            "Zero unencrypted storage buckets, database instances, or volumes",
+            "Customer-managed keys (CMK) used for sensitive and regulated data",
+            "Account-level default encryption enabled",
+            "CSPM rule continuously monitoring for unencrypted resources"
+          ],
+          "commonGaps": [
+            "Provider-managed encryption only -- no CMK for sensitive data",
+            "Legacy resources created before encryption defaults were enabled",
+            "Temporary or test resources without encryption",
+            "No automated detection of unencrypted resource creation"
+          ]
+        },
+        {
+          "id": "E-DSP-02",
+          "name": "TLS configuration and minimum version enforcement",
+          "description": "Evidence that TLS 1.2+ is enforced on all services and legacy versions are disabled.",
+          "howToVerify": "Check TLS minimum version settings on load balancers, storage accounts, databases, and API endpoints. Scan externally with SSL Labs or similar. Verify S3 bucket policies deny non-HTTPS.",
+          "whatGoodLooksLike": [
+            "TLS 1.2 minimum on all services (TLS 1.3 preferred where supported)",
+            "No TLS 1.0 or 1.1 endpoints",
+            "Weak cipher suites disabled",
+            "HTTPS-only enforced on storage and API endpoints"
+          ],
+          "commonGaps": [
+            "Legacy applications still on TLS 1.0/1.1",
+            "Storage endpoints accessible via HTTP without redirect",
+            "Internal services using unencrypted protocols",
+            "Certificate expiry monitoring not configured"
+          ]
+        },
+        {
+          "id": "E-DSP-03",
+          "name": "Data classification register and DLP policy evidence",
+          "description": "Evidence that data is classified, labelled, and protected by DLP policies appropriate to classification level.",
+          "howToVerify": "Review data classification policy. Check automated discovery scan results (Macie, Purview, Cloud DLP). Verify DLP policies are active and generating findings. Sample test DLP blocking on classified data.",
+          "whatGoodLooksLike": [
+            "Data classification policy with defined levels (public, internal, confidential, restricted)",
+            "Automated data discovery scanning all major data stores",
+            "DLP policies blocking exfiltration of classified data",
+            "Resource tags reflecting classification level"
+          ],
+          "commonGaps": [
+            "Classification policy exists but not enforced technically",
+            "No automated data discovery -- manual classification only",
+            "DLP deployed but in monitor-only mode with no blocking",
+            "Classification tags missing from resources"
+          ]
+        }
+      ]
+    },
+    {
+      "domainId": "network-security",
+      "domainName": "Network Security",
+      "items": [
+        {
+          "id": "E-IVS-01",
+          "name": "Network architecture diagram with segmentation evidence",
+          "description": "Evidence that cloud networks are designed with proper segmentation, subnet isolation, and defence-in-depth architecture.",
+          "howToVerify": "Review network architecture diagram. Verify VPC/VNet separation between environments. Check subnet design (public/private/data tiers). Confirm hub-and-spoke or transit gateway topology.",
+          "whatGoodLooksLike": [
+            "Current network diagram dated within 6 months",
+            "Separate VPCs/VNets for production, staging, and development",
+            "Public, private, and data subnets with appropriate route tables",
+            "Centralised ingress/egress through hub network"
+          ],
+          "commonGaps": [
+            "Flat network with all workloads in single VPC/VNet",
+            "No separation between production and non-production",
+            "Diagram outdated or non-existent",
+            "Direct internet access from database subnets"
+          ]
+        },
+        {
+          "id": "E-IVS-02",
+          "name": "Security group and firewall rule audit results",
+          "description": "Evidence that security groups and firewall rules follow least-privilege deny-by-default configuration.",
+          "howToVerify": "Export all security groups/NSGs/firewall rules. Check for 0.0.0.0/0 ingress on management ports. Verify rules have business justification documentation. Confirm quarterly review records.",
+          "whatGoodLooksLike": [
+            "No 0.0.0.0/0 ingress on SSH (22), RDP (3389), or database ports",
+            "All rules documented with business justification and expiry date",
+            "Quarterly rule review records with stale rule removal",
+            "Automated detection of overly permissive rule creation"
+          ],
+          "commonGaps": [
+            "0.0.0.0/0 ingress on management ports (SSH, RDP)",
+            "Security groups with hundreds of rules and no documentation",
+            "No review process -- rules accumulate over time",
+            "Allow-all outbound with no egress filtering"
+          ]
+        },
+        {
+          "id": "E-IVS-03",
+          "name": "Private endpoint deployment and public access restriction evidence",
+          "description": "Evidence that PaaS services are accessed via private endpoints and public network access is disabled.",
+          "howToVerify": "List all PaaS resources (databases, storage, key vaults). Verify private endpoints exist. Check public network access is disabled. Confirm DNS resolution uses private zones.",
+          "whatGoodLooksLike": [
+            "Private endpoints deployed for all databases, storage, and key management services",
+            "Public network access disabled on PaaS resources",
+            "Private DNS zones configured for name resolution",
+            "VPC endpoint policies restricting accessible resources"
+          ],
+          "commonGaps": [
+            "PaaS services accessible from public internet",
+            "Private endpoints deployed but public access not disabled",
+            "DNS resolution still using public endpoints",
+            "No VPC endpoint policies restricting service access"
+          ]
+        }
+      ]
+    },
+    {
+      "domainId": "logging-monitoring",
+      "domainName": "Logging and Monitoring",
+      "items": [
+        {
+          "id": "E-LOG-01",
+          "name": "Cloud audit logging configuration and coverage report",
+          "description": "Evidence that comprehensive audit logging is enabled across all cloud accounts and regions.",
+          "howToVerify": "Verify CloudTrail/Activity Log/Audit Logs enabled in all accounts and regions. Check data event logging for sensitive resources. Confirm logs stored in protected centralised location.",
+          "whatGoodLooksLike": [
+            "Organisation-level audit trail covering all accounts and regions",
+            "Data event logging enabled for sensitive storage and databases",
+            "Logs stored in dedicated log archive account with immutable storage",
+            "Log integrity validation enabled"
+          ],
+          "commonGaps": [
+            "Audit logging not enabled in all regions",
+            "Data event logging disabled -- only management events captured",
+            "Logs stored in same account as production workloads",
+            "No log integrity validation"
+          ]
+        },
+        {
+          "id": "E-LOG-02",
+          "name": "SIEM integration evidence and detection rule coverage",
+          "description": "Evidence that cloud logs are integrated with SIEM and cloud-specific detection rules are deployed.",
+          "howToVerify": "Verify log sources flowing to SIEM. Check cloud-specific detection rules are active. Review sample alert investigations from last 30 days. Confirm alert routing to on-call personnel.",
+          "whatGoodLooksLike": [
+            "All cloud log sources integrated with SIEM",
+            "Cloud-specific detection rules tuned and active",
+            "Alert investigation records for last 30 days",
+            "Severity-based alert routing with defined SLAs"
+          ],
+          "commonGaps": [
+            "Only audit logs in SIEM -- missing flow logs, DNS, WAF, threat detection",
+            "Generic detection rules without cloud-specific tuning",
+            "Alerts generated but not reviewed or investigated",
+            "No defined alert response SLAs"
+          ]
+        },
+        {
+          "id": "E-LOG-03",
+          "name": "Log retention configuration and compliance evidence",
+          "description": "Evidence that log retention periods meet regulatory and organisational requirements.",
+          "howToVerify": "Check retention settings on log storage. Verify immutable storage configuration. Confirm retention meets regulatory requirements (NACSA s26 if applicable). Review capacity monitoring.",
+          "whatGoodLooksLike": [
+            "Minimum 12 months online retention for audit logs",
+            "Immutable storage (WORM) for compliance-required logs",
+            "Tiered retention with lifecycle management",
+            "Capacity monitoring with alerting before exhaustion"
+          ],
+          "commonGaps": [
+            "Default retention only (90 days or less)",
+            "Logs in modifiable storage without integrity controls",
+            "No capacity monitoring -- logs silently deleted on overflow",
+            "Retention not aligned to regulatory requirements"
+          ]
+        }
+      ]
+    },
+    {
+      "domainId": "incident-response",
+      "domainName": "Incident Response",
+      "items": [
+        {
+          "id": "E-SEF-01",
+          "name": "Cloud incident response plan and tabletop exercise records",
+          "description": "Evidence that a cloud-specific IR plan exists and has been tested through tabletop exercises.",
+          "howToVerify": "Review cloud IR plan for completeness. Check last tabletop exercise date and results. Verify CSP engagement procedures are documented. Confirm contact lists are current.",
+          "whatGoodLooksLike": [
+            "Cloud-specific IR plan covering common attack scenarios",
+            "Tabletop exercise conducted within last 12 months",
+            "CSP support engagement procedure documented",
+            "Contact lists current and tested"
+          ],
+          "commonGaps": [
+            "IT IR plan used without cloud-specific procedures",
+            "No tabletop exercises conducted",
+            "CSP engagement not documented -- team unsure how to engage cloud vendor during incident",
+            "Contact lists outdated"
+          ]
+        },
+        {
+          "id": "E-SEF-02",
+          "name": "Forensic readiness configuration and evidence collection procedures",
+          "description": "Evidence that cloud environments are pre-configured for forensic investigation.",
+          "howToVerify": "Verify comprehensive logging enabled. Check forensic snapshot procedures. Confirm dedicated forensic environment exists. Review evidence collection automation.",
+          "whatGoodLooksLike": [
+            "All audit and data access logs enabled",
+            "Automated disk snapshot procedure documented and tested",
+            "Dedicated forensic account/project with isolated environment",
+            "Chain of custody procedures for cloud evidence"
+          ],
+          "commonGaps": [
+            "Insufficient logging for forensic investigation",
+            "No procedure for capturing disk snapshots during incident",
+            "Forensic analysis performed in production environment",
+            "No chain of custody for cloud evidence"
+          ]
+        },
+        {
+          "id": "E-SEF-03",
+          "name": "Containment automation and runbook evidence",
+          "description": "Evidence that automated containment procedures exist for common cloud incident scenarios.",
+          "howToVerify": "Review containment runbooks. Test containment automation in non-production. Verify rollback procedures exist. Check containment SLA targets.",
+          "whatGoodLooksLike": [
+            "Automated containment for credential compromise, instance compromise, and data exposure",
+            "Containment tested in non-production environment",
+            "Rollback procedures for each containment action",
+            "Sub-15-minute containment SLA for critical incidents"
+          ],
+          "commonGaps": [
+            "Containment relies entirely on manual steps",
+            "Containment procedures not tested",
+            "No rollback procedures -- containment may cause outage",
+            "No defined containment SLA"
+          ]
+        }
+      ]
+    },
+    {
+      "domainId": "container-security",
+      "domainName": "Container Security",
+      "items": [
+        {
+          "id": "E-CCC-01",
+          "name": "Container image scanning results and remediation records",
+          "description": "Evidence that container images are scanned before deployment and critical vulnerabilities are remediated.",
+          "howToVerify": "Review image scanning pipeline configuration. Check scan results for production images. Verify critical/high vulnerability remediation SLA. Confirm deployment blocking for non-compliant images.",
+          "whatGoodLooksLike": [
+            "All images scanned in CI/CD before deployment",
+            "Zero critical vulnerabilities in production images",
+            "Vulnerability remediation SLA tracked and met",
+            "Deployment blocked for images failing scan"
+          ],
+          "commonGaps": [
+            "Images deployed without scanning",
+            "Scanning enabled but results not reviewed",
+            "Critical vulnerabilities in production with no remediation timeline",
+            "Base images not regularly updated"
+          ]
+        },
+        {
+          "id": "E-CCC-02",
+          "name": "Kubernetes CIS benchmark scan results",
+          "description": "Evidence that container orchestrator configurations comply with CIS Kubernetes Benchmark.",
+          "howToVerify": "Run kube-bench or equivalent CIS scan. Review findings and remediation status. Check pod security standards enforcement. Verify RBAC configuration.",
+          "whatGoodLooksLike": [
+            "CIS Kubernetes Benchmark scan within last quarter",
+            "Level 1 controls fully implemented",
+            "Pod Security Standards (restricted profile) enforced in production",
+            "RBAC with least-privilege namespace-level roles"
+          ],
+          "commonGaps": [
+            "No CIS benchmark scanning",
+            "Default pod security settings (no restrictions)",
+            "Cluster-admin bound to service accounts unnecessarily",
+            "API server accessible from public network"
+          ]
+        }
+      ]
+    },
+    {
+      "domainId": "serverless-security",
+      "domainName": "Serverless Security",
+      "items": [
+        {
+          "id": "E-AIS-01",
+          "name": "Serverless function IAM role audit and configuration evidence",
+          "description": "Evidence that serverless functions use least-privilege IAM roles and sensitive configuration is properly managed.",
+          "howToVerify": "Export all function IAM roles and permissions. Check for overly permissive policies. Verify secrets stored in secret manager (not environment variables). Review VPC configuration for private resource access.",
+          "whatGoodLooksLike": [
+            "Each function has a dedicated IAM role with minimal permissions",
+            "No wildcard (*) resource or action permissions",
+            "Secrets stored in secret manager with encrypted references",
+            "Functions placed in VPC when accessing private resources"
+          ],
+          "commonGaps": [
+            "Single shared IAM role for all functions",
+            "Admin-level permissions on function roles",
+            "Secrets hardcoded in environment variables or source code",
+            "No VPC placement for functions accessing databases"
+          ]
+        },
+        {
+          "id": "E-AIS-02",
+          "name": "API gateway authentication and rate limiting configuration",
+          "description": "Evidence that API gateways are configured with authentication, rate limiting, and input validation.",
+          "howToVerify": "Review API gateway configuration for authentication requirements. Verify rate limiting and throttling policies. Check request validation rules. Confirm WAF integration.",
+          "whatGoodLooksLike": [
+            "Authentication required on all API endpoints (OAuth 2.0/OIDC)",
+            "Rate limiting configured per client",
+            "Request schema validation enabled",
+            "WAF deployed on API gateway"
+          ],
+          "commonGaps": [
+            "API endpoints without authentication",
+            "No rate limiting -- vulnerable to abuse",
+            "No request validation -- accepting arbitrary input",
+            "No WAF protection on API endpoints"
+          ]
+        }
+      ]
+    },
+    {
+      "domainId": "supply-chain-devsecops",
+      "domainName": "Supply Chain and DevSecOps",
+      "items": [
+        {
+          "id": "E-STA-01",
+          "name": "CI/CD pipeline security configuration and credential management evidence",
+          "description": "Evidence that CI/CD pipelines are hardened with proper secret management and authentication.",
+          "howToVerify": "Review pipeline configuration for secret management. Check authentication method (OIDC vs static credentials). Verify branch protection rules. Confirm build artifact signing.",
+          "whatGoodLooksLike": [
+            "OIDC federation for cloud authentication (no static credentials)",
+            "Secrets stored in secret manager (not pipeline variables or code)",
+            "Branch protection with required reviews on main branch",
+            "Build artifacts signed with provenance"
+          ],
+          "commonGaps": [
+            "Long-lived access keys stored in pipeline secrets",
+            "Secrets in pipeline variables without encryption",
+            "No branch protection -- direct push to main allowed",
+            "No artifact signing or provenance"
+          ]
+        },
+        {
+          "id": "E-STA-02",
+          "name": "IaC scanning results and SBOM generation evidence",
+          "description": "Evidence that infrastructure-as-code is scanned for misconfigurations and SBOMs are generated for deployments.",
+          "howToVerify": "Review IaC scanning pipeline integration. Check scan results and remediation records. Verify SBOM generation for production builds. Confirm SBOM stored in central repository.",
+          "whatGoodLooksLike": [
+            "IaC scanning integrated in CI/CD with blocking on critical findings",
+            "Custom scanning rules for organisation-specific policies",
+            "SBOM generated for all production builds (SPDX or CycloneDX)",
+            "SBOM repository with lifecycle management"
+          ],
+          "commonGaps": [
+            "No IaC scanning -- misconfigurations reach production",
+            "Scanning enabled but findings not reviewed or remediated",
+            "No SBOM generation",
+            "No process for CVE-to-SBOM correlation when new vulnerabilities disclosed"
+          ]
+        }
+      ]
+    },
+    {
+      "domainId": "key-management",
+      "domainName": "Key Management",
+      "items": [
+        {
+          "id": "E-CEK-01",
+          "name": "KMS key inventory and access policy evidence",
+          "description": "Evidence that all encryption operations use cloud KMS and key access policies enforce least privilege.",
+          "howToVerify": "Export KMS key inventory. Verify key policies restrict access to authorised principals. Check for any application-managed keys outside KMS. Confirm audit logging enabled for all key operations.",
+          "whatGoodLooksLike": [
+            "Complete KMS key inventory with purpose and owner for each key",
+            "Key policies enforce least-privilege access",
+            "No encryption keys stored in application code or config files",
+            "All KMS API calls logged in audit trail"
+          ],
+          "commonGaps": [
+            "Encryption keys stored in application configuration files",
+            "KMS key policies with broad access (full account access)",
+            "No key usage audit logging",
+            "Orphaned keys with no documented purpose or owner"
+          ]
+        },
+        {
+          "id": "E-CEK-02",
+          "name": "Key rotation configuration and compliance evidence",
+          "description": "Evidence that automatic key rotation is enabled and rotation schedules are appropriate to data sensitivity.",
+          "howToVerify": "Check automatic rotation settings on all KMS keys. Verify rotation periods align to data classification. Confirm old key versions are disabled after grace period. Review rotation audit logs.",
+          "whatGoodLooksLike": [
+            "Automatic rotation enabled on all KMS keys",
+            "Rotation period aligned to data sensitivity (90 days sensitive, 365 days standard)",
+            "Old key versions disabled after grace period",
+            "Rotation compliance monitored via CSPM"
+          ],
+          "commonGaps": [
+            "Automatic rotation not enabled",
+            "Keys older than 2 years with no rotation",
+            "No monitoring of rotation compliance",
+            "Old key versions never disabled"
+          ]
+        }
+      ]
+    },
+    {
+      "domainId": "configuration-posture",
+      "domainName": "Configuration and Posture Management",
+      "items": [
+        {
+          "id": "E-DCS-01",
+          "name": "CSPM scan results and remediation records",
+          "description": "Evidence that CSPM tooling is deployed and findings are tracked and remediated within defined SLAs.",
+          "howToVerify": "Review CSPM dashboard for current compliance score. Check finding remediation records against SLA (critical: 24h, high: 7d, medium: 30d). Verify coverage across all accounts.",
+          "whatGoodLooksLike": [
+            "CSPM enabled across all cloud accounts and regions",
+            "Compliance score tracked over time with improving trend",
+            "Critical and high findings remediated within SLA",
+            "Automated remediation for common findings"
+          ],
+          "commonGaps": [
+            "CSPM not deployed or only in primary account",
+            "Findings generated but not tracked or remediated",
+            "No defined remediation SLAs",
+            "Alert fatigue from untuned CSPM rules"
+          ]
+        },
+        {
+          "id": "E-DCS-02",
+          "name": "CIS benchmark compliance report and exception register",
+          "description": "Evidence of CIS benchmark compliance assessment and documented exceptions.",
+          "howToVerify": "Review most recent CIS benchmark scan results. Check compliance percentage by section. Review exception register for non-compliant items with risk acceptance.",
+          "whatGoodLooksLike": [
+            "CIS Level 1 fully compliant in all production accounts",
+            "CIS Level 2 applied to production workloads",
+            "Exception register with risk acceptance for non-compliant items",
+            "Continuous monitoring with automated alerting on new non-compliance"
+          ],
+          "commonGaps": [
+            "No CIS benchmark assessment conducted",
+            "Assessment conducted once but never repeated",
+            "Non-compliance with no exception register or risk acceptance",
+            "CIS assessment in primary account only -- not all accounts"
+          ]
+        },
+        {
+          "id": "E-DCS-03",
+          "name": "Resource tagging compliance report",
+          "description": "Evidence that mandatory resource tags are enforced across all cloud resources.",
+          "howToVerify": "Run tagging compliance report across all accounts. Check enforcement policies (deny creation without tags). Verify mandatory tag set includes owner, environment, data-classification, cost-centre.",
+          "whatGoodLooksLike": [
+            "Greater than 95% tagging compliance across all resources",
+            "Policy enforcement denying untagged resource creation",
+            "Mandatory tags: owner, environment, data-classification, cost-centre",
+            "Tagging compliance tracked and reported monthly"
+          ],
+          "commonGaps": [
+            "No mandatory tags defined or enforced",
+            "Tags defined but no enforcement mechanism",
+            "Low compliance percentage with no improvement plan",
+            "Tags applied inconsistently with no standard taxonomy"
+          ]
+        }
+      ]
+    },
+    {
+      "domainId": "backup-disaster-recovery",
+      "domainName": "Backup and Disaster Recovery",
+      "items": [
+        {
+          "id": "E-BCR-01",
+          "name": "Backup configuration and coverage audit",
+          "description": "Evidence that all cloud workloads are covered by appropriate backup policies.",
+          "howToVerify": "Review backup configuration for all databases, compute, and storage. Verify backup frequency aligns to RPO. Check backup encryption and immutability settings. Confirm backup coverage against resource inventory.",
+          "whatGoodLooksLike": [
+            "All production databases and compute backed up per policy",
+            "Backup frequency aligned to RPO requirements",
+            "Backups encrypted with customer-managed keys",
+            "Immutable backups (vault lock) for ransomware protection"
+          ],
+          "commonGaps": [
+            "Backup not configured for all production resources",
+            "Backup frequency not aligned to RPO -- potential data loss exceeds tolerance",
+            "Backups in same account as production -- vulnerable to account compromise",
+            "No immutable backups -- vulnerable to ransomware"
+          ]
+        },
+        {
+          "id": "E-BCR-02",
+          "name": "DR test results and RTO/RPO validation",
+          "description": "Evidence that DR testing has been conducted and RTO/RPO targets have been validated.",
+          "howToVerify": "Review last DR test report. Compare actual recovery time to RTO target. Verify RPO was met (no data loss beyond tolerance). Check remediation actions from previous tests.",
+          "whatGoodLooksLike": [
+            "DR test conducted within last 12 months",
+            "Actual recovery time within defined RTO",
+            "Data loss within defined RPO",
+            "Remediation actions from previous tests completed"
+          ],
+          "commonGaps": [
+            "No DR testing conducted",
+            "DR test limited to backup restore -- no full failover test",
+            "RTO/RPO targets not defined or not validated",
+            "Test findings not remediated"
+          ]
+        }
+      ]
+    },
+    {
+      "domainId": "compliance-governance",
+      "domainName": "Compliance and Governance",
+      "items": [
+        {
+          "id": "E-GRC-01",
+          "name": "Cloud governance framework and landing zone evidence",
+          "description": "Evidence that a cloud governance framework is established with guardrails, policies, and accountability.",
+          "howToVerify": "Review cloud governance policy document. Check account/subscription structure. Verify SCPs/policies enforcing guardrails. Confirm landing zone deployment.",
+          "whatGoodLooksLike": [
+            "Board-approved cloud security policy",
+            "Landing zone deployed with security guardrails",
+            "Account vending process with security baseline",
+            "Approved service catalogue and architecture patterns"
+          ],
+          "commonGaps": [
+            "No formal cloud governance framework",
+            "Accounts created ad hoc without security baseline",
+            "No guardrails -- relying on user awareness for security",
+            "Governance framework exists but not enforced"
+          ]
+        },
+        {
+          "id": "E-GRC-02",
+          "name": "Policy-as-code deployment and compliance dashboard",
+          "description": "Evidence that security policies are implemented as code with automated enforcement.",
+          "howToVerify": "Review policy-as-code repository. Verify policies deployed across all accounts. Check compliance dashboard for policy adherence. Confirm exception management process.",
+          "whatGoodLooksLike": [
+            "Security policies managed as code in version control",
+            "Policies deployed via CI/CD to all accounts",
+            "Compliance dashboard showing policy adherence percentage",
+            "Time-limited exceptions with documented risk acceptance"
+          ],
+          "commonGaps": [
+            "Policies documented but not implemented as code",
+            "Policy-as-code deployed in primary account only",
+            "No compliance dashboard or monitoring",
+            "Permanent exceptions without review"
+          ]
+        },
+        {
+          "id": "E-GRC-03",
+          "name": "CSP compliance reports and vendor assessment records",
+          "description": "Evidence that CSP compliance reports are collected and vendor security assessments conducted.",
+          "howToVerify": "Request current CSP SOC 2 and ISO 27001 reports. Review shared responsibility model documentation. Check SaaS vendor assessment records. Verify CAIQ responses reviewed.",
+          "whatGoodLooksLike": [
+            "Current CSP SOC 2 Type II report reviewed within last 12 months",
+            "Shared responsibility model documented with obligations mapped",
+            "SaaS vendor assessments completed for critical vendors",
+            "CAIQ or equivalent questionnaire responses reviewed"
+          ],
+          "commonGaps": [
+            "CSP compliance reports never requested or reviewed",
+            "Shared responsibility model not understood -- security gaps at boundary",
+            "No SaaS vendor security assessment process",
+            "Relying solely on CSP certifications without reviewing report content"
+          ]
+        }
+      ]
+    }
+  ]
+}

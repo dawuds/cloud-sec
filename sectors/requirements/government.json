@@ -1,0 +1,187 @@
+{
+  "$schema": "cloud-security-v1",
+  "sector": "government",
+  "sectorName": "Government",
+  "sourceType": "constructed-indicative",
+  "verificationNote": "Government cloud security requirements constructed from NACSA Act 854, MAMPU guidelines, MyDigital blueprint, Official Secrets Act 1972, and government cloud security best practices. These are indicative -- verify against current MAMPU ICT directives and NACSA sector lead guidance.",
+  "nacsaSectorLead": "National Cyber Security Agency (NACSA)",
+  "nacsaSectorNumber": 2,
+  "applicableStandards": [
+    "NACSA Act 854 (primary cybersecurity legislation for government NCII)",
+    "MAMPU ICT Security Policy (Dasar Keselamatan ICT -- DKICT)",
+    "CSA Cloud Controls Matrix v4 (CCM v4)",
+    "ISO 27001:2022 (ISMS for government agencies)",
+    "ISO 27017:2015 (Cloud-specific security controls)",
+    "ISO 27018:2019 (PII protection in public cloud)",
+    "MyDigital blueprint (cloud-first policy for government)"
+  ],
+  "dataSovereignty": {
+    "description": "Government data sovereignty is the most stringent requirement for cloud adoption. Government classified data must remain within Malaysian jurisdiction at all times. The Official Secrets Act 1972 imposes criminal penalties for unauthorised disclosure of classified information.",
+    "classificationLevels": [
+      {
+        "level": "TOP SECRET (RAHSIA BESAR)",
+        "cloudPolicy": "PROHIBITED from public cloud. Must remain on-premises or in government-controlled private cloud infrastructure only.",
+        "rationale": "Highest classification for national security information. Any cloud hosting creates unacceptable risk of foreign government access through CSP jurisdiction."
+      },
+      {
+        "level": "SECRET (RAHSIA)",
+        "cloudPolicy": "PROHIBITED from public cloud. Government-controlled private cloud or sovereign cloud only with NACSA approval.",
+        "rationale": "Disclosure would cause serious damage to national security. Public cloud multi-tenancy and CSP administrative access are unacceptable."
+      },
+      {
+        "level": "CONFIDENTIAL (SULIT)",
+        "cloudPolicy": "Permitted in approved sovereign cloud or government community cloud (MyGovCloud) with enhanced controls. Public cloud with Malaysian region and CMEK may be acceptable with NACSA risk acceptance.",
+        "rationale": "Disclosure would cause damage to government. Sovereign cloud with guaranteed Malaysian jurisdiction and government-controlled encryption provides adequate protection."
+      },
+      {
+        "level": "RESTRICTED (TERHAD)",
+        "cloudPolicy": "Permitted in approved public cloud with Malaysian data residency, encryption at rest (CMEK), and access controls. Standard public cloud services acceptable with security baseline.",
+        "rationale": "Disclosure would cause embarrassment. Standard cloud security controls with data residency provide adequate protection."
+      },
+      {
+        "level": "OPEN (TERBUKA)",
+        "cloudPolicy": "Permitted in any cloud service. Standard security baseline applies.",
+        "rationale": "Public information. No data sovereignty constraint. Standard cloud security for availability and integrity."
+      }
+    ],
+    "requirements": [
+      "All government data must be classified before cloud migration",
+      "Classification determines which cloud deployment model is permitted",
+      "Data residency in Malaysia is mandatory for CONFIDENTIAL and above",
+      "Encryption with government-controlled keys (CMEK) is mandatory for CONFIDENTIAL and above",
+      "CSP must not have ability to access unencrypted government data for SECRET and above",
+      "Cross-border data transfer of government data requires NACSA and agency head approval"
+    ]
+  },
+  "myDigitalCloudFirst": {
+    "description": "Malaysia's MyDigital initiative (Malaysia Digital Economy Blueprint, launched 2021) mandates a cloud-first approach for government agencies. This accelerates cloud adoption while requiring security controls appropriate to data classification.",
+    "policy": {
+      "principle": "Government agencies should evaluate cloud services first before traditional on-premises procurement. Cloud-first does not mean cloud-only -- classified and NCII data may require on-premises or sovereign cloud hosting.",
+      "implementation": [
+        "New government IT projects must justify on-premises hosting if cloud alternatives exist",
+        "MyGovCloud (government community cloud) is the preferred platform for CONFIDENTIAL government data",
+        "Public cloud (AWS, Azure, GCP) permitted for RESTRICTED and OPEN data with security baseline",
+        "Hybrid cloud architecture recommended for agencies with mixed classification workloads",
+        "MAMPU coordinates government cloud procurement framework"
+      ]
+    },
+    "myGovCloud": {
+      "description": "Government community cloud platform designed to meet Malaysian government data sovereignty and security requirements. Operated by authorised Malaysian cloud service providers.",
+      "features": [
+        "Data centres physically located in Malaysia",
+        "Malaysian government security baseline enforced",
+        "Compliance with MAMPU ICT security policy (DKICT)",
+        "Government-specific access controls and audit logging",
+        "Separation from public cloud tenants"
+      ]
+    }
+  },
+  "mampuGuidelines": {
+    "description": "MAMPU (Malaysian Administrative Modernisation and Management Planning Unit) ICT security guidelines for government agencies adopting cloud services.",
+    "requirements": [
+      {
+        "id": "MAMPU-C1",
+        "name": "Government cloud security risk assessment",
+        "description": "All government agencies must conduct a cloud security risk assessment before adopting cloud services. Assessment must cover data classification, shared responsibility, data sovereignty, and vendor risk.",
+        "ccmControls": ["GRC-01", "GRC-02", "GRC-03", "STA-01"]
+      },
+      {
+        "id": "MAMPU-C2",
+        "name": "Government Information Security Officer (ICTSO) oversight",
+        "description": "Each government agency's ICTSO must review and approve cloud adoption decisions. ICTSO is responsible for ensuring cloud security compliance with DKICT.",
+        "ccmControls": ["GRC-01", "GRC-02", "HRS-01"]
+      },
+      {
+        "id": "MAMPU-C3",
+        "name": "Government cloud procurement through approved channels",
+        "description": "Cloud services for government must be procured through MAMPU-approved procurement channels. Government-approved CSP panel ensures security baseline compliance.",
+        "ccmControls": ["STA-01", "STA-03", "STA-05"]
+      },
+      {
+        "id": "MAMPU-C4",
+        "name": "Government identity federation (MyGovSSO)",
+        "description": "Government cloud services should integrate with government identity management systems. Single sign-on and centralised identity management preferred for government cloud access.",
+        "ccmControls": ["IAM-01", "IAM-02", "IAM-03", "IAM-12"]
+      },
+      {
+        "id": "MAMPU-C5",
+        "name": "Government data backup to Malaysian data centres",
+        "description": "Backups of government cloud data must be stored in Malaysian data centres. Cross-border backup replication requires explicit approval from agency head and MAMPU.",
+        "ccmControls": ["BCR-01", "BCR-02", "DSP-06"]
+      }
+    ]
+  },
+  "keyRequirements": [
+    {
+      "id": "GOV-R1",
+      "name": "Data sovereignty and classification compliance",
+      "description": "Government data must be classified before cloud migration. Classification determines permitted cloud deployment model. TOP SECRET and SECRET data prohibited from public cloud.",
+      "implementation": [
+        "Implement mandatory data classification for all government data before cloud migration",
+        "Enforce classification-based cloud access policies through CASB and DLP",
+        "Configure CSP region restrictions to prevent data leaving approved jurisdictions",
+        "Regular audit of data classification compliance in cloud storage",
+        "Training for government staff on data classification and cloud security"
+      ],
+      "ccmControls": ["DSP-01", "DSP-05", "DSP-06", "DSP-07", "DSP-19"]
+    },
+    {
+      "id": "GOV-R2",
+      "name": "Government security baseline for cloud",
+      "description": "All government cloud deployments must implement the government security baseline including encryption, access controls, logging, and monitoring.",
+      "implementation": [
+        "Encryption at rest (AES-256 with CMEK) and in transit (TLS 1.2+)",
+        "MFA for all government staff accessing cloud services",
+        "Comprehensive audit logging with 7-year retention (NACSA s26)",
+        "Endpoint security for government devices accessing cloud",
+        "Network security (WAF, DDoS protection, VPC segmentation)"
+      ],
+      "ccmControls": ["DSP-01", "DSP-02", "IAM-02", "IAM-03", "LOG-01", "IVS-01"]
+    },
+    {
+      "id": "GOV-R3",
+      "name": "Citizen data protection in government cloud",
+      "description": "Government agencies processing citizen personal data in cloud must comply with PDPA 2010 and government privacy guidelines. Citizen trust in government digital services depends on data protection.",
+      "implementation": [
+        "PDPA compliance assessment for all government cloud services processing citizen data",
+        "Privacy impact assessment (PIA) before deploying citizen-facing cloud services",
+        "Data minimisation -- collect only necessary citizen data",
+        "Transparent privacy notices for government digital services",
+        "Data subject access request (DSAR) procedures for citizen data in cloud"
+      ],
+      "ccmControls": ["DSP-05", "DSP-17", "DSP-19", "GRC-01"]
+    },
+    {
+      "id": "GOV-R4",
+      "name": "Inter-agency data sharing security",
+      "description": "Government agencies sharing data through cloud services must implement secure data exchange mechanisms with authentication, authorisation, and audit trails.",
+      "implementation": [
+        "API-based data sharing with OAuth 2.0 authentication between agencies",
+        "Data sharing agreements (DSA) documenting purpose, scope, and security requirements",
+        "Audit logging of all inter-agency data access",
+        "Encryption of data in transit between agency cloud environments",
+        "Access revocation procedures when data sharing agreements expire"
+      ],
+      "ccmControls": ["AIS-01", "AIS-02", "IAM-04", "LOG-01", "DSP-02"]
+    }
+  ],
+  "nacsaObligations": {
+    "description": "NACSA obligations for NCII-designated government infrastructure using cloud services. Government is NCII sector 2 with NACSA itself as sector lead.",
+    "obligations": [
+      "s17: Government NCII entities accept designation and comply with Act 854 obligations",
+      "s18: Cloud-hosted government NCII must have appropriate cybersecurity measures -- cloud-first does not reduce security obligations",
+      "s20: Government cloud deployments must comply with NACSA-approved cybersecurity standards",
+      "s21: Annual risk assessment covering cloud-hosted government NCII systems",
+      "s22: Comply with government sector code of practice when gazetted",
+      "s23: Biennial audit including government cloud security posture by NACSA-licensed auditor",
+      "s24: Share cloud threat intelligence with NACSA when directed",
+      "s26: 6-hour notification for significant cloud security incidents affecting government NCII"
+    ]
+  },
+  "sectorSpecificThreats": [
+    { "threat": "Nation-state targeting of government cloud infrastructure", "ccmControls": ["IAM-01", "IAM-02", "IVS-01", "LOG-01", "TVM-01"], "impact": "National security data exposure; diplomatic consequences; loss of citizen trust" },
+    { "threat": "Citizen data breach from government cloud service", "ccmControls": ["DSP-01", "DSP-02", "DSP-05", "IAM-04", "LOG-01"], "impact": "PDPA breach notification; citizen trust erosion; political accountability" },
+    { "threat": "Government cloud account takeover by insider", "ccmControls": ["IAM-02", "IAM-04", "IAM-06", "HRS-04", "LOG-03"], "impact": "Classified data exposure; Official Secrets Act violation; criminal prosecution" },
+    { "threat": "Disruption of government digital services through cloud DDoS", "ccmControls": ["IVS-01", "IVS-04", "BCR-01", "BCR-02"], "impact": "Citizen service disruption; public frustration; economic impact" }
+  ]
+}

@@ -1,0 +1,79 @@
+{
+  "$schema": "cloud-security-v1",
+  "sourceType": "constructed-indicative",
+  "verificationNote": "Requirements constructed from CSA CCM v4, NIST CSF 2.0, and Malaysia Act 854 obligations. Verify against authoritative sources before use in formal assessments.",
+  "domain": {
+    "id": "identity-access-management",
+    "name": "Identity and Access Management",
+    "description": "Requirements for managing who can access cloud resources, how they authenticate, and what permissions they hold. Cloud IAM must enforce least privilege, eliminate long-lived credentials, and provide full auditability of all access.",
+    "ccmDomains": ["IAM"],
+    "nacsa": ["s18"]
+  },
+  "requirements": [
+    {
+      "id": "IAM-R1",
+      "title": "Multi-Factor Authentication for All Human Access",
+      "description": "Enforce multi-factor authentication for all human users accessing cloud management consoles, APIs, and federated applications. Phishing-resistant MFA (FIDO2, WebAuthn) required for privileged accounts. Root/owner accounts must use hardware security keys.",
+      "priority": "critical",
+      "ccmControls": ["IAM-02", "IAM-04", "IAM-12"],
+      "nacsa": ["s18"],
+      "cspGuidance": {
+        "aws": "Enable MFA on all IAM users. Use SCPs to deny actions without MFA (aws:MultiFactorAuthPresent). Assign hardware MFA to root account. Configure IAM Identity Center with MFA requirement.",
+        "azure": "Configure Entra ID Conditional Access requiring MFA for all users. Use Authentication Strengths to enforce phishing-resistant MFA for admins. Enable Security Defaults as baseline.",
+        "gcp": "Enforce 2-Step Verification in Cloud Identity admin console. Require Titan Security Keys for super admin accounts. Use BeyondCorp Enterprise for context-aware access decisions."
+      }
+    },
+    {
+      "id": "IAM-R2",
+      "title": "Least Privilege Access and Permission Right-Sizing",
+      "description": "Grant only the minimum permissions required for each cloud identity to perform its function. Avoid wildcard (*) actions in IAM policies. Use custom roles where built-in roles are too broad. Conduct quarterly access reviews to remove unused permissions.",
+      "priority": "critical",
+      "ccmControls": ["IAM-05", "IAM-09"],
+      "nacsa": ["s18"],
+      "cspGuidance": {
+        "aws": "Use IAM Access Analyzer to identify unused permissions. Create scoped IAM policies with specific resource ARNs. Enable Access Advisor for last-accessed analysis. Deny wildcard permissions via SCP.",
+        "azure": "Use Entra ID PIM for just-in-time role activation. Define custom RBAC roles scoped to resource groups. Use Access Reviews for quarterly recertification of privileged roles.",
+        "gcp": "Use IAM Recommender to right-size permissions. Create custom roles. Apply IAM Conditions for fine-grained access. Enable Policy Analyzer to identify over-privileged identities."
+      }
+    },
+    {
+      "id": "IAM-R3",
+      "title": "Service Account and Non-Human Identity Management",
+      "description": "Manage service accounts, managed identities, and workload identities with the same rigour as human accounts. Eliminate long-lived credentials in favour of cloud-native workload identity federation and short-lived tokens. Inventory and review all non-human identities quarterly.",
+      "priority": "high",
+      "ccmControls": ["IAM-06", "IAM-10"],
+      "nacsa": ["s18"],
+      "cspGuidance": {
+        "aws": "Use IAM Roles (instance profiles, task roles, execution roles) instead of access keys. Enable OIDC federation for external workloads. Disable and delete unused access keys. Rotate keys that must exist.",
+        "azure": "Use Managed Identities (system-assigned preferred) for all Azure services. Use Workload Identity Federation for external workloads. Set credential expiry on app registrations.",
+        "gcp": "Use attached service accounts instead of key files. Enable Workload Identity Federation for GKE and external workloads. Disable unused service account keys. Use IAM Conditions to restrict impersonation."
+      }
+    },
+    {
+      "id": "IAM-R4",
+      "title": "Identity Federation and Single Sign-On",
+      "description": "Federate all cloud access through the enterprise identity provider using SAML 2.0 or OIDC. Eliminate local cloud accounts except for break-glass emergency access. Centralised authentication enables consistent MFA, conditional access, and session policies.",
+      "priority": "high",
+      "ccmControls": ["IAM-01", "IAM-03"],
+      "nacsa": ["s18"],
+      "cspGuidance": {
+        "aws": "Configure AWS IAM Identity Center with external IdP. Map IdP groups to AWS permission sets. Enforce session duration limits. Disable direct IAM user console access where possible.",
+        "azure": "Entra ID as native IdP. Configure SAML/OIDC for third-party cloud accounts. Enable Conditional Access for session controls. Disable guest account creation for non-approved domains.",
+        "gcp": "Configure Cloud Identity federation with external IdP. Use Workforce Identity Federation for console and API. Map IdP groups to GCP IAM roles via group-based access."
+      }
+    },
+    {
+      "id": "IAM-R5",
+      "title": "Privileged Access Management",
+      "description": "Manage privileged cloud access through just-in-time elevation, time-bound sessions, and approval workflows. Privileged roles include cloud administrators, security administrators, and any role with ability to modify IAM policies, encryption keys, or network configurations.",
+      "priority": "critical",
+      "ccmControls": ["IAM-05", "IAM-09", "IAM-12"],
+      "nacsa": ["s18"],
+      "cspGuidance": {
+        "aws": "Use AWS IAM Identity Center with permission sets requiring approval. Deploy temporary elevated access via STS AssumeRole with session tags. Monitor privileged actions via CloudTrail.",
+        "azure": "Deploy Entra ID PIM for all privileged Azure AD and Azure RBAC roles. Configure approval workflows and time-bound activation. Enable access reviews for privileged roles.",
+        "gcp": "Use PAM (Privileged Access Manager) for just-in-time access. Configure IAM Conditions with time-bound access. Enable Data Access audit logs for privileged operations."
+      }
+    }
+  ]
+}

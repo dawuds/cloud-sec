@@ -1,0 +1,66 @@
+{
+  "$schema": "cloud-security-v1",
+  "sourceType": "constructed-indicative",
+  "verificationNote": "Requirements constructed from CSA CCM v4, NIST CSF 2.0, and Malaysia Act 854 obligations. Verify against authoritative sources before use in formal assessments.",
+  "domain": {
+    "id": "compliance-governance",
+    "name": "Compliance and Governance",
+    "description": "Requirements for establishing cloud governance frameworks, implementing policy as code, maintaining audit readiness, and assessing cloud vendor security posture.",
+    "ccmDomains": ["GRC"],
+    "nacsa": ["s18", "s23"]
+  },
+  "requirements": [
+    {
+      "id": "GRC-R1",
+      "title": "Cloud Governance Framework",
+      "description": "Establish a cloud governance framework defining policies, standards, guardrails, and accountability for cloud security. Cover account structure, approved services, data residency, cost management, and security baseline requirements. The framework must be approved by management and reviewed annually.",
+      "priority": "critical",
+      "ccmControls": ["GRC-01", "GRC-02"],
+      "nacsa": ["s18"],
+      "cspGuidance": {
+        "aws": "Use Organizations with SCPs for preventive guardrails. Deploy Control Tower for landing zone governance. Define account vending process via Service Catalog. Publish approved architecture patterns.",
+        "azure": "Use Management Groups with Azure Policy for hierarchical governance. Deploy Enterprise Scale Landing Zones. Define subscription vending process. Use Blueprints for standardised deployments.",
+        "gcp": "Use Organization Policies for project-level constraints. Deploy Cloud Foundation Toolkit for landing zone. Define project factory process. Use Assured Workloads for compliance requirements."
+      }
+    },
+    {
+      "id": "GRC-R2",
+      "title": "Policy as Code",
+      "description": "Implement cloud security policies as machine-readable code that can be version-controlled, tested, and automatically enforced. Policies must cover IAM, encryption, network, logging, and resource configuration requirements. Use deny effects for critical policies and audit effects for monitoring.",
+      "priority": "high",
+      "ccmControls": ["GRC-03", "DCS-01"],
+      "nacsa": ["s18"],
+      "cspGuidance": {
+        "aws": "Use Organizations SCPs for preventive guardrails. Deploy Config rules for detective controls. Use CloudFormation Guard for IaC validation. Manage all policies in Git with CI/CD deployment.",
+        "azure": "Use Azure Policy with deny, audit, modify, and deployIfNotExists effects. Create policy initiatives for compliance frameworks. Use Azure Policy as Code workflow with Git integration.",
+        "gcp": "Use Organization Policies for project-level constraints. Deploy custom constraints. Use Config Connector for declarative resource management. Manage all policies in Git with Cloud Build deployment."
+      }
+    },
+    {
+      "id": "GRC-R3",
+      "title": "Audit Readiness",
+      "description": "Maintain continuous audit readiness for cloud environments. Pre-collect evidence, maintain compliance documentation, and ensure cloud configurations can be demonstrated to auditors at any time. Collect CSP compliance reports (SOC 2, ISO 27001, CSA STAR) and map shared responsibility obligations.",
+      "priority": "high",
+      "ccmControls": ["GRC-04", "GRC-06"],
+      "nacsa": ["s18", "s23"],
+      "cspGuidance": {
+        "aws": "Use Audit Manager for automated evidence collection mapped to compliance frameworks. Access AWS Artifact for CSP compliance reports. Configure Security Hub compliance standards dashboard.",
+        "azure": "Use Purview Compliance Manager for automated assessment. Access Service Trust Portal for CSP reports. Configure Defender for Cloud regulatory compliance dashboard per framework.",
+        "gcp": "Use Assured Workloads for compliance enforcement. Access Compliance Reports Manager for CSP reports. Configure Security Command Center compliance findings per framework."
+      }
+    },
+    {
+      "id": "GRC-R4",
+      "title": "Cloud Vendor Security Assessment",
+      "description": "Assess cloud service provider and SaaS vendor security posture using standardised frameworks. Review CSP certifications, audit reports, shared responsibility model, data processing agreements, and incident notification commitments. Extend assessment to SaaS providers built on cloud infrastructure.",
+      "priority": "medium",
+      "ccmControls": ["GRC-05", "GRC-07"],
+      "nacsa": ["s18"],
+      "cspGuidance": {
+        "aws": "Review AWS SOC reports via AWS Artifact. Complete CAIQ assessment using AWS published responses. Review Shared Responsibility Model. Monitor AWS Security Bulletins and Service Health Dashboard.",
+        "azure": "Review Microsoft SOC reports via Service Trust Portal. Complete CAIQ using Microsoft published responses. Review Shared Responsibility documentation. Monitor Microsoft Security Response Center.",
+        "gcp": "Review Google SOC reports via Compliance Reports Manager. Complete CAIQ using Google published responses. Review Shared Responsibility documentation. Monitor Google Cloud Security Bulletins."
+      }
+    }
+  ]
+}

@@ -1,0 +1,161 @@
+{
+  "$schema": "cloud-security-v1",
+  "sector": "financial-services",
+  "sectorName": "Financial Services",
+  "sourceType": "constructed-indicative",
+  "verificationNote": "Financial services cloud security requirements constructed from BNM RMiT (2020, updated 2023), PDPA 2010, NACSA Act 854, and industry best practices. These are indicative interpretations -- verify against current BNM directives and sector lead guidance before use in compliance assessments.",
+  "nacsaSectorLead": "Bank Negara Malaysia (BNM) / Securities Commission Malaysia (SC)",
+  "nacsaSectorNumber": 1,
+  "applicableStandards": [
+    "BNM Risk Management in Technology (RMiT) 2020 (updated 2023)",
+    "CSA Cloud Controls Matrix v4 (CCM v4)",
+    "ISO 27017:2015 (Cloud-specific security controls)",
+    "ISO 27018:2019 (PII protection in public cloud)",
+    "PCI DSS v4.0 (payment card data -- applies regardless of hosting model)",
+    "NACSA Act 854 (for NCII-designated financial infrastructure)"
+  ],
+  "rmitSections": [
+    {
+      "id": "RMiT-10",
+      "title": "Cloud Services",
+      "description": "Dedicated section in RMiT addressing cloud adoption by financial institutions. Covers risk assessment, due diligence, data residency, exit strategy, and ongoing monitoring of cloud service providers.",
+      "cloudImplication": "All material cloud outsourcing must comply with RMiT-10 requirements. Financial institutions must notify BNM before adopting cloud for material operations. Cloud risk assessment must be conducted before adoption and reviewed annually."
+    },
+    {
+      "id": "RMiT-10.49",
+      "title": "Data Residency",
+      "description": "Critical customer data and its backups must reside in Malaysia. Metadata and derived analytics must also be considered for data residency requirements.",
+      "cloudImplication": "CSP must provide guaranteed Malaysian data residency for critical customer data. Organisations must verify that CSP services do not replicate data outside Malaysia without explicit configuration. This affects CSP region selection and service configuration."
+    },
+    {
+      "id": "RMiT-10.50",
+      "title": "Vendor Risk Assessment",
+      "description": "Financial institutions must conduct comprehensive risk assessment of CSPs covering security controls, business continuity, data protection, and regulatory compliance.",
+      "cloudImplication": "CSP due diligence must include: SOC 2 Type II review, security architecture assessment, data handling practices, subprocessor management, and incident response capabilities. Annual reassessment required."
+    },
+    {
+      "id": "RMiT-10.51",
+      "title": "Exit Strategy",
+      "description": "Financial institutions must maintain a viable exit strategy for material cloud services including data portability, alternative providers, and transition timeline.",
+      "cloudImplication": "Exit strategy must be documented, tested, and reviewed annually. Must include: data export procedures, application portability assessment, cost estimate for migration, and transition timeline. CSP lock-in must be actively managed."
+    },
+    {
+      "id": "RMiT-10.52",
+      "title": "Incident Reporting",
+      "description": "Technology-related incidents affecting financial services must be reported to BNM within 24 hours for major incidents.",
+      "cloudImplication": "Cloud security incidents affecting financial operations must be reported to BNM within 24 hours (major incidents). For NCII-designated financial infrastructure, NACSA s26 requires 6-hour notification. Dual reporting obligations must be coordinated."
+    },
+    {
+      "id": "RMiT-10.53",
+      "title": "Encryption Standards",
+      "description": "Customer data must be encrypted at rest and in transit using industry-standard encryption. Key management must remain under the financial institution's control.",
+      "cloudImplication": "All customer data in cloud must use AES-256 encryption at rest and TLS 1.2+ in transit. Customer-managed encryption keys (CMEK) required for critical data -- CSP-managed keys alone are insufficient. Key management procedures must be documented."
+    },
+    {
+      "id": "RMiT-11",
+      "title": "Cybersecurity Operations",
+      "description": "Covers cybersecurity monitoring, threat detection, incident response, and vulnerability management for financial institutions.",
+      "cloudImplication": "Cloud security monitoring must be integrated with the institution's SOC. Cloud audit logs must feed into SIEM. Cloud-specific threat detection (GuardDuty, Defender, SCC) must be deployed. 24/7 monitoring coverage for cloud infrastructure."
+    },
+    {
+      "id": "RMiT-12",
+      "title": "Technology Audit",
+      "description": "Internal and external technology audits must cover cloud infrastructure and services.",
+      "cloudImplication": "Cloud security must be included in annual technology audit scope. Auditors must have capability to assess cloud security posture. CSP SOC 2 reports support but do not replace the institution's own audit obligations."
+    }
+  ],
+  "keyRequirements": [
+    {
+      "id": "FS-R1",
+      "name": "Data residency in Malaysia",
+      "description": "BNM RMiT requires critical customer data and its backups to reside in Malaysia. This is a non-negotiable requirement for financial institutions using cloud services.",
+      "regulatory": "BNM RMiT 10.49",
+      "implementation": [
+        "Configure all cloud services to use Malaysian region (ap-southeast-3 for AWS if available, Southeast Asia for Azure, asia-southeast1 for GCP)",
+        "If CSP does not have Malaysian region, nearest approved region (Singapore) may be used with BNM notification -- subject to BNM approval",
+        "Verify that metadata, logs, and derived analytics also comply with data residency requirements",
+        "Implement region restriction policies (SCPs, Azure Policy) to prevent data creation in non-approved regions",
+        "Monitor for CSP service updates that may change data replication behaviour"
+      ],
+      "ccmControls": ["DSP-06", "DSP-07", "DSP-19"]
+    },
+    {
+      "id": "FS-R2",
+      "name": "Vendor risk assessment for CSP",
+      "description": "Comprehensive risk assessment of the CSP must be conducted before adoption and reviewed annually. Must cover security, operational resilience, financial stability, and regulatory compliance.",
+      "regulatory": "BNM RMiT 10.50",
+      "implementation": [
+        "Request and review CSP SOC 2 Type II report (under NDA)",
+        "Review CSP ISO 27001, ISO 27017, and CSA STAR certifications",
+        "Assess CSP incident response capabilities and notification timelines",
+        "Evaluate CSP financial stability and business continuity capabilities",
+        "Review CSP subprocessor management and fourth-party risk",
+        "Document vendor risk assessment with findings and acceptance/mitigation decisions"
+      ],
+      "ccmControls": ["STA-01", "STA-03", "STA-05", "STA-08", "STA-14"]
+    },
+    {
+      "id": "FS-R3",
+      "name": "Cloud exit strategy",
+      "description": "Maintain a viable, tested exit strategy for all material cloud services. Must include data portability, alternative providers, timeline, and cost estimate.",
+      "regulatory": "BNM RMiT 10.51",
+      "implementation": [
+        "Document data export procedures for each material cloud service",
+        "Identify alternative CSPs or on-premises options for each service",
+        "Estimate migration cost and timeline for exit scenario",
+        "Test data export procedures annually to verify functionality",
+        "Design for portability: use open standards (Kubernetes, SQL, REST APIs) over proprietary CSP services where practical",
+        "Include exit strategy review in annual cloud governance review"
+      ],
+      "ccmControls": ["STA-09", "BCR-01", "BCR-03"]
+    },
+    {
+      "id": "FS-R4",
+      "name": "Incident reporting (BNM 24h + NACSA 6h)",
+      "description": "Cloud security incidents affecting financial operations must be reported to BNM within 24 hours for major incidents. NCII-designated financial infrastructure requires NACSA s26 notification within 6 hours.",
+      "regulatory": "BNM RMiT 10.52, NACSA Act 854 s26",
+      "implementation": [
+        "Establish dual notification procedure for both BNM and NACSA (if NCII-designated)",
+        "NACSA 6-hour deadline takes priority -- notify NACSA first, then BNM",
+        "Define cloud incident classification matrix aligned with both BNM and NACSA thresholds",
+        "Pre-configure incident notification templates for both regulators",
+        "Test notification procedures quarterly through tabletop exercises",
+        "Establish CSP incident notification relay to ensure CSP-detected incidents reach organisation quickly"
+      ],
+      "ccmControls": ["SEF-01", "SEF-02", "SEF-03", "SEF-04"]
+    },
+    {
+      "id": "FS-R5",
+      "name": "Encryption and key management",
+      "description": "All customer data must be encrypted at rest (AES-256) and in transit (TLS 1.2+). Financial institution must maintain control over encryption keys for critical data.",
+      "regulatory": "BNM RMiT 10.53",
+      "implementation": [
+        "Enable encryption at rest for all cloud storage using AES-256",
+        "Use customer-managed encryption keys (CMEK) for critical customer data -- not CSP-managed default keys",
+        "Implement TLS 1.2+ for all data in transit (disable TLS 1.0 and 1.1)",
+        "Document key management procedures including rotation, access control, and backup",
+        "Consider client-side encryption for highest-sensitivity data (data encrypted before upload to CSP)",
+        "Implement key usage logging and monitoring"
+      ],
+      "ccmControls": ["DSP-01", "DSP-02", "DSP-10", "EKM-01", "EKM-02", "EKM-03", "EKM-04"]
+    }
+  ],
+  "nacsaObligations": {
+    "description": "NACSA obligations for NCII-designated financial infrastructure using cloud services.",
+    "applicability": "Applies only to financial infrastructure designated as NCII under NACSA Act 854. Not all financial institutions are NCII-designated -- designation is determined by NACSA and the sector lead (BNM).",
+    "obligations": [
+      "s17: Accept NCII designation and comply with all Act 854 obligations",
+      "s18: Implement appropriate cybersecurity measures for cloud-hosted NCII -- cloud does not reduce the obligation",
+      "s21: Include cloud-hosted NCII assets in annual risk assessment",
+      "s23: Include cloud security in biennial NACSA audit scope",
+      "s24: Share cloud threat intelligence with NACSA when directed",
+      "s26: Notify NACSA within 6 hours of significant cloud security incident affecting NCII"
+    ]
+  },
+  "sectorSpecificThreats": [
+    { "threat": "Payment system compromise through cloud infrastructure", "ccmControls": ["IAM-01", "IAM-02", "IVS-01", "DSP-01"], "mitreCloudTechniques": ["T1078", "T1530", "T1537"] },
+    { "threat": "Customer data exfiltration from cloud-hosted core banking", "ccmControls": ["DSP-01", "DSP-02", "DSP-05", "LOG-01"], "mitreCloudTechniques": ["T1530", "T1567", "T1537"] },
+    { "threat": "Regulatory non-compliance through cloud data residency violation", "ccmControls": ["DSP-06", "DSP-07", "DSP-19", "GRC-01"], "mitreCloudTechniques": [] },
+    { "threat": "API abuse in open banking cloud integration", "ccmControls": ["AIS-01", "AIS-02", "AIS-04", "IAM-04"], "mitreCloudTechniques": ["T1190", "T1059"] }
+  ]
+}

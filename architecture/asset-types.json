@@ -1,0 +1,456 @@
+{
+  "$schema": "cloud-security-v1",
+  "concept": "Cloud Asset Types",
+  "sourceType": "paraphrased-from-standard",
+  "description": "Taxonomy of asset types found in cloud environments, with security characteristics per type. Used to drive asset inventory, risk assessment, and control applicability. Each asset type maps to one or more CSA Cloud Controls Matrix (CCM) v4 domains.",
+  "assetTypes": [
+    {
+      "id": "VM",
+      "name": "Virtual Machines / Compute Instances",
+      "category": "Compute",
+      "examples": {
+        "aws": "EC2 (t3, m6i, c6g, r6i instances)",
+        "azure": "Azure Virtual Machines (B-series, D-series, E-series)",
+        "gcp": "Compute Engine (e2, n2, c2 machine types)",
+        "alibaba": "Elastic Compute Service (ECS)"
+      },
+      "securityProfile": {
+        "attackSurface": "Full operating system attack surface — kernel vulnerabilities, unpatched services, SSH/RDP exposure, instance metadata service (IMDS), user data scripts containing secrets",
+        "keyRisks": [
+          "Unpatched OS and middleware creating exploitable CVEs",
+          "Instance metadata SSRF enabling IAM credential theft (IMDSv1)",
+          "Overprivileged instance profiles granting broad AWS/Azure/GCP access",
+          "SSH key sprawl with no rotation or centralised management",
+          "AMI/image templates containing embedded credentials or secrets"
+        ],
+        "compensatingControls": [
+          "Enforce IMDSv2 (AWS) / disable metadata for unnecessary instances",
+          "CIS Benchmark hardened golden images with automated patching",
+          "Host-based EDR (CrowdStrike, Defender for Endpoint, SentinelOne)",
+          "No SSH/RDP — use Systems Manager Session Manager or Azure Bastion",
+          "Least-privilege instance roles scoped to specific resources",
+          "VPC Flow Logs and OS audit logs forwarded to SIEM"
+        ]
+      },
+      "ccmDomains": ["CCC", "IVS", "TVM"]
+    },
+    {
+      "id": "CONTAINER",
+      "name": "Containers and Container Orchestration",
+      "category": "Compute",
+      "examples": {
+        "aws": "ECS (Fargate / EC2 launch type), EKS (managed Kubernetes)",
+        "azure": "AKS (Azure Kubernetes Service), Azure Container Instances",
+        "gcp": "GKE (Google Kubernetes Engine), Cloud Run",
+        "alibaba": "ACK (Container Service for Kubernetes)"
+      },
+      "securityProfile": {
+        "attackSurface": "Container image vulnerabilities, Kubernetes API server exposure, pod-to-pod lateral movement, container escape via kernel exploits, supply chain through base images and registries",
+        "keyRisks": [
+          "Vulnerable base images with known CVEs pulled from public registries",
+          "Kubernetes API server exposed to internet without authentication",
+          "Privileged containers running with host PID/network namespace access",
+          "Secrets mounted as environment variables visible in container inspect",
+          "Container escape exploits (runc, containerd CVEs) reaching host OS",
+          "Kubernetes RBAC misconfiguration granting cluster-admin to service accounts"
+        ],
+        "compensatingControls": [
+          "Image scanning in CI/CD pipeline and at registry admission (ECR scanning, Trivy, Snyk)",
+          "Pod Security Standards enforcement (restricted profile)",
+          "Network policies for pod-to-pod micro-segmentation (Calico, Cilium)",
+          "Kubernetes Secrets encrypted with KMS (etcd encryption at rest)",
+          "Binary Authorization / image signing for deployment gate",
+          "Runtime security monitoring (Falco, GuardDuty EKS Runtime Monitoring)",
+          "Private cluster with no public API endpoint"
+        ]
+      },
+      "ccmDomains": ["CCC", "AIS", "TVM"]
+    },
+    {
+      "id": "SERVERLESS",
+      "name": "Serverless Functions",
+      "category": "Compute",
+      "examples": {
+        "aws": "Lambda",
+        "azure": "Azure Functions",
+        "gcp": "Cloud Functions, Cloud Run (serverless mode)",
+        "alibaba": "Function Compute"
+      },
+      "securityProfile": {
+        "attackSurface": "Function code vulnerabilities, event injection through triggers, overprivileged execution roles, dependency supply chain attacks, cold start credential caching",
+        "keyRisks": [
+          "Overprivileged function execution roles (Lambda role with s3:* or admin access)",
+          "Event injection — untrusted data from S3, SQS, API Gateway triggers exploiting function logic",
+          "Dependency confusion or supply chain attacks in function deployment packages",
+          "Secrets stored in environment variables without Secrets Manager integration",
+          "Insufficient logging — security events not captured in ephemeral execution"
+        ],
+        "compensatingControls": [
+          "One IAM role per function with minimum required permissions",
+          "Input validation on all event sources — treat every trigger as untrusted input",
+          "Secrets Manager integration for all credentials (never plaintext env vars)",
+          "Function code scanning (SAST, SCA) in CI/CD pipeline",
+          "VPC attachment for functions accessing private resources",
+          "Distributed tracing (X-Ray, Application Insights) for security observability"
+        ]
+      },
+      "ccmDomains": ["CCC", "AIS", "IAM"]
+    },
+    {
+      "id": "OBJECT-STORAGE",
+      "name": "Object Storage",
+      "category": "Storage",
+      "examples": {
+        "aws": "S3 (Simple Storage Service)",
+        "azure": "Azure Blob Storage",
+        "gcp": "Google Cloud Storage",
+        "alibaba": "Object Storage Service (OSS)"
+      },
+      "securityProfile": {
+        "attackSurface": "Public access misconfiguration (the most common cloud security finding), overly permissive bucket policies, pre-signed URL abuse, cross-account access, data exfiltration through legitimate API calls",
+        "keyRisks": [
+          "Publicly accessible buckets exposing sensitive data (personal data, credentials, backups)",
+          "Bucket policies allowing s3:GetObject from Principal: * (any AWS account or anonymous)",
+          "Pre-signed URLs with excessive expiry enabling persistent unauthorised access",
+          "Object versioning disabled — no recovery from ransomware or accidental deletion",
+          "Cross-account access without proper IAM boundary enforcement",
+          "Logging disabled — no visibility into who accessed which objects"
+        ],
+        "compensatingControls": [
+          "S3 Block Public Access enabled at account/organisation level (AWS SCP enforcement)",
+          "Encryption at rest with customer-managed KMS keys (SSE-KMS)",
+          "Bucket policies with explicit deny for unencrypted uploads",
+          "Object versioning and MFA Delete for critical buckets",
+          "S3 Access Logs and CloudTrail S3 data events enabled",
+          "Macie / Purview / SCC for sensitive data classification",
+          "VPC endpoint (gateway) for S3 access — no internet path"
+        ]
+      },
+      "ccmDomains": ["DSP", "EKM", "IVS"]
+    },
+    {
+      "id": "BLOCK-STORAGE",
+      "name": "Block Storage Volumes",
+      "category": "Storage",
+      "examples": {
+        "aws": "EBS (Elastic Block Store)",
+        "azure": "Azure Managed Disks",
+        "gcp": "Persistent Disks, Local SSDs",
+        "alibaba": "Block Storage (ESSD, SSD, Ultra Disk)"
+      },
+      "securityProfile": {
+        "attackSurface": "Unencrypted volumes containing sensitive data, snapshot sharing across accounts, abandoned volumes with residual data, snapshot copying to attacker-controlled accounts",
+        "keyRisks": [
+          "Unencrypted EBS volumes containing database files, credentials, or PII",
+          "EBS snapshots shared publicly or with unintended AWS accounts",
+          "Detached (orphaned) volumes retaining sensitive data after instance termination",
+          "Root volume snapshots containing SSH keys, cloud-init secrets, and application credentials"
+        ],
+        "compensatingControls": [
+          "Default EBS encryption at account level (AWS SCP requiring encrypted volumes)",
+          "Snapshot sharing restricted to approved accounts only",
+          "Automated cleanup of detached volumes (Lambda-based or Config rule)",
+          "KMS key policies restricting who can use encryption keys for snapshot access",
+          "Regular audit of snapshot permissions across organisation"
+        ]
+      },
+      "ccmDomains": ["DSP", "EKM"]
+    },
+    {
+      "id": "MANAGED-DB",
+      "name": "Managed Databases",
+      "category": "Data",
+      "examples": {
+        "aws": "RDS (MySQL, PostgreSQL, SQL Server, Oracle), Aurora, DynamoDB, ElastiCache",
+        "azure": "Azure SQL Database, Azure Cosmos DB, Azure Database for PostgreSQL/MySQL, Azure Cache for Redis",
+        "gcp": "Cloud SQL, Cloud Spanner, Firestore, Bigtable, Memorystore",
+        "alibaba": "ApsaraDB RDS, PolarDB, Table Store"
+      },
+      "securityProfile": {
+        "attackSurface": "Public endpoint exposure, SQL injection through application layer, weak database authentication, unencrypted connections, overprivileged database users, snapshot exposure",
+        "keyRisks": [
+          "Database instance with public accessibility enabled (reachable from internet)",
+          "SQL injection vulnerabilities in application code reaching managed database",
+          "Master/admin credentials stored in application code or configuration files",
+          "Database connections without TLS encryption (data in transit exposure)",
+          "Automated backups/snapshots not encrypted or shared too broadly",
+          "Database audit logging disabled — no visibility into data access patterns"
+        ],
+        "compensatingControls": [
+          "Private endpoint/subnet only — no public accessibility",
+          "Database credentials in Secrets Manager with automatic rotation",
+          "TLS enforcement for all database connections (rds.force_ssl, require_secure_transport)",
+          "Database audit logging enabled and forwarded to SIEM (RDS Enhanced Monitoring, Azure SQL Auditing)",
+          "Application-level parameterised queries to prevent SQL injection",
+          "Database user least-privilege — no application accounts with DBA privileges",
+          "Backup encryption with customer-managed KMS keys"
+        ]
+      },
+      "ccmDomains": ["DSP", "EKM", "IAM"]
+    },
+    {
+      "id": "IAM-ROLES",
+      "name": "IAM Roles, Policies, and Service Accounts",
+      "category": "Identity",
+      "examples": {
+        "aws": "IAM Roles, IAM Policies (inline/managed), IAM Users, STS Assumed Roles",
+        "azure": "Entra ID Roles, Azure RBAC Role Assignments, Managed Identities, Service Principals",
+        "gcp": "IAM Roles (predefined/custom), Service Accounts, Workload Identity Federation",
+        "alibaba": "RAM Roles, RAM Policies, RAM Users"
+      },
+      "securityProfile": {
+        "attackSurface": "Overprivileged roles and policies enabling escalation, long-lived credentials, cross-account trust misconfiguration, service account key exposure, IAM policy complexity creating unintended permissions",
+        "keyRisks": [
+          "IAM policies with Action: * and Resource: * (admin-equivalent permissions)",
+          "Long-lived IAM access keys stored in code, CI/CD, or shared across teams",
+          "Cross-account role trust policies with overly broad Principal conditions",
+          "Unused IAM users and roles accumulating unnecessary permissions over time",
+          "IAM policy conditions bypassed through resource-based policies",
+          "Service account keys downloaded and stored insecurely"
+        ],
+        "compensatingControls": [
+          "IAM Access Analyzer / Entra Permissions Management for permission auditing",
+          "No long-lived access keys — use IAM roles, managed identities, workload identity federation",
+          "Service Control Policies (SCPs) as organisation-level guardrails",
+          "Regular access reviews with automated revocation of unused permissions",
+          "Custom IAM policies with explicit deny for sensitive operations",
+          "Credential rotation enforcement (90 days maximum for any long-lived credential)"
+        ]
+      },
+      "ccmDomains": ["IAM", "GRC"]
+    },
+    {
+      "id": "VPC",
+      "name": "Virtual Private Cloud / Virtual Network",
+      "category": "Network",
+      "examples": {
+        "aws": "VPC, Subnets (public/private), Route Tables, Internet Gateway, NAT Gateway",
+        "azure": "VNet, Subnets, Route Tables, Internet Gateway, NAT Gateway",
+        "gcp": "VPC Network (auto-mode/custom-mode), Subnets, Cloud Router, Cloud NAT",
+        "alibaba": "VPC, VSwitch, Route Tables, NAT Gateway"
+      },
+      "securityProfile": {
+        "attackSurface": "Overly permissive routing enabling internet access from private resources, flat network architecture without segmentation, VPC peering creating uncontrolled lateral movement paths, DNS-based data exfiltration",
+        "keyRisks": [
+          "Default VPC used for production workloads (all subnets public by default in AWS)",
+          "Resources placed in public subnets unnecessarily (databases, internal APIs)",
+          "VPC peering with full CIDR routing enabling cross-environment lateral movement",
+          "Missing VPC Flow Logs — no network traffic visibility",
+          "Route table misconfiguration sending private traffic through internet gateway"
+        ],
+        "compensatingControls": [
+          "Delete default VPC — use purpose-built VPCs with explicit subnet design",
+          "Private subnets for all non-edge workloads, public subnets only for load balancers",
+          "VPC Flow Logs enabled (all traffic, not just rejected) and forwarded to SIEM",
+          "DNS query logging enabled for exfiltration detection",
+          "Transit Gateway with route domain segmentation for multi-VPC environments",
+          "Environment isolation (separate VPCs for production, staging, development)"
+        ]
+      },
+      "ccmDomains": ["IVS", "LOG"]
+    },
+    {
+      "id": "LOAD-BALANCER",
+      "name": "Load Balancers",
+      "category": "Network",
+      "examples": {
+        "aws": "Application Load Balancer (ALB), Network Load Balancer (NLB), Gateway Load Balancer (GWLB)",
+        "azure": "Azure Application Gateway, Azure Load Balancer, Azure Front Door",
+        "gcp": "Google Cloud Load Balancing (HTTP(S), TCP/UDP, Internal)",
+        "alibaba": "Server Load Balancer (SLB), Application Load Balancer (ALB)"
+      },
+      "securityProfile": {
+        "attackSurface": "TLS termination configuration, health check endpoint exposure, access log gaps, backend target group misconfiguration",
+        "keyRisks": [
+          "Outdated TLS configuration (TLS 1.0/1.1, weak cipher suites)",
+          "Health check endpoints exposing internal application state or version information",
+          "Access logs disabled — no visibility into request patterns or attack attempts",
+          "Backend targets directly reachable from internet, bypassing load balancer security"
+        ],
+        "compensatingControls": [
+          "TLS 1.2+ only with modern cipher suites (ELBSecurityPolicy-TLS13 or equivalent)",
+          "Access logging enabled for all load balancers (ALB access logs to S3)",
+          "Security group on backend targets allowing only load balancer source",
+          "WAF integration on application load balancers",
+          "SSL certificate automation via ACM / Azure Key Vault / Google-managed certificates"
+        ]
+      },
+      "ccmDomains": ["IVS", "EKM"]
+    },
+    {
+      "id": "API-GATEWAY",
+      "name": "API Gateways",
+      "category": "Network",
+      "examples": {
+        "aws": "Amazon API Gateway (REST, HTTP, WebSocket), AppSync (GraphQL)",
+        "azure": "Azure API Management, Azure Front Door (with routing rules)",
+        "gcp": "Google Apigee, Google Cloud Endpoints",
+        "alibaba": "API Gateway"
+      },
+      "securityProfile": {
+        "attackSurface": "Unauthenticated API endpoints, missing rate limiting enabling abuse, overly permissive CORS, request/response logging gaps, backend API direct access bypassing gateway",
+        "keyRisks": [
+          "API endpoints deployed without authentication (public APIs returning sensitive data)",
+          "No rate limiting enabling credential stuffing, scraping, or DDoS at API level",
+          "CORS wildcard (*) allowing any origin to call the API",
+          "GraphQL introspection enabled in production revealing full schema to attackers",
+          "API keys embedded in client-side code (mobile apps, JavaScript)"
+        ],
+        "compensatingControls": [
+          "OAuth 2.0 / JWT authentication on all API endpoints",
+          "Rate limiting and throttling per client / per API key",
+          "Request validation (OpenAPI schema validation at gateway)",
+          "CORS restricted to specific permitted origins",
+          "API key rotation and usage monitoring",
+          "GraphQL introspection disabled in production",
+          "WAF rules on API gateway for injection and abuse prevention"
+        ]
+      },
+      "ccmDomains": ["AIS", "IAM", "IVS"]
+    },
+    {
+      "id": "DNS",
+      "name": "DNS Services",
+      "category": "Network",
+      "examples": {
+        "aws": "Route 53 (hosted zones, health checks, resolver)",
+        "azure": "Azure DNS, Azure Private DNS Zones, Azure Traffic Manager",
+        "gcp": "Google Cloud DNS, Google Cloud Domains",
+        "alibaba": "Alibaba Cloud DNS"
+      },
+      "securityProfile": {
+        "attackSurface": "DNS hijacking, subdomain takeover via dangling CNAME records, DNS tunnelling for data exfiltration, zone transfer exposure",
+        "keyRisks": [
+          "Subdomain takeover — CNAME pointing to deprovisioned cloud resource (S3, Azure Blob, Heroku)",
+          "DNSSEC not enabled, allowing DNS spoofing and cache poisoning",
+          "DNS query logging disabled — no visibility into DNS-based exfiltration or C2 communication",
+          "DNS zone accessible to overly broad IAM roles enabling record modification"
+        ],
+        "compensatingControls": [
+          "Regular subdomain audit to detect dangling CNAME/A records",
+          "DNSSEC enabled for all public hosted zones",
+          "Route 53 Resolver Query Logging / DNS query logging forwarded to SIEM",
+          "IAM policies restricting DNS zone modification to specific roles",
+          "DNS firewall (Route 53 Resolver DNS Firewall) blocking known malicious domains"
+        ]
+      },
+      "ccmDomains": ["IVS", "LOG"]
+    },
+    {
+      "id": "CDN",
+      "name": "Content Delivery Network",
+      "category": "Network",
+      "examples": {
+        "aws": "CloudFront",
+        "azure": "Azure CDN, Azure Front Door",
+        "gcp": "Google Cloud CDN",
+        "alibaba": "Alibaba Cloud CDN"
+      },
+      "securityProfile": {
+        "attackSurface": "CDN caching sensitive content, origin IP exposure, TLS misconfiguration, cache poisoning",
+        "keyRisks": [
+          "Sensitive API responses cached at CDN edge (authentication tokens, PII)",
+          "Origin server IP leaked through DNS history or error pages, enabling CDN bypass",
+          "TLS certificate on CDN not matching backend, creating downgrade opportunities",
+          "Cache poisoning through manipulated Host headers or query parameters"
+        ],
+        "compensatingControls": [
+          "Cache-Control headers preventing caching of sensitive responses",
+          "Origin Access Control (OAC) ensuring only CDN can reach origin (AWS S3 OAC, CloudFront signed URLs)",
+          "Custom origin headers validated by backend (shared secret between CDN and origin)",
+          "HTTPS-only with HSTS headers",
+          "CDN access logs enabled and monitored for anomalous patterns"
+        ]
+      },
+      "ccmDomains": ["IVS", "DSP"]
+    },
+    {
+      "id": "MESSAGE-QUEUE",
+      "name": "Message Queues and Event Buses",
+      "category": "Integration",
+      "examples": {
+        "aws": "SQS (Simple Queue Service), SNS (Simple Notification Service), EventBridge, Kinesis",
+        "azure": "Azure Service Bus, Azure Event Grid, Azure Event Hubs",
+        "gcp": "Google Pub/Sub, Google Eventarc",
+        "alibaba": "Message Queue (RocketMQ), Event Bridge"
+      },
+      "securityProfile": {
+        "attackSurface": "Message injection, queue policy misconfiguration allowing cross-account access, unencrypted messages in transit, poison message DoS",
+        "keyRisks": [
+          "Queue/topic policies allowing SendMessage from any AWS account (Principal: *)",
+          "Messages containing sensitive data transmitted without encryption",
+          "Dead-letter queues accumulating sensitive messages without access controls",
+          "Event injection — attacker publishing malicious events that trigger downstream processing"
+        ],
+        "compensatingControls": [
+          "Queue/topic policies with explicit Principal restrictions",
+          "Server-side encryption for all queues and topics (SSE-SQS, SSE-KMS)",
+          "VPC endpoints for queue access — no internet path",
+          "Dead-letter queue monitoring and alerting",
+          "Input validation on all message consumers — treat messages as untrusted"
+        ]
+      },
+      "ccmDomains": ["AIS", "EKM", "IVS"]
+    },
+    {
+      "id": "KMS",
+      "name": "Key Management Service",
+      "category": "Security",
+      "examples": {
+        "aws": "AWS KMS (Key Management Service), AWS CloudHSM",
+        "azure": "Azure Key Vault, Azure Managed HSM, Azure Dedicated HSM",
+        "gcp": "Google Cloud KMS, Cloud HSM, Cloud External Key Manager (EKM)",
+        "alibaba": "Alibaba Cloud KMS, Data Encryption Service"
+      },
+      "securityProfile": {
+        "attackSurface": "Key policy misconfiguration granting overly broad access, key deletion removing decryption capability, cross-account key sharing without controls",
+        "keyRisks": [
+          "KMS key policy allowing kms:* to broad principals (any role in account can use/manage keys)",
+          "Scheduled key deletion without impact assessment (data becomes permanently undecryptable)",
+          "Customer-managed keys (CMK) not used — relying on AWS/Azure/GCP-managed keys without customer control",
+          "Key rotation not enabled — same key material used indefinitely",
+          "KMS key grants accumulating and not cleaned up"
+        ],
+        "compensatingControls": [
+          "Least-privilege key policies — separate key users from key administrators",
+          "Automatic key rotation enabled (annual minimum)",
+          "Key deletion protection with multi-day waiting period (7-30 days)",
+          "CloudTrail logging of all KMS API calls for audit",
+          "Separate KMS keys per workload/environment (production keys isolated from development)",
+          "Customer-managed keys for all regulated data"
+        ]
+      },
+      "ccmDomains": ["EKM", "GRC"]
+    },
+    {
+      "id": "CONTAINER-REGISTRY",
+      "name": "Container Image Registry",
+      "category": "DevOps",
+      "examples": {
+        "aws": "ECR (Elastic Container Registry)",
+        "azure": "Azure Container Registry (ACR)",
+        "gcp": "Google Artifact Registry, Google Container Registry (deprecated)",
+        "alibaba": "Alibaba Cloud Container Registry (ACR)"
+      },
+      "securityProfile": {
+        "attackSurface": "Malicious image injection, vulnerable base images, image tag mutability enabling supply chain attacks, cross-account image pulling without authentication",
+        "keyRisks": [
+          "Mutable image tags — attacker replaces 'latest' tag with backdoored image",
+          "No image scanning — vulnerabilities in base images deployed to production",
+          "Public registry access allowing anyone to pull (and potentially push) images",
+          "Images containing embedded secrets (API keys, database credentials) in layers",
+          "Unsigned images deployed without provenance verification"
+        ],
+        "compensatingControls": [
+          "Image immutability (immutable tags) preventing tag overwrite",
+          "Automated vulnerability scanning on push (ECR scanning, ACR Defender, Artifact Analysis)",
+          "Image signing and verification (cosign, Notary, AWS Signer)",
+          "Private registry with authentication required for pull and push",
+          "Registry replication for cross-region availability with consistent security policy",
+          "Lifecycle policies to clean up untagged and old images"
+        ]
+      },
+      "ccmDomains": ["AIS", "CCC", "TVM"]
+    }
+  ]
+}
