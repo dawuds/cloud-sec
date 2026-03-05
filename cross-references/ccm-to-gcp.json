@@ -1,24 +1,176 @@
 {
   "$schema": "cloud-security-v1",
+  "title": "CSA CCM v4 to GCP Security Services Cross-Reference",
+  "description": "Maps CSA Cloud Controls Matrix v4 domains to Google Cloud Platform (GCP) security services and features that implement or support each domain's control objectives. Use to identify which GCP services satisfy CCM requirements for cloud security assessments.",
   "sourceType": "constructed-indicative",
-  "description": "CSA CCM v4 control domains mapped to Google Cloud Platform security services",
+  "verificationNote": "GCP service mappings are based on publicly documented service capabilities as of 2025. GCP services evolve frequently -- verify current capabilities against Google Cloud documentation. Not endorsed by CSA or Google.",
+  "ccmVersion": "CSA Cloud Controls Matrix v4.0",
+  "cspProvider": "Google Cloud Platform (GCP)",
   "mappings": [
-    { "ccmDomain": "AIS", "ccmDomainName": "Application & Interface Security", "services": ["Cloud Armor", "reCAPTCHA Enterprise", "Web Security Scanner", "Apigee API Management"] },
-    { "ccmDomain": "AAC", "ccmDomainName": "Audit & Assurance", "services": ["Cloud Audit Logs", "Access Transparency", "Assured Workloads"] },
-    { "ccmDomain": "BCR", "ccmDomainName": "Business Continuity & Resilience", "services": ["Cloud Storage (multi-region)", "Persistent Disk snapshots", "Cloud SQL backups", "GKE backup"] },
-    { "ccmDomain": "CCC", "ccmDomainName": "Change Control & Configuration", "services": ["Cloud Build", "Artifact Registry", "Binary Authorization", "Cloud Deploy"] },
-    { "ccmDomain": "CEK", "ccmDomainName": "Cryptography, Encryption & Key Mgmt", "services": ["Cloud KMS", "Cloud HSM", "Secret Manager", "Certificate Authority Service", "Confidential Computing"] },
-    { "ccmDomain": "DSP", "ccmDomainName": "Data Security & Privacy", "services": ["Cloud DLP", "VPC Service Controls", "Data Catalog", "Sensitive Data Protection"] },
-    { "ccmDomain": "DCS", "ccmDomainName": "Datacenter Security", "services": ["Google infrastructure security", "Titan security chips", "Shielded VMs"] },
-    { "ccmDomain": "GRC", "ccmDomainName": "Governance, Risk & Compliance", "services": ["Assured Workloads", "Organization Policy Service", "Risk Manager", "Compliance Reports Manager"] },
-    { "ccmDomain": "HRS", "ccmDomainName": "Human Resources", "services": ["Identity-Aware Proxy (workforce)", "BeyondCorp Enterprise"] },
-    { "ccmDomain": "IAM", "ccmDomainName": "Identity & Access Management", "services": ["Cloud IAM", "Identity-Aware Proxy", "BeyondCorp Enterprise", "Workforce Identity Federation", "Workload Identity Federation"] },
-    { "ccmDomain": "IPY", "ccmDomainName": "Interoperability & Portability", "services": ["Anthos", "GKE Enterprise", "Cloud Run", "Migrate to Containers"] },
-    { "ccmDomain": "IVS", "ccmDomainName": "Infrastructure & Virtualization", "services": ["VPC", "Cloud Firewall", "Cloud NAT", "Private Google Access", "Cloud Interconnect", "Packet Mirroring"] },
-    { "ccmDomain": "LOG", "ccmDomainName": "Logging & Monitoring", "services": ["Cloud Logging", "Cloud Monitoring", "Chronicle SIEM", "Cloud Audit Logs", "Error Reporting"] },
-    { "ccmDomain": "SEF", "ccmDomainName": "Security Incident Mgmt", "services": ["Chronicle SOAR", "Security Command Center (Event Threat Detection)", "Cloud Armor Adaptive Protection"] },
-    { "ccmDomain": "STA", "ccmDomainName": "Supply Chain, Transparency & Accountability", "services": ["Binary Authorization", "Artifact Analysis", "Software Delivery Shield", "SLSA framework support"] },
-    { "ccmDomain": "TVM", "ccmDomainName": "Threat & Vulnerability Mgmt", "services": ["Security Command Center", "Web Security Scanner", "Container Analysis", "VM Manager (OS patch management)"] },
-    { "ccmDomain": "UEM", "ccmDomainName": "Universal Endpoint Mgmt", "services": ["BeyondCorp Enterprise", "Chrome Enterprise", "Endpoint Verification"] }
+    {
+      "ccmDomain": "A&A",
+      "ccmDomainName": "Audit & Assurance",
+      "gcpServices": [
+        { "service": "Assured Workloads", "description": "Compliance enforcement for regulated workloads with automated controls for FedRAMP, HIPAA, PCI DSS. Supports A&A-01 (audit planning) and A&A-05 (regulatory mapping)." },
+        { "service": "Google Cloud Compliance Reports Manager", "description": "Access to GCP compliance reports (SOC 2, ISO 27001, PCI DSS). Supports A&A-05." },
+        { "service": "Policy Intelligence (Policy Analyzer)", "description": "Automated IAM policy analysis for compliance. Supports A&A-03 (risk-based planning)." }
+      ]
+    },
+    {
+      "ccmDomain": "AIS",
+      "ccmDomainName": "Application & Interface Security",
+      "gcpServices": [
+        { "service": "Cloud Armor (WAF)", "description": "Web Application Firewall with pre-configured WAF rules, DDoS protection, and bot management. Implements AIS-01 (application security) for web applications." },
+        { "service": "Apigee API Management", "description": "Full-lifecycle API management with security policies, OAuth 2.0, rate limiting, and threat protection. Supports AIS-04 (secure application design)." },
+        { "service": "Web Security Scanner", "description": "Automated vulnerability scanner for App Engine, GKE, and Compute Engine web applications. Implements AIS-02 (application security testing)." },
+        { "service": "Cloud Build", "description": "CI/CD with integrated security scanning and binary authorisation. Supports AIS-02." }
+      ]
+    },
+    {
+      "ccmDomain": "BCR",
+      "ccmDomainName": "Business Continuity Management & Operational Resilience",
+      "gcpServices": [
+        { "service": "Cloud Storage (multi-region / dual-region)", "description": "Geo-redundant object storage with automatic failover. Supports BCR-01 (business continuity planning)." },
+        { "service": "Persistent Disk Snapshots", "description": "Point-in-time disk snapshots with cross-region replication. Implements BCR-04 (backup and recovery)." },
+        { "service": "Cloud SQL Backups / Spanner Multi-Region", "description": "Automated database backups with cross-region replication. Supports BCR-01 and BCR-04." },
+        { "service": "GKE Multi-Cluster Gateway", "description": "Multi-cluster Kubernetes for cross-region application resilience. Supports BCR-02." },
+        { "service": "Retention Policy and Bucket Lock (Cloud Storage)", "description": "WORM-compliant immutable storage for backup protection. Implements BCR-04 (backup integrity)." }
+      ]
+    },
+    {
+      "ccmDomain": "CCC",
+      "ccmDomainName": "Change Control & Configuration Management",
+      "gcpServices": [
+        { "service": "Config Connector / Deployment Manager / Terraform on GCP", "description": "Infrastructure as Code for controlled, repeatable GCP deployments. Implements CCC-01 (change management)." },
+        { "service": "Security Health Analytics", "description": "Continuous configuration assessment against GCP best practices. Implements CCC-03 (configuration management)." },
+        { "service": "OS Configuration Management (OS Policy)", "description": "Automated OS configuration and compliance management for Compute Engine. Supports CCC-03." },
+        { "service": "Service Catalog", "description": "Curated catalogue of approved GCP solutions. Supports CCC-02 (quality testing) through pre-approved configurations." }
+      ]
+    },
+    {
+      "ccmDomain": "CEK",
+      "ccmDomainName": "Cryptography, Encryption & Key Management",
+      "gcpServices": [
+        { "service": "Cloud KMS (Key Management Service)", "description": "Customer-managed encryption key management with software, HSM, and external key options. Implements EKM-01 through EKM-04." },
+        { "service": "Cloud HSM", "description": "FIPS 140-2 Level 3 managed HSM for cryptographic key storage. Implements EKM-02 for highest assurance." },
+        { "service": "Cloud EKM (External Key Manager)", "description": "Encryption with externally managed keys (key never leaves customer control). Implements EKM-02 for maximum key sovereignty." },
+        { "service": "Certificate Authority Service", "description": "Private CA for TLS certificate management. Supports DSP-02 (encryption in transit)." },
+        { "service": "Default encryption at rest", "description": "All GCP data encrypted at rest by default with Google-managed or CMEK. Implements DSP-01." }
+      ]
+    },
+    {
+      "ccmDomain": "DSP",
+      "ccmDomainName": "Data Security & Privacy Lifecycle Management",
+      "gcpServices": [
+        { "service": "Cloud DLP (Sensitive Data Protection)", "description": "Sensitive data discovery, classification, de-identification, and inspection. Detects PII, financial data, credentials across GCP services. Implements DSP-01 (data classification) and DSP-02 (data protection)." },
+        { "service": "BigQuery Column-Level Security", "description": "Fine-grained access control at column level in BigQuery. Supports DSP-05 (data access control)." },
+        { "service": "VPC Service Controls", "description": "Security perimeter for GCP services preventing data exfiltration. Implements DSP-04 (data access restriction) and DSP-06 (data residency)." },
+        { "service": "Organisation Policy (Resource Location Restriction)", "description": "Restrict resource creation to approved GCP regions. Implements DSP-06 (data residency)." },
+        { "service": "Object Lifecycle Management (Cloud Storage)", "description": "Automated data lifecycle management. Implements DSP-17 (data retention and deletion)." }
+      ]
+    },
+    {
+      "ccmDomain": "GRC",
+      "ccmDomainName": "Governance, Risk & Compliance",
+      "gcpServices": [
+        { "service": "GCP Organisation (Resource Hierarchy)", "description": "Hierarchical governance with organisation, folders, and projects. Policy inheritance. Implements GRC-01 (governance programme)." },
+        { "service": "Organisation Policies", "description": "Centralised policy constraints for the entire GCP organisation. Implements GRC-01 and GRC-03 (policy enforcement)." },
+        { "service": "Security Command Center (SCC) Premium", "description": "Centralised security and compliance dashboard with posture management. Supports GRC-02 (risk management)." }
+      ]
+    },
+    {
+      "ccmDomain": "HRS",
+      "ccmDomainName": "Human Resources",
+      "gcpServices": [
+        { "service": "BeyondCorp Enterprise (workforce access)", "description": "Zero-trust access for workforce with device trust and context-aware policies. Supports HRS security awareness through enforced access controls." },
+        { "service": "Google Workspace (Security Investigation Tool)", "description": "Investigation tool for user activity analysis. Supports HRS-09 (personnel security monitoring)." }
+      ]
+    },
+    {
+      "ccmDomain": "IAM",
+      "ccmDomainName": "Identity & Access Management",
+      "gcpServices": [
+        { "service": "Cloud IAM", "description": "Core identity and access management. Roles, policies, conditions, deny policies. Implements IAM-01 and IAM-04." },
+        { "service": "Google Cloud Identity / Workspace", "description": "Identity management with MFA, SSO, and directory services. Implements IAM-02 and IAM-03." },
+        { "service": "IAM Recommender", "description": "ML-based recommendations for removing excess permissions. Implements IAM-06 (access reviews) and IAM-09 (least privilege)." },
+        { "service": "Workload Identity (GKE) / Service Account Impersonation", "description": "Managed identity for workloads eliminating service account key management. Implements IAM-10." },
+        { "service": "BeyondCorp Enterprise", "description": "Zero-trust access framework with device trust and context-aware access. Implements IAM-12 (risk-based access control)." },
+        { "service": "Cloud Audit Logs", "description": "Admin activity, data access, system event, and policy denied logging. Supports IAM-12 and LOG-01." }
+      ]
+    },
+    {
+      "ccmDomain": "IPY",
+      "ccmDomainName": "Interoperability & Portability",
+      "gcpServices": [
+        { "service": "Anthos / GKE Enterprise", "description": "Hybrid and multi-cloud Kubernetes platform. Supports IPY through portable container orchestration." },
+        { "service": "Cloud Run", "description": "Serverless container platform compatible with Knative standard. Supports IPY through standard container interfaces." },
+        { "service": "Migrate to Containers", "description": "Migration tools for moving workloads to containers. Supports portability." }
+      ]
+    },
+    {
+      "ccmDomain": "IVS",
+      "ccmDomainName": "Infrastructure & Virtualization Security",
+      "gcpServices": [
+        { "service": "VPC (Virtual Private Cloud)", "description": "Virtual network with subnets, firewall rules, and private Google access. Implements IVS-01 and IVS-06." },
+        { "service": "Cloud Armor", "description": "DDoS protection, WAF, and adaptive protection using ML. Implements IVS-04." },
+        { "service": "Cloud Firewall (Network Firewall Policies)", "description": "Hierarchical firewall policies with threat intelligence integration. Implements IVS-01 and IVS-04." },
+        { "service": "Security Command Center (Threat Detection)", "description": "Threat detection for VMs, containers, and GCP services. Implements IVS-09." },
+        { "service": "Private Service Connect", "description": "Private connectivity to GCP services without public internet. Implements IVS-06 (network segmentation)." },
+        { "service": "Confidential Computing (Confidential VMs)", "description": "Memory encryption for VMs using AMD SEV. Supports IVS-09 (compute isolation) for sensitive workloads." }
+      ]
+    },
+    {
+      "ccmDomain": "LOG",
+      "ccmDomainName": "Logging & Monitoring",
+      "gcpServices": [
+        { "service": "Cloud Audit Logs", "description": "Comprehensive audit logging for all GCP services (admin, data access, system events). Implements LOG-01." },
+        { "service": "Cloud Logging", "description": "Centralised log management with ingestion, storage, and analysis. Implements LOG-02 (log centralisation)." },
+        { "service": "Chronicle (Google Security Operations)", "description": "Cloud-native SIEM with petabyte-scale log analysis and YARA-L detection rules. Implements LOG-03 and LOG-13." },
+        { "service": "VPC Flow Logs", "description": "Network traffic logging for VPC subnets. Implements LOG-01 for network visibility." },
+        { "service": "Cloud Storage Bucket Lock", "description": "Immutable log storage with retention lock. Implements LOG-05 (log integrity and retention)." },
+        { "service": "Cloud Monitoring", "description": "Metrics, dashboards, and alerting policies. Implements LOG-13 (alerting)." }
+      ]
+    },
+    {
+      "ccmDomain": "SEF",
+      "ccmDomainName": "Security Incident Management, E-Discovery, & Cloud Forensics",
+      "gcpServices": [
+        { "service": "Chronicle (SOAR)", "description": "Security orchestration and automated response with playbooks. Implements SEF-01 and SEF-02." },
+        { "service": "Security Command Center (Findings)", "description": "Centralised security finding management with severity, state tracking, and mute rules. Supports SEF-01." },
+        { "service": "Persistent Disk Snapshots for forensic preservation", "description": "Disk snapshots for forensic evidence preservation and analysis. Supports cloud forensics." },
+        { "service": "Cloud Logging (audit log preservation)", "description": "Audit log export to Cloud Storage with retention lock for forensic evidence preservation. Supports SEF." }
+      ]
+    },
+    {
+      "ccmDomain": "STA",
+      "ccmDomainName": "Supply Chain Management, Transparency, & Accountability",
+      "gcpServices": [
+        { "service": "GCP Compliance Reports Manager", "description": "Access to GCP compliance documentation (SOC 2, ISO 27001, PCI DSS). Supports STA-05." },
+        { "service": "Artifact Registry", "description": "Private container and package registry with vulnerability scanning. Supports STA-06 (supply chain security)." },
+        { "service": "Binary Authorization", "description": "Deploy-time enforcement of container image provenance and signatures. Implements STA-06 and STA-14 (supply chain integrity)." },
+        { "service": "Software Delivery Shield", "description": "End-to-end software supply chain security from source to deployment. Implements STA-06 comprehensively." },
+        { "service": "Google Cloud Marketplace", "description": "Vetted third-party software and services. Supports STA-01 (vendor assessment)." }
+      ]
+    },
+    {
+      "ccmDomain": "TVM",
+      "ccmDomainName": "Threat & Vulnerability Management",
+      "gcpServices": [
+        { "service": "Security Command Center (Vulnerability Findings)", "description": "Continuous vulnerability assessment for GCP resources with prioritised findings. Implements TVM-01 and TVM-02." },
+        { "service": "Container Analysis (Artifact Registry)", "description": "Automated container image vulnerability scanning. Implements TVM-04." },
+        { "service": "OS Patch Management", "description": "Automated OS patching for Compute Engine instances. Implements TVM-01 (vulnerability remediation)." },
+        { "service": "Mandiant Threat Intelligence (Google Threat Intelligence)", "description": "Threat intelligence feeds and adversary tracking. Implements TVM-06 (threat intelligence)." },
+        { "service": "Web Security Scanner", "description": "Automated web application vulnerability scanning. Implements TVM-02." }
+      ]
+    },
+    {
+      "ccmDomain": "UEM",
+      "ccmDomainName": "Universal Endpoint Management",
+      "gcpServices": [
+        { "service": "BeyondCorp Enterprise", "description": "Zero-trust access with device trust, context-aware access, and endpoint verification. Implements UEM controls through device-based access policies." },
+        { "service": "Google Workspace Endpoint Management", "description": "Mobile device and endpoint management with compliance policies. Supports UEM for Google-managed endpoints." },
+        { "service": "Chrome Enterprise", "description": "Managed browser with security policies, extension controls, and data loss prevention. Supports UEM for browser-based cloud access." }
+      ]
+    }
   ]
 }

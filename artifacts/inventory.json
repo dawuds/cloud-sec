@@ -1,26 +1,262 @@
-{
-  "$schema": "cloud-security-v1",
-  "sourceType": "constructed-indicative",
-  "artifacts": [
-    { "id": "ART-01", "name": "Cloud Security Policy", "description": "Overarching policy governing cloud security standards, acceptable use, and responsibilities", "domain": "compliance-governance", "format": "Document (PDF/DOCX)", "frequency": "Annual review", "owner": "CISO", "ccmControls": ["GRC-01", "GRC-02"] },
-    { "id": "ART-02", "name": "IAM Policy Matrix", "description": "Matrix of all IAM roles, policies, and permission boundaries mapped to job functions", "domain": "identity-access-management", "format": "Spreadsheet", "frequency": "Quarterly", "owner": "IAM Team", "ccmControls": ["IAM-01", "IAM-02", "IAM-04"] },
-    { "id": "ART-03", "name": "Encryption Standard", "description": "Approved encryption algorithms, key lengths, and KMS configuration requirements", "domain": "data-protection-encryption", "format": "Document", "frequency": "Annual review", "owner": "Security Architecture", "ccmControls": ["CEK-01", "CEK-03", "DSP-01"] },
-    { "id": "ART-04", "name": "Network Architecture Diagram", "description": "VPC/VNet topology with subnets, security groups, NACLs, and traffic flows", "domain": "network-security", "format": "Diagram (Visio/Draw.io)", "frequency": "On change", "owner": "Network Team", "ccmControls": ["IVS-01", "IVS-03", "IVS-09"] },
-    { "id": "ART-05", "name": "Incident Response Playbook", "description": "Cloud-specific IR playbooks for credential compromise, data exposure, cryptomining, and DDoS", "domain": "incident-response", "format": "Document/Wiki", "frequency": "Semi-annual review", "owner": "SOC/IR Team", "ccmControls": ["SEF-01", "SEF-02", "SEF-03"] },
-    { "id": "ART-06", "name": "DR Test Report", "description": "Results of disaster recovery test including RTO/RPO achievement and lessons learned", "domain": "backup-disaster-recovery", "format": "Report", "frequency": "Annual", "owner": "Operations", "ccmControls": ["BCR-01", "BCR-02", "BCR-03"] },
-    { "id": "ART-07", "name": "Vulnerability Scan Report", "description": "Automated scan results from CSPM, container scanning, and infrastructure scanning", "domain": "configuration-posture", "format": "Report/Dashboard", "frequency": "Continuous", "owner": "Security Operations", "ccmControls": ["TVM-01", "TVM-02"] },
-    { "id": "ART-08", "name": "Penetration Test Report", "description": "Third-party cloud penetration test results with findings and remediation tracking", "domain": "configuration-posture", "format": "Report", "frequency": "Annual", "owner": "Security Team", "ccmControls": ["TVM-03", "IVS-09"] },
-    { "id": "ART-09", "name": "Cloud Configuration Baseline", "description": "CIS Benchmark compliance baseline with approved deviations documented", "domain": "configuration-posture", "format": "JSON/YAML + Document", "frequency": "On change", "owner": "Cloud Platform Team", "ccmControls": ["CCC-01", "CCC-02", "DCS-01"] },
-    { "id": "ART-10", "name": "SBOM (Software Bill of Materials)", "description": "Inventory of all software components, libraries, and dependencies in deployed applications", "domain": "supply-chain-devsecops", "format": "CycloneDX/SPDX JSON", "frequency": "Per release", "owner": "DevOps", "ccmControls": ["STA-01", "STA-02"] },
-    { "id": "ART-11", "name": "Data Classification Register", "description": "Register of all cloud data stores with classification level and handling requirements", "domain": "data-protection-encryption", "format": "Spreadsheet/CMDB", "frequency": "Quarterly", "owner": "Data Governance", "ccmControls": ["DSP-01", "DSP-02", "DSP-04"] },
-    { "id": "ART-12", "name": "Access Review Report", "description": "Quarterly access review results with certification/revocation decisions", "domain": "identity-access-management", "format": "Report", "frequency": "Quarterly", "owner": "IAM Team", "ccmControls": ["IAM-02", "IAM-06"] },
-    { "id": "ART-13", "name": "Cloud Asset Inventory", "description": "Complete inventory of all cloud resources across accounts/subscriptions/projects", "domain": "compliance-governance", "format": "CMDB/Spreadsheet", "frequency": "Continuous (auto-discovery)", "owner": "Cloud Platform Team", "ccmControls": ["DCS-01", "DCS-02"] },
-    { "id": "ART-14", "name": "Key Management Procedure", "description": "Procedures for key creation, rotation, revocation, and emergency recovery", "domain": "key-management", "format": "Document", "frequency": "Annual review", "owner": "Security Architecture", "ccmControls": ["CEK-01", "CEK-02", "CEK-04"] },
-    { "id": "ART-15", "name": "Container Image Approval List", "description": "Approved base images and registries for container deployments", "domain": "container-security", "format": "Registry policy/Document", "frequency": "Monthly review", "owner": "Platform Security", "ccmControls": ["CCC-03", "CCC-04"] },
-    { "id": "ART-16", "name": "Cloud Vendor Risk Assessment", "description": "Risk assessment of CSP and third-party cloud services", "domain": "compliance-governance", "format": "Report", "frequency": "Annual per vendor", "owner": "Vendor Risk", "ccmControls": ["STA-03", "STA-09"] },
-    { "id": "ART-17", "name": "Log Retention Matrix", "description": "Matrix of all cloud log sources with retention periods and storage locations", "domain": "logging-monitoring", "format": "Spreadsheet", "frequency": "Annual review", "owner": "Security Operations", "ccmControls": ["LOG-01", "LOG-03"] },
-    { "id": "ART-18", "name": "Backup Configuration Report", "description": "Configuration of all backup policies including schedule, retention, and cross-region replication", "domain": "backup-disaster-recovery", "format": "Report/Dashboard", "frequency": "Monthly", "owner": "Operations", "ccmControls": ["BCR-01", "BCR-02"] },
-    { "id": "ART-19", "name": "Security Training Records", "description": "Records of cloud security awareness and role-based training completion", "domain": "compliance-governance", "format": "LMS Report", "frequency": "Annual", "owner": "HR/Security", "ccmControls": ["HRS-01", "HRS-09"] },
-    { "id": "ART-20", "name": "Change Management Log", "description": "Log of all cloud infrastructure changes with approvals and rollback plans", "domain": "configuration-posture", "format": "Ticketing system export", "frequency": "Continuous", "owner": "Change Management", "ccmControls": ["CCC-01", "CCC-02"] }
-  ]
-}
+[
+  {
+    "id": "cloud-security-policy",
+    "name": "Cloud Security Policy",
+    "description": "Board-approved cloud security policy covering scope, objectives, roles and responsibilities, approved cloud services, data residency requirements, shared responsibility obligations, and review schedule. Serves as the governance foundation for all cloud security activities.",
+    "domain": "compliance-governance",
+    "format": "PDF/DOCX -- version controlled, board-approved",
+    "frequency": "Annual review",
+    "owner": "CISO / Cloud Security Manager",
+    "ccmControls": ["GRC-01", "GRC-02"]
+  },
+  {
+    "id": "iam-policy-matrix",
+    "name": "IAM Policy Matrix",
+    "description": "Matrix mapping cloud IAM roles to permissions per service, environment, and data classification. Includes custom role definitions, permission boundaries, and justification for each role assignment. Used for access reviews and onboarding.",
+    "domain": "identity-access-management",
+    "format": "Spreadsheet / IAM-as-code repository",
+    "frequency": "Quarterly review",
+    "owner": "Cloud Security Engineer / IAM Team",
+    "ccmControls": ["IAM-05", "IAM-09"]
+  },
+  {
+    "id": "mfa-enrollment-report",
+    "name": "MFA Enrollment and Compliance Report",
+    "description": "Report showing MFA enrollment status for all cloud identities. Includes MFA method type (virtual, hardware, FIDO2), enrollment date, last usage, and compliance status against policy requirements.",
+    "domain": "identity-access-management",
+    "format": "Dashboard export / CSV report",
+    "frequency": "Monthly",
+    "owner": "IAM Team / Cloud Security Engineer",
+    "ccmControls": ["IAM-02", "IAM-04"]
+  },
+  {
+    "id": "encryption-standard",
+    "name": "Cloud Encryption Standard",
+    "description": "Technical standard defining encryption requirements per data classification: algorithms, key lengths, key management approach (provider-managed, CMK, HSM, BYOK), TLS minimum versions, and cipher suite requirements.",
+    "domain": "data-protection-encryption",
+    "format": "PDF/DOCX -- version controlled",
+    "frequency": "Annual review",
+    "owner": "Cloud Security Architect",
+    "ccmControls": ["DSP-01", "DSP-03", "CEK-03"]
+  },
+  {
+    "id": "data-classification-register",
+    "name": "Data Classification Register",
+    "description": "Register of all cloud data stores with assigned classification level, owner, encryption method, access controls, retention requirements, and geographic restrictions. Includes automated discovery scan results and manual classifications.",
+    "domain": "data-protection-encryption",
+    "format": "Spreadsheet / Data governance tool export",
+    "frequency": "Quarterly update",
+    "owner": "Data Governance Team / Cloud Security",
+    "ccmControls": ["DSP-04", "DSP-05"]
+  },
+  {
+    "id": "network-architecture-diagram",
+    "name": "Cloud Network Architecture Diagram",
+    "description": "Comprehensive network diagram showing all VPCs/VNets, subnets, peering connections, transit gateways, private endpoints, load balancers, WAF, and internet-facing resources. Includes security group summary and data flow annotations.",
+    "domain": "network-security",
+    "format": "Visio / Draw.io / Lucidchart -- version controlled",
+    "frequency": "Updated on change, reviewed quarterly",
+    "owner": "Cloud Network Engineer / Cloud Architect",
+    "ccmControls": ["IVS-01", "IVS-03"]
+  },
+  {
+    "id": "firewall-rule-register",
+    "name": "Security Group and Firewall Rule Register",
+    "description": "Register of all security groups, NSGs, and firewall rules with business justification, owner, creation date, last review date, and expiry date for temporary rules. Used for quarterly rule review and audit evidence.",
+    "domain": "network-security",
+    "format": "Spreadsheet / Firewall management tool export",
+    "frequency": "Quarterly review",
+    "owner": "Cloud Network Security Engineer",
+    "ccmControls": ["IVS-04", "IVS-06"]
+  },
+  {
+    "id": "incident-response-playbook",
+    "name": "Cloud Incident Response Playbook",
+    "description": "Collection of cloud-specific IR playbooks covering: credential compromise, data exposure (public bucket/blob), cryptomining, ransomware, supply chain compromise, and insider threat. Each playbook includes detection, containment, eradication, recovery, and notification steps.",
+    "domain": "incident-response",
+    "format": "PDF/DOCX or SOAR workflow definitions -- version controlled",
+    "frequency": "Annual review, updated after each incident",
+    "owner": "SOC Manager / Cloud Security Lead",
+    "ccmControls": ["SEF-01", "SEF-04"]
+  },
+  {
+    "id": "dr-test-report",
+    "name": "Disaster Recovery Test Report",
+    "description": "Report documenting DR test execution: scenario, scope, timeline, actual vs target RTO/RPO, issues encountered, and remediation actions. Includes sign-off from business owner confirming recovery met requirements.",
+    "domain": "backup-disaster-recovery",
+    "format": "PDF report -- signed off by business owner and IT",
+    "frequency": "Semi-annual minimum",
+    "owner": "Cloud Operations / Business Continuity Manager",
+    "ccmControls": ["BCR-04", "BCR-06"]
+  },
+  {
+    "id": "backup-compliance-report",
+    "name": "Backup Coverage and Compliance Report",
+    "description": "Report showing backup coverage across all cloud resources: resources backed up vs total, backup frequency vs RPO target, last successful backup, encryption status, and immutability status. Highlights gaps in backup coverage.",
+    "domain": "backup-disaster-recovery",
+    "format": "Dashboard export / PDF report",
+    "frequency": "Monthly",
+    "owner": "Cloud Operations Engineer",
+    "ccmControls": ["BCR-01", "BCR-03"]
+  },
+  {
+    "id": "vulnerability-scan-report",
+    "name": "Cloud Vulnerability Scan Report",
+    "description": "Report from CSPM and vulnerability scanning tools showing: resource misconfigurations, software vulnerabilities, compliance violations. Includes severity distribution, remediation status, and trend analysis.",
+    "domain": "configuration-posture",
+    "format": "PDF report / Dashboard export",
+    "frequency": "Monthly",
+    "owner": "Cloud Security Engineer / Vulnerability Management",
+    "ccmControls": ["DCS-01", "DCS-06"]
+  },
+  {
+    "id": "penetration-test-report",
+    "name": "Cloud Penetration Test Report",
+    "description": "Report from cloud-focused penetration testing covering: IAM privilege escalation, network segmentation bypass, data exposure, container breakout, and serverless abuse. Includes finding severity, proof of concept, and remediation guidance.",
+    "domain": "configuration-posture",
+    "format": "PDF report -- restricted distribution",
+    "frequency": "Annual minimum",
+    "owner": "Cloud Security Manager / Third-party assessor",
+    "ccmControls": ["DCS-06", "IVS-06"]
+  },
+  {
+    "id": "cloud-configuration-baseline",
+    "name": "Cloud Configuration Baseline",
+    "description": "Documented security configuration baseline per cloud service type (compute, storage, database, networking, IAM). Based on CIS Benchmarks with organisation-specific additions. Implemented as policy-as-code for automated enforcement.",
+    "domain": "configuration-posture",
+    "format": "IaC templates / Policy-as-code repository",
+    "frequency": "Updated on CIS Benchmark release, reviewed annually",
+    "owner": "Cloud Security Architect",
+    "ccmControls": ["DCS-01", "DCS-02"]
+  },
+  {
+    "id": "sbom-repository",
+    "name": "Software Bill of Materials (SBOM) Repository",
+    "description": "Central repository of SBOMs for all production applications and container images. SBOMs in SPDX or CycloneDX format with build provenance metadata. Used for rapid CVE-to-deployment correlation when new vulnerabilities are disclosed.",
+    "domain": "supply-chain-devsecops",
+    "format": "SPDX/CycloneDX JSON -- stored in artifact repository",
+    "frequency": "Generated on every production build",
+    "owner": "DevSecOps / Application Security",
+    "ccmControls": ["STA-06", "STA-08"]
+  },
+  {
+    "id": "pipeline-security-config",
+    "name": "CI/CD Pipeline Security Configuration",
+    "description": "Documentation of CI/CD pipeline security controls: authentication method (OIDC federation), secret management integration, branch protection rules, required reviewers, scanning gate configuration, and artifact signing setup.",
+    "domain": "supply-chain-devsecops",
+    "format": "Pipeline-as-code in version control + architecture document",
+    "frequency": "Updated on change, reviewed quarterly",
+    "owner": "DevSecOps / Platform Engineering",
+    "ccmControls": ["STA-01", "STA-02"]
+  },
+  {
+    "id": "access-review-report",
+    "name": "Cloud Access Review Report",
+    "description": "Report documenting quarterly access review of privileged cloud roles: current role holders, justification for access, any changes made (revoked, downgraded), and sign-off from approving manager.",
+    "domain": "identity-access-management",
+    "format": "Spreadsheet / Access governance tool export",
+    "frequency": "Quarterly",
+    "owner": "IAM Team / Cloud Security Manager",
+    "ccmControls": ["IAM-05", "IAM-09"]
+  },
+  {
+    "id": "kms-key-inventory",
+    "name": "KMS Key Inventory and Lifecycle Register",
+    "description": "Inventory of all KMS keys with: key ID, purpose, owner, creation date, rotation status, rotation period, associated resources, access policy summary, and deletion protection status.",
+    "domain": "key-management",
+    "format": "Spreadsheet / KMS export",
+    "frequency": "Quarterly review",
+    "owner": "Cloud Security Engineer / Key Management",
+    "ccmControls": ["CEK-01", "CEK-02"]
+  },
+  {
+    "id": "container-image-scan-report",
+    "name": "Container Image Vulnerability Scan Report",
+    "description": "Report showing vulnerability scan results for all container images in registries and running in production. Includes severity distribution, remediation SLA compliance, base image currency, and images blocked from deployment.",
+    "domain": "container-security",
+    "format": "Dashboard export / PDF report",
+    "frequency": "Weekly for production, on every build in CI/CD",
+    "owner": "DevSecOps / Container Platform Team",
+    "ccmControls": ["CCC-01", "CCC-04"]
+  },
+  {
+    "id": "cis-benchmark-report",
+    "name": "CIS Benchmark Compliance Report",
+    "description": "Report from CIS Benchmark assessment showing compliance percentage by section, list of non-compliant findings with severity, remediation status, and exception register with risk acceptance for items that cannot be remediated.",
+    "domain": "configuration-posture",
+    "format": "PDF report / CSPM dashboard export",
+    "frequency": "Quarterly minimum, continuous monitoring preferred",
+    "owner": "Cloud Security Engineer",
+    "ccmControls": ["DCS-01", "DCS-02"]
+  },
+  {
+    "id": "csp-compliance-reports",
+    "name": "CSP Compliance Reports Collection",
+    "description": "Collection of current CSP compliance reports: SOC 2 Type II, ISO 27001 certificate, CSA STAR attestation, and shared responsibility model documentation. Reviewed annually to confirm CSP maintains compliance.",
+    "domain": "compliance-governance",
+    "format": "PDF reports from CSP compliance portals",
+    "frequency": "Annual collection and review",
+    "owner": "Cloud Security Manager / GRC Team",
+    "ccmControls": ["GRC-05", "GRC-07"]
+  },
+  {
+    "id": "cloud-governance-landing-zone",
+    "name": "Cloud Landing Zone Configuration",
+    "description": "Documentation and IaC templates for the cloud landing zone: account structure, organisational units, SCPs/policies, network topology, logging configuration, security service enablement, and guardrails. Serves as the repeatable foundation for all new cloud accounts.",
+    "domain": "compliance-governance",
+    "format": "IaC templates (Terraform/CloudFormation/Bicep) + architecture document",
+    "frequency": "Updated on change, reviewed quarterly",
+    "owner": "Cloud Platform Team / Cloud Security Architect",
+    "ccmControls": ["GRC-01", "GRC-03"]
+  },
+  {
+    "id": "rto-rpo-register",
+    "name": "RTO/RPO Register",
+    "description": "Register of Recovery Time Objective and Recovery Point Objective for all cloud workloads, tiered by business criticality. Includes business impact analysis justification, backup frequency alignment, and last validated test result.",
+    "domain": "backup-disaster-recovery",
+    "format": "Spreadsheet with linked DR test reports",
+    "frequency": "Annual review, updated on architecture change",
+    "owner": "Business Continuity Manager / Cloud Operations",
+    "ccmControls": ["BCR-01", "BCR-04"]
+  },
+  {
+    "id": "threat-detection-findings-report",
+    "name": "Cloud Threat Detection Findings Report",
+    "description": "Report showing cloud-native threat detection findings (GuardDuty/Defender/SCC) over the reporting period: finding types, severity distribution, investigation outcomes, false positive rate, and mean time to investigate.",
+    "domain": "logging-monitoring",
+    "format": "Dashboard export / PDF report",
+    "frequency": "Monthly",
+    "owner": "SOC Team / Cloud Security Engineer",
+    "ccmControls": ["LOG-08", "LOG-10"]
+  },
+  {
+    "id": "vendor-security-assessment",
+    "name": "Cloud Vendor Security Assessment Records",
+    "description": "Security assessment records for cloud and SaaS vendors: CAIQ responses, SOC report review notes, shared responsibility documentation, data processing agreements, and annual reassessment records.",
+    "domain": "compliance-governance",
+    "format": "Assessment forms + review notes per vendor",
+    "frequency": "Annual per vendor",
+    "owner": "GRC Team / Cloud Security Manager",
+    "ccmControls": ["GRC-05", "GRC-07"]
+  },
+  {
+    "id": "dlp-policy-report",
+    "name": "DLP Policy and Findings Report",
+    "description": "Report showing DLP policy configuration, detection findings, blocked exfiltration attempts, and policy exception records. Covers all data channels: storage, email, collaboration, and endpoints.",
+    "domain": "data-protection-encryption",
+    "format": "Dashboard export / PDF report",
+    "frequency": "Monthly",
+    "owner": "Data Security Team / Cloud Security",
+    "ccmControls": ["DSP-08", "DSP-17"]
+  },
+  {
+    "id": "log-retention-matrix",
+    "name": "Cloud Log Retention Matrix",
+    "description": "Matrix of all cloud log sources with retention periods, storage locations, immutability settings, and regulatory requirements. Maps each log type to applicable compliance obligations.",
+    "domain": "logging-monitoring",
+    "format": "Spreadsheet",
+    "frequency": "Annual review",
+    "owner": "Cloud Security Engineer / SOC",
+    "ccmControls": ["LOG-06", "LOG-11"]
+  }
+]
