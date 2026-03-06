@@ -1,0 +1,85 @@
+{
+  "$schema": "cloud-security-v1",
+  "sourceType": "constructed-indicative",
+  "title": "RMiT Cloud Requirements to CSA CCM v4 Mapping",
+  "description": "Maps BNM RMiT cloud-specific requirements to CSA CCM v4 control domains, showing how CCM compliance supports RMiT obligations",
+  "mappings": [
+    {
+      "rmitArea": "Cloud Risk Assessment",
+      "rmitClauses": ["10.50"],
+      "description": "Comprehensive risk assessment before cloud adoption covering 10 specific risk areas",
+      "ccmDomains": [
+        { "domain": "GRC", "controls": ["GRC-02", "GRC-03"], "alignment": "GRC risk management programme covers the overarching risk assessment methodology" },
+        { "domain": "DSP", "controls": ["DSP-06", "DSP-07", "DSP-19"], "alignment": "Data security and privacy controls address data location and co-mingling risks" },
+        { "domain": "IVS", "controls": ["IVS-01", "IVS-06"], "alignment": "Infrastructure controls address multi-tenancy isolation" },
+        { "domain": "STA", "controls": ["STA-01", "STA-03", "STA-09"], "alignment": "Supply chain controls address vendor lock-in, portability, and CSP termination" },
+        { "domain": "TVM", "controls": ["TVM-01", "TVM-02"], "alignment": "Threat and vulnerability management addresses CSP attack exposure" }
+      ]
+    },
+    {
+      "rmitArea": "Key Risks and Controls (Appendix 10)",
+      "rmitClauses": ["10.51"],
+      "description": "8 control domains specified in Appendix 10 for public cloud critical systems",
+      "ccmDomains": [
+        { "domain": "GRC", "controls": ["GRC-01", "GRC-02"], "alignment": "Governance and oversight requirements" },
+        { "domain": "DSP", "controls": ["DSP-01", "DSP-02", "DSP-04"], "alignment": "Data security including encryption and classification" },
+        { "domain": "CEK", "controls": ["CEK-01", "CEK-03"], "alignment": "Encryption and key management (CMEK requirement)" },
+        { "domain": "IAM", "controls": ["IAM-01", "IAM-02", "IAM-04", "IAM-05"], "alignment": "Identity and access management including MFA and least privilege" },
+        { "domain": "IVS", "controls": ["IVS-01", "IVS-03", "IVS-04"], "alignment": "Network security including segmentation and WAF" },
+        { "domain": "LOG", "controls": ["LOG-01", "LOG-03", "LOG-05"], "alignment": "Security monitoring and log management" },
+        { "domain": "SEF", "controls": ["SEF-01", "SEF-02", "SEF-03"], "alignment": "Incident management including 24h BNM notification" },
+        { "domain": "BCR", "controls": ["BCR-01", "BCR-02", "BCR-04"], "alignment": "Business continuity and disaster recovery" },
+        { "domain": "STA", "controls": ["STA-01", "STA-03", "STA-09"], "alignment": "Vendor management and exit strategy" },
+        { "domain": "AAC", "controls": ["AAC-01", "AAC-02"], "alignment": "Audit and assurance including penetration testing" }
+      ]
+    },
+    {
+      "rmitArea": "Data Residency",
+      "rmitClauses": ["10.52"],
+      "description": "Critical customer data and backups must reside in Malaysia",
+      "ccmDomains": [
+        { "domain": "DSP", "controls": ["DSP-06", "DSP-07", "DSP-19"], "alignment": "Data security lifecycle including geographic restriction and data transfer controls" },
+        { "domain": "GRC", "controls": ["GRC-05", "GRC-07"], "alignment": "Regulatory compliance monitoring" }
+      ]
+    },
+    {
+      "rmitArea": "First-Time Cloud Consultation",
+      "rmitClauses": ["17.1"],
+      "description": "BNM consultation before first public cloud adoption for critical systems — requires risk assessment, CISO confirmation, third-party review",
+      "ccmDomains": [
+        { "domain": "GRC", "controls": ["GRC-01", "GRC-02"], "alignment": "Governance programme and risk management" },
+        { "domain": "AAC", "controls": ["AAC-02", "AAC-03"], "alignment": "Third-party pre-implementation review requirement" },
+        { "domain": "STA", "controls": ["STA-01"], "alignment": "Supply chain due diligence for CSP" }
+      ]
+    },
+    {
+      "rmitArea": "Subsequent Cloud Notification",
+      "rmitClauses": ["17.2"],
+      "description": "Notification for subsequent cloud adoptions — requires enhanced risk framework, independent assurance, adequate IR",
+      "ccmDomains": [
+        { "domain": "GRC", "controls": ["GRC-02", "GRC-05"], "alignment": "Enhanced risk management and compliance" },
+        { "domain": "SEF", "controls": ["SEF-01"], "alignment": "Incident response adequacy confirmation" },
+        { "domain": "AAC", "controls": ["AAC-02"], "alignment": "Independent assurance on cloud risk framework" }
+      ]
+    },
+    {
+      "rmitArea": "Cloud Adoption Roadmap",
+      "rmitClauses": ["17.5"],
+      "description": "Annual cloud roadmap included in outsourcing plan to BNM",
+      "ccmDomains": [
+        { "domain": "GRC", "controls": ["GRC-01", "GRC-02", "GRC-03"], "alignment": "Governance programme including strategic planning and regulatory engagement" }
+      ]
+    }
+  ],
+  "complianceApproach": {
+    "title": "Using CCM v4 to Satisfy RMiT Cloud Requirements",
+    "steps": [
+      "Map RMiT Appendix 10 domains to corresponding CCM control domains using this cross-reference",
+      "Implement CCM controls at the required maturity level — RMiT expects documented, implemented, and independently assured controls",
+      "Use CIS Benchmarks (AWS/Azure/GCP) to provide technical evidence for CCM control implementation",
+      "Document the shared responsibility model clearly, mapping each RMiT requirement to either institution or CSP responsibility",
+      "Conduct annual reassessment of the mapping as both RMiT and CCM evolve",
+      "Maintain deviation justification records where CCM controls differ from Appendix 10 measures"
+    ]
+  }
+}

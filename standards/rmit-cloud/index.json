@@ -1,0 +1,62 @@
+{
+  "$schema": "cloud-security-v1",
+  "standard": "BNM Risk Management in Technology (RMiT)",
+  "fullTitle": "Policy Document on Risk Management in Technology — Cloud Services Requirements",
+  "publisher": "Bank Negara Malaysia (BNM)",
+  "sourceType": "paraphrased-from-regulation",
+  "verificationNote": "Cloud requirements paraphrased from BNM RMiT (November 2025). Obtain authoritative text from BNM website. Clause references (e.g. 10.50, 17.1) correspond to the official document. Appendix 10 content is indicative — obtain from BNM.",
+  "lastUpdated": "2025-11",
+  "jurisdiction": "Malaysia — mandatory for all BNM-regulated financial institutions",
+  "scope": "RMiT establishes comprehensive technology risk management requirements for Malaysian financial institutions. Cloud-specific requirements span two primary sections: S10 (Technology Operations Management, clauses 10.50-10.52) covering operational cloud risk and controls, and S17 (Consultation and Notification related to Cloud Services and Emerging Technology, clauses 17.1-17.5) covering regulatory engagement for cloud adoption. Additional cloud-relevant requirements appear across S9 (Risk Management), S11 (Cybersecurity), S13 (Technology Audits), and S14 (External Party Assurance).",
+  "applicability": "All financial institutions licensed or registered under BNM — commercial banks, Islamic banks, investment banks, insurers, takaful operators, development financial institutions, payment system operators, and prescribed institutions. Applies regardless of whether cloud is used for critical or non-critical systems, though requirements are more stringent for critical systems.",
+  "relatedRepo": "https://github.com/dawuds/RMIT",
+  "relatedRepoDescription": "Full RMiT structured compliance database — 121 clauses, 11 sections, 365 artifacts, 93 controls",
+  "cloudSections": [
+    {
+      "id": "S10-cloud",
+      "name": "S10: Cloud Services (Operational)",
+      "clauses": ["10.50", "10.51", "10.52"],
+      "description": "Operational requirements for cloud adoption — risk assessment, key risks and controls for public cloud critical systems, and data residency."
+    },
+    {
+      "id": "S17",
+      "name": "S17: Cloud & Emerging Technology (Regulatory)",
+      "clauses": ["17.1", "17.2", "17.3", "17.4", "17.5"],
+      "description": "Regulatory engagement requirements — BNM consultation before first-time cloud adoption for critical systems, notification for subsequent adoptions, roadmap requirements."
+    }
+  ],
+  "cloudRelevantSections": [
+    { "section": "S9", "name": "Technology Risk Management", "relevance": "Risk management framework must encompass cloud risks (9.1-9.3)" },
+    { "section": "S10 (Crypto)", "name": "Cryptography (10.20-10.23)", "relevance": "Encryption and key management requirements apply to cloud-hosted data" },
+    { "section": "S10 (Backup)", "name": "System Backup and Restoration (10.44-10.45)", "relevance": "Backup requirements apply to cloud workloads" },
+    { "section": "S10 (3rd Party)", "name": "Third Party Service Provider Management (10.46-10.49)", "relevance": "CSP management falls under third-party provider obligations" },
+    { "section": "S10 (Access)", "name": "Access Control (10.53-10.57)", "relevance": "Access control requirements apply to cloud IAM" },
+    { "section": "S11", "name": "Cybersecurity Management", "relevance": "Cyber risk management, SOC operations, and incident response apply to cloud infrastructure" },
+    { "section": "S13", "name": "Technology Audits", "relevance": "Cloud must be included in technology audit scope" },
+    { "section": "S14", "name": "External Party Assurance", "relevance": "Third-party assurance requirements apply to CSP assessments" }
+  ],
+  "keyPrinciples": [
+    "BNM must be consulted before first-time public cloud adoption for critical systems",
+    "Comprehensive risk assessment required before any cloud adoption (10.50)",
+    "Critical customer data and backups must reside in Malaysia (data residency)",
+    "Financial institution remains fully accountable regardless of cloud outsourcing",
+    "Exit strategy must be maintained and tested for all material cloud services",
+    "CSP SOC 2 reports support but do not replace the institution's own audit obligations",
+    "24-hour incident reporting to BNM for major cloud incidents (plus 6-hour NACSA for NCII)",
+    "Annual roadmap for cloud adoption must be included in outsourcing plan to BNM"
+  ],
+  "appendix10Areas": [
+    "Governance and oversight",
+    "Risk assessment and management",
+    "Regulatory compliance",
+    "Data security and privacy",
+    "Identity and access management",
+    "Network security",
+    "Workload and application security",
+    "Security monitoring and incident management",
+    "Business continuity and disaster recovery",
+    "Encryption and key management",
+    "Vendor management and exit strategy",
+    "Audit and assurance"
+  ]
+}

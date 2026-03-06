@@ -70,6 +70,7 @@ async function render(view, sub) {
     case 'framework':       return renderFramework(sub);
     case 'artifacts':       return renderArtifacts(sub);
     case 'risk-management': return renderRiskManagement(sub);
+    case 'rmit':            return renderRMiT(sub);
     case 'search':          return renderSearch(sub);
     default:                return renderOverview();
   }
@@ -1252,6 +1253,292 @@ async function renderSearch(query) {
         </div>
         <div class="card-desc">${escHtml(r.desc)}</div>
       </div>`).join('') : `<div class="empty-state"><div class="empty-state-text">No results for "${escHtml(query)}".</div></div>`}
+  `);
+}
+
+// ─── RMiT Cloud ─────────────────────────────────────────────────────────────
+async function renderRMiT(sub) {
+  if (sub === 'clauses') return renderRMiTClauses();
+  if (sub === 'ccm-mapping') return renderRMiTCCMMapping();
+  if (sub && sub.startsWith('clause-')) return renderRMiTClauseDetail(sub.replace('clause-', ''));
+
+  const rmit = await load('standards/rmit-cloud/index.json');
+
+  setMain(`
+    <div class="page-title">BNM RMiT — Cloud Requirements</div>
+    <div class="page-sub">${escHtml(rmit.fullTitle || rmit.standard)}</div>
+
+    <div class="card" style="border-left:3px solid var(--accent2)">
+      <div style="font-size:0.7rem;text-transform:uppercase;color:var(--text-muted);letter-spacing:0.05em;margin-bottom:0.5rem">Jurisdiction &amp; Applicability</div>
+      <div class="card-desc">${escHtml(rmit.jurisdiction || '')}</div>
+      <div class="card-desc" style="margin-top:0.5rem">${escHtml(rmit.applicability || '')}</div>
+    </div>
+
+    <div class="page-sub" style="margin-top:1.5rem">Cloud-Specific Sections</div>
+    ${(rmit.cloudSections || []).map(s => `
+      <div class="card card-link" onclick="navigate('rmit','clauses')">
+        <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.5rem">
+          <span class="badge badge-ccm">${escHtml(s.id)}</span>
+          <span class="card-title" style="margin:0">${escHtml(s.name)}</span>
+        </div>
+        <div class="card-desc">${escHtml(s.description || '')}</div>
+        <div class="card-tags">${(s.clauses || []).map(c => `<span class="badge badge-medium">${escHtml(c)}</span>`).join('')}</div>
+      </div>`).join('')}
+
+    <div class="page-sub" style="margin-top:1.5rem">Key Principles</div>
+    <div class="card">
+      <ul style="margin:0;padding-left:1.25rem;list-style:disc">
+        ${(rmit.keyPrinciples || []).map(p => `<li style="margin-bottom:0.35rem;color:var(--text-secondary)">${escHtml(p)}</li>`).join('')}
+      </ul>
+    </div>
+
+    <div class="page-sub" style="margin-top:1.5rem">Cloud-Relevant Sections</div>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Section</th><th>Name</th><th>Relevance</th></tr></thead>
+      <tbody>
+        ${(rmit.cloudRelevantSections || []).map(s => `
+          <tr>
+            <td><span class="badge badge-medium">${escHtml(s.section)}</span></td>
+            <td>${escHtml(s.name)}</td>
+            <td style="color:var(--text-secondary)">${escHtml(s.relevance)}</td>
+          </tr>`).join('')}
+      </tbody>
+    </table></div>
+
+    <div class="page-sub" style="margin-top:1.5rem">Appendix 10 Domains</div>
+    <div class="card">
+      <div class="card-tags">${(rmit.appendix10Areas || []).map(a => `<span class="badge badge-low">${escHtml(a)}</span>`).join('')}</div>
+    </div>
+
+    <div style="display:flex;gap:1rem;margin-top:1.5rem;flex-wrap:wrap">
+      <div class="card card-link" onclick="navigate('rmit','clauses')" style="flex:1;min-width:200px">
+        <div class="card-title">Browse Clauses</div>
+        <div class="card-desc">All 8 cloud-specific clauses (10.50-10.52, 17.1-17.5) with requirements, evidence, and CSP guidance</div>
+      </div>
+      <div class="card card-link" onclick="navigate('rmit','ccm-mapping')" style="flex:1;min-width:200px">
+        <div class="card-title">CCM v4 Mapping</div>
+        <div class="card-desc">How CSA CCM v4 controls satisfy RMiT cloud obligations</div>
+      </div>
+    </div>
+
+    ${rmit.relatedRepo ? `
+      <div class="card" style="margin-top:1rem;border-left:3px solid var(--info)">
+        <div style="font-size:0.7rem;text-transform:uppercase;color:var(--text-muted);letter-spacing:0.05em;margin-bottom:0.35rem">Full RMiT Compliance Database</div>
+        <div class="card-desc">${escHtml(rmit.relatedRepoDescription || '')}</div>
+        <div style="margin-top:0.5rem"><a href="${escHtml(rmit.relatedRepo)}" target="_blank" rel="noopener" style="color:var(--accent)">${escHtml(rmit.relatedRepo)}</a></div>
+      </div>` : ''}
+  `);
+}
+
+async function renderRMiTClauses() {
+  const data = await load('standards/rmit-cloud/clauses.json');
+  const clauses = data.clauses || [];
+
+  const markerColors = { S: 'var(--danger)', G: 'var(--warning)' };
+
+  setMain(`
+    <button class="back-link" onclick="navigate('rmit')">&#8592; RMiT Cloud</button>
+    <div class="page-title">RMiT Cloud Clauses</div>
+    <div class="page-sub">${clauses.length} cloud-specific clauses from BNM RMiT</div>
+
+    ${data.verificationNote ? `<div class="card" style="border-left:3px solid var(--warning);font-size:0.8rem;color:var(--text-secondary)">${escHtml(data.verificationNote)}</div>` : ''}
+
+    ${clauses.map(c => `
+      <div class="card card-link" onclick="navigate('rmit','clause-${escHtml(c.id)}')" style="border-left:3px solid ${markerColors[c.marker] || 'var(--border)'}">
+        <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.5rem;flex-wrap:wrap">
+          <span class="badge" style="background:${markerColors[c.marker] || 'var(--bg-tertiary)'};color:#fff">${escHtml(c.id)}</span>
+          <span class="card-title" style="margin:0">${escHtml(c.title)}</span>
+          <span class="badge badge-low">${escHtml(c.marker)} — ${escHtml(c.markerMeaning)}</span>
+          <span class="badge badge-medium">${escHtml(c.clauseType)}</span>
+        </div>
+        <div class="card-desc">${escHtml(c.summary)}</div>
+        <div class="card-tags" style="margin-top:0.5rem">
+          <span class="badge badge-medium">${escHtml(c.section)}</span>
+          ${c.subsection ? `<span class="badge badge-low">${escHtml(c.subsection)}</span>` : ''}
+        </div>
+      </div>`).join('')}
+  `);
+}
+
+async function renderRMiTClauseDetail(clauseId) {
+  const data = await load('standards/rmit-cloud/clauses.json');
+  const clause = (data.clauses || []).find(c => c.id === clauseId);
+  if (!clause) {
+    setMain(`<button class="back-link" onclick="navigate('rmit','clauses')">&#8592; Clauses</button><div class="empty-state"><div class="empty-state-text">Clause not found.</div></div>`);
+    return;
+  }
+
+  const markerColors = { S: 'var(--danger)', G: 'var(--warning)' };
+
+  let extraSections = '';
+
+  // Risk areas (10.50)
+  if (clause.riskAreas) {
+    extraSections += `
+      <div class="page-sub" style="margin-top:1.5rem">Risk Assessment Areas</div>
+      ${clause.riskAreas.map(r => `
+        <div class="card" style="border-left:3px solid var(--accent2)">
+          <div class="card-title">${escHtml(r.area)}</div>
+          <div class="card-desc">${escHtml(r.description)}</div>
+          <div class="card-tags" style="margin-top:0.5rem">${(r.ccmControls || []).map(c => `<span class="badge badge-ccm">${escHtml(c)}</span>`).join('')}</div>
+        </div>`).join('')}`;
+  }
+
+  // Appendix 10 domains (10.51)
+  if (clause.appendix10Domains) {
+    extraSections += `
+      <div class="page-sub" style="margin-top:1.5rem">Appendix 10 Control Domains</div>
+      ${clause.appendix10Domains.map(d => `
+        <div class="card" style="border-left:3px solid var(--info)">
+          <div class="card-title">${escHtml(d.domain)}</div>
+          <ul style="margin:0.5rem 0;padding-left:1.25rem;list-style:disc">
+            ${(d.keyControls || []).map(k => `<li style="margin-bottom:0.25rem;color:var(--text-secondary)">${escHtml(k)}</li>`).join('')}
+          </ul>
+          <div class="card-tags">${(d.ccmControls || []).map(c => `<span class="badge badge-ccm">${escHtml(c)}</span>`).join('')}</div>
+        </div>`).join('')}`;
+  }
+
+  // Requirements list (10.52, 17.5)
+  if (clause.requirements) {
+    extraSections += `
+      <div class="page-sub" style="margin-top:1.5rem">Requirements</div>
+      <div class="card">
+        <ul style="margin:0;padding-left:1.25rem;list-style:disc">
+          ${clause.requirements.map(r => `<li style="margin-bottom:0.35rem;color:var(--text-secondary)">${escHtml(r)}</li>`).join('')}
+        </ul>
+      </div>`;
+  }
+
+  // CSP region options (10.52)
+  if (clause.cspRegionOptions) {
+    extraSections += `
+      <div class="page-sub" style="margin-top:1.5rem">CSP Data Residency Options</div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>CSP</th><th>Malaysia Region</th><th>Nearest Approved</th><th>Notes</th></tr></thead>
+        <tbody>
+          ${clause.cspRegionOptions.map(r => `
+            <tr>
+              <td><strong>${escHtml(r.csp)}</strong></td>
+              <td>${escHtml(r.malaysiaRegion)}</td>
+              <td>${escHtml(r.nearestApproved)}</td>
+              <td style="color:var(--text-secondary)">${escHtml(r.notes)}</td>
+            </tr>`).join('')}
+        </tbody>
+      </table></div>`;
+  }
+
+  // Prerequisites (17.1)
+  if (clause.prerequisites) {
+    extraSections += `
+      <div class="page-sub" style="margin-top:1.5rem">Prerequisites</div>
+      ${clause.prerequisites.map(p => `
+        <div class="card" style="border-left:3px solid var(--accent)">
+          <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.35rem">
+            <span class="badge badge-medium">Step ${escHtml(p.step)}</span>
+          </div>
+          <div class="card-desc">${escHtml(p.requirement)}</div>
+          <div class="card-tags" style="margin-top:0.5rem">${(p.ccmControls || []).map(c => `<span class="badge badge-ccm">${escHtml(c)}</span>`).join('')}</div>
+        </div>`).join('')}`;
+  }
+
+  // Preconditions (17.2)
+  if (clause.preconditions) {
+    extraSections += `
+      <div class="page-sub" style="margin-top:1.5rem">Preconditions</div>
+      <div class="card">
+        <ul style="margin:0;padding-left:1.25rem;list-style:disc">
+          ${clause.preconditions.map(p => `<li style="margin-bottom:0.35rem;color:var(--text-secondary)">${escHtml(p)}</li>`).join('')}
+        </ul>
+      </div>`;
+  }
+
+  // CSP guidance
+  let cspGuidance = '';
+  if (clause.cspGuidance) {
+    const cspNames = { aws: 'AWS', azure: 'Azure', gcp: 'GCP' };
+    cspGuidance = `
+      <div class="page-sub" style="margin-top:1.5rem">CSP Implementation Guidance</div>
+      ${Object.entries(clause.cspGuidance).map(([k, v]) => `
+        <div class="card" style="border-left:3px solid var(--${k === 'aws' ? 'aws' : k === 'azure' ? 'azure' : 'gcp'}, var(--accent))">
+          <div class="card-title">${escHtml(cspNames[k] || k)}</div>
+          <div class="card-desc">${escHtml(v)}</div>
+        </div>`).join('')}`;
+  }
+
+  setMain(`
+    <button class="back-link" onclick="navigate('rmit','clauses')">&#8592; All Clauses</button>
+    <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.5rem;flex-wrap:wrap">
+      <span class="badge" style="background:${markerColors[clause.marker] || 'var(--bg-tertiary)'};color:#fff;font-size:1rem;padding:0.35rem 0.75rem">${escHtml(clause.id)}</span>
+      <div class="page-title" style="margin:0">${escHtml(clause.title)}</div>
+    </div>
+    <div style="display:flex;gap:0.5rem;margin-bottom:1rem;flex-wrap:wrap">
+      <span class="badge badge-low">${escHtml(clause.marker)} — ${escHtml(clause.markerMeaning)}</span>
+      <span class="badge badge-medium">${escHtml(clause.clauseType)}</span>
+      <span class="badge badge-medium">${escHtml(clause.section)}</span>
+    </div>
+
+    <div class="card">
+      <div class="card-desc" style="font-size:0.9rem;line-height:1.6">${escHtml(clause.summary)}</div>
+    </div>
+
+    ${clause.higherRiskServices ? `<div class="card" style="border-left:3px solid var(--warning)"><div style="font-size:0.7rem;text-transform:uppercase;color:var(--text-muted);letter-spacing:0.05em;margin-bottom:0.35rem">Higher-Risk Services</div><div class="card-desc">${escHtml(clause.higherRiskServices)}</div></div>` : ''}
+    ${clause.keyConsideration ? `<div class="card" style="border-left:3px solid var(--warning)"><div style="font-size:0.7rem;text-transform:uppercase;color:var(--text-muted);letter-spacing:0.05em;margin-bottom:0.35rem">Key Consideration</div><div class="card-desc">${escHtml(clause.keyConsideration)}</div></div>` : ''}
+    ${clause.implication ? `<div class="card" style="border-left:3px solid var(--info)"><div style="font-size:0.7rem;text-transform:uppercase;color:var(--text-muted);letter-spacing:0.05em;margin-bottom:0.35rem">Implication</div><div class="card-desc">${escHtml(clause.implication)}</div></div>` : ''}
+
+    ${extraSections}
+    ${cspGuidance}
+
+    ${clause.evidence ? `
+      <div class="page-sub" style="margin-top:1.5rem">Evidence Requirements</div>
+      <div class="card">
+        <div class="card-tags">${clause.evidence.map(e => `<span class="badge badge-low">${escHtml(e)}</span>`).join('')}</div>
+      </div>` : ''}
+
+    ${clause.ccmControls ? `
+      <div class="page-sub" style="margin-top:1.5rem">Mapped CCM Controls</div>
+      <div class="card">
+        <div class="card-tags">${clause.ccmControls.map(c => `<span class="badge badge-ccm">${escHtml(c)}</span>`).join('')}</div>
+      </div>` : ''}
+  `);
+}
+
+async function renderRMiTCCMMapping() {
+  const data = await load('standards/rmit-cloud/ccm-mapping.json');
+  const mappings = data.mappings || [];
+  const approach = data.complianceApproach || {};
+
+  setMain(`
+    <button class="back-link" onclick="navigate('rmit')">&#8592; RMiT Cloud</button>
+    <div class="page-title">RMiT to CCM v4 Mapping</div>
+    <div class="page-sub">${escHtml(data.description || '')}</div>
+
+    ${mappings.map(m => `
+      <div class="card" style="border-left:3px solid var(--accent2)">
+        <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.5rem;flex-wrap:wrap">
+          <span class="card-title" style="margin:0">${escHtml(m.rmitArea)}</span>
+          ${(m.rmitClauses || []).map(c => `<span class="badge badge-medium">${escHtml(c)}</span>`).join('')}
+        </div>
+        <div class="card-desc" style="margin-bottom:0.75rem">${escHtml(m.description)}</div>
+        <div class="table-wrap"><table>
+          <thead><tr><th>CCM Domain</th><th>Controls</th><th>Alignment</th></tr></thead>
+          <tbody>
+            ${(m.ccmDomains || []).map(d => `
+              <tr>
+                <td><span class="badge badge-ccm">${escHtml(d.domain)}</span></td>
+                <td>${(d.controls || []).map(c => `<span class="badge badge-low">${escHtml(c)}</span>`).join(' ')}</td>
+                <td style="color:var(--text-secondary)">${escHtml(d.alignment)}</td>
+              </tr>`).join('')}
+          </tbody>
+        </table></div>
+      </div>`).join('')}
+
+    ${approach.title ? `
+      <div class="page-sub" style="margin-top:1.5rem">${escHtml(approach.title)}</div>
+      <div class="card">
+        <ol style="margin:0;padding-left:1.25rem">
+          ${(approach.steps || []).map(s => `<li style="margin-bottom:0.5rem;color:var(--text-secondary)">${escHtml(s)}</li>`).join('')}
+        </ol>
+      </div>` : ''}
   `);
 }
 

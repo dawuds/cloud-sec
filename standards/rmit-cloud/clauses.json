@@ -1,0 +1,205 @@
+{
+  "$schema": "cloud-security-v1",
+  "sourceType": "paraphrased-from-regulation",
+  "verificationNote": "Clauses paraphrased from BNM RMiT (November 2025). Verbatim text available in the dawuds/RMIT repository. Obtain authoritative text from BNM.",
+  "clauses": [
+    {
+      "id": "10.50",
+      "section": "S10: Technology Operations Management",
+      "subsection": "Cloud Services",
+      "title": "Cloud Services Risk Assessment",
+      "clauseType": "technical",
+      "marker": "S",
+      "markerMeaning": "Shall (mandatory)",
+      "summary": "Financial institutions must conduct a comprehensive risk assessment before adopting cloud services, addressing the inherent multi-tenant, shared-resource architecture of cloud computing.",
+      "riskAreas": [
+        { "area": "Deployment Model Sophistication", "description": "Assess complexity of chosen deployment model (public, private, hybrid, multi-cloud)", "ccmControls": ["GRC-02", "GRC-03"] },
+        { "area": "Migration Risk", "description": "Risks associated with migrating existing systems to cloud infrastructure", "ccmControls": ["CCC-01", "CCC-02", "BCR-01"] },
+        { "area": "Data Location & Geo-Political Risk", "description": "Location of cloud infrastructure including geo-political and legal risks that may impede regulatory compliance", "ccmControls": ["DSP-06", "DSP-07", "DSP-19"] },
+        { "area": "Multi-Tenancy & Data Co-Mingling", "description": "Risks from shared infrastructure and potential data co-mingling with other tenants", "ccmControls": ["DSP-04", "IVS-01", "IVS-06"] },
+        { "area": "Vendor Lock-In & Portability", "description": "Application portability, interoperability, and ability to migrate between providers", "ccmControls": ["IPY-01", "IPY-02", "IPY-04", "STA-09"] },
+        { "area": "Security Configuration Customisation", "description": "Ability to customise security configurations to ensure high-level data and system protection", "ccmControls": ["CCC-03", "DCS-01", "IVS-04"] },
+        { "area": "CSP Cyber Attack Exposure", "description": "Exposure to cyber-attacks via cloud service provider infrastructure", "ccmControls": ["TVM-01", "TVM-02", "SEF-01"] },
+        { "area": "CSP Termination & Data Recovery", "description": "Ability to secure data following termination of the CSP relationship", "ccmControls": ["STA-09", "BCR-04", "DSP-17"] },
+        { "area": "Responsibility Demarcation", "description": "Clear demarcation of responsibilities, limitations, and liability between institution and CSP", "ccmControls": ["STA-03", "STA-05", "GRC-01"] },
+        { "area": "Regulatory & Standards Compliance", "description": "Ability to meet regulatory requirements and international standards on an ongoing basis", "ccmControls": ["GRC-05", "GRC-07", "AAC-01"] }
+      ],
+      "evidence": ["Cloud risk assessment methodology", "Completed risk assessment reports", "Shared responsibility model documentation", "Risk review records"],
+      "cspGuidance": {
+        "aws": "Use AWS Artifact for compliance reports; AWS Config + Security Hub for posture assessment; deploy in ap-southeast-1 (Singapore) or request Malaysia Local Zone",
+        "azure": "Use Azure Compliance Manager; Defender for Cloud regulatory compliance dashboard; deploy in Southeast Asia region",
+        "gcp": "Use Assured Workloads for compliance controls; SCC for posture; deploy in asia-southeast1 (Singapore)"
+      }
+    },
+    {
+      "id": "10.51",
+      "section": "S10: Technology Operations Management",
+      "subsection": "Cloud Services",
+      "title": "Public Cloud Key Risks and Controls (Appendix 10)",
+      "clauseType": "governance",
+      "marker": "G",
+      "markerMeaning": "Should (guidance, but deviations must be justified)",
+      "summary": "For critical systems on public cloud, financial institutions must consider common key risks and control measures specified in Appendix 10. Departures from these measures must be demonstrated to be at least as effective.",
+      "appendix10Domains": [
+        {
+          "domain": "Governance and Oversight",
+          "keyControls": ["Cloud governance framework with board oversight", "Cloud security policy approved by senior management", "Roles and responsibilities for cloud security clearly defined"],
+          "ccmControls": ["GRC-01", "GRC-02", "GRC-03"]
+        },
+        {
+          "domain": "Data Security and Privacy",
+          "keyControls": ["Data classification applied to cloud-hosted data", "Encryption at rest (AES-256) and in transit (TLS 1.2+)", "Customer-managed encryption keys for critical data", "Data loss prevention controls", "Data residency enforcement"],
+          "ccmControls": ["DSP-01", "DSP-02", "DSP-04", "DSP-06", "CEK-01", "CEK-03"]
+        },
+        {
+          "domain": "Identity and Access Management",
+          "keyControls": ["MFA for all administrative and privileged access", "Least privilege principle for cloud IAM", "Regular access reviews (quarterly minimum)", "Privileged access management with just-in-time access", "Service account key rotation"],
+          "ccmControls": ["IAM-01", "IAM-02", "IAM-04", "IAM-05", "IAM-09"]
+        },
+        {
+          "domain": "Network Security",
+          "keyControls": ["VPC/VNet segmentation for workload isolation", "No public internet access for backend/database services", "WAF for internet-facing applications", "DDoS protection for critical services", "Private endpoints for CSP service access"],
+          "ccmControls": ["IVS-01", "IVS-03", "IVS-04", "IVS-06", "IVS-09"]
+        },
+        {
+          "domain": "Security Monitoring and Incident Management",
+          "keyControls": ["Cloud audit logging enabled for all regions and services", "Logs integrated with institution's SIEM", "24/7 security monitoring for cloud infrastructure", "Cloud-specific incident response playbooks", "24-hour BNM notification for major incidents"],
+          "ccmControls": ["LOG-01", "LOG-03", "LOG-05", "SEF-01", "SEF-02", "SEF-03"]
+        },
+        {
+          "domain": "Business Continuity and Disaster Recovery",
+          "keyControls": ["Cross-region replication for critical data", "Regular DR testing including cloud failover scenarios", "RTO/RPO targets defined and tested for cloud workloads", "Backup encryption and immutability"],
+          "ccmControls": ["BCR-01", "BCR-02", "BCR-03", "BCR-04"]
+        },
+        {
+          "domain": "Vendor Management and Exit Strategy",
+          "keyControls": ["Annual CSP risk reassessment", "CSP SOC 2 Type II report review", "Documented and tested exit strategy", "Data export procedures verified annually", "Vendor lock-in actively managed"],
+          "ccmControls": ["STA-01", "STA-03", "STA-05", "STA-09", "STA-14"]
+        },
+        {
+          "domain": "Audit and Assurance",
+          "keyControls": ["Cloud included in annual technology audit scope", "CIS Benchmark compliance assessment", "Penetration testing of cloud infrastructure", "Independent third-party cloud security assessment"],
+          "ccmControls": ["AAC-01", "AAC-02", "AAC-03", "GRC-05"]
+        }
+      ],
+      "evidence": ["Appendix 10 compliance matrix", "Control mapping documentation", "Deviation justification records"],
+      "cspGuidance": {
+        "aws": "AWS Security Hub CIS Benchmark; AWS Audit Manager for compliance frameworks; request SOC 2 via AWS Artifact",
+        "azure": "Microsoft Defender for Cloud regulatory compliance; Azure compliance offerings; request SOC 2 via Service Trust Portal",
+        "gcp": "SCC compliance module; Assured Workloads; request SOC 2 via GCP Compliance Reports Manager"
+      }
+    },
+    {
+      "id": "10.52",
+      "section": "S10: Technology Operations Management",
+      "subsection": "Cloud Services",
+      "title": "Cloud Data Residency",
+      "clauseType": "technical",
+      "marker": "S",
+      "markerMeaning": "Shall (mandatory)",
+      "summary": "Critical customer data and its backups must reside in Malaysia. Where a Malaysian CSP region is not available, nearest approved region (Singapore) may be used subject to BNM approval. Metadata and derived analytics are also subject to data residency considerations.",
+      "requirements": [
+        "Critical customer data must reside in Malaysia",
+        "Backup copies of critical customer data must also reside in Malaysia",
+        "Metadata and derived analytics must be considered for data residency",
+        "If no Malaysian CSP region exists, nearest approved region may be used with BNM notification",
+        "Region restriction policies must prevent data creation in non-approved regions",
+        "Monitor CSP service updates that may change data replication behaviour"
+      ],
+      "cspRegionOptions": [
+        { "csp": "AWS", "malaysiaRegion": "No dedicated Malaysia region (Local Zone pending)", "nearestApproved": "ap-southeast-1 (Singapore)", "notes": "Use SCPs to restrict region usage" },
+        { "csp": "Azure", "malaysiaRegion": "No dedicated Malaysia region", "nearestApproved": "Southeast Asia (Singapore)", "notes": "Use Azure Policy to restrict allowed locations" },
+        { "csp": "GCP", "malaysiaRegion": "No dedicated Malaysia region", "nearestApproved": "asia-southeast1 (Singapore)", "notes": "Use Organisation Policy resource location constraint" },
+        { "csp": "Alibaba Cloud", "malaysiaRegion": "ap-southeast-3 (Kuala Lumpur)", "nearestApproved": "N/A — Malaysia region available", "notes": "Deploy in KL region for data residency compliance" },
+        { "csp": "Huawei Cloud", "malaysiaRegion": "ap-southeast-3 (Kuala Lumpur)", "nearestApproved": "N/A — Malaysia region available", "notes": "Deploy in KL region for data residency compliance" }
+      ],
+      "evidence": ["Data residency policy", "CSP region configuration evidence", "Region restriction policy configuration", "Data flow mapping"],
+      "ccmControls": ["DSP-06", "DSP-07", "DSP-19"],
+      "cspGuidance": {
+        "aws": "SCP: deny all regions except ap-southeast-1; enable AWS Config rule for resource region compliance; verify S3 replication settings",
+        "azure": "Azure Policy: allowedLocations = ['southeastasia']; verify no geo-redundant replication to non-approved regions",
+        "gcp": "Organisation Policy: constraints/gcp.resourceLocations = ['asia-southeast1']; verify Cloud Storage location settings"
+      }
+    },
+    {
+      "id": "17.1",
+      "section": "S17: Consultation and Notification related to Cloud Services and Emerging Technology",
+      "subsection": "Regulatory Engagement",
+      "title": "First-Time Cloud Consultation with BNM",
+      "clauseType": "governance",
+      "marker": "S",
+      "markerMeaning": "Shall (mandatory)",
+      "summary": "Financial institutions must consult BNM before first-time adoption of public cloud for critical systems. Must demonstrate that risks have been adequately considered and addressed.",
+      "prerequisites": [
+        { "step": "A", "requirement": "Comprehensive risk assessment per 10.50 and Appendix 10, using Appendix 7 Part A format", "ccmControls": ["GRC-02"] },
+        { "step": "B", "requirement": "Written confirmation of readiness from CISO, senior management officer, or board-level committee chair (Appendix 7 Part B)", "ccmControls": ["GRC-01"] },
+        { "step": "C", "requirement": "Third-party pre-implementation review covering Appendix 10 areas and Appendix 7 Part C for higher-risk services", "ccmControls": ["AAC-02", "AAC-03"] }
+      ],
+      "higherRiskServices": "Services involving processing or storage of customer information, or cross-border data transmission, require enhanced pre-implementation review (Appendix 7 Part C)",
+      "evidence": ["Cloud strategy document", "Cloud governance framework", "BNM consultation submission", "CISO readiness confirmation", "Third-party review report"],
+      "ccmControls": ["GRC-01", "GRC-02", "AAC-02", "AAC-03", "STA-01"]
+    },
+    {
+      "id": "17.2",
+      "section": "S17: Consultation and Notification related to Cloud Services and Emerging Technology",
+      "subsection": "Regulatory Engagement",
+      "title": "Subsequent Cloud Adoption Notification",
+      "clauseType": "regulatory",
+      "marker": "S",
+      "markerMeaning": "Shall (mandatory)",
+      "summary": "For subsequent cloud adoptions for critical systems, financial institutions must notify BNM (not consult) provided they meet pre-conditions: no concerns from first consultation, enhanced risk framework, independent assurance, and adequate incident response.",
+      "preconditions": [
+        "BNM raised no concerns during first-time consultation under 17.1",
+        "Technology risk management framework enhanced to manage cloud risks",
+        "Independent assurance established on cloud risk management framework",
+        "Incident response plans confirmed sufficient for adverse events"
+      ],
+      "evidence": ["BNM notification submission", "Updated risk assessment", "Independent assurance report", "Incident response plan adequacy confirmation"],
+      "ccmControls": ["GRC-02", "GRC-05", "SEF-01", "AAC-02"]
+    },
+    {
+      "id": "17.3",
+      "section": "S17: Consultation and Notification related to Cloud Services and Emerging Technology",
+      "subsection": "Regulatory Engagement",
+      "title": "Enhancement Notification Exemption",
+      "clauseType": "regulatory",
+      "marker": "G",
+      "markerMeaning": "Should (guidance)",
+      "summary": "Notification to BNM is not required for enhancements to existing cloud adoption that do not materially alter prior assessments and representations made to BNM.",
+      "keyConsideration": "Institutions must assess whether an enhancement materially alters the risk profile. Adding a new CSP, moving to a new deployment model, or adding critical data to an existing cloud deployment would likely be considered material changes requiring notification.",
+      "evidence": ["Materiality assessment documentation", "Change log for cloud deployments"],
+      "ccmControls": ["CCC-01", "GRC-02"]
+    },
+    {
+      "id": "17.4",
+      "section": "S17: Consultation and Notification related to Cloud Services and Emerging Technology",
+      "subsection": "Regulatory Engagement",
+      "title": "BNM Discretionary Direction",
+      "clauseType": "governance",
+      "marker": "S",
+      "markerMeaning": "Shall (mandatory)",
+      "summary": "BNM may direct any financial institution to consult or notify, or to observe Appendix 10/Appendix 9 guidance, including for non-critical systems or where pre-requisites have not been met. Institutions must comply promptly.",
+      "implication": "BNM retains discretion to require the full consultation process even for non-critical systems. This means financial institutions should maintain a cloud governance posture that could withstand BNM scrutiny for any cloud deployment, not just critical systems.",
+      "evidence": ["BNM correspondence records", "Compliance response documentation"],
+      "ccmControls": ["GRC-01", "GRC-07"]
+    },
+    {
+      "id": "17.5",
+      "section": "S17: Consultation and Notification related to Cloud Services and Emerging Technology",
+      "subsection": "Regulatory Engagement",
+      "title": "Cloud Adoption Roadmap in Annual Outsourcing Plan",
+      "clauseType": "regulatory",
+      "marker": "S",
+      "markerMeaning": "Shall (mandatory)",
+      "summary": "The cloud adoption roadmap (both critical and non-critical systems) must be included in the annual outsourcing plan submitted to BNM. Risk assessments must be documented and available for BNM review upon request.",
+      "requirements": [
+        "Include cloud roadmap in annual outsourcing plan to BNM",
+        "Cover both critical and non-critical system cloud adoptions",
+        "Document risk assessments per 10.50 for cloud services",
+        "Make all documentation available for BNM review on request"
+      ],
+      "evidence": ["Annual outsourcing plan with cloud section", "Cloud adoption roadmap", "Risk assessment documentation"],
+      "ccmControls": ["GRC-01", "GRC-02", "GRC-03"]
+    }
+  ]
+}
