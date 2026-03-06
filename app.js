@@ -299,6 +299,18 @@ async function renderMitreCloud() {
             <span class="card-title" style="margin:0">${escHtml(t.name)}</span>
           </div>
           <div class="card-desc">${escHtml(t.description || '')}</div>
+          ${t.subtechniques && t.subtechniques.length ? `
+            <div style="margin-top:0.75rem;padding-left:1rem;border-left:2px solid var(--danger)">
+              <div style="font-size:0.7rem;text-transform:uppercase;color:var(--text-muted);margin-bottom:0.35rem">Sub-techniques (${t.subtechniques.length})</div>
+              ${t.subtechniques.map(st => `
+                <div style="margin-bottom:0.5rem">
+                  <div style="display:flex;align-items:center;gap:0.5rem">
+                    <span class="badge badge-high" style="font-size:0.65rem">${escHtml(st.id)}</span>
+                    <strong style="font-size:0.8rem">${escHtml(st.name)}</strong>
+                  </div>
+                  <div style="font-size:0.75rem;color:var(--text-muted);margin-top:0.15rem">${escHtml(st.description || '')}</div>
+                </div>`).join('')}
+            </div>` : ''}
           ${t.platforms ? `<div style="margin-top:0.5rem">${tagList(t.platforms)}</div>` : ''}
           ${t.ccmControls ? `<div style="margin-top:0.5rem">${ccmBadge(t.ccmControls)}</div>` : ''}
         </div>`).join('')}
@@ -736,27 +748,79 @@ async function renderControls(sub) {
     load('controls/library.json'),
   ]);
 
+  const allControls = Array.isArray(controls) ? controls : (controls.controls || []);
+  const allDomains = Array.isArray(domains) ? domains : (domains.domains || []);
+
+  // Discover all CSPs present in cspImplementation across controls
+  const cspSet = new Set();
+  allControls.forEach(c => {
+    if (c.cspImplementation) Object.keys(c.cspImplementation).forEach(k => cspSet.add(k));
+  });
+  const cspList = [...cspSet].sort();
+  const cspLabels = { aws: 'AWS', azure: 'Azure', gcp: 'GCP', alibaba: 'Alibaba', huawei: 'Huawei', oracle: 'Oracle' };
+
   setMain(`
     <div class="page-title">Control Library</div>
-    <div class="page-sub">${(Array.isArray(controls) ? controls : (controls.controls || [])).length} controls across ${(Array.isArray(domains) ? domains : (domains.domains || [])).length} domains</div>
+    <div class="page-sub">${allControls.length} controls across ${allDomains.length} domains</div>
 
-    ${(Array.isArray(domains) ? domains : (domains.domains || [])).map(d => {
-      const domControls = (Array.isArray(controls) ? controls : (controls.controls || [])).filter(c => c.domain === d.id);
+    <div class="tabs" id="csp-filter-tabs" style="margin-bottom:1rem">
+      <button class="tab-btn active" onclick="filterControlsCSP('all')">All</button>
+      ${cspList.map(c => `<button class="tab-btn" onclick="filterControlsCSP('${c}')">${escHtml(cspLabels[c] || c.toUpperCase())}</button>`).join('')}
+    </div>
+
+    ${allDomains.map(d => {
+      const domControls = allControls.filter(c => c.domain === d.id);
       return `
         <h2>${escHtml(d.name)} (${domControls.length})</h2>
-        ${domControls.map(c => `
-          <div class="card card-link" onclick="navigate('controls','${c.slug || c.id}')">
+        ${domControls.map(c => {
+          const impl = c.cspImplementation || {};
+          const cspKeys = Object.keys(impl);
+          return `
+          <div class="card card-link control-card" onclick="navigate('controls','${c.slug || c.id}')" data-csps="${escHtml(cspKeys.join(','))}">
             <div style="display:flex;align-items:center;gap:0.75rem">
               ${typeBadge(c.type)}
               <span class="card-title" style="margin:0">${escHtml(c.name)}</span>
             </div>
             <div class="card-desc">${escHtml(c.description || '')}</div>
             ${c.ccmControls ? `<div style="margin-top:0.5rem">${ccmBadge(c.ccmControls)}</div>` : ''}
-          </div>`).join('')}
+            <div class="csp-impl-section" style="margin-top:0.75rem;padding-top:0.5rem;border-top:1px solid var(--border);display:none">
+              ${cspKeys.map(k => `<div class="csp-impl-item" data-csp="${escHtml(k)}" style="margin-bottom:0.35rem;font-size:0.8rem">${cspBadge(cspLabels[k] || k.toUpperCase())} <span style="color:var(--text-muted)">${escHtml(impl[k])}</span></div>`).join('')}
+            </div>
+          </div>`;
+        }).join('')}
       `;
     }).join('')}
   `);
 }
+
+window.filterControlsCSP = function(csp) {
+  document.querySelectorAll('#csp-filter-tabs .tab-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+
+  document.querySelectorAll('.control-card').forEach(card => {
+    const csps = (card.dataset.csps || '').split(',').filter(Boolean);
+    const implSection = card.querySelector('.csp-impl-section');
+    const implItems = card.querySelectorAll('.csp-impl-item');
+
+    if (csp === 'all') {
+      // Show all controls, hide CSP implementation details
+      card.style.display = '';
+      if (implSection) implSection.style.display = 'none';
+    } else {
+      // Show only controls that have this CSP implementation
+      if (csps.includes(csp)) {
+        card.style.display = '';
+        if (implSection) implSection.style.display = 'block';
+        // Show only the selected CSP's implementation
+        implItems.forEach(item => {
+          item.style.display = item.dataset.csp === csp ? '' : 'none';
+        });
+      } else {
+        card.style.display = 'none';
+      }
+    }
+  });
+};
 
 async function renderControlDetail(slug) {
   const [controls, artifactData, evidenceData] = await Promise.all([
@@ -1174,6 +1238,7 @@ async function renderCrossRef(sub) {
   if (sub === 'nist-csf') return renderCrossNistCsf();
   if (sub === 'mitre') return renderCrossMitre();
   if (sub === 'csp-mapping') return renderCrossCSP();
+  if (sub === 'rmit-nacsa') return renderCrossRmitNacsa();
 
   setMain(`
     <div class="page-title">Cross-References</div>
@@ -1182,6 +1247,10 @@ async function renderCrossRef(sub) {
     <div class="card card-link" onclick="navigate('cross-ref','nacsa')">
       <div class="card-title">CCM v4 &#8594; NACSA Act 854</div>
       <div class="card-desc">How CCM control domains align with Malaysian NCII obligations</div>
+    </div>
+    <div class="card card-link" onclick="navigate('cross-ref','rmit-nacsa')">
+      <div class="card-title">BNM RMiT &#8594; NACSA Act 854</div>
+      <div class="card-desc">RMiT cloud clauses mapped to NACSA obligations for financial institutions operating NCII</div>
     </div>
     <div class="card card-link" onclick="navigate('cross-ref','nist-csf')">
       <div class="card-title">CCM v4 &#8594; NIST CSF 2.0</div>
@@ -1296,6 +1365,38 @@ async function renderCrossCSP() {
         }).join('')}
       </tbody>
     </table></div>
+  `);
+}
+
+async function renderCrossRmitNacsa() {
+  const data = await load('cross-references/rmit-to-nacsa.json');
+  const mappings = data.mappings || [];
+
+  const relationshipBadge = (r) => {
+    const cls = { complementary: 'medium', overlapping: 'high', supplementary: 'low' }[r] || 'low';
+    return `<span class="badge badge-${cls}">${escHtml(r)}</span>`;
+  };
+
+  setMain(`
+    <button class="back-link" onclick="navigate('cross-ref')">&#8592; Cross-References</button>
+    <div class="page-title">BNM RMiT &#8594; NACSA Act 854</div>
+    <div class="page-sub">${escHtml(data.description || '')}</div>
+
+    ${data.verificationNote ? `<div class="card" style="border-left:3px solid var(--warning);font-size:0.8rem;color:var(--text-secondary)">${escHtml(data.verificationNote)}</div>` : ''}
+
+    ${mappings.map(m => `
+      <div class="card" style="border-left:3px solid var(--accent2)">
+        <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.5rem;flex-wrap:wrap">
+          <span class="badge" style="background:var(--danger);color:#fff">${escHtml(m.rmitClause)}</span>
+          <span class="card-title" style="margin:0">${escHtml(m.rmitTitle)}</span>
+          ${relationshipBadge(m.relationship)}
+        </div>
+        <div style="margin-bottom:0.5rem">
+          ${(m.nacsaSections || []).map(s => `<span class="badge badge-malaysia">${escHtml(s)}</span>`).join(' ')}
+          <span style="font-size:0.8rem;color:var(--text-muted);margin-left:0.5rem">${escHtml(m.nacsaTitle || '')}</span>
+        </div>
+        <div class="card-desc">${escHtml(m.notes || '')}</div>
+      </div>`).join('')}
   `);
 }
 

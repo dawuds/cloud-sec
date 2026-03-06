@@ -62,6 +62,40 @@
             "Static credentials in CI/CD pipelines instead of OIDC federation",
             "Service accounts with admin-level permissions"
           ]
+        },
+        {
+          "id": "E-IAM-04",
+          "name": "Federated identity and SSO configuration evidence",
+          "description": "Evidence that cloud access is federated through a centralised identity provider with SSO, reducing the risk of password-based attacks and ensuring consistent authentication policies.",
+          "whatGoodLooksLike": [
+            "All cloud accounts federated to centralised IdP (Entra ID, Okta, Google Workspace)",
+            "SSO enforced for all cloud management consoles",
+            "Local IAM user creation disabled or restricted via SCP/policy",
+            "Session timeout and re-authentication policies configured"
+          ],
+          "commonGaps": [
+            "Local IAM users created outside of federation",
+            "SSO configured but bypass via direct console login still possible",
+            "No session timeout — sessions persist indefinitely",
+            "Federation configured for primary account only — child accounts use local auth"
+          ]
+        },
+        {
+          "id": "E-IAM-05",
+          "name": "Privileged access management (PAM) and just-in-time elevation records",
+          "description": "Evidence that privileged access to cloud environments uses just-in-time elevation with time-limited sessions, approval workflows, and comprehensive audit trails.",
+          "whatGoodLooksLike": [
+            "Just-in-time privileged access with time-limited role activation",
+            "Approval workflow for privileged role requests",
+            "All privileged sessions recorded and auditable",
+            "Standing admin access eliminated — zero standing privileges"
+          ],
+          "commonGaps": [
+            "Permanent admin role assignments without time limits",
+            "No approval workflow for privileged access",
+            "Privileged sessions not recorded or monitored",
+            "Break-glass accounts used for routine operations"
+          ]
         }
       ]
     },
@@ -121,6 +155,40 @@
             "No automated data discovery -- manual classification only",
             "DLP deployed but in monitor-only mode with no blocking",
             "Classification tags missing from resources"
+          ]
+        },
+        {
+          "id": "E-DSP-04",
+          "name": "Data sovereignty and cross-border transfer controls",
+          "description": "Evidence that data residency requirements are enforced and cross-border data transfers are controlled through technical and policy mechanisms.",
+          "whatGoodLooksLike": [
+            "Region restriction policies preventing data creation in non-approved regions",
+            "Data flow mapping documenting all cross-border data movement",
+            "Geo-replication settings verified to comply with residency requirements",
+            "Regular compliance checks for data location via CSPM"
+          ],
+          "commonGaps": [
+            "No region restriction policies — data can be created in any region",
+            "Geo-redundant storage replicating data to non-approved regions",
+            "No data flow mapping — unknown cross-border transfers",
+            "CDN edge caching exposing data in non-approved jurisdictions"
+          ]
+        },
+        {
+          "id": "E-DSP-05",
+          "name": "Sensitive data discovery and automated classification scan results",
+          "description": "Evidence that automated scanning identifies sensitive data across cloud storage, databases, and file shares with findings tracked and remediated.",
+          "whatGoodLooksLike": [
+            "Automated discovery scanning all major data stores weekly or continuously",
+            "Findings categorised by data type (PII, financial, health, credentials)",
+            "Remediation tracking for unprotected sensitive data findings",
+            "Integration with DLP policies for automated protection"
+          ],
+          "commonGaps": [
+            "No automated data discovery — relying on manual classification only",
+            "Discovery scanning limited to primary storage — databases and file shares excluded",
+            "Findings generated but not reviewed or remediated",
+            "No integration between discovery and DLP enforcement"
           ]
         }
       ]
@@ -182,6 +250,40 @@
             "DNS resolution still using public endpoints",
             "No VPC endpoint policies restricting service access"
           ]
+        },
+        {
+          "id": "E-IVS-04",
+          "name": "DDoS protection configuration and incident records",
+          "description": "Evidence that DDoS protection is enabled for internet-facing cloud resources with appropriate mitigation policies and incident response integration.",
+          "whatGoodLooksLike": [
+            "DDoS protection enabled on all internet-facing resources (AWS Shield, Azure DDoS Protection, GCP Cloud Armor)",
+            "Custom DDoS response policies for critical applications",
+            "DDoS events integrated with SIEM for detection and alerting",
+            "Regular DDoS simulation testing conducted"
+          ],
+          "commonGaps": [
+            "Basic DDoS protection only — no advanced/standard tier",
+            "DDoS protection not enabled on all internet-facing resources",
+            "No custom mitigation policies — relying on default thresholds",
+            "DDoS events not monitored or integrated with incident response"
+          ]
+        },
+        {
+          "id": "E-IVS-05",
+          "name": "WAF configuration and rule management evidence",
+          "description": "Evidence that web application firewalls are deployed on internet-facing applications with active rule sets, tuned for false positives, and regularly updated.",
+          "whatGoodLooksLike": [
+            "WAF deployed on all internet-facing web applications and APIs",
+            "Managed rule sets active and updated (OWASP Top 10, bot protection)",
+            "Custom rules for application-specific attack patterns",
+            "WAF logs integrated with SIEM and reviewed regularly"
+          ],
+          "commonGaps": [
+            "WAF deployed in detection-only mode (not blocking)",
+            "Default rule sets without tuning — excessive false positives",
+            "WAF on primary application but not all internet-facing services",
+            "No regular rule review or update process"
+          ]
         }
       ]
     },
@@ -241,6 +343,40 @@
             "Logs in modifiable storage without integrity controls",
             "No capacity monitoring -- logs silently deleted on overflow",
             "Retention not aligned to regulatory requirements"
+          ]
+        },
+        {
+          "id": "E-LOG-04",
+          "name": "Cloud-native threat detection service configuration and findings",
+          "description": "Evidence that cloud-native threat detection services are enabled and findings are reviewed and actioned.",
+          "whatGoodLooksLike": [
+            "Cloud-native threat detection enabled across all accounts (GuardDuty, Defender for Cloud, SCC)",
+            "All finding types enabled including container, DNS, S3/storage, and runtime",
+            "Findings triaged within defined SLA (critical: 4h, high: 24h)",
+            "Automated suppression rules for known benign patterns with documented justification"
+          ],
+          "commonGaps": [
+            "Threat detection not enabled in all accounts or regions",
+            "Findings generated but not triaged or investigated",
+            "Alert fatigue from untuned detection — team ignores findings",
+            "No automated response for critical severity findings"
+          ]
+        },
+        {
+          "id": "E-LOG-05",
+          "name": "Flow log and network traffic analysis configuration",
+          "description": "Evidence that network flow logs are enabled and analysed for anomalous traffic patterns, lateral movement, and data exfiltration.",
+          "whatGoodLooksLike": [
+            "VPC/VNet flow logs enabled for all production subnets",
+            "Flow logs stored in centralised log archive with appropriate retention",
+            "Network traffic analysis for anomalous patterns (large transfers, unusual ports)",
+            "Flow log data integrated with SIEM or dedicated NTA tool"
+          ],
+          "commonGaps": [
+            "Flow logs not enabled — no network visibility",
+            "Flow logs enabled but not analysed or reviewed",
+            "Flow logs in same account as production — modifiable by attackers",
+            "Only accepted traffic logged — rejected traffic not captured"
           ]
         }
       ]
@@ -302,6 +438,23 @@
             "No rollback procedures -- containment may cause outage",
             "No defined containment SLA"
           ]
+        },
+        {
+          "id": "E-SEF-04",
+          "name": "Regulatory notification procedure and timeline evidence",
+          "description": "Evidence that incident notification procedures meet regulatory timelines (NACSA 6-hour, BNM 24-hour) with documented escalation paths and tested communication channels.",
+          "whatGoodLooksLike": [
+            "Documented notification procedures with regulatory-specific timelines",
+            "NACSA 6-hour notification template pre-prepared with required fields",
+            "BNM 24-hour notification procedure tested within last 12 months",
+            "Escalation matrix current with verified contact details"
+          ],
+          "commonGaps": [
+            "No awareness of NACSA 6-hour notification requirement",
+            "Notification procedures documented but never tested",
+            "Single point of failure in notification chain (one person)",
+            "Notification templates not aligned to regulatory requirements"
+          ]
         }
       ]
     },
@@ -343,6 +496,40 @@
             "Default pod security settings (no restrictions)",
             "Cluster-admin bound to service accounts unnecessarily",
             "API server accessible from public network"
+          ]
+        },
+        {
+          "id": "E-CCC-03",
+          "name": "Container runtime security and anomaly detection evidence",
+          "description": "Evidence that container runtime security monitoring detects anomalous behaviour including unexpected process execution, file system changes, and network connections.",
+          "whatGoodLooksLike": [
+            "Runtime security agent deployed on all container hosts/nodes",
+            "Baseline profiles established for expected container behaviour",
+            "Alerts generated for anomalous process execution and network connections",
+            "Runtime alerts integrated with SIEM and incident response workflow"
+          ],
+          "commonGaps": [
+            "No runtime security monitoring — only pre-deployment scanning",
+            "Runtime agent deployed but alerts not reviewed",
+            "No baseline profiling — excessive false positives",
+            "Container escape attempts not detected"
+          ]
+        },
+        {
+          "id": "E-CCC-04",
+          "name": "Container registry access control and image provenance",
+          "description": "Evidence that container registries enforce access controls and image provenance is verified before deployment.",
+          "whatGoodLooksLike": [
+            "Private container registry with role-based access control",
+            "Image signing enabled with verification at deployment (Cosign, DCT)",
+            "Only approved base images permitted via admission control",
+            "Public registry pull restricted to approved images only"
+          ],
+          "commonGaps": [
+            "Container registry accessible without authentication",
+            "No image signing or provenance verification",
+            "Direct pull from public registries (Docker Hub) in production",
+            "No approved base image catalogue or governance"
           ]
         }
       ]
@@ -386,6 +573,40 @@
             "No request validation -- accepting arbitrary input",
             "No WAF protection on API endpoints"
           ]
+        },
+        {
+          "id": "E-AIS-03",
+          "name": "Serverless function dependency scanning and runtime monitoring",
+          "description": "Evidence that serverless function dependencies are scanned for vulnerabilities and runtime behaviour is monitored for anomalies.",
+          "whatGoodLooksLike": [
+            "Dependency scanning integrated in serverless build pipeline",
+            "Known vulnerable packages blocked from deployment",
+            "Runtime monitoring for unexpected API calls and data access patterns",
+            "Function timeout and memory limits configured to prevent abuse"
+          ],
+          "commonGaps": [
+            "No dependency scanning for serverless functions",
+            "Outdated dependencies with known vulnerabilities in production",
+            "No runtime monitoring — only invocation count metrics",
+            "No resource limits — functions can consume unlimited resources"
+          ]
+        },
+        {
+          "id": "E-AIS-04",
+          "name": "Serverless event source validation and input sanitisation evidence",
+          "description": "Evidence that serverless function event sources are validated and input is sanitised to prevent injection attacks through event payloads.",
+          "whatGoodLooksLike": [
+            "Event source validation ensuring only authorised triggers invoke functions",
+            "Input validation and sanitisation applied to all event payloads",
+            "Event schema validation configured on API gateways and event buses",
+            "Functions tested for injection attacks via event payloads"
+          ],
+          "commonGaps": [
+            "No event source validation — any authenticated principal can invoke functions",
+            "No input sanitisation — event payloads passed directly to processing logic",
+            "No schema validation on API gateway or event bus",
+            "No security testing of serverless functions"
+          ]
         }
       ]
     },
@@ -428,6 +649,40 @@
             "No SBOM generation",
             "No process for CVE-to-SBOM correlation when new vulnerabilities disclosed"
           ]
+        },
+        {
+          "id": "E-STA-03",
+          "name": "Third-party dependency vulnerability management and SBOM correlation",
+          "description": "Evidence that third-party dependencies are inventoried via SBOMs and new vulnerability disclosures are correlated against deployed software.",
+          "whatGoodLooksLike": [
+            "SBOMs generated for all production builds and stored centrally",
+            "Automated CVE-to-SBOM correlation when new vulnerabilities disclosed",
+            "Vulnerability response SLA tracked for third-party dependencies",
+            "Dependency update automation (Dependabot, Renovate) enabled"
+          ],
+          "commonGaps": [
+            "No SBOM generation — unknown third-party dependencies in production",
+            "SBOMs generated but no CVE correlation process",
+            "No response SLA for third-party vulnerability remediation",
+            "Manual dependency updates — no automation"
+          ]
+        },
+        {
+          "id": "E-STA-04",
+          "name": "Container and IaC supply chain integrity evidence",
+          "description": "Evidence that container base images and IaC modules are sourced from trusted, verified origins with integrity checks.",
+          "whatGoodLooksLike": [
+            "Approved base image catalogue maintained and enforced via admission control",
+            "IaC modules sourced from approved private registry with version pinning",
+            "Container images and IaC modules scanned for embedded secrets and backdoors",
+            "Supply chain provenance tracked using SLSA or equivalent framework"
+          ],
+          "commonGaps": [
+            "Base images pulled directly from public Docker Hub without verification",
+            "IaC modules sourced from public registries without review or pinning",
+            "No scanning for embedded secrets in container images",
+            "No supply chain provenance tracking"
+          ]
         }
       ]
     },
@@ -469,6 +724,40 @@
             "Keys older than 2 years with no rotation",
             "No monitoring of rotation compliance",
             "Old key versions never disabled"
+          ]
+        },
+        {
+          "id": "E-CEK-03",
+          "name": "Certificate management and automated renewal evidence",
+          "description": "Evidence that TLS/SSL certificates are inventoried, monitored for expiry, and automatically renewed where possible.",
+          "whatGoodLooksLike": [
+            "Complete certificate inventory with expiry dates and owners",
+            "Automated certificate renewal via ACM, Let's Encrypt, or equivalent",
+            "Certificate expiry monitoring with alerting at 30 and 7 days",
+            "No expired certificates in production environments"
+          ],
+          "commonGaps": [
+            "No certificate inventory — certificates discovered only on expiry",
+            "Manual certificate renewal process — prone to missed renewals",
+            "No expiry monitoring or alerting",
+            "Self-signed certificates used in production without documented exception"
+          ]
+        },
+        {
+          "id": "E-CEK-04",
+          "name": "Hardware security module (HSM) and key isolation evidence",
+          "description": "Evidence that sensitive encryption operations use dedicated HSM or equivalent key isolation for regulatory or high-security requirements.",
+          "whatGoodLooksLike": [
+            "HSM-backed keys (CloudHSM, Dedicated HSM, Cloud HSM) for regulatory-required workloads",
+            "Key isolation between tenants verified via CSP attestation",
+            "HSM audit logs independently monitored",
+            "FIPS 140-2 Level 3 or equivalent compliance verified for HSM"
+          ],
+          "commonGaps": [
+            "No HSM usage — all keys in software-based KMS",
+            "HSM deployed but key isolation not verified via CSP attestation",
+            "HSM audit logs not monitored independently",
+            "FIPS compliance level not verified or insufficient for regulatory requirements"
           ]
         }
       ]
@@ -530,6 +819,23 @@
             "Low compliance percentage with no improvement plan",
             "Tags applied inconsistently with no standard taxonomy"
           ]
+        },
+        {
+          "id": "E-DCS-04",
+          "name": "Drift detection and automated remediation evidence",
+          "description": "Evidence that configuration drift from approved baselines is detected and automatically remediated for critical resources.",
+          "whatGoodLooksLike": [
+            "Configuration drift detection enabled for all production resources",
+            "Automated remediation for critical drift (e.g., public storage re-secured)",
+            "Drift events logged and tracked with resolution records",
+            "Baseline configurations version-controlled as infrastructure-as-code"
+          ],
+          "commonGaps": [
+            "No drift detection — configuration changes go unnoticed",
+            "Drift detected but no automated remediation",
+            "Baseline configurations not documented or version-controlled",
+            "Manual changes made directly in console without tracking"
+          ]
         }
       ]
     },
@@ -571,6 +877,40 @@
             "DR test limited to backup restore -- no full failover test",
             "RTO/RPO targets not defined or not validated",
             "Test findings not remediated"
+          ]
+        },
+        {
+          "id": "E-BCR-03",
+          "name": "Cross-region and cross-account backup replication evidence",
+          "description": "Evidence that critical backups are replicated to a separate region and/or account to protect against regional outages and account compromise.",
+          "whatGoodLooksLike": [
+            "Critical backups replicated to a different region from primary",
+            "Backup copies stored in a separate cloud account with independent credentials",
+            "Cross-region restore tested and validated within last 12 months",
+            "Replication lag monitored with alerting on delays"
+          ],
+          "commonGaps": [
+            "Backups stored in same region as production — single region failure risk",
+            "Backups in same account — account compromise deletes production and backups",
+            "Cross-region restore never tested",
+            "No monitoring of replication lag"
+          ]
+        },
+        {
+          "id": "E-BCR-04",
+          "name": "Ransomware protection and immutable backup configuration",
+          "description": "Evidence that backups are protected against ransomware through immutability, air-gapping, or other tamper-resistant mechanisms.",
+          "whatGoodLooksLike": [
+            "Immutable backups (vault lock, object lock, WORM) for all critical data",
+            "Backup deletion requires MFA and multi-person approval",
+            "Backup integrity verification automated and scheduled",
+            "Recovery from ransomware scenario tested in tabletop or simulation"
+          ],
+          "commonGaps": [
+            "No immutable backups — attacker with admin access can delete all backups",
+            "Backup deletion possible with single administrator account",
+            "No backup integrity verification",
+            "Ransomware recovery scenario never tested"
           ]
         }
       ]
@@ -631,6 +971,40 @@
             "Shared responsibility model not understood -- security gaps at boundary",
             "No SaaS vendor security assessment process",
             "Relying solely on CSP certifications without reviewing report content"
+          ]
+        },
+        {
+          "id": "E-GRC-04",
+          "name": "Cloud cost governance and anomaly detection evidence",
+          "description": "Evidence that cloud spending is monitored with budgets, alerts, and anomaly detection to identify compromised accounts or resource hijacking.",
+          "whatGoodLooksLike": [
+            "Monthly budgets set for all cloud accounts with alert thresholds",
+            "Cost anomaly detection enabled with automated alerting",
+            "Anomalous spending investigated within 24 hours",
+            "Unused resources identified and cleaned up monthly"
+          ],
+          "commonGaps": [
+            "No cloud budgets or spending alerts configured",
+            "Cost anomalies not monitored — cryptomining would go undetected",
+            "Anomaly alerts generated but not investigated",
+            "Significant unused resource waste with no cleanup process"
+          ]
+        },
+        {
+          "id": "E-GRC-05",
+          "name": "Cloud security training and awareness records",
+          "description": "Evidence that staff with cloud responsibilities receive appropriate security training covering cloud-specific risks, shared responsibility, and operational procedures.",
+          "whatGoodLooksLike": [
+            "Annual cloud security training for all cloud administrators",
+            "Role-specific training paths (architect, developer, operator, auditor)",
+            "Training completion tracked with compliance reporting",
+            "Cloud security certifications (CCSK, CCSP) for key staff"
+          ],
+          "commonGaps": [
+            "No cloud-specific security training — general IT security only",
+            "Training available but not tracked or enforced",
+            "Training content outdated — does not cover current cloud services",
+            "No certification requirements for cloud security roles"
           ]
         }
       ]

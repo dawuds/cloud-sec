@@ -20,7 +20,7 @@ Tracking all planned enhancements. Grouped by phase. Check off items as complete
 - [x] Threats — 8 cloud incidents + 6 threat actors with control mappings
 - [x] Risk management — methodology, 5x5 matrix, 15-risk register, assessment checklist, treatment options
 - [x] Sectors — financial services, healthcare, government, e-commerce, education, telecommunications with Malaysia-specific obligations
-- [x] Cross-references — 7 mapping files (CCM ↔ NACSA, NIST CSF, ISO 27017, MITRE, AWS, Azure, GCP)
+- [x] Cross-references — 8 mapping files (CCM ↔ NACSA, RMiT ↔ NACSA, NIST CSF, ISO 27017, MITRE, AWS, Azure, GCP)
 - [x] Framework matrix view — CCM × Controls × NACSA × NIST CSF × MITRE
 - [x] Search — cross-view search with type badges
 - [x] GitHub Pages deployment via Actions workflow
@@ -45,8 +45,8 @@ Tracking all planned enhancements. Grouped by phase. Check off items as complete
 - [x] Add Well-Architected framework data for GCP (6 principles, 6 areas) — `standards/csp/gcp/well-architected.json`
 - [x] Add missing sector files: education.json, telecommunications.json — all 6 sectors now have detail files
 - [x] Expand threat actors — now 6 (added Muddled Libra); FIN7, APT41 pending
-- [ ] Expand evidence items from 6 domains to all 12 domains
-- [ ] Add cloud-specific MITRE ATT&CK sub-techniques where relevant
+- [x] Expand evidence items — now 53 items across 12 domains (up from 31), 4-5 items per domain
+- [x] Add cloud-specific MITRE ATT&CK sub-techniques — 23 sub-techniques across 10 parent techniques
 
 ---
 
@@ -55,7 +55,7 @@ Tracking all planned enhancements. Grouped by phase. Check off items as complete
 - [ ] Add CCM ↔ Alibaba Cloud service mapping — `cross-references/ccm-to-alibaba.json`
 - [ ] Add CCM ↔ Huawei Cloud service mapping — `cross-references/ccm-to-huawei.json`
 - [ ] Add CCM ↔ Oracle Cloud service mapping — `cross-references/ccm-to-oracle.json`
-- [ ] Add RMiT ↔ NACSA cross-reference (financial institution NCII obligations)
+- [x] Add RMiT ↔ NACSA cross-reference — 12 mappings covering clauses 10.50-10.52 and 17.1-17.5 to NACSA s17-s26
 - [ ] Add ISO 27017 control detail expansion (currently indicative mapping only)
 - [ ] Add bidirectional lookup to all cross-references (reverse mapping views)
 
@@ -82,7 +82,7 @@ Tracking all planned enhancements. Grouped by phase. Check off items as complete
 
 ## Phase 6 — UI Enhancements (Pending)
 
-- [ ] Add CSP filtering/toggle on Controls view (show/hide AWS/Azure/GCP implementation columns)
+- [x] Add CSP filtering/toggle on Controls view — All/AWS/Azure/GCP toggle shows/hides CSP implementation details and filters by relevance
 - [x] Add print-friendly CSS for compliance report generation
 - [x] Add dark mode via `prefers-color-scheme: dark` (automatic, no toggle needed)
 - [ ] Add export to CSV/PDF for controls and requirements tables

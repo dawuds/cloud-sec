@@ -35,6 +35,9 @@
       "tactic": "TA0001",
       "description": "Adversaries may exploit vulnerabilities in internet-facing cloud applications, APIs, or services to gain initial access. This includes exploiting web application vulnerabilities (SSRF, SQLi, RCE) in cloud-hosted workloads, serverless functions, API gateways, or managed services exposed to the internet.",
       "platforms": ["AWS", "Azure", "GCP"],
+      "subtechniques": [
+        { "id": "T1190.SSRF", "name": "Server-Side Request Forgery (Cloud Metadata)", "description": "Exploiting SSRF vulnerabilities in cloud-hosted applications to access the instance metadata service (169.254.169.254) and retrieve IAM role credentials." }
+      ],
       "ccmControls": ["AIS-01", "AIS-04", "AIS-06", "TVM-01", "TVM-02", "IVS-03"],
       "mitigations": ["Deploy web application firewalls", "Implement regular vulnerability scanning and patching", "Use API gateways with rate limiting and authentication", "Restrict instance metadata service access (IMDSv2)", "Perform regular penetration testing"],
       "knownUse": "Capital One breach began with SSRF against a cloud-hosted WAF. Log4Shell (CVE-2021-44228) exploited across cloud-hosted Java applications. Multiple SSRF attacks targeting cloud metadata services."
@@ -148,6 +151,10 @@
       "tactic": "TA0040",
       "description": "Adversaries may destroy data stored in cloud environments by deleting cloud storage objects, databases, snapshots, or backups. Cloud APIs enable rapid, large-scale data destruction that can be difficult to recover from if backups are also compromised.",
       "platforms": ["AWS", "Azure", "GCP", "Office 365"],
+      "subtechniques": [
+        { "id": "T1485.001", "name": "Cloud Storage Deletion", "description": "Deleting cloud storage objects (S3 objects, Azure blobs, GCS objects) to destroy data and hinder recovery. May include disabling versioning before deletion." },
+        { "id": "T1485.002", "name": "Cloud Backup Destruction", "description": "Targeting cloud backup services (AWS Backup, Azure Backup) and snapshot repositories to prevent recovery after primary data destruction." }
+      ],
       "ccmControls": ["BCR-01", "BCR-06", "DSP-01", "IAM-01", "IAM-10", "LOG-01"],
       "mitigations": ["Enable versioning and object lock on cloud storage", "Implement cross-region and cross-account backup replication", "Restrict delete permissions using IAM policies and SCPs", "Enable soft-delete with retention periods", "Protect backups in a separate account with independent credentials"],
       "knownUse": "Ransomware operators delete cloud backups and snapshots before encryption. Nation-state actors have destroyed cloud infrastructure during geopolitical conflicts."
@@ -158,6 +165,10 @@
       "tactic": "TA0040",
       "description": "Adversaries may hijack cloud compute resources for their own purposes, most commonly cryptocurrency mining. Cloud environments are attractive targets because compromised accounts provide access to elastic, high-performance compute that the victim pays for. Monthly cloud bills can spike to tens or hundreds of thousands of dollars.",
       "platforms": ["AWS", "Azure", "GCP"],
+      "subtechniques": [
+        { "id": "T1496.001", "name": "Cloud Cryptomining", "description": "Deploying cryptocurrency miners on cloud compute instances (especially GPU instances) using compromised credentials, resulting in significant financial impact to the victim." },
+        { "id": "T1496.002", "name": "Serverless Resource Abuse", "description": "Abusing serverless compute services (Lambda, Azure Functions, Cloud Functions) for cryptomining or distributed attacks, leveraging auto-scaling to maximise resource consumption." }
+      ],
       "ccmControls": ["IAM-01", "IAM-10", "LOG-01", "LOG-03", "IVS-01", "GRC-02"],
       "mitigations": ["Set billing alerts and spending limits on cloud accounts", "Monitor for unexpected resource creation, especially GPU instances", "Restrict instance types and sizes via service control policies", "Implement automated response to shut down unauthorized workloads", "Review cloud resource inventory regularly for unknown deployments"],
       "knownUse": "Extremely common. TeamTNT, WatchDog, and other groups routinely compromise cloud accounts for cryptomining. Stolen AWS keys from GitHub repos frequently used within minutes for mining operations."
@@ -168,6 +179,10 @@
       "tactic": "TA0001",
       "description": "Adversaries may abuse trusted relationships between cloud accounts, organisations, or services to gain access. This includes cross-account IAM role trust policies, partner API integrations, federated identity trust configurations, and third-party SaaS integrations with broad permissions.",
       "platforms": ["AWS", "Azure", "GCP", "Azure AD", "Office 365", "SaaS"],
+      "subtechniques": [
+        { "id": "T1199.001", "name": "Cross-Account Role Trust Abuse", "description": "Exploiting overly permissive IAM role trust policies that allow assumption from external or compromised accounts without adequate conditions (external ID, MFA)." },
+        { "id": "T1199.002", "name": "OAuth Consent Phishing", "description": "Tricking users into granting OAuth consent to malicious applications that request broad permissions to cloud resources, email, and files." }
+      ],
       "ccmControls": ["STA-01", "STA-03", "IAM-01", "IAM-04", "LOG-01"],
       "mitigations": ["Regularly audit cross-account trust policies and external identity federation", "Implement external ID requirements for cross-account role assumption", "Restrict OAuth application consent to admin-approved applications", "Monitor for unusual cross-account or cross-tenant activity", "Apply least privilege to third-party integrations"],
       "knownUse": "SolarWinds attack leveraged federated trust between on-premises AD and Azure AD. Codecov attack exploited trusted CI/CD integration. OAuth consent phishing abuses delegated trust."
@@ -198,6 +213,11 @@
       "tactic": "TA0006",
       "description": "Adversaries may use brute force or password spraying techniques against cloud authentication endpoints to discover valid credentials. Cloud identity providers are attractive targets because they are internet-accessible and a single successful authentication can provide access to multiple services.",
       "platforms": ["Azure AD", "Office 365", "Google Workspace", "AWS", "SaaS"],
+      "subtechniques": [
+        { "id": "T1110.001", "name": "Password Guessing", "description": "Guessing passwords for cloud accounts based on knowledge of the target (e.g., common patterns, leaked credentials from other breaches)." },
+        { "id": "T1110.003", "name": "Password Spraying", "description": "Attempting a single commonly used password against many cloud accounts simultaneously to avoid lockout thresholds." },
+        { "id": "T1110.004", "name": "Credential Stuffing", "description": "Using credentials from previous data breaches to attempt authentication against cloud identity providers, exploiting password reuse." }
+      ],
       "ccmControls": ["IAM-01", "IAM-02", "LOG-01", "LOG-03"],
       "mitigations": ["Enforce account lockout policies or smart lockout", "Implement MFA to prevent password-only access", "Deploy cloud-native brute force detection (Azure AD Smart Lockout, GuardDuty)", "Monitor for password spray patterns across multiple accounts", "Use passwordless authentication where possible"],
       "knownUse": "Password spraying against Azure AD and Microsoft 365 is extremely common. APT groups including APT29 and APT33 have conducted large-scale password spray campaigns against cloud identity providers."

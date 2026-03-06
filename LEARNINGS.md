@@ -175,6 +175,23 @@ Well-Architected framework data existed for AWS, Azure, and GCP (`standards/csp/
 
 **Fix:** Added Well-Architected section to `renderCSPDetail()` using `try/catch` around `load()` so CSPs without Well-Architected data (Alibaba, Huawei, Oracle) silently skip the section. Renders design principles as cards and best practice areas as expandable accordions.
 
+### CSP Filter Toggle — Controls View Pattern
+The Controls view now has a CSP filter toggle (All/AWS/Azure/GCP). Implementation uses `data-csps` attributes on control cards to enable client-side filtering. When a CSP is selected, only controls with that CSP's implementation are shown, and the CSP-specific implementation guidance is displayed inline. This avoids re-rendering the entire view.
+
+**Key design decisions:**
+- CSP list is discovered dynamically from `cspImplementation` keys across all controls (not hardcoded)
+- When "All" is selected, CSP implementation details are hidden to keep the view clean
+- When a specific CSP is selected, only that CSP's implementation detail is shown (not all three)
+- Controls without any CSP implementation are hidden when a specific CSP is selected
+
+**Lesson:** For client-side filtering with show/hide of sub-content, use `data-*` attributes and DOM manipulation rather than re-rendering. The template literal approach makes re-rendering expensive and destroys scroll position.
+
+### Cross-Reference Mapping Strategy — RMiT to NACSA
+The RMiT-to-NACSA cross-reference maps RMiT cloud clauses to NACSA Act 854 sections. Key finding: RMiT 10.51 (Appendix 10) maps to multiple NACSA sections (s18, s20, s23, s26) because Appendix 10's 8 control domains span security measures, standards, audit, and incident response. The incident notification mapping is particularly important: NACSA requires 6-hour notification (s26) while BNM RMiT requires 24-hour notification — financial institutions with NCII on cloud must design IR procedures for the stricter 6-hour NACSA timeline.
+
+### Evidence Depth — 4-5 Items Per Domain
+Expanding evidence from 31 to 53 items revealed that domains with only 2 items (container-security, serverless-security, etc.) were too shallow for practical audit use. The sweet spot is 4-5 items per domain: enough to cover the major audit checkpoints without becoming a checklist. Items should cover both positive evidence ("what good looks like") and gap identification ("common gaps") to guide both auditors and security teams.
+
 ### CCM Domain ID Mismatch: "AAC" vs "A&A"
 The `control-domains.json` file used "AAC" as the ID for the Audit & Assurance domain, but all 6 cross-reference files used "A&A" (the official CSA CCM v4 abbreviation). This mismatch was undetectable by manual review because the control-domains.json rendering worked fine (it just displayed the ID). Only a cross-reference validation script (`validate.js`) caught it by comparing domain IDs across files.
 

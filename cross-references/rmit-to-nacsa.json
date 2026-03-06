@@ -1,0 +1,107 @@
+{
+  "$schema": "cloud-security-v1",
+  "sourceType": "constructed-indicative",
+  "verificationNote": "This mapping is a reasoned interpretation of how BNM RMiT cloud technology requirements overlap with NACSA Act 854 obligations. It has not been validated by BNM, NACSA, or any regulatory authority. Financial institutions operating NCII should consult qualified legal and compliance advisors.",
+  "title": "BNM RMiT to NACSA Act 854 Cross-Reference",
+  "description": "Mapping between BNM RMiT cloud technology requirements (clauses 10.50-10.52, 17.1-17.5) and NACSA Cyber Security Act 2024 (Act 854) obligations. For Malaysian financial institutions operating National Critical Information Infrastructure (NCII) on cloud platforms, both regulatory frameworks apply simultaneously. This mapping identifies where obligations overlap, complement, or create additional requirements.",
+  "rmitVersion": "BNM RMiT November 2025",
+  "nacsaActReference": "Cyber Security Act 2024 (Act 854), Federal Gazette P.U.(B) 283/2024",
+  "mappings": [
+    {
+      "rmitClause": "10.50",
+      "rmitTitle": "Cloud Services Risk Assessment",
+      "nacsaSections": ["s21"],
+      "nacsaTitle": "Cyber security risk assessment",
+      "relationship": "complementary",
+      "notes": "RMiT 10.50 requires comprehensive risk assessment before cloud adoption covering 10 risk areas (deployment model, migration, data location, multi-tenancy, vendor lock-in, security configuration, CSP exposure, termination, responsibility demarcation, regulatory compliance). NACSA s21 requires NCII entities to conduct cyber security risk assessments. For financial institutions with NCII on cloud, the RMiT 10.50 risk assessment should be expanded to cover NCII-specific risks to satisfy both obligations simultaneously."
+    },
+    {
+      "rmitClause": "10.50",
+      "rmitTitle": "Cloud Services Risk Assessment",
+      "nacsaSections": ["s17"],
+      "nacsaTitle": "Designation of NCII",
+      "relationship": "complementary",
+      "notes": "The RMiT 10.50 risk assessment requires identifying critical systems migrating to cloud. NACSA s17 requires identification and designation of NCII. Financial institutions should ensure cloud-hosted systems designated as NCII are captured in the RMiT risk assessment scope, creating a single unified inventory of critical cloud assets."
+    },
+    {
+      "rmitClause": "10.51",
+      "rmitTitle": "Public Cloud Key Risks and Controls (Appendix 10)",
+      "nacsaSections": ["s18"],
+      "nacsaTitle": "Duties of NCII entity — security measures",
+      "relationship": "complementary",
+      "notes": "RMiT 10.51 (Appendix 10) prescribes 8 control domains for public cloud: governance, data security, IAM, network security, monitoring, BC/DR, vendor management, and audit. NACSA s18 requires NCII entities to implement appropriate cybersecurity measures. The Appendix 10 controls provide a structured implementation of s18 duties for cloud-hosted NCII. Compliance with Appendix 10 substantially satisfies s18 for the cloud portion of NCII."
+    },
+    {
+      "rmitClause": "10.51",
+      "rmitTitle": "Public Cloud Key Risks and Controls (Appendix 10)",
+      "nacsaSections": ["s20"],
+      "nacsaTitle": "Cybersecurity standards",
+      "relationship": "complementary",
+      "notes": "RMiT Appendix 10 references international standards (CIS Benchmarks, CSA CCM) for cloud security controls. NACSA s20 empowers NACSA to approve cybersecurity standards. Financial institutions should monitor whether NACSA approves specific cloud security standards under s20 that may supplement or supersede the Appendix 10 requirements."
+    },
+    {
+      "rmitClause": "10.51",
+      "rmitTitle": "Public Cloud Key Risks and Controls (Appendix 10)",
+      "nacsaSections": ["s23"],
+      "nacsaTitle": "Cyber security audit",
+      "relationship": "complementary",
+      "notes": "RMiT Appendix 10 audit domain requires cloud to be included in annual technology audit scope with CIS Benchmark assessments and penetration testing. NACSA s23 requires NCII entities to undergo cyber security audits by NACSA-licensed auditors. The RMiT-mandated cloud security audits provide evidence for NACSA s23 compliance, but NACSA may require additional audit scope or specific licensed auditors."
+    },
+    {
+      "rmitClause": "10.51",
+      "rmitTitle": "Public Cloud Key Risks and Controls (Appendix 10)",
+      "nacsaSections": ["s26"],
+      "nacsaTitle": "Cyber security incident notification",
+      "relationship": "overlapping",
+      "notes": "RMiT Appendix 10 monitoring domain requires 24/7 cloud monitoring with cloud-specific IR playbooks and 24-hour BNM notification for major incidents. NACSA s26 requires 6-hour notification to NACSA for cyber security incidents affecting NCII. Financial institutions with NCII on cloud must maintain dual notification procedures: 6-hour to NACSA and 24-hour to BNM. The NACSA timeline is stricter and should drive IR plan design."
+    },
+    {
+      "rmitClause": "10.52",
+      "rmitTitle": "Cloud Data Residency",
+      "nacsaSections": ["s18"],
+      "nacsaTitle": "Duties of NCII entity — security measures",
+      "relationship": "complementary",
+      "notes": "RMiT 10.52 requires critical customer data to reside in Malaysia (or nearest approved region with BNM approval). NACSA s18 duties include protecting NCII data. For NCII-designated cloud systems, data residency controls serve both obligations. Alibaba Cloud and Huawei Cloud offer Malaysia (Kuala Lumpur) regions; AWS, Azure, and GCP nearest approved region is Singapore."
+    },
+    {
+      "rmitClause": "10.52",
+      "rmitTitle": "Cloud Data Residency",
+      "nacsaSections": ["s17"],
+      "nacsaTitle": "Designation of NCII",
+      "relationship": "complementary",
+      "notes": "RMiT 10.52 data residency requirements apply to critical customer data. NACSA s17 NCII designation determines which systems are critical national infrastructure. Data classified as NCII under s17 that is also critical customer data under RMiT must satisfy both data residency and NCII protection requirements."
+    },
+    {
+      "rmitClause": "17.1",
+      "rmitTitle": "First-Time Cloud Consultation with BNM",
+      "nacsaSections": ["s22"],
+      "nacsaTitle": "Code of practice",
+      "relationship": "complementary",
+      "notes": "RMiT 17.1 requires BNM consultation before first-time public cloud adoption for critical systems, with comprehensive risk assessment and third-party review. NACSA s22 codes of practice may prescribe sector-specific cloud requirements. Financial institutions should reference both BNM consultation requirements and any NACSA-issued codes of practice for the financial sector when preparing cloud adoption submissions."
+    },
+    {
+      "rmitClause": "17.1",
+      "rmitTitle": "First-Time Cloud Consultation with BNM",
+      "nacsaSections": ["s21"],
+      "nacsaTitle": "Cyber security risk assessment",
+      "relationship": "complementary",
+      "notes": "The RMiT 17.1 prerequisite risk assessment (per 10.50 and Appendix 10, using Appendix 7 Part A format) can incorporate NACSA s21 risk assessment requirements. A single comprehensive risk assessment addressing both BNM and NACSA obligations reduces duplication and ensures consistency."
+    },
+    {
+      "rmitClause": "17.2",
+      "rmitTitle": "Subsequent Cloud Adoption Notification",
+      "nacsaSections": ["s18"],
+      "nacsaTitle": "Duties of NCII entity — security measures",
+      "relationship": "complementary",
+      "notes": "RMiT 17.2 allows notification (rather than consultation) for subsequent cloud adoptions if preconditions are met: no BNM concerns from first consultation, enhanced risk framework, independent assurance, and adequate IR. NACSA s18 duties remain continuous regardless of RMiT notification status. Each new NCII system on cloud must still satisfy s18 security measures."
+    },
+    {
+      "rmitClause": "17.5",
+      "rmitTitle": "Cloud Adoption Roadmap in Annual Outsourcing Plan",
+      "nacsaSections": ["s25"],
+      "nacsaTitle": "Cyber security exercise",
+      "relationship": "complementary",
+      "notes": "RMiT 17.5 requires cloud adoption roadmap in annual outsourcing plan submitted to BNM. NACSA s25 requires cyber security exercises for NCII. Financial institutions should align cloud adoption milestones with NACSA exercise schedules to ensure newly deployed NCII cloud systems are included in the next exercise cycle."
+    }
+  ]
+}

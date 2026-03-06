@@ -18,18 +18,18 @@ A structured, open-access knowledge base for cloud cybersecurity — covering CS
 
 | Layer | Content |
 |---|---|
-| **Standards** | CSA CCM v4 (17 domains), MITRE ATT&CK Cloud (35 techniques), NIST SP 800-144/800-210 |
+| **Standards** | CSA CCM v4 (17 domains), MITRE ATT&CK Cloud (35 techniques, 23 sub-techniques), NIST SP 800-144/800-210 |
 | **RMiT Cloud** | BNM RMiT cloud-specific clauses (10.50-10.52, 17.1-17.5), Appendix 10 domains, CCM v4 mapping |
 | **Architecture** | Shared responsibility model, reference architecture, service models (IaaS/PaaS/SaaS), asset types, CSP comparison |
 | **Cloud Providers** | AWS, Azure, GCP, Alibaba, Huawei, Oracle — services inventory, CIS Benchmarks, Well-Architected framework rendering |
 | **Requirements** | 12 security domains with detailed requirements, CCM/NACSA/NIST CSF/MITRE mappings |
-| **Controls** | 49 controls with maturity levels, CSP-specific implementation guidance, Audit Package (related artifacts + evidence) |
-| **Evidence** | Audit evidence items per domain — what auditors look for |
+| **Controls** | 49 controls with maturity levels, CSP-specific implementation guidance, CSP filter toggle, Audit Package (related artifacts + evidence) |
+| **Evidence** | 53 audit evidence items across 12 domains — what auditors look for |
 | **Artifacts** | 29 security artifacts — policies, procedures, reports, configurations |
 | **Threats** | 8 cloud incidents (Capital One, SolarWinds, Log4Shell, Storm-0558, Snowflake, etc.) + 6 threat actors |
 | **Risk Management** | Cloud risk methodology, 5x5 matrix, 15-risk register, assessment checklist, treatment options |
 | **Sectors** | Financial services, healthcare, government, e-commerce, education, telecommunications — with Malaysia-specific obligations |
-| **Cross-References** | CCM ↔ NACSA Act 854, NIST CSF 2.0, ISO 27017, MITRE ATT&CK, AWS/Azure/GCP service mappings |
+| **Cross-References** | CCM ↔ NACSA Act 854, RMiT ↔ NACSA Act 854, NIST CSF 2.0, ISO 27017, MITRE ATT&CK, AWS/Azure/GCP service mappings |
 
 ---
 
@@ -64,6 +64,19 @@ For Malaysian NCII-designated cloud operators:
 | **s26** — Incident notification | 6-hour NACSA + 24-hour BNM notification procedures |
 
 See full mapping: [`cross-references/ccm-to-nacsa.json`](cross-references/ccm-to-nacsa.json)
+
+### RMiT to NACSA Cross-Reference
+
+For financial institutions operating NCII on cloud, both BNM RMiT and NACSA Act 854 apply simultaneously:
+
+| RMiT Clause | NACSA Section | Relationship | Key Point |
+|---|---|---|---|
+| **10.50** | s17, s21 | Complementary | Cloud risk assessment covers NCII scope and risk |
+| **10.51** | s18, s20, s23, s26 | Complementary/Overlapping | Appendix 10 controls satisfy NCII duties; dual incident notification (6h NACSA, 24h BNM) |
+| **10.52** | s17, s18 | Complementary | Data residency protects NCII data |
+| **17.1** | s21, s22 | Complementary | BNM consultation incorporates NACSA risk requirements |
+
+See full mapping: [`cross-references/rmit-to-nacsa.json`](cross-references/rmit-to-nacsa.json)
 
 ---
 
@@ -105,7 +118,7 @@ cloud-sec/
 ├── .github/workflows/pages.yml         # GitHub Pages deployment + validation
 ├── standards/
 │   ├── csa-ccm/                        # CCM v4 overview + 17 control domains
-│   ├── mitre-attack-cloud/             # 35 cloud ATT&CK techniques
+│   ├── mitre-attack-cloud/             # 35 cloud ATT&CK techniques + 23 sub-techniques
 │   ├── nist-cloud/                     # NIST SP 800-144/800-210
 │   ├── rmit-cloud/                     # BNM RMiT cloud clauses + CCM mapping
 │   └── csp/
@@ -120,17 +133,17 @@ cloud-sec/
 ├── requirements/
 │   ├── index.json                      # 12 domain overview
 │   └── by-domain/                      # Per-domain requirement files (12 files)
-├── evidence/                           # Audit evidence items
+├── evidence/                           # 53 audit evidence items across 12 domains
 ├── artifacts/                          # 29 security artifacts inventory
 ├── threats/                            # 8 incidents + 6 threat actors
 ├── risk-management/                    # Methodology, matrix, register, checklist
 ├── sectors/
 │   ├── index.json                      # 6 sectors overview
 │   └── requirements/                   # Per-sector requirement files (6 files)
-└── cross-references/                   # 7 cross-reference mappings
+└── cross-references/                   # 8 cross-reference mappings
 ```
 
-**Total:** 72 JSON data files, 14 views, zero dependencies
+**Total:** 73 JSON data files, 14 views, zero dependencies
 
 ---
 
@@ -155,7 +168,7 @@ Static single-page application (SPA):
 
 - **CSA CCM v4** — Cloud Controls Matrix (paraphrased; obtain from cloudsecurityalliance.org)
 - **CIS Benchmarks** — AWS v3.0 (35 checks), Azure v2.1 (48 checks), GCP v3.0 (41 checks), Alibaba v1.0 (34 checks), OCI v2.0 (42 checks), Huawei best practices (23 checks) (indicative; obtain from cisecurity.org)
-- **MITRE ATT&CK Cloud** — Cloud adversary tactics and techniques (public; attack.mitre.org/matrices/enterprise/cloud)
+- **MITRE ATT&CK Cloud** — 35 cloud adversary techniques + 23 sub-techniques (public; attack.mitre.org/matrices/enterprise/cloud)
 - **NIST SP 800-144** — Guidelines on Security and Privacy in Public Cloud Computing (public; nvlpubs.nist.gov)
 - **NIST SP 800-210** — General Access Control Guidance for Cloud Systems (public; nvlpubs.nist.gov)
 - **NIST CSF 2.0** — Cybersecurity Framework (public; nist.gov/cyberframework)
