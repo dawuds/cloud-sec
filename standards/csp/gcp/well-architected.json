@@ -1,0 +1,223 @@
+{
+  "framework": "Google Cloud Architecture Framework - Security Pillar",
+  "version": "2024",
+  "csp": "gcp",
+  "sourceType": "constructed-indicative",
+  "verificationNote": "Design principles and best practices are indicative summaries -- obtain full guidance from cloud.google.com/architecture/framework/security",
+  "description": "The Security Pillar of the Google Cloud Architecture Framework provides guidance for designing secure systems on Google Cloud. It covers identity, data, network, compute, and operational security. It is organized around six design principles and six best practice areas.",
+  "url": "https://cloud.google.com/architecture/framework/security",
+  "designPrinciples": [
+    {
+      "id": "sec-dp-1",
+      "title": "Implement defense in depth",
+      "description": "Apply multiple layers of security controls throughout your architecture so that no single point of failure can compromise the entire system. Use organizational policies, network controls, identity management, detective controls, and data protection in combination to create overlapping security boundaries."
+    },
+    {
+      "id": "sec-dp-2",
+      "title": "Design for a Zero Trust architecture",
+      "description": "Assume no implicit trust in any network, user, or device. Verify every request as though it originates from an open network. Use BeyondCorp Enterprise principles to shift access controls from the network perimeter to individual users, devices, and services based on context-aware policies."
+    },
+    {
+      "id": "sec-dp-3",
+      "title": "Automate security controls and operations",
+      "description": "Use automation to deploy, configure, and enforce security policies consistently. Automate vulnerability scanning, compliance checks, incident response, and remediation. Infrastructure as Code and policy-as-code reduce human error and enable security at scale."
+    },
+    {
+      "id": "sec-dp-4",
+      "title": "Protect data throughout its lifecycle",
+      "description": "Classify data by sensitivity and apply appropriate encryption, access controls, and retention policies at each stage of the data lifecycle. Use Google-managed or customer-managed encryption keys, DLP for sensitive data discovery, and VPC Service Controls to establish data perimeters."
+    },
+    {
+      "id": "sec-dp-5",
+      "title": "Manage identity and access with least privilege",
+      "description": "Implement fine-grained access controls based on the principle of least privilege. Use Cloud IAM roles scoped to the minimum required permissions, service accounts with short-lived credentials, and Workload Identity Federation to eliminate long-lived keys."
+    },
+    {
+      "id": "sec-dp-6",
+      "title": "Implement comprehensive logging and detection",
+      "description": "Ensure that all actions and events across your cloud environment are captured, centralized, and analyzed. Use Cloud Audit Logs, Security Command Center, and Chronicle SIEM to detect threats, investigate incidents, and maintain audit trails for compliance."
+    }
+  ],
+  "bestPracticeAreas": [
+    {
+      "id": "sec-bp-1",
+      "title": "Security Governance",
+      "description": "Establishing organizational policies, resource hierarchies, and compliance frameworks that define how security is managed across Google Cloud projects and workloads.",
+      "questions": [
+        {
+          "id": "GCP-SEC01",
+          "title": "How do you establish and maintain security governance in Google Cloud?",
+          "practices": [
+            "Design a resource hierarchy (organization, folders, projects) that reflects security boundaries",
+            "Use Organization Policies to enforce constraints across all projects (e.g., restrict public IPs, enforce uniform bucket access)",
+            "Implement security baselines using Assured Workloads for regulated industries",
+            "Maintain an inventory of all cloud assets using Cloud Asset Inventory",
+            "Define and track security posture using Security Command Center Security Health Analytics",
+            "Conduct regular threat modeling and risk assessments for workloads"
+          ]
+        },
+        {
+          "id": "GCP-SEC02",
+          "title": "How do you manage compliance and security standards?",
+          "practices": [
+            "Map regulatory requirements to Google Cloud compliance offerings and controls",
+            "Use Security Command Center compliance modules to monitor regulatory posture",
+            "Automate compliance enforcement with Organization Policies and Terraform",
+            "Maintain audit trails for all administrative and data access actions"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sec-bp-2",
+      "title": "Identity and Access Management",
+      "description": "Managing authentication, authorization, and identity lifecycle to ensure only verified principals access resources with the minimum necessary permissions.",
+      "questions": [
+        {
+          "id": "GCP-SEC03",
+          "title": "How do you manage identity and authentication?",
+          "practices": [
+            "Use Google Cloud Identity or federate with an external identity provider (Okta, Azure AD, SAML/OIDC)",
+            "Enforce multi-factor authentication (MFA) for all users, with phishing-resistant methods for admins",
+            "Use service accounts with short-lived credentials and avoid user-managed service account keys",
+            "Implement Workload Identity Federation for external workloads (GitHub Actions, AWS, Azure) to eliminate static keys",
+            "Use BeyondCorp Enterprise for context-aware access to applications and resources",
+            "Implement OS Login for SSH access to Compute Engine instances"
+          ]
+        },
+        {
+          "id": "GCP-SEC04",
+          "title": "How do you implement least privilege and manage permissions?",
+          "practices": [
+            "Assign predefined IAM roles scoped to the narrowest applicable resource level",
+            "Use IAM Recommender to identify and remove excess permissions",
+            "Implement IAM Conditions for attribute-based access control (time, resource, IP)",
+            "Use IAM Deny policies to set guardrails that override allow policies",
+            "Review and audit IAM bindings regularly using Policy Analyzer and Policy Troubleshooter",
+            "Implement just-in-time privileged access using Privileged Access Manager (PAM)"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sec-bp-3",
+      "title": "Data Security",
+      "description": "Protecting data confidentiality and integrity through classification, encryption, access controls, and data loss prevention across all storage and processing layers.",
+      "questions": [
+        {
+          "id": "GCP-SEC05",
+          "title": "How do you classify and protect data at rest?",
+          "practices": [
+            "Classify data by sensitivity and apply labels using Cloud DLP (Sensitive Data Protection)",
+            "All data at rest is encrypted by default; use Customer-Managed Encryption Keys (CMEK) for additional control",
+            "Use Customer-Supplied Encryption Keys (CSEK) or Cloud External Key Manager (EKM) for highest sensitivity data",
+            "Implement Confidential Computing (Confidential VMs, Confidential GKE) for data-in-use protection",
+            "Apply retention policies, object versioning, and Object Lock for data durability and tamper protection",
+            "Centralize key management in Cloud KMS with key rotation and audit logging"
+          ]
+        },
+        {
+          "id": "GCP-SEC06",
+          "title": "How do you prevent data leakage and protect data in transit?",
+          "practices": [
+            "Enforce TLS 1.2+ for all external and internal communications",
+            "Use VPC Service Controls to create data perimeters that prevent exfiltration",
+            "Implement Cloud DLP inspection and de-identification for sensitive data",
+            "Restrict data access to authorized VPCs and projects using perimeter policies",
+            "Monitor data access patterns with Data Access audit logs"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sec-bp-4",
+      "title": "Network Security",
+      "description": "Controlling network access, segmenting workloads, and protecting communications to prevent unauthorized access and lateral movement.",
+      "questions": [
+        {
+          "id": "GCP-SEC07",
+          "title": "How do you secure network boundaries and segment workloads?",
+          "practices": [
+            "Design VPC networks and subnets to isolate workloads based on trust boundaries",
+            "Use VPC firewall rules and firewall policies (hierarchical) to control traffic at organization, folder, and project levels",
+            "Enable Private Google Access and Private Service Connect to access Google APIs without public IPs",
+            "Implement Cloud NAT for egress without exposing instances to inbound internet traffic",
+            "Use Shared VPC to centralize network management while maintaining project-level isolation",
+            "Deploy Cloud Armor for DDoS protection and WAF for public-facing applications"
+          ]
+        },
+        {
+          "id": "GCP-SEC08",
+          "title": "How do you secure hybrid and multi-cloud connectivity?",
+          "practices": [
+            "Use Cloud Interconnect or Cloud VPN for encrypted private connectivity to on-premises",
+            "Implement Identity-Aware Proxy (IAP) for secure application access without VPN",
+            "Enable VPC Flow Logs and Packet Mirroring for network traffic visibility and forensics",
+            "Use Cloud IDS (Intrusion Detection System) for network-based threat detection"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sec-bp-5",
+      "title": "Compute and Container Security",
+      "description": "Hardening compute resources, securing container workloads, and protecting the software supply chain from build to runtime.",
+      "questions": [
+        {
+          "id": "GCP-SEC09",
+          "title": "How do you secure compute resources and workloads?",
+          "practices": [
+            "Use Shielded VMs with Secure Boot, vTPM, and integrity monitoring",
+            "Harden VM images using CIS benchmarks and automate image building with Packer",
+            "Apply OS patch management using VM Manager and automated patching policies",
+            "Use Sole-Tenant Nodes for workloads requiring physical isolation",
+            "Implement organization policies to restrict VM creation (e.g., trusted images only)"
+          ]
+        },
+        {
+          "id": "GCP-SEC10",
+          "title": "How do you secure containers and the software supply chain?",
+          "practices": [
+            "Use GKE Autopilot for security-hardened Kubernetes with Google-managed node security",
+            "Enable Binary Authorization to enforce deploy-time container image verification",
+            "Scan container images for vulnerabilities using Artifact Registry vulnerability scanning",
+            "Implement Workload Identity for GKE pods to eliminate service account key distribution",
+            "Use Software Delivery Shield for end-to-end software supply chain security (SLSA framework)",
+            "Apply GKE Security Posture dashboard recommendations and Pod Security Standards"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sec-bp-6",
+      "title": "Security Operations",
+      "description": "Detecting, investigating, and responding to security threats through centralized monitoring, automated response, and incident management processes.",
+      "questions": [
+        {
+          "id": "GCP-SEC11",
+          "title": "How do you detect and investigate security threats?",
+          "practices": [
+            "Enable Security Command Center Premium for threat detection, vulnerability management, and compliance monitoring",
+            "Configure Cloud Audit Logs (Admin Activity, Data Access, System Event, Policy Denied) for comprehensive audit trails",
+            "Use Chronicle SIEM for advanced log analytics, threat hunting, and correlation at scale",
+            "Integrate threat intelligence with Security Command Center and Chronicle SOAR",
+            "Implement Event Threat Detection for automated identification of runtime threats",
+            "Use Security Command Center findings and notification channels for real-time alerting"
+          ]
+        },
+        {
+          "id": "GCP-SEC12",
+          "title": "How do you prepare for and manage security incidents?",
+          "practices": [
+            "Develop incident response plans with clear roles, escalation paths, and communication protocols",
+            "Use Chronicle SOAR for automated playbook-driven incident response",
+            "Pre-provision forensic projects and tooling for evidence collection and analysis",
+            "Conduct regular tabletop exercises and adversary simulations",
+            "Implement automated containment actions (revoke IAM, disable service accounts, isolate VMs)",
+            "Perform post-incident reviews and update detection rules and playbooks based on findings"
+          ]
+        }
+      ]
+    }
+  ]
+}

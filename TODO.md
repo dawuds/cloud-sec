@@ -36,15 +36,17 @@ Tracking all planned enhancements. Grouped by phase. Check off items as complete
 
 ---
 
-## Phase 3 — Data Enrichment (Pending)
+## Phase 3 — Data Enrichment (Mostly Complete)
 
-- [ ] Add CIS Benchmark data for Alibaba (v1.0, 34 controls) — `standards/csp/alibaba/cis-benchmark.json`
-- [ ] Add CIS Benchmark data for Oracle (v2.0, 42 controls) — `standards/csp/oracle/cis-benchmark.json`
-- [ ] Add Well-Architected framework data for Azure, GCP — `standards/csp/{azure,gcp}/well-architected.json`
-- [ ] Expand evidence items from 6 domains to all 12 domains
+- [x] Add CIS Benchmark data for Alibaba (v1.0, 34 checks) — `standards/csp/alibaba/cis-benchmark.json`
+- [x] Add CIS Benchmark data for Oracle (v2.0, 42 checks) — `standards/csp/oracle/cis-benchmark.json`
+- [x] Add Huawei Cloud Security Best Practices (23 checks) — `standards/csp/huawei/cis-benchmark.json` (no official CIS benchmark exists)
+- [x] Add Well-Architected framework data for Azure (5 principles, 6 areas) — `standards/csp/azure/well-architected.json`
+- [x] Add Well-Architected framework data for GCP (6 principles, 6 areas) — `standards/csp/gcp/well-architected.json`
+- [x] Add missing sector files: education.json, telecommunications.json — all 6 sectors now have detail files
 - [x] Expand threat actors — now 6 (added Muddled Libra); FIN7, APT41 pending
+- [ ] Expand evidence items from 6 domains to all 12 domains
 - [ ] Add cloud-specific MITRE ATT&CK sub-techniques where relevant
-- [ ] Add Huawei CIS Benchmark data if/when published
 
 ---
 

@@ -1,0 +1,295 @@
+{
+  "framework": "CIS Alibaba Cloud Foundation Benchmark",
+  "version": "1.0",
+  "releaseDate": "2021-09",
+  "csp": "alibaba",
+  "sourceType": "constructed-indicative",
+  "verificationNote": "Control summaries are indicative -- obtain full benchmark from cisecurity.org",
+  "description": "The CIS Alibaba Cloud Foundation Benchmark provides prescriptive guidance for configuring security options for Alibaba Cloud services. It focuses on foundational, testable, and architecture-agnostic settings for identity, logging, networking, compute, storage, and database services.",
+  "levels": {
+    "1": "Basic security settings that can be configured without significant performance impact. Recommended for all environments.",
+    "2": "Advanced security settings that may have performance or operational implications. Recommended for high-security environments."
+  },
+  "sections": [
+    {
+      "id": "1",
+      "title": "Identity and Access Management (RAM)",
+      "description": "Controls for managing Alibaba Cloud identities, authentication, and authorization using Resource Access Management (RAM). Focuses on root account protection, MFA enforcement, password policies, and least-privilege access.",
+      "checks": [
+        {
+          "id": "1.1",
+          "title": "Ensure that the root account is not used for daily operations",
+          "level": 1,
+          "automated": false,
+          "description": "The root account (primary account) has unrestricted access to all Alibaba Cloud resources. Create RAM users for day-to-day operations and avoid using the root account for routine administrative tasks."
+        },
+        {
+          "id": "1.2",
+          "title": "Ensure MFA is enabled for the root account",
+          "level": 1,
+          "automated": true,
+          "description": "Multi-Factor Authentication should be enabled for the root account to add an extra layer of protection. This reduces the risk of unauthorized access if root credentials are compromised through phishing or credential theft."
+        },
+        {
+          "id": "1.3",
+          "title": "Ensure MFA is enabled for all RAM users with console access",
+          "level": 1,
+          "automated": true,
+          "description": "All RAM users that have console login enabled should have MFA configured. This prevents unauthorized access even if passwords are compromised through phishing, credential stuffing, or other attacks."
+        },
+        {
+          "id": "1.4",
+          "title": "Ensure no root account access keys exist",
+          "level": 1,
+          "automated": true,
+          "description": "Access keys for the root account should be deleted. The root account has unrestricted access and its credentials pose the highest risk if compromised. Use RAM users or RAM roles for programmatic access instead."
+        },
+        {
+          "id": "1.5",
+          "title": "Ensure RAM password policy requires minimum length of 14 or greater",
+          "level": 1,
+          "automated": true,
+          "description": "The RAM password policy should enforce a minimum password length of 14 characters. Longer passwords are exponentially harder to brute force and provide better security than complexity requirements alone."
+        },
+        {
+          "id": "1.6",
+          "title": "Ensure RAM policies are attached to groups rather than individual users",
+          "level": 1,
+          "automated": true,
+          "description": "RAM policies should be attached to RAM groups rather than directly to individual RAM users. This simplifies access management, makes it easier to audit permissions, and ensures consistent policy application."
+        }
+      ]
+    },
+    {
+      "id": "2",
+      "title": "Logging and Monitoring (ActionTrail)",
+      "description": "Controls for ensuring comprehensive audit logging across Alibaba Cloud services using ActionTrail. Focuses on trail configuration, log integrity, and centralized log management via Log Service (SLS).",
+      "checks": [
+        {
+          "id": "2.1",
+          "title": "Ensure ActionTrail is enabled in all regions",
+          "level": 1,
+          "automated": true,
+          "description": "ActionTrail should be configured with a multi-region trail to capture API activity across all Alibaba Cloud regions. This ensures that actions taken in any region, including regions not actively used, are logged for security analysis."
+        },
+        {
+          "id": "2.2",
+          "title": "Ensure ActionTrail logs are delivered to an OSS bucket",
+          "level": 1,
+          "automated": true,
+          "description": "ActionTrail logs should be delivered to a dedicated OSS bucket for long-term retention and archival. This ensures audit logs are preserved independently of ActionTrail's default retention period for compliance and forensic purposes."
+        },
+        {
+          "id": "2.3",
+          "title": "Ensure ActionTrail logs are integrated with Log Service (SLS)",
+          "level": 1,
+          "automated": true,
+          "description": "ActionTrail logs should be delivered to Log Service (SLS) to enable real-time monitoring, querying, and alerting on API activity. SLS provides dashboards, anomaly detection, and automated response capabilities."
+        },
+        {
+          "id": "2.4",
+          "title": "Ensure the OSS bucket storing ActionTrail logs is not publicly accessible",
+          "level": 1,
+          "automated": true,
+          "description": "The OSS bucket where ActionTrail delivers log files must not be publicly accessible. Public access to audit logs could expose sensitive information about cloud resource configurations and API activity."
+        },
+        {
+          "id": "2.5",
+          "title": "Ensure ActionTrail log file validation is enabled",
+          "level": 2,
+          "automated": true,
+          "description": "ActionTrail log file validation creates digest files that enable detection of log file modification, deletion, or forgery after delivery. This ensures the integrity and authenticity of audit trail data."
+        },
+        {
+          "id": "2.6",
+          "title": "Ensure ActionTrail logs are encrypted at rest using KMS",
+          "level": 2,
+          "automated": true,
+          "description": "ActionTrail logs stored in OSS should be encrypted using KMS-managed keys rather than default OSS encryption. This provides additional access controls via KMS key policies and enables envelope encryption."
+        }
+      ]
+    },
+    {
+      "id": "3",
+      "title": "Networking (VPC and Security Groups)",
+      "description": "Controls for securing Virtual Private Cloud networking configurations. Focuses on restricting inbound access, securing security groups, and ensuring proper network segmentation.",
+      "checks": [
+        {
+          "id": "3.1",
+          "title": "Ensure no security groups allow ingress from 0.0.0.0/0 to port 22",
+          "level": 1,
+          "automated": true,
+          "description": "Security groups should not allow unrestricted inbound access (0.0.0.0/0) to SSH port 22. Restrict access to known IP ranges, use bastion hosts, or leverage Alibaba Cloud's Cloud Shell or Session Manager for administrative access."
+        },
+        {
+          "id": "3.2",
+          "title": "Ensure no security groups allow ingress from 0.0.0.0/0 to port 3389",
+          "level": 1,
+          "automated": true,
+          "description": "Security groups should not allow unrestricted inbound access (0.0.0.0/0) to RDP port 3389. Windows instances should only be accessible from known trusted IP ranges or via secure connectivity solutions."
+        },
+        {
+          "id": "3.3",
+          "title": "Ensure the default security group restricts all traffic",
+          "level": 2,
+          "automated": true,
+          "description": "The default security group in each VPC should have all permissive inbound rules removed. Resources should use custom security groups with explicit, least-privilege rules. The default group cannot be deleted but should restrict all traffic."
+        },
+        {
+          "id": "3.4",
+          "title": "Ensure VPC flow logs are enabled",
+          "level": 2,
+          "automated": true,
+          "description": "VPC Flow Logs capture IP traffic information for network interfaces in a VPC. Enable flow logging for all VPCs to monitor accepted and rejected traffic, detect anomalies, and support forensic investigation of security incidents."
+        },
+        {
+          "id": "3.5",
+          "title": "Ensure security group rules follow the principle of least privilege",
+          "level": 1,
+          "automated": false,
+          "description": "Security group rules should follow the principle of least privilege, allowing only the minimum required ports and source IP ranges. Avoid overly permissive rules that allow all traffic or wide port ranges."
+        },
+        {
+          "id": "3.6",
+          "title": "Ensure no security groups allow unrestricted ingress to database ports",
+          "level": 1,
+          "automated": true,
+          "description": "Security groups should not allow unrestricted inbound access (0.0.0.0/0) to common database ports (3306, 5432, 1433, 1521, 6379, 27017). Databases should be accessible only from application-tier security groups."
+        }
+      ]
+    },
+    {
+      "id": "4",
+      "title": "Virtual Machines (ECS)",
+      "description": "Controls for securing Elastic Compute Service instances. Focuses on instance hardening, encryption, metadata security, and secure configuration management.",
+      "checks": [
+        {
+          "id": "4.1",
+          "title": "Ensure ECS instances are not assigned public IP addresses directly",
+          "level": 1,
+          "automated": true,
+          "description": "ECS instances should not be assigned public IP addresses directly. Use Elastic IP (EIP) addresses or SLB/ALB for public-facing workloads, and keep instances in private subnets with access through NAT gateways for outbound traffic."
+        },
+        {
+          "id": "4.2",
+          "title": "Ensure ECS system disk encryption is enabled",
+          "level": 1,
+          "automated": true,
+          "description": "ECS instance system disks and data disks should have encryption enabled using KMS. Disk encryption protects data at rest from unauthorized access to the underlying storage infrastructure."
+        },
+        {
+          "id": "4.3",
+          "title": "Ensure ECS instances use key pairs instead of passwords for SSH authentication",
+          "level": 1,
+          "automated": true,
+          "description": "ECS Linux instances should use SSH key pairs for authentication instead of passwords. Key-based authentication is more secure, resistant to brute-force attacks, and supports centralized key management."
+        },
+        {
+          "id": "4.4",
+          "title": "Ensure ECS instance metadata service is configured securely",
+          "level": 2,
+          "automated": true,
+          "description": "ECS instances should enforce the use of the hardened metadata token for accessing the instance metadata service. This mitigates SSRF attacks that could steal instance credentials by requiring a session token."
+        },
+        {
+          "id": "4.5",
+          "title": "Ensure ECS instances are managed by Auto Scaling for availability",
+          "level": 2,
+          "automated": false,
+          "description": "Production ECS instances should be managed through Auto Scaling groups to ensure high availability and automatic replacement of unhealthy instances. This improves resilience and enables automated scaling based on demand."
+        }
+      ]
+    },
+    {
+      "id": "5",
+      "title": "Storage (OSS and NAS)",
+      "description": "Controls for securing Object Storage Service (OSS) buckets and NAS file systems. Focuses on encryption, access controls, and preventing unintended public exposure of data.",
+      "checks": [
+        {
+          "id": "5.1",
+          "title": "Ensure OSS bucket access logging is enabled",
+          "level": 1,
+          "automated": true,
+          "description": "OSS bucket access logging should be enabled to record all requests made to the bucket. Access logs provide visibility into who is accessing data, from where, and support security auditing and forensic investigation."
+        },
+        {
+          "id": "5.2",
+          "title": "Ensure OSS bucket ACL is not set to public-read or public-read-write",
+          "level": 1,
+          "automated": true,
+          "description": "OSS buckets should not have ACLs set to public-read or public-read-write. Public buckets can expose sensitive data to the internet. Use bucket policies with explicit grants for authorized access only."
+        },
+        {
+          "id": "5.3",
+          "title": "Ensure OSS bucket server-side encryption is enabled",
+          "level": 1,
+          "automated": true,
+          "description": "OSS buckets should have server-side encryption enabled using KMS-managed keys or OSS-managed keys. This ensures all objects stored in the bucket are encrypted at rest automatically."
+        },
+        {
+          "id": "5.4",
+          "title": "Ensure OSS bucket versioning is enabled",
+          "level": 2,
+          "automated": true,
+          "description": "OSS bucket versioning should be enabled for critical data buckets. Versioning protects against accidental deletion or overwriting of objects by maintaining previous versions, enabling recovery from unintended changes."
+        },
+        {
+          "id": "5.5",
+          "title": "Ensure OSS buckets enforce HTTPS-only access",
+          "level": 2,
+          "automated": true,
+          "description": "OSS bucket policies should include a condition to deny all requests that do not use HTTPS. This prevents data in transit from being transmitted unencrypted between clients and OSS."
+        },
+        {
+          "id": "5.6",
+          "title": "Ensure NAS file system encryption is enabled",
+          "level": 1,
+          "automated": true,
+          "description": "NAS file systems should have encryption at rest enabled using KMS. Encryption protects the underlying storage data from unauthorized access and meets compliance requirements for data protection."
+        }
+      ]
+    },
+    {
+      "id": "6",
+      "title": "Database (RDS and ApsaraDB)",
+      "description": "Controls for securing Relational Database Service (RDS) and ApsaraDB instances. Focuses on encryption, network isolation, access controls, and backup configuration.",
+      "checks": [
+        {
+          "id": "6.1",
+          "title": "Ensure RDS instances have encryption at rest enabled",
+          "level": 1,
+          "automated": true,
+          "description": "RDS instances should have Transparent Data Encryption (TDE) or disk encryption enabled. Encryption protects the underlying storage, backups, and snapshots from unauthorized access."
+        },
+        {
+          "id": "6.2",
+          "title": "Ensure RDS instances are not publicly accessible",
+          "level": 1,
+          "automated": true,
+          "description": "RDS instances should not have public network access enabled. Database instances should be deployed in VPCs and accessed only from within the VPC or via secure connectivity solutions (VPN, Express Connect)."
+        },
+        {
+          "id": "6.3",
+          "title": "Ensure RDS instances have SSL/TLS connections enforced",
+          "level": 1,
+          "automated": true,
+          "description": "RDS instances should require SSL/TLS for all client connections. This ensures data in transit between applications and the database is encrypted, preventing eavesdropping and man-in-the-middle attacks."
+        },
+        {
+          "id": "6.4",
+          "title": "Ensure RDS instances have automatic backup enabled",
+          "level": 1,
+          "automated": true,
+          "description": "RDS instances should have automatic backup enabled with an appropriate retention period (at least 7 days). Backups enable point-in-time recovery and protect against data loss from accidental deletion or corruption."
+        },
+        {
+          "id": "6.5",
+          "title": "Ensure RDS instances have audit logging enabled",
+          "level": 2,
+          "automated": true,
+          "description": "RDS instances should have SQL audit logging enabled to record all database operations. Audit logs provide visibility into database activity for security monitoring, compliance, and forensic investigation."
+        }
+      ]
+    }
+  ]
+}

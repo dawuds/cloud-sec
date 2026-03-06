@@ -1,0 +1,210 @@
+{
+  "framework": "Huawei Cloud Security Best Practices",
+  "version": "2024",
+  "csp": "huawei",
+  "sourceType": "constructed-indicative",
+  "verificationNote": "No official CIS benchmark exists for Huawei Cloud. These are indicative best practices based on Huawei Cloud security documentation. Verify against current Huawei Cloud documentation.",
+  "description": "Huawei Cloud security best practices provide guidance for configuring security settings across core Huawei Cloud services. Since no official CIS benchmark exists for Huawei Cloud, these controls are derived from Huawei Cloud security documentation and aligned with general cloud security best practices.",
+  "levels": {
+    "1": "Basic security settings that can be configured without significant performance impact. Recommended for all environments.",
+    "2": "Advanced security settings that may have performance or operational implications. Recommended for high-security environments."
+  },
+  "sections": [
+    {
+      "id": "1",
+      "title": "Identity and Access Management (IAM)",
+      "description": "Controls for managing Huawei Cloud identities, authentication, and authorization. Focuses on account protection, MFA enforcement, password policies, and least-privilege access using IAM users, groups, and policies.",
+      "checks": [
+        {
+          "id": "1.1",
+          "title": "Ensure the root account is not used for daily operations",
+          "level": 1,
+          "automated": false,
+          "description": "The root account (account owner) has unrestricted access to all Huawei Cloud resources. Create IAM users for day-to-day operations and reserve the root account only for account-level tasks that cannot be performed by IAM users."
+        },
+        {
+          "id": "1.2",
+          "title": "Ensure MFA is enabled for the root account and all IAM users with console access",
+          "level": 1,
+          "automated": true,
+          "description": "Multi-Factor Authentication should be enabled for the root account and all IAM users with console login. Huawei Cloud supports virtual MFA devices. MFA prevents unauthorized access if credentials are compromised."
+        },
+        {
+          "id": "1.3",
+          "title": "Ensure IAM password policy requires minimum length of 14 or greater",
+          "level": 1,
+          "automated": true,
+          "description": "The IAM password policy should enforce a minimum password length of 14 characters along with complexity requirements. Strong password policies reduce the risk of brute-force and credential-stuffing attacks."
+        },
+        {
+          "id": "1.4",
+          "title": "Ensure IAM policies are attached to groups rather than individual users",
+          "level": 1,
+          "automated": true,
+          "description": "IAM policies should be attached to IAM user groups rather than directly to individual users. Group-based access management simplifies permission auditing, ensures consistency, and reduces administrative overhead."
+        },
+        {
+          "id": "1.5",
+          "title": "Ensure unused IAM user credentials are disabled or removed",
+          "level": 1,
+          "automated": true,
+          "description": "IAM user accounts and access keys that have not been used for 90 days or more should be disabled or deleted. Stale credentials represent a security risk if compromised and indicate accounts that may not need access."
+        }
+      ]
+    },
+    {
+      "id": "2",
+      "title": "Networking (VPC)",
+      "description": "Controls for securing Virtual Private Cloud networking configurations. Focuses on restricting inbound access, securing security groups, and ensuring proper network segmentation and monitoring.",
+      "checks": [
+        {
+          "id": "2.1",
+          "title": "Ensure no security groups allow ingress from 0.0.0.0/0 to port 22 or 3389",
+          "level": 1,
+          "automated": true,
+          "description": "Security groups should not allow unrestricted inbound access (0.0.0.0/0) to SSH port 22 or RDP port 3389. Restrict administrative access to known IP ranges or use Huawei Cloud bastion host services."
+        },
+        {
+          "id": "2.2",
+          "title": "Ensure the default security group restricts all inbound traffic",
+          "level": 2,
+          "automated": true,
+          "description": "The default security group in each VPC should have permissive inbound rules removed. Resources should use custom security groups with explicit, least-privilege rules tailored to their specific access requirements."
+        },
+        {
+          "id": "2.3",
+          "title": "Ensure VPC flow logs are enabled",
+          "level": 2,
+          "automated": true,
+          "description": "VPC flow logs should be enabled to capture IP traffic information for network interfaces. Flow logs provide visibility into accepted and rejected traffic, support anomaly detection, and aid forensic investigation of security incidents."
+        },
+        {
+          "id": "2.4",
+          "title": "Ensure no security groups allow unrestricted ingress to database ports",
+          "level": 1,
+          "automated": true,
+          "description": "Security groups should not allow unrestricted inbound access (0.0.0.0/0) to common database ports (3306, 5432, 1433, 6379, 27017). Database instances should be accessible only from application-tier security groups within the VPC."
+        }
+      ]
+    },
+    {
+      "id": "3",
+      "title": "Compute (ECS)",
+      "description": "Controls for securing Elastic Cloud Server instances. Focuses on instance hardening, encryption, secure access, and configuration management.",
+      "checks": [
+        {
+          "id": "3.1",
+          "title": "Ensure ECS instances are not assigned public IP addresses unless required",
+          "level": 1,
+          "automated": true,
+          "description": "ECS instances should not be assigned EIPs (Elastic IPs) directly unless they require public-facing access. Use ELB for public services and NAT gateways for outbound access from instances in private subnets."
+        },
+        {
+          "id": "3.2",
+          "title": "Ensure ECS system and data disk encryption is enabled",
+          "level": 1,
+          "automated": true,
+          "description": "ECS instance system disks and data disks should have encryption enabled using KMS (DEW). Disk encryption protects data at rest from unauthorized access to the underlying storage infrastructure."
+        },
+        {
+          "id": "3.3",
+          "title": "Ensure ECS instances use key pairs for SSH authentication",
+          "level": 1,
+          "automated": true,
+          "description": "Linux ECS instances should use SSH key pairs for authentication instead of passwords. Key-based authentication is more secure, resistant to brute-force attacks, and supports centralized key management."
+        },
+        {
+          "id": "3.4",
+          "title": "Ensure Host Security Service (HSS) is enabled for ECS instances",
+          "level": 1,
+          "automated": true,
+          "description": "Huawei Cloud Host Security Service (HSS) should be enabled on all ECS instances to provide vulnerability scanning, intrusion detection, malware detection, and security baseline checks at the host level."
+        },
+        {
+          "id": "3.5",
+          "title": "Ensure ECS instances have auto-recovery configured",
+          "level": 2,
+          "automated": false,
+          "description": "Production ECS instances should have auto-recovery configured to automatically restart on a new host if the underlying hardware fails. This improves availability and reduces downtime for critical workloads."
+        }
+      ]
+    },
+    {
+      "id": "4",
+      "title": "Storage (OBS)",
+      "description": "Controls for securing Object Storage Service (OBS) buckets. Focuses on encryption, access controls, logging, and preventing unintended public exposure of data.",
+      "checks": [
+        {
+          "id": "4.1",
+          "title": "Ensure OBS bucket ACL is not set to public-read or public-read-write",
+          "level": 1,
+          "automated": true,
+          "description": "OBS buckets should not have ACLs set to public-read or public-read-write. Public buckets expose all objects to the internet. Use bucket policies with explicit grants for authorized access only."
+        },
+        {
+          "id": "4.2",
+          "title": "Ensure OBS bucket server-side encryption is enabled",
+          "level": 1,
+          "automated": true,
+          "description": "OBS buckets should have server-side encryption enabled using KMS-managed keys (SSE-KMS) or OBS-managed keys (SSE-OBS). This ensures all objects stored in the bucket are automatically encrypted at rest."
+        },
+        {
+          "id": "4.3",
+          "title": "Ensure OBS bucket access logging is enabled",
+          "level": 2,
+          "automated": true,
+          "description": "OBS bucket access logging should be enabled to record all requests made to the bucket. Access logs provide visibility into who is accessing data, from where, and support security auditing and forensic investigation."
+        },
+        {
+          "id": "4.4",
+          "title": "Ensure OBS buckets enforce HTTPS-only access",
+          "level": 2,
+          "automated": true,
+          "description": "OBS bucket policies should include a condition to deny all requests that do not use HTTPS. This prevents data in transit from being transmitted unencrypted between clients and OBS endpoints."
+        }
+      ]
+    },
+    {
+      "id": "5",
+      "title": "Database (RDS and GaussDB)",
+      "description": "Controls for securing Relational Database Service (RDS) and GaussDB instances. Focuses on encryption, network isolation, access controls, and backup configuration.",
+      "checks": [
+        {
+          "id": "5.1",
+          "title": "Ensure RDS instances have encryption at rest enabled",
+          "level": 1,
+          "automated": true,
+          "description": "RDS instances should have disk encryption enabled using KMS (DEW). Encryption protects the underlying storage, backups, and snapshots from unauthorized access to the storage infrastructure."
+        },
+        {
+          "id": "5.2",
+          "title": "Ensure RDS instances are not publicly accessible",
+          "level": 1,
+          "automated": true,
+          "description": "RDS instances should not have public EIPs bound. Database instances should be deployed in VPCs and accessed only from within the VPC or via secure connectivity solutions (VPN, Direct Connect)."
+        },
+        {
+          "id": "5.3",
+          "title": "Ensure RDS instances have SSL/TLS connections enforced",
+          "level": 1,
+          "automated": true,
+          "description": "RDS instances should require SSL/TLS for all client connections. This ensures data in transit between applications and the database is encrypted, preventing eavesdropping and man-in-the-middle attacks."
+        },
+        {
+          "id": "5.4",
+          "title": "Ensure RDS instances have automatic backup enabled with adequate retention",
+          "level": 1,
+          "automated": true,
+          "description": "RDS instances should have automatic backup enabled with a retention period of at least 7 days. Backups enable point-in-time recovery and protect against data loss from accidental deletion, corruption, or ransomware."
+        },
+        {
+          "id": "5.5",
+          "title": "Ensure database audit logging is enabled",
+          "level": 2,
+          "automated": true,
+          "description": "RDS and GaussDB instances should have audit logging enabled to record all database operations. Audit logs provide visibility into database activity for security monitoring, compliance, and forensic investigation."
+        }
+      ]
+    }
+  ]
+}

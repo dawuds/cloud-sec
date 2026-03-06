@@ -35,16 +35,18 @@ Inherited from OT-Security. When JSON data files are generated separately from a
 
 ### 3. CSP-Specific Data Asymmetry
 
-Not all CSPs have the same data depth. Current state:
+Not all CSPs have the same data depth. Current state (2026-03-06):
 
 | CSP | Index | Services | CIS Benchmark | Well-Architected |
 |---|---|---|---|---|
-| AWS | Yes | Yes | Yes (62 controls) | Yes |
-| Azure | Yes | Yes | Yes (52 controls) | No |
-| GCP | Yes | Yes | Yes (46 controls) | No |
-| Alibaba | Yes | Yes | No | No |
-| Huawei | Yes | Yes | No | No |
-| Oracle | Yes | Yes | No | No |
+| AWS | Yes | Yes | Yes (35 checks) | Yes (7 principles) |
+| Azure | Yes | Yes | Yes (48 checks) | Yes (5 principles) |
+| GCP | Yes | Yes | Yes (41 checks) | Yes (6 principles) |
+| Alibaba | Yes | Yes | Yes (34 checks) | No |
+| Huawei | Yes | Yes | Best Practices (23 checks) | No |
+| Oracle | Yes | Yes | Yes (42 checks) | No |
+
+All 6 CSPs now have CIS Benchmarks or equivalent. Only Alibaba, Huawei, and Oracle lack Well-Architected data. Note: Huawei has no official CIS benchmark — the file contains best practices derived from Huawei Cloud documentation.
 
 **Lesson:** The render functions must handle missing data files gracefully. Use `try/catch` around `load()` calls for optional files, or check for file existence before rendering sections.
 

@@ -1,0 +1,351 @@
+{
+  "framework": "CIS Oracle Cloud Infrastructure Foundations Benchmark",
+  "version": "2.0",
+  "releaseDate": "2024-01",
+  "csp": "oracle",
+  "sourceType": "constructed-indicative",
+  "verificationNote": "Control summaries are indicative -- obtain full benchmark from cisecurity.org",
+  "description": "The CIS Oracle Cloud Infrastructure Foundations Benchmark provides prescriptive guidance for configuring security options for OCI services. It focuses on foundational, testable, and architecture-agnostic settings for identity, networking, compute, storage, database, and logging services.",
+  "levels": {
+    "1": "Basic security settings that can be configured without significant performance impact. Recommended for all environments.",
+    "2": "Advanced security settings that may have performance or operational implications. Recommended for high-security environments."
+  },
+  "sections": [
+    {
+      "id": "1",
+      "title": "Identity and Access Management (IAM)",
+      "description": "Controls for managing OCI identities, authentication, and authorization. Focuses on tenancy-level security, MFA enforcement, password policies, API key management, and least-privilege access using policies and compartments.",
+      "checks": [
+        {
+          "id": "1.1",
+          "title": "Ensure service level admins are created to manage resources of particular service",
+          "level": 1,
+          "automated": true,
+          "description": "Create service-level administrator groups and policies instead of granting broad tenancy-level administrative access. Each team should have a dedicated group with permissions limited to the specific services they manage."
+        },
+        {
+          "id": "1.2",
+          "title": "Ensure permissions on all resources are given only to tenancy administrator group",
+          "level": 1,
+          "automated": true,
+          "description": "Only the tenancy administrator group should have manage all-resources permissions at the tenancy level. All other groups should be scoped to specific compartments and resource types following least-privilege principles."
+        },
+        {
+          "id": "1.3",
+          "title": "Ensure IAM administrators cannot update tenancy Administrators group",
+          "level": 1,
+          "automated": true,
+          "description": "IAM administrator policies should not allow modification of the tenancy Administrators group membership. This prevents privilege escalation where an IAM admin could add themselves to the Administrators group."
+        },
+        {
+          "id": "1.4",
+          "title": "Ensure IAM password policy requires minimum length of 14 or greater",
+          "level": 1,
+          "automated": true,
+          "description": "The IAM password policy should enforce a minimum password length of 14 characters. Longer passwords are exponentially harder to brute force and provide better security than complexity requirements alone."
+        },
+        {
+          "id": "1.5",
+          "title": "Ensure MFA is enabled for all users with a console password",
+          "level": 1,
+          "automated": true,
+          "description": "All IAM users with console access should have MFA enabled. This prevents unauthorized access even if passwords are compromised through phishing, credential stuffing, or other attacks."
+        },
+        {
+          "id": "1.6",
+          "title": "Ensure IAM user API keys rotate within 90 days or less",
+          "level": 1,
+          "automated": true,
+          "description": "API signing keys for IAM users should be rotated at least every 90 days. Regular key rotation limits the window of exposure if a key is compromised and ensures cryptographic hygiene."
+        },
+        {
+          "id": "1.7",
+          "title": "Ensure IAM user customer secret keys rotate within 90 days or less",
+          "level": 1,
+          "automated": true,
+          "description": "Customer secret keys (used for S3-compatible API access) should be rotated at least every 90 days. Regular rotation limits the impact of key compromise and meets compliance requirements for credential management."
+        }
+      ]
+    },
+    {
+      "id": "2",
+      "title": "Networking (VCN)",
+      "description": "Controls for securing Virtual Cloud Network configurations. Focuses on restricting inbound access, securing security lists and network security groups, and ensuring proper network segmentation.",
+      "checks": [
+        {
+          "id": "2.1",
+          "title": "Ensure no security lists allow ingress from 0.0.0.0/0 to port 22",
+          "level": 1,
+          "automated": true,
+          "description": "Security lists should not allow unrestricted inbound access (0.0.0.0/0) to SSH port 22. Restrict access to known IP ranges, use bastion service, or leverage OCI Cloud Shell for administrative access."
+        },
+        {
+          "id": "2.2",
+          "title": "Ensure no security lists allow ingress from 0.0.0.0/0 to port 3389",
+          "level": 1,
+          "automated": true,
+          "description": "Security lists should not allow unrestricted inbound access (0.0.0.0/0) to RDP port 3389. Windows instances should only be accessible from known trusted IP ranges or via the OCI Bastion service."
+        },
+        {
+          "id": "2.3",
+          "title": "Ensure no network security groups allow ingress from 0.0.0.0/0 to port 22",
+          "level": 1,
+          "automated": true,
+          "description": "Network Security Groups (NSGs) should not allow unrestricted inbound access to SSH port 22. NSGs provide stateful, instance-level firewall rules and should follow least-privilege access principles."
+        },
+        {
+          "id": "2.4",
+          "title": "Ensure no network security groups allow ingress from 0.0.0.0/0 to port 3389",
+          "level": 1,
+          "automated": true,
+          "description": "Network Security Groups should not allow unrestricted inbound access to RDP port 3389. Both security lists and NSGs must be reviewed to prevent unauthorized remote administration access."
+        },
+        {
+          "id": "2.5",
+          "title": "Ensure the default security list of every VCN restricts all traffic",
+          "level": 2,
+          "automated": true,
+          "description": "The default security list in each VCN should have all permissive inbound rules removed. Resources should use custom security lists or NSGs with explicit rules. The default security list should restrict all inbound traffic."
+        },
+        {
+          "id": "2.6",
+          "title": "Ensure Oracle Integration Cloud (OIC) access is restricted to allowed sources",
+          "level": 1,
+          "automated": true,
+          "description": "Oracle Integration Cloud instances should have network access restricted to allowed source IP ranges or VCN subnets. Unrestricted access to integration endpoints increases the attack surface."
+        },
+        {
+          "id": "2.7",
+          "title": "Ensure VCN flow logs are enabled for all subnets",
+          "level": 2,
+          "automated": true,
+          "description": "VCN flow logs capture IP traffic information for all network interfaces in a subnet. Enable flow logging for all subnets to monitor accepted and rejected traffic, detect anomalies, and support forensic investigation."
+        }
+      ]
+    },
+    {
+      "id": "3",
+      "title": "Compute",
+      "description": "Controls for securing OCI compute instances. Focuses on instance hardening, encryption, secure boot, and configuration management.",
+      "checks": [
+        {
+          "id": "3.1",
+          "title": "Ensure compute instances do not have public IP addresses",
+          "level": 1,
+          "automated": true,
+          "description": "Compute instances should not have public IP addresses assigned unless absolutely required. Use load balancers for public-facing services and bastion hosts or the OCI Bastion service for administrative access."
+        },
+        {
+          "id": "3.2",
+          "title": "Ensure boot volume encryption is enabled with a customer-managed key",
+          "level": 2,
+          "automated": true,
+          "description": "Compute instance boot volumes should be encrypted using customer-managed keys in OCI Vault rather than Oracle-managed keys. This provides additional access controls and key lifecycle management."
+        },
+        {
+          "id": "3.3",
+          "title": "Ensure block volume encryption is enabled with a customer-managed key",
+          "level": 2,
+          "automated": true,
+          "description": "Block volumes attached to compute instances should be encrypted using customer-managed keys in OCI Vault. This ensures data at rest is protected with keys under your control."
+        },
+        {
+          "id": "3.4",
+          "title": "Ensure legacy Instance Metadata Service (IMDSv1) endpoint is disabled",
+          "level": 1,
+          "automated": true,
+          "description": "Compute instances should disable the legacy IMDSv1 endpoint and require IMDSv2 only. IMDSv1 is vulnerable to SSRF attacks that can steal instance metadata and credentials. IMDSv2 requires session tokens."
+        },
+        {
+          "id": "3.5",
+          "title": "Ensure in-transit encryption is enabled for boot and block volumes",
+          "level": 2,
+          "automated": true,
+          "description": "Boot and block volume attachments should use in-transit encryption (paravirtualized attachments). This encrypts data as it moves between the compute instance and the block storage service."
+        },
+        {
+          "id": "3.6",
+          "title": "Ensure Secure Boot is enabled for compute instances",
+          "level": 2,
+          "automated": true,
+          "description": "Shielded instances with Secure Boot enabled ensure that only trusted firmware and operating system boot loaders execute during the boot process. This prevents boot-level rootkits and unauthorized firmware modifications."
+        }
+      ]
+    },
+    {
+      "id": "4",
+      "title": "Storage (Object Storage and Block Volume)",
+      "description": "Controls for securing OCI Object Storage buckets and Block Volumes. Focuses on encryption, access controls, versioning, and preventing unintended public exposure of data.",
+      "checks": [
+        {
+          "id": "4.1",
+          "title": "Ensure Object Storage buckets are not publicly accessible",
+          "level": 1,
+          "automated": true,
+          "description": "Object Storage buckets should have visibility set to private, not public. Public buckets expose all objects to unauthenticated access from the internet. Use pre-authenticated requests for controlled temporary access."
+        },
+        {
+          "id": "4.2",
+          "title": "Ensure Object Storage buckets are encrypted with a customer-managed key",
+          "level": 2,
+          "automated": true,
+          "description": "Object Storage buckets should be encrypted using customer-managed keys in OCI Vault rather than Oracle-managed encryption keys. This provides additional access controls via Vault policies and key rotation management."
+        },
+        {
+          "id": "4.3",
+          "title": "Ensure Object Storage bucket versioning is enabled",
+          "level": 2,
+          "automated": true,
+          "description": "Object Storage bucket versioning should be enabled for critical data buckets. Versioning protects against accidental deletion or overwriting of objects by maintaining previous versions for recovery."
+        },
+        {
+          "id": "4.4",
+          "title": "Ensure Object Storage bucket has lifecycle policies configured",
+          "level": 1,
+          "automated": true,
+          "description": "Object Storage buckets should have lifecycle policies configured to automatically transition or delete objects based on age. This ensures proper data retention, reduces storage costs, and supports compliance requirements."
+        },
+        {
+          "id": "4.5",
+          "title": "Ensure Object Storage bucket access logging is enabled",
+          "level": 2,
+          "automated": true,
+          "description": "Object Storage bucket access logging should be enabled via OCI Service Connector Hub or audit logging. Access logs provide visibility into who accessed data, supporting security auditing and forensic investigation."
+        },
+        {
+          "id": "4.6",
+          "title": "Ensure Block Volume backups are enabled",
+          "level": 1,
+          "automated": true,
+          "description": "Block volumes should have backup policies assigned to enable automated backups. Regular backups protect against data loss from accidental deletion, corruption, or ransomware attacks."
+        },
+        {
+          "id": "4.7",
+          "title": "Ensure Block Volumes are encrypted with a customer-managed key",
+          "level": 2,
+          "automated": true,
+          "description": "Block volumes should be encrypted using customer-managed keys in OCI Vault. Customer-managed keys provide additional access controls, key rotation management, and the ability to revoke access by disabling the key."
+        }
+      ]
+    },
+    {
+      "id": "5",
+      "title": "Database (Autonomous DB and MySQL)",
+      "description": "Controls for securing OCI database services including Autonomous Database, MySQL Database Service, and Oracle Database Cloud Service. Focuses on encryption, network isolation, access controls, and backup configuration.",
+      "checks": [
+        {
+          "id": "5.1",
+          "title": "Ensure Autonomous Database has customer-managed encryption keys",
+          "level": 2,
+          "automated": true,
+          "description": "Autonomous Database instances should use customer-managed encryption keys from OCI Vault rather than Oracle-managed keys. This provides additional access controls and key lifecycle management."
+        },
+        {
+          "id": "5.2",
+          "title": "Ensure Autonomous Database restricts network access",
+          "level": 1,
+          "automated": true,
+          "description": "Autonomous Database instances should be configured with network access control lists (ACLs) or deployed in a private subnet. Unrestricted public access to database endpoints increases the attack surface significantly."
+        },
+        {
+          "id": "5.3",
+          "title": "Ensure Autonomous Database has automatic backups enabled",
+          "level": 1,
+          "automated": true,
+          "description": "Autonomous Database instances should have automatic backups enabled with an appropriate retention period. Backups enable point-in-time recovery and protect against data loss from accidental deletion or corruption."
+        },
+        {
+          "id": "5.4",
+          "title": "Ensure MySQL Database Service instances are not publicly accessible",
+          "level": 1,
+          "automated": true,
+          "description": "MySQL Database Service instances should be deployed in private subnets without public IP addresses. Database access should be restricted to application-tier subnets within the VCN or via VPN/FastConnect."
+        },
+        {
+          "id": "5.5",
+          "title": "Ensure database audit logging is enabled",
+          "level": 1,
+          "automated": true,
+          "description": "Database audit logging should be enabled for all OCI database services to record database operations. Audit logs provide visibility into database activity for security monitoring, compliance, and forensic investigation."
+        },
+        {
+          "id": "5.6",
+          "title": "Ensure Database Management is enabled for monitoring",
+          "level": 2,
+          "automated": true,
+          "description": "OCI Database Management should be enabled to provide comprehensive monitoring, performance diagnostics, and fleet management. This enables detection of performance anomalies and security-relevant database events."
+        }
+      ]
+    },
+    {
+      "id": "6",
+      "title": "Logging and Monitoring (Audit)",
+      "description": "Controls for ensuring comprehensive audit logging and monitoring across OCI services. Focuses on OCI Audit service configuration, log retention, event rules, and centralized log management.",
+      "checks": [
+        {
+          "id": "6.1",
+          "title": "Ensure audit log retention period is set to 365 days",
+          "level": 1,
+          "automated": true,
+          "description": "OCI Audit service log retention should be set to 365 days at the tenancy level. This ensures audit logs are available for compliance reporting, security investigations, and forensic analysis over a full year."
+        },
+        {
+          "id": "6.2",
+          "title": "Ensure default tags are used on resources",
+          "level": 1,
+          "automated": true,
+          "description": "Default tags should be configured at the compartment level to automatically tag all resources with key metadata (e.g., CreatedBy, CreatedDate). Tags improve resource tracking, cost allocation, and security auditing."
+        },
+        {
+          "id": "6.3",
+          "title": "Ensure an event rule exists for IAM group changes",
+          "level": 1,
+          "automated": true,
+          "description": "Create OCI Events rules to detect changes to IAM groups (CreateGroup, UpdateGroup, DeleteGroup, AddUserToGroup, RemoveUserFromGroup). Group changes can affect access permissions across the tenancy."
+        },
+        {
+          "id": "6.4",
+          "title": "Ensure an event rule exists for IAM policy changes",
+          "level": 1,
+          "automated": true,
+          "description": "Create OCI Events rules to detect changes to IAM policies (CreatePolicy, UpdatePolicy, DeletePolicy). Unauthorized policy changes could grant excessive permissions or create backdoor access to resources."
+        },
+        {
+          "id": "6.5",
+          "title": "Ensure an event rule exists for user changes",
+          "level": 1,
+          "automated": true,
+          "description": "Create OCI Events rules to detect changes to IAM users (CreateUser, UpdateUser, DeleteUser, UpdateUserCapabilities). Monitoring user lifecycle events is critical for detecting unauthorized account creation or modification."
+        },
+        {
+          "id": "6.6",
+          "title": "Ensure an event rule exists for VCN changes",
+          "level": 1,
+          "automated": true,
+          "description": "Create OCI Events rules to detect changes to VCNs (CreateVcn, UpdateVcn, DeleteVcn), subnets, security lists, and route tables. Network changes could compromise segmentation and security boundaries."
+        },
+        {
+          "id": "6.7",
+          "title": "Ensure an event rule exists for network gateway changes",
+          "level": 1,
+          "automated": true,
+          "description": "Create OCI Events rules to detect changes to internet gateways, NAT gateways, service gateways, and local peering gateways. Unauthorized gateway changes could create unintended network paths or enable data exfiltration."
+        },
+        {
+          "id": "6.8",
+          "title": "Ensure Cloud Guard is enabled at the tenancy level",
+          "level": 1,
+          "automated": true,
+          "description": "OCI Cloud Guard should be enabled at the tenancy level to provide automated security monitoring. Cloud Guard detects misconfigured resources, insecure activity, and security threats using detector recipes and responder recipes."
+        },
+        {
+          "id": "6.9",
+          "title": "Ensure OCI Vulnerability Scanning Service is enabled",
+          "level": 2,
+          "automated": true,
+          "description": "OCI Vulnerability Scanning Service should be enabled to automatically scan compute instances for known vulnerabilities and open ports. Regular scanning helps identify and remediate security weaknesses before exploitation."
+        }
+      ]
+    }
+  ]
+}

@@ -75,7 +75,7 @@ See full mapping: [`cross-references/ccm-to-nacsa.json`](cross-references/ccm-to
 | Azure | CIS Azure v2.1 (48 checks) | No (nearest: Southeast Asia Singapore) | Azure Policy allowedLocations |
 | GCP | CIS GCP v3.0 (41 checks) | No (nearest: asia-southeast1 Singapore) | Org Policy resourceLocations |
 | Alibaba | CIS Alibaba v1.0 (34 controls) | **Yes** — ap-southeast-3 (Kuala Lumpur) | Deploy in KL region |
-| Huawei | — | **Yes** — ap-southeast-3 (Kuala Lumpur) | Deploy in KL region |
+| Huawei | Best Practices (23 checks) | **Yes** — ap-southeast-3 (Kuala Lumpur) | Deploy in KL region |
 | Oracle | CIS OCI v2.0 (42 controls) | No (nearest: ap-singapore-1) | Compartment policies |
 
 ---
@@ -97,8 +97,10 @@ See full mapping: [`cross-references/ccm-to-nacsa.json`](cross-references/ccm-to
 ```
 cloud-sec/
 ├── index.html                          # SPA entry point
-├── app.js                              # All rendering logic (1,566 lines)
-├── style.css                           # Full CSS with CSP-specific colours
+├── app.js                              # All rendering logic (1,575 lines)
+├── style.css                           # Full CSS with CSP-specific colours (484 lines)
+├── favicon.svg                         # SVG shield with "CS" branding
+├── LICENSE                             # CC BY 4.0
 ├── .github/workflows/pages.yml         # GitHub Pages deployment
 ├── standards/
 │   ├── csa-ccm/                        # CCM v4 overview + 17 control domains
@@ -106,12 +108,12 @@ cloud-sec/
 │   ├── nist-cloud/                     # NIST SP 800-144/800-210
 │   ├── rmit-cloud/                     # BNM RMiT cloud clauses + CCM mapping
 │   └── csp/
-│       ├── aws/                        # Index, services, CIS benchmark, Well-Architected
-│       ├── azure/                      # Index, services, CIS benchmark
-│       ├── gcp/                        # Index, services, CIS benchmark
-│       ├── alibaba/                    # Index, services
-│       ├── huawei/                     # Index, services
-│       └── oracle/                     # Index, services
+│       ├── aws/                        # Index, services, CIS benchmark (35), Well-Architected
+│       ├── azure/                      # Index, services, CIS benchmark (48), Well-Architected
+│       ├── gcp/                        # Index, services, CIS benchmark (41), Well-Architected
+│       ├── alibaba/                    # Index, services, CIS benchmark (34)
+│       ├── huawei/                     # Index, services, best practices (23)
+│       └── oracle/                     # Index, services, CIS benchmark (42)
 ├── architecture/                       # Shared responsibility, reference arch, service models
 ├── controls/                           # 12 domains + 49 controls library
 ├── requirements/
@@ -127,7 +129,7 @@ cloud-sec/
 └── cross-references/                   # 7 cross-reference mappings
 ```
 
-**Total:** 67 JSON data files, 14 views, zero dependencies
+**Total:** 72 JSON data files, 14 views, zero dependencies
 
 ---
 
@@ -150,7 +152,7 @@ Static single-page application (SPA):
 ## Standards Referenced
 
 - **CSA CCM v4** — Cloud Controls Matrix (paraphrased; obtain from cloudsecurityalliance.org)
-- **CIS Benchmarks** — AWS v3.0 (35 checks), Azure v2.1 (48 checks), GCP v3.0 (41 checks), Alibaba v1.0, OCI v2.0 (indicative; obtain from cisecurity.org)
+- **CIS Benchmarks** — AWS v3.0 (35 checks), Azure v2.1 (48 checks), GCP v3.0 (41 checks), Alibaba v1.0 (34 checks), OCI v2.0 (42 checks), Huawei best practices (23 checks) (indicative; obtain from cisecurity.org)
 - **MITRE ATT&CK Cloud** — Cloud adversary tactics and techniques (public; attack.mitre.org/matrices/enterprise/cloud)
 - **NIST SP 800-144** — Guidelines on Security and Privacy in Public Cloud Computing (public; nvlpubs.nist.gov)
 - **NIST SP 800-210** — General Access Control Guidance for Cloud Systems (public; nvlpubs.nist.gov)

@@ -1,0 +1,226 @@
+{
+  "framework": "Azure Well-Architected Framework - Security Pillar",
+  "version": "2024",
+  "csp": "azure",
+  "sourceType": "constructed-indicative",
+  "verificationNote": "Design principles and best practices are indicative summaries -- obtain full guidance from learn.microsoft.com/azure/well-architected/security/",
+  "description": "The Security Pillar of the Azure Well-Architected Framework provides guidance for building secure workloads on Azure. It covers identity, network, data, and application security along with security governance and operations. It is organized around five design principles and six best practice areas.",
+  "url": "https://learn.microsoft.com/azure/well-architected/security/",
+  "designPrinciples": [
+    {
+      "id": "sec-dp-1",
+      "title": "Plan your security readiness",
+      "description": "Adopt and implement a security strategy that aligns with your organizational priorities and covers your workload architecture, development lifecycle, and operations. Establish security baselines, perform threat modeling, and define clear security requirements before designing or deploying any workload."
+    },
+    {
+      "id": "sec-dp-2",
+      "title": "Design to protect confidentiality",
+      "description": "Prevent exposure of sensitive information to unauthorized users, processes, and devices by applying access restrictions, encryption, and segmentation. Classify data by sensitivity and apply appropriate controls at each layer to maintain confidentiality throughout the data lifecycle."
+    },
+    {
+      "id": "sec-dp-3",
+      "title": "Design to protect integrity",
+      "description": "Prevent corruption of design, implementation, operations, and data to avoid disruptions that can cause the system to not deliver its intended value. Validate configurations, enforce immutable infrastructure where possible, and ensure that all changes to code and infrastructure go through controlled pipelines."
+    },
+    {
+      "id": "sec-dp-4",
+      "title": "Design to protect availability",
+      "description": "Prevent or minimize security-related downtime and degradation of the system and workloads. Design to withstand attacks such as DDoS, ensure redundancy of security controls, and build resilience into identity and access systems so that security failures do not cascade into availability failures."
+    },
+    {
+      "id": "sec-dp-5",
+      "title": "Sustain and evolve your security posture",
+      "description": "Continuously improve your security posture by applying updates, monitoring for drift, and responding to evolving threats. Use automation to enforce compliance, adopt security scoring tools like Microsoft Defender for Cloud Secure Score, and conduct regular security reviews and penetration tests."
+    }
+  ],
+  "bestPracticeAreas": [
+    {
+      "id": "sec-bp-1",
+      "title": "Security Governance",
+      "description": "Establishing organizational structures, policies, and processes that define security responsibilities, enforce compliance, and guide risk management across Azure workloads.",
+      "questions": [
+        {
+          "id": "AZ-SEC01",
+          "title": "How do you establish and maintain security governance for your workload?",
+          "practices": [
+            "Define security roles and responsibilities using RACI matrices",
+            "Establish security baselines and compliance requirements for each workload",
+            "Use Azure Policy and Blueprints to enforce organizational security standards",
+            "Integrate security reviews into the development lifecycle (SDL)",
+            "Maintain a risk register and perform regular threat modeling",
+            "Track security posture using Microsoft Defender for Cloud Secure Score"
+          ]
+        },
+        {
+          "id": "AZ-SEC02",
+          "title": "How do you manage regulatory compliance and security standards?",
+          "practices": [
+            "Map regulatory requirements to Azure controls and services",
+            "Use Microsoft Defender for Cloud regulatory compliance dashboards",
+            "Automate compliance auditing with Azure Policy and compliance reports",
+            "Implement continuous compliance monitoring with alerts for drift"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sec-bp-2",
+      "title": "Identity and Access Management",
+      "description": "Managing authentication and authorization to ensure that only verified identities can access resources with the minimum necessary permissions.",
+      "questions": [
+        {
+          "id": "AZ-SEC03",
+          "title": "How do you manage identity and authentication for your workload?",
+          "practices": [
+            "Use Microsoft Entra ID (Azure AD) as the centralized identity provider",
+            "Enforce multi-factor authentication (MFA) for all users, especially administrators",
+            "Use managed identities for Azure resources to eliminate credential management",
+            "Implement Conditional Access policies based on user risk, device compliance, and location",
+            "Eliminate long-lived credentials by using certificate-based or token-based auth",
+            "Federate with existing enterprise identity providers where appropriate"
+          ]
+        },
+        {
+          "id": "AZ-SEC04",
+          "title": "How do you manage authorization and least privilege access?",
+          "practices": [
+            "Implement Azure RBAC with least privilege role assignments",
+            "Use Privileged Identity Management (PIM) for just-in-time elevated access",
+            "Scope role assignments to the narrowest applicable level (resource, resource group, subscription)",
+            "Review and recertify access regularly using Entra ID Access Reviews",
+            "Implement emergency access (break-glass) accounts with monitoring",
+            "Use Azure Attribute-Based Access Control (ABAC) for fine-grained data access"
+          ]
+        },
+        {
+          "id": "AZ-SEC05",
+          "title": "How do you protect privileged accounts and workload identities?",
+          "practices": [
+            "Protect admin accounts with phishing-resistant MFA and Conditional Access",
+            "Use separate admin accounts from day-to-day accounts",
+            "Monitor privileged account activity with Microsoft Sentinel and Entra ID sign-in logs",
+            "Use workload identity federation to avoid storing secrets for CI/CD pipelines"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sec-bp-3",
+      "title": "Network Protection",
+      "description": "Protecting network boundaries and controlling traffic flow to isolate workloads, prevent lateral movement, and secure communications.",
+      "questions": [
+        {
+          "id": "AZ-SEC06",
+          "title": "How do you protect your network boundaries and segment your workloads?",
+          "practices": [
+            "Design network segmentation using VNets, subnets, and Network Security Groups (NSGs)",
+            "Use Azure Firewall or third-party NVAs for centralized traffic inspection",
+            "Implement Azure Private Endpoints and Private Link to eliminate public exposure of services",
+            "Use Azure DDoS Protection to guard against volumetric and protocol attacks",
+            "Deploy Azure Web Application Firewall (WAF) to protect HTTP-based applications",
+            "Enforce NSG flow logging and traffic analytics for visibility"
+          ]
+        },
+        {
+          "id": "AZ-SEC07",
+          "title": "How do you secure connectivity and communications?",
+          "practices": [
+            "Encrypt all data in transit using TLS 1.2 or higher",
+            "Use Azure VPN Gateway or ExpressRoute for hybrid and cross-premises connectivity",
+            "Implement Azure Bastion for secure remote management without public IP exposure",
+            "Use service endpoints or Private Link to keep Azure service traffic on the Microsoft backbone",
+            "Monitor and log all network traffic with NSG flow logs and Azure Network Watcher"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sec-bp-4",
+      "title": "Data Protection",
+      "description": "Ensuring the confidentiality and integrity of data at rest, in transit, and in use through encryption, classification, and access controls.",
+      "questions": [
+        {
+          "id": "AZ-SEC08",
+          "title": "How do you classify and protect data at rest?",
+          "practices": [
+            "Classify data by sensitivity using Microsoft Purview Information Protection labels",
+            "Enable encryption at rest for all data stores (Azure Storage SSE, SQL TDE, Disk Encryption)",
+            "Use customer-managed keys (CMK) in Azure Key Vault for workloads requiring key control",
+            "Implement Azure Confidential Computing for data-in-use protection where required",
+            "Apply soft-delete and backup policies to protect against accidental or malicious deletion",
+            "Use Azure Key Vault for centralized key and secret management with access policies and logging"
+          ]
+        },
+        {
+          "id": "AZ-SEC09",
+          "title": "How do you protect data in transit and prevent data leakage?",
+          "practices": [
+            "Enforce HTTPS and TLS 1.2+ for all service endpoints and APIs",
+            "Use Azure Private Link to prevent data from traversing the public internet",
+            "Implement Data Loss Prevention (DLP) policies using Microsoft Purview",
+            "Monitor for anomalous data access patterns with Microsoft Defender for Storage"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sec-bp-5",
+      "title": "Application Security",
+      "description": "Building security into the software development lifecycle to produce resilient, well-defended applications on Azure.",
+      "questions": [
+        {
+          "id": "AZ-SEC10",
+          "title": "How do you secure the application development lifecycle?",
+          "practices": [
+            "Integrate security testing (SAST, DAST, SCA) into CI/CD pipelines",
+            "Use GitHub Advanced Security or Azure DevOps security scanning",
+            "Store application secrets in Azure Key Vault, never in code or configuration files",
+            "Implement input validation, output encoding, and parameterized queries to prevent injection",
+            "Use managed identities for application-to-service authentication"
+          ]
+        },
+        {
+          "id": "AZ-SEC11",
+          "title": "How do you protect application runtime and supply chain integrity?",
+          "practices": [
+            "Use Azure Container Registry with content trust and vulnerability scanning",
+            "Implement runtime protection with Microsoft Defender for Containers and App Service",
+            "Validate software supply chain integrity using signed images and SBOM",
+            "Apply API security controls with Azure API Management and rate limiting"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sec-bp-6",
+      "title": "Security Operations",
+      "description": "Detecting, responding to, and recovering from security incidents through monitoring, automation, and incident response processes.",
+      "questions": [
+        {
+          "id": "AZ-SEC12",
+          "title": "How do you detect and respond to security threats?",
+          "practices": [
+            "Enable Microsoft Defender for Cloud across all subscriptions and resource types",
+            "Deploy Microsoft Sentinel as the cloud-native SIEM for centralized log collection and analytics",
+            "Configure diagnostic settings to capture logs from all Azure services",
+            "Use Microsoft Sentinel analytics rules, workbooks, and automated playbooks (Logic Apps)",
+            "Integrate threat intelligence feeds for enriched detection and investigation",
+            "Implement automated response actions for common threat scenarios"
+          ]
+        },
+        {
+          "id": "AZ-SEC13",
+          "title": "How do you prepare for and manage security incidents?",
+          "practices": [
+            "Develop and document incident response plans with clear roles and escalation paths",
+            "Conduct tabletop exercises and red team/blue team simulations regularly",
+            "Pre-provision access and tooling for incident response teams",
+            "Use Azure Activity Log and Entra ID audit logs for forensic investigation",
+            "Implement automated containment actions (e.g., isolate VM, revoke tokens, block IP)",
+            "Conduct post-incident reviews and update runbooks based on lessons learned"
+          ]
+        }
+      ]
+    }
+  ]
+}
