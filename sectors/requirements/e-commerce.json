@@ -204,6 +204,16 @@
       "Comply with cross-border transfer restrictions (s129 PDPA) for international operations"
     ]
   },
+  "nacsaObligations": {
+    "description": "NACSA obligations for e-commerce platforms designated as NCII under the Trade, Industry and Economy sector.",
+    "applicability": "Applies to e-commerce platforms and digital services designated as NCII under NACSA Act 854. Major platforms processing critical transaction volumes or citizen data may be designated.",
+    "obligations": [
+      "s18: Cloud-hosted e-commerce NCII must have appropriate cybersecurity measures including PCI DSS compliance and customer data protection",
+      "s21: Annual risk assessment covering cloud-hosted e-commerce systems including payment processing and customer databases",
+      "s23: Biennial audit including cloud security posture and PCI DSS compliance",
+      "s26: 6-hour notification for significant cloud security incidents affecting NCII e-commerce systems"
+    ]
+  },
   "sectorSpecificThreats": [
     { "threat": "Payment card skimming through Magecart-style cloud injection", "ccmControls": ["AIS-01", "AIS-04", "TVM-02", "DSP-10"], "impact": "Card data theft; PCI DSS non-compliance; customer financial loss; brand damage" },
     { "threat": "Customer database exfiltration from misconfigured cloud storage", "ccmControls": ["DSP-01", "DSP-02", "DSP-04", "IAM-04"], "impact": "Mass PII exposure; PDPA breach notification; class action risk; customer trust loss" },

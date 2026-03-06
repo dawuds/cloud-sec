@@ -53,5 +53,6 @@
     "complianceCertifications": "https://www.huaweicloud.com/intl/en-us/securecenter/compliance.html",
     "documentation": "https://support.huaweicloud.com/intl/en-us/security/",
     "bestPractices": "https://support.huaweicloud.com/intl/en-us/bestpractice-security/"
-  }
+  },
+  "sourceType": "constructed-indicative"
 }

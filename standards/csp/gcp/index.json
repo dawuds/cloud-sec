@@ -58,5 +58,6 @@
     "trustAndSecurity": "https://cloud.google.com/trust-center",
     "securityBlog": "https://cloud.google.com/blog/topics/threat-intelligence",
     "documentation": "https://cloud.google.com/docs/security"
-  }
+  },
+  "sourceType": "constructed-indicative"
 }

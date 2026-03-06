@@ -133,3 +133,30 @@ Before publishing any new content in this repo:
 - [ ] Domain IDs consistent across requirements, controls, evidence, artifacts, and cross-references
 - [ ] All cross-references resolvable in both directions
 - [ ] Browser console shows no errors on every view after changes
+
+---
+
+## Bugs Found and Fixed (2026-03-06)
+
+### Rendering Bug 1: CCM Domains View Empty
+`renderCCMDomains()` and `renderOverview()` used `Array.isArray(domains)` to check if the loaded data was iterable. But `control-domains.json` returns `{controlDomains: [...]}`, not a bare array. The `Array.isArray` check returned false, and the fallback `[]` rendered an empty list.
+
+**Fix:** Changed to `Array.isArray(domains) ? domains : (domains.controlDomains || [])` in `renderCCMDomains()`, `renderOverview()`, and `renderFramework()`.
+
+### Rendering Bug 2: Evidence View Empty
+`renderEvidence()` used `data.domains` to access the evidence array. But `evidence/index.json` uses the key `evidenceByDomain`, not `domains`.
+
+**Fix:** Changed to `data.evidenceByDomain || data.domains || data || []`.
+
+### Rendering Bug 3: Checklist Items Render as JSON
+`renderRiskChecklist()` used `c.check || c.title` to display checklist item text. But `checklist.json` uses the field name `item`, not `check` or `title`.
+
+**Fix:** Changed to `c.item || c.check || c.title`.
+
+### Rendering Bug 4: Sector Detail Title Shows Raw ID
+`renderSectorDetail()` used `sector.name` for the page title. But `data.sector` is a string (e.g., `"healthcare"`), not an object. The friendly name is in `data.sectorName`.
+
+**Fix:** Changed to `data.sectorName || sector.name || sectorId`.
+
+### Root Cause
+All four bugs are instances of Pattern 2 from the Data-Code Field Name Mismatches lesson above. JSON data files were generated with different field names than the app.js render functions expected. The SPA renders silently empty content instead of throwing errors, making these bugs invisible without browser dev tools.

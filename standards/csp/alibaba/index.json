@@ -58,5 +58,6 @@
     "compliancePrograms": "https://www.alibabacloud.com/trust-center/compliance",
     "securityBlog": "https://www.alibabacloud.com/blog/tag/security",
     "documentation": "https://www.alibabacloud.com/help/en/security"
-  }
+  },
+  "sourceType": "constructed-indicative"
 }

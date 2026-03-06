@@ -1,14 +1,80 @@
-[
-  { "id": "identity-access-management", "name": "Identity and Access Management", "ccmMapping": "IAM", "color": "#7C3AED" },
-  { "id": "data-protection-encryption", "name": "Data Protection and Encryption", "ccmMapping": "DSP,CEK", "color": "#1D4ED8" },
-  { "id": "network-security", "name": "Network Security", "ccmMapping": "IVS", "color": "#2563EB" },
-  { "id": "logging-monitoring", "name": "Logging and Monitoring", "ccmMapping": "LOG", "color": "#0D9488" },
-  { "id": "incident-response", "name": "Incident Response", "ccmMapping": "SEF", "color": "#DC2626" },
-  { "id": "container-security", "name": "Container Security", "ccmMapping": "CCC", "color": "#059669" },
-  { "id": "serverless-security", "name": "Serverless Security", "ccmMapping": "AIS", "color": "#DB2777" },
-  { "id": "supply-chain-devsecops", "name": "Supply Chain and DevSecOps", "ccmMapping": "STA", "color": "#65A30D" },
-  { "id": "key-management", "name": "Key Management", "ccmMapping": "CEK", "color": "#D97706" },
-  { "id": "configuration-posture", "name": "Configuration and Posture Management", "ccmMapping": "CCC,DCS", "color": "#F59E0B" },
-  { "id": "backup-disaster-recovery", "name": "Backup and Disaster Recovery", "ccmMapping": "BCR", "color": "#0891B2" },
-  { "id": "compliance-governance", "name": "Compliance and Governance", "ccmMapping": "GRC", "color": "#9333EA" }
-]
+{
+  "_meta": {
+    "sourceType": "constructed-indicative",
+    "verificationNote": "Control domains for cloud security framework. Mapped to CSA CCM v4 domain structure."
+  },
+  "domains": [
+    {
+      "id": "identity-access-management",
+      "name": "Identity and Access Management",
+      "ccmMapping": "IAM",
+      "color": "#7C3AED"
+    },
+    {
+      "id": "data-protection-encryption",
+      "name": "Data Protection and Encryption",
+      "ccmMapping": "DSP,CEK",
+      "color": "#1D4ED8"
+    },
+    {
+      "id": "network-security",
+      "name": "Network Security",
+      "ccmMapping": "IVS",
+      "color": "#2563EB"
+    },
+    {
+      "id": "logging-monitoring",
+      "name": "Logging and Monitoring",
+      "ccmMapping": "LOG",
+      "color": "#0D9488"
+    },
+    {
+      "id": "incident-response",
+      "name": "Incident Response",
+      "ccmMapping": "SEF",
+      "color": "#DC2626"
+    },
+    {
+      "id": "container-security",
+      "name": "Container Security",
+      "ccmMapping": "CCC",
+      "color": "#059669"
+    },
+    {
+      "id": "serverless-security",
+      "name": "Serverless Security",
+      "ccmMapping": "AIS",
+      "color": "#DB2777"
+    },
+    {
+      "id": "supply-chain-devsecops",
+      "name": "Supply Chain and DevSecOps",
+      "ccmMapping": "STA",
+      "color": "#65A30D"
+    },
+    {
+      "id": "key-management",
+      "name": "Key Management",
+      "ccmMapping": "CEK",
+      "color": "#D97706"
+    },
+    {
+      "id": "configuration-posture",
+      "name": "Configuration and Posture Management",
+      "ccmMapping": "CCC,DCS",
+      "color": "#F59E0B"
+    },
+    {
+      "id": "backup-disaster-recovery",
+      "name": "Backup and Disaster Recovery",
+      "ccmMapping": "BCR",
+      "color": "#0891B2"
+    },
+    {
+      "id": "compliance-governance",
+      "name": "Compliance and Governance",
+      "ccmMapping": "GRC",
+      "color": "#9333EA"
+    }
+  ]
+}

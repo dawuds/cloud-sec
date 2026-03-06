@@ -1,0 +1,106 @@
+{
+  "$schema": "cloud-security-v1",
+  "sector": "education",
+  "sectorName": "Education",
+  "sourceType": "constructed-indicative",
+  "verificationNote": "Education cloud security requirements constructed from PDPA 2010, Education Act 1996, NACSA Act 854, and education sector cloud best practices. These are indicative -- verify against current MOE/MOHE directives and NACSA sector lead guidance.",
+  "nacsaSectorLead": "Ministry of Education Malaysia",
+  "nacsaSectorNumber": 7,
+  "applicableStandards": [
+    "PDPA 2010 (Act 709) -- student personal data protection (especially minors)",
+    "CSA Cloud Controls Matrix v4 (CCM v4)",
+    "ISO 27001:2022 (ISMS for education institutions)",
+    "ISO 27017:2015 (Cloud-specific security controls)",
+    "Education Act 1996 (Act 550) -- education institution governance",
+    "Private Higher Educational Institutions Act 1996 (Act 555) -- private university governance",
+    "NACSA Act 854 (for NCII-designated education infrastructure)",
+    "MOHE IT security guidelines for public universities"
+  ],
+  "studentDataProtection": {
+    "description": "Student data includes academic records, financial information, disciplinary records, health data, and personal identifiers. Minor student data requires enhanced protection under PDPA. Cloud hosting must address consent, purpose limitation, and data minimisation.",
+    "pdpaRequirements": [
+      "Parental/guardian consent required for processing minor student personal data (below 18)",
+      "Purpose limitation -- student data may only be used for educational purposes unless separate consent obtained",
+      "Data minimisation -- only necessary student data stored in cloud services",
+      "Access rights -- students and parents have right to access personal data under PDPA s12",
+      "Retention limitation -- student records retained only for required period per Education Act requirements"
+    ],
+    "cloudRequirements": [
+      "Student data encrypted at rest and in transit in all cloud services",
+      "Role-based access control separating academic, administrative, and research access",
+      "Audit logging of all access to student personal data with minimum 7-year retention",
+      "Data residency in Malaysia for student records per PDPA cross-border transfer provisions",
+      "Anonymisation of student data used for institutional analytics and research"
+    ]
+  },
+  "keyRequirements": [
+    {
+      "id": "ED-R1",
+      "name": "Student data protection in cloud learning platforms",
+      "description": "Cloud-hosted learning management systems (LMS), student information systems (SIS), and assessment platforms must protect student personal data per PDPA requirements. Enhanced protection for minor students.",
+      "implementation": [
+        "Encrypt all student data at rest and in transit",
+        "Implement RBAC separating instructor, administrator, and student access levels",
+        "Obtain parental consent for cloud processing of minor student data",
+        "Ensure LMS vendor complies with data processing agreement requirements",
+        "Regular access reviews for staff accessing student information systems"
+      ],
+      "ccmControls": ["DSP-01", "DSP-02", "DSP-19", "IAM-01", "IAM-02"]
+    },
+    {
+      "id": "ED-R2",
+      "name": "Research data security in cloud computing",
+      "description": "Research data including intellectual property, grant-funded research, and sensitive datasets must be secured in cloud environments. Research computing workloads may process classified or restricted data.",
+      "implementation": [
+        "Classify research data by sensitivity and apply appropriate cloud security controls",
+        "Dedicated cloud accounts or projects for research workloads separated from administrative systems",
+        "Data sharing agreements for collaborative research using cloud platforms",
+        "Encryption and access controls for research datasets in cloud storage",
+        "Compliance with grant funding body data management requirements"
+      ],
+      "ccmControls": ["DSP-04", "DSP-05", "IVS-05", "GRC-01"]
+    },
+    {
+      "id": "ED-R3",
+      "name": "Online learning platform availability and resilience",
+      "description": "Cloud-hosted online learning platforms must maintain high availability during examination periods and peak usage. DDoS protection and auto-scaling required.",
+      "implementation": [
+        "Multi-AZ deployment for learning platforms with automatic failover",
+        "CDN distribution for learning content delivery",
+        "DDoS protection for internet-facing learning platforms",
+        "Auto-scaling configured for peak examination and enrollment periods",
+        "DR plan with tested RTO/RPO for critical academic systems"
+      ],
+      "ccmControls": ["BCR-01", "BCR-02", "IVS-01", "IVS-04"]
+    },
+    {
+      "id": "ED-R4",
+      "name": "Institutional identity and access management",
+      "description": "Federated identity management for students, faculty, and staff across cloud services. Integration with institutional directory services and single sign-on.",
+      "implementation": [
+        "Federated identity with institutional IdP for all cloud services",
+        "MFA for administrative and faculty accounts accessing student data",
+        "Automated account provisioning and deprovisioning aligned with enrollment lifecycle",
+        "Guest and visiting researcher access management with time-limited credentials",
+        "Privileged access management for IT administrators"
+      ],
+      "ccmControls": ["IAM-01", "IAM-02", "IAM-04", "IAM-05"]
+    }
+  ],
+  "nacsaObligations": {
+    "description": "NACSA obligations for NCII-designated education infrastructure using cloud services.",
+    "applicability": "Applies to education infrastructure designated as NCII under NACSA Act 854. National education information systems, major university platforms, and critical research infrastructure may be designated.",
+    "obligations": [
+      "s18: Cloud-hosted education NCII must have appropriate cybersecurity measures",
+      "s21: Annual risk assessment covering cloud-hosted education systems",
+      "s23: Biennial audit including cloud security posture",
+      "s26: 6-hour notification for significant cloud security incidents affecting NCII education systems"
+    ]
+  },
+  "sectorSpecificThreats": [
+    { "threat": "Ransomware targeting cloud-hosted student information systems", "ccmControls": ["BCR-01", "BCR-04", "TVM-01", "DSP-01"], "impact": "Academic disruption; inability to access grades, enrollment, and financial records" },
+    { "threat": "Student data breach from misconfigured cloud storage", "ccmControls": ["DSP-01", "DSP-02", "DSP-04", "IAM-04"], "impact": "PDPA breach notification; student privacy violation; institutional reputation damage" },
+    { "threat": "Research data theft targeting cloud-hosted intellectual property", "ccmControls": ["DSP-01", "DSP-05", "IAM-04", "LOG-01"], "impact": "Intellectual property loss; competitive research disadvantage; grant compliance violation" },
+    { "threat": "DDoS attack on online examination platform during peak period", "ccmControls": ["IVS-01", "IVS-04", "BCR-01"], "impact": "Examination disruption; academic integrity concerns; student welfare impact" }
+  ]
+}

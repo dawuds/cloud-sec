@@ -16,10 +16,10 @@ Tracking all planned enhancements. Grouped by phase. Check off items as complete
 - [x] Requirements — 12 security domains with per-domain requirement files
 - [x] Controls library — 49 controls with maturity levels, CCM/NACSA/NIST CSF/MITRE mappings, CSP implementation
 - [x] Evidence — audit evidence items per domain
-- [x] Artifacts — 26 security artifacts inventory
-- [x] Threats — 8 cloud incidents + 5 threat actors with control mappings
+- [x] Artifacts — 29 security artifacts inventory (26 + 3 serverless-security)
+- [x] Threats — 8 cloud incidents + 6 threat actors with control mappings
 - [x] Risk management — methodology, 5x5 matrix, 15-risk register, assessment checklist, treatment options
-- [x] Sectors — financial services, healthcare, government, e-commerce with Malaysia-specific obligations
+- [x] Sectors — financial services, healthcare, government, e-commerce, education, telecommunications with Malaysia-specific obligations
 - [x] Cross-references — 7 mapping files (CCM ↔ NACSA, NIST CSF, ISO 27017, MITRE, AWS, Azure, GCP)
 - [x] Framework matrix view — CCM × Controls × NACSA × NIST CSF × MITRE
 - [x] Search — cross-view search with type badges
@@ -42,7 +42,7 @@ Tracking all planned enhancements. Grouped by phase. Check off items as complete
 - [ ] Add CIS Benchmark data for Oracle (v2.0, 42 controls) — `standards/csp/oracle/cis-benchmark.json`
 - [ ] Add Well-Architected framework data for Azure, GCP — `standards/csp/{azure,gcp}/well-architected.json`
 - [ ] Expand evidence items from 6 domains to all 12 domains
-- [ ] Expand threat actors from 5 to 8+ (add FIN7/Carbon Spider, APT41, Nobelium/Midnight Blizzard)
+- [x] Expand threat actors — now 6 (added Muddled Libra); FIN7, APT41 pending
 - [ ] Add cloud-specific MITRE ATT&CK sub-techniques where relevant
 - [ ] Add Huawei CIS Benchmark data if/when published
 
@@ -64,17 +64,17 @@ Tracking all planned enhancements. Grouped by phase. Check off items as complete
 - [ ] Add validation script (validate.js) — check field names, IDs, cross-reference integrity
 - [ ] Verify all CCM domain IDs match across control-domains.json, controls library, and cross-references
 - [ ] Verify all CIS Benchmark control IDs against published benchmarks
-- [ ] Add `sourceType` and `verificationNote` to any files missing them
+- [x] Add `sourceType` and `verificationNote` to all 19 files that were missing them
 - [ ] Ensure all domain IDs are consistent across requirements, controls, evidence, and artifacts
-- [ ] Add Audit Package pattern (artifacts ↔ controls ↔ evidence links) — carry forward from OT-Security
+- [x] Add controlSlugs to all artifacts (Audit Package pattern — artifacts ↔ controls mapping)
 
 ---
 
 ## Phase 6 — UI Enhancements (Pending)
 
 - [ ] Add CSP filtering/toggle on Controls view (show/hide AWS/Azure/GCP implementation columns)
-- [ ] Add print-friendly CSS for compliance report generation
-- [ ] Add dark/light theme toggle (currently dark only)
+- [x] Add print-friendly CSS for compliance report generation
+- [x] Add dark mode via `prefers-color-scheme: dark` (automatic, no toggle needed)
 - [ ] Add export to CSV/PDF for controls and requirements tables
 - [ ] Add compliance dashboard showing coverage percentage per standard
 

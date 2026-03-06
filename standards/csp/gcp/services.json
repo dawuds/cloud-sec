@@ -8,162 +8,388 @@
       "name": "Google Cloud IAM",
       "category": "identity",
       "description": "Unified identity and access management for GCP resources. Uses a policy model where IAM policies bind members (users, groups, service accounts, domains) to roles at various resource hierarchy levels (organization, folder, project, resource). Supports predefined roles, custom roles, and IAM Conditions for attribute-based access control.",
-      "ccmMapping": ["IAM-01", "IAM-02", "IAM-03", "IAM-04", "IAM-06"],
+      "ccmMapping": [
+        "IAM-01",
+        "IAM-02",
+        "IAM-03",
+        "IAM-04",
+        "IAM-06"
+      ],
       "tier": "free",
-      "keyFeatures": ["Resource hierarchy-based policies", "Predefined and custom roles", "IAM Conditions (ABAC)", "Service accounts for workloads", "Workload Identity Federation", "Organization Policy constraints"]
+      "keyFeatures": [
+        "Resource hierarchy-based policies",
+        "Predefined and custom roles",
+        "IAM Conditions (ABAC)",
+        "Service accounts for workloads",
+        "Workload Identity Federation",
+        "Organization Policy constraints"
+      ]
     },
     {
       "id": "gcp-security-command-center",
       "name": "Security Command Center",
       "category": "detection",
       "description": "GCP's built-in security and risk management platform. Standard tier provides asset inventory, security misconfiguration scanning, and web application vulnerability scanning. Premium tier adds Event Threat Detection (real-time log analysis), Container Threat Detection, Virtual Machine Threat Detection, and compliance monitoring against CIS, PCI DSS, NIST 800-53, and ISO 27001.",
-      "ccmMapping": ["TVM-01", "TVM-02", "TVM-03", "GRC-01", "GRC-02", "SEF-02"],
+      "ccmMapping": [
+        "TVM-01",
+        "TVM-02",
+        "TVM-03",
+        "GRC-01",
+        "GRC-02",
+        "SEF-02"
+      ],
       "tier": "free",
-      "keyFeatures": ["Asset discovery and inventory", "Security Health Analytics (misconfiguration)", "Web Security Scanner", "Event Threat Detection (Premium)", "Container Threat Detection (Premium)", "Compliance monitoring (CIS, PCI, NIST)"]
+      "keyFeatures": [
+        "Asset discovery and inventory",
+        "Security Health Analytics (misconfiguration)",
+        "Web Security Scanner",
+        "Event Threat Detection (Premium)",
+        "Container Threat Detection (Premium)",
+        "Compliance monitoring (CIS, PCI, NIST)"
+      ]
     },
     {
       "id": "gcp-chronicle",
       "name": "Google Chronicle Security Operations",
       "category": "detection",
       "description": "Cloud-native SIEM and SOAR platform backed by Google infrastructure and threat intelligence. Ingests and normalizes security telemetry at petabyte scale with 12-month hot retention. Uses YARA-L detection rules, entity graph analysis, and Mandiant threat intelligence for threat detection and investigation.",
-      "ccmMapping": ["LOG-03", "LOG-09", "SEF-02", "SEF-04", "SEF-05"],
+      "ccmMapping": [
+        "LOG-03",
+        "LOG-09",
+        "SEF-02",
+        "SEF-04",
+        "SEF-05"
+      ],
       "tier": "paid",
-      "keyFeatures": ["Petabyte-scale log ingestion", "12-month hot data retention", "YARA-L detection rules", "Unified Data Model (UDM)", "Mandiant threat intelligence", "SOAR playbooks and case management"]
+      "keyFeatures": [
+        "Petabyte-scale log ingestion",
+        "12-month hot data retention",
+        "YARA-L detection rules",
+        "Unified Data Model (UDM)",
+        "Mandiant threat intelligence",
+        "SOAR playbooks and case management"
+      ]
     },
     {
       "id": "gcp-cloud-armor",
       "name": "Google Cloud Armor",
       "category": "protection",
       "description": "DDoS protection and WAF service for applications behind Google Cloud Load Balancers. Provides always-on L3/L4 DDoS protection, preconfigured WAF rules (OWASP Top 10, SQLi, XSS), custom security policies with CEL expressions, adaptive protection using ML, rate limiting, and bot management.",
-      "ccmMapping": ["IVS-04", "IVS-06", "IVS-09", "TVM-01"],
+      "ccmMapping": [
+        "IVS-04",
+        "IVS-06",
+        "IVS-09",
+        "TVM-01"
+      ],
       "tier": "paid",
-      "keyFeatures": ["L3/L4/L7 DDoS protection", "Preconfigured WAF rules (OWASP)", "Custom rules with CEL", "Adaptive Protection (ML-based)", "Rate limiting", "Named IP lists and geo-blocking"]
+      "keyFeatures": [
+        "L3/L4/L7 DDoS protection",
+        "Preconfigured WAF rules (OWASP)",
+        "Custom rules with CEL",
+        "Adaptive Protection (ML-based)",
+        "Rate limiting",
+        "Named IP lists and geo-blocking"
+      ]
     },
     {
       "id": "gcp-cloud-kms",
       "name": "Cloud Key Management Service (Cloud KMS)",
       "category": "encryption",
       "description": "Managed service for creating, importing, and managing cryptographic keys. Supports symmetric and asymmetric keys for encryption and signing. Integrates with GCP services for customer-managed encryption keys (CMEK). Offers software, hardware (HSM), and external key management options.",
-      "ccmMapping": ["CEK-01", "CEK-02", "CEK-03", "CEK-04", "CEK-05", "DSP-01"],
+      "ccmMapping": [
+        "CEK-01",
+        "CEK-02",
+        "CEK-03",
+        "CEK-04",
+        "CEK-05",
+        "DSP-01"
+      ],
       "tier": "paid",
-      "keyFeatures": ["Software-backed keys", "Cloud HSM (FIPS 140-2 Level 3)", "Cloud External Key Manager (EKM)", "Automatic key rotation", "Key versioning", "Customer-managed encryption keys (CMEK)"]
+      "keyFeatures": [
+        "Software-backed keys",
+        "Cloud HSM (FIPS 140-2 Level 3)",
+        "Cloud External Key Manager (EKM)",
+        "Automatic key rotation",
+        "Key versioning",
+        "Customer-managed encryption keys (CMEK)"
+      ]
     },
     {
       "id": "gcp-vpc-service-controls",
       "name": "VPC Service Controls",
       "category": "protection",
       "description": "Creates security perimeters around GCP resources to mitigate data exfiltration risks. Service perimeters restrict API access to GCP services (BigQuery, Cloud Storage, etc.) based on client IP, identity, device attributes, and VPC network. Prevents data movement between projects outside the perimeter.",
-      "ccmMapping": ["IVS-01", "IVS-03", "IVS-06", "DSP-01", "DSP-04"],
+      "ccmMapping": [
+        "IVS-01",
+        "IVS-03",
+        "IVS-06",
+        "DSP-01",
+        "DSP-04"
+      ],
       "tier": "free",
-      "keyFeatures": ["Service perimeters", "Access levels (IP, identity, device)", "Bridge perimeters for controlled sharing", "Dry-run mode for testing", "Ingress/egress policies", "Integration with Access Context Manager"]
+      "keyFeatures": [
+        "Service perimeters",
+        "Access levels (IP, identity, device)",
+        "Bridge perimeters for controlled sharing",
+        "Dry-run mode for testing",
+        "Ingress/egress policies",
+        "Integration with Access Context Manager"
+      ]
     },
     {
       "id": "gcp-binary-authorization",
       "name": "Binary Authorization",
       "category": "protection",
       "description": "Deploy-time security control for GKE and Cloud Run that ensures only trusted container images are deployed. Enforces attestation policies requiring images to be signed by trusted authorities before deployment. Integrates with Artifact Registry vulnerability scanning to block images with critical CVEs.",
-      "ccmMapping": ["CCC-01", "CCC-02", "TVM-01", "TVM-04"],
+      "ccmMapping": [
+        "CCC-01",
+        "CCC-02",
+        "TVM-01",
+        "TVM-04"
+      ],
       "tier": "paid",
-      "keyFeatures": ["Attestation-based deployment policy", "Allowlisted image registries", "Require vulnerability scanning", "Break-glass override with logging", "Continuous validation (CV)", "Integration with Cloud Build"]
+      "keyFeatures": [
+        "Attestation-based deployment policy",
+        "Allowlisted image registries",
+        "Require vulnerability scanning",
+        "Break-glass override with logging",
+        "Continuous validation (CV)",
+        "Integration with Cloud Build"
+      ]
     },
     {
       "id": "gcp-cloud-audit-logs",
       "name": "Cloud Audit Logs",
       "category": "logging",
       "description": "Records administrative activities and access to data within GCP resources. Admin Activity logs are always-on and free. Data Access logs record data reads/writes and can be enabled per-service. System Event logs capture GCP system actions. Policy Denied logs capture access denials.",
-      "ccmMapping": ["LOG-01", "LOG-02", "LOG-03", "LOG-05", "LOG-08", "LOG-09"],
+      "ccmMapping": [
+        "LOG-01",
+        "LOG-02",
+        "LOG-03",
+        "LOG-05",
+        "LOG-08",
+        "LOG-09"
+      ],
       "tier": "free",
-      "keyFeatures": ["Admin Activity logs (always-on, free)", "Data Access logs (configurable)", "System Event logs", "Policy Denied logs", "Organization-level aggregation", "400-day retention in Cloud Logging"]
+      "keyFeatures": [
+        "Admin Activity logs (always-on, free)",
+        "Data Access logs (configurable)",
+        "System Event logs",
+        "Policy Denied logs",
+        "Organization-level aggregation",
+        "400-day retention in Cloud Logging"
+      ]
     },
     {
       "id": "gcp-secret-manager",
       "name": "Secret Manager",
       "category": "encryption",
       "description": "Centralized service for managing secrets such as API keys, passwords, certificates, and other sensitive data. Secrets are stored encrypted and versioned. Supports automatic replication across regions, IAM-based access control, and audit logging of all access. Integrates with GKE, Cloud Run, and Cloud Functions.",
-      "ccmMapping": ["CEK-01", "CEK-03", "IAM-02", "DSP-01"],
+      "ccmMapping": [
+        "CEK-01",
+        "CEK-03",
+        "IAM-02",
+        "DSP-01"
+      ],
       "tier": "paid",
-      "keyFeatures": ["Secret versioning", "Automatic and user-managed replication", "IAM access control per secret", "Rotation with Cloud Functions", "Audit logging of access", "CMEK encryption support"]
+      "keyFeatures": [
+        "Secret versioning",
+        "Automatic and user-managed replication",
+        "IAM access control per secret",
+        "Rotation with Cloud Functions",
+        "Audit logging of access",
+        "CMEK encryption support"
+      ]
     },
     {
       "id": "gcp-certificate-authority-service",
       "name": "Certificate Authority Service (CA Service)",
       "category": "encryption",
       "description": "Managed private Certificate Authority (CA) service for issuing and managing private certificates. Supports custom certificate profiles, certificate lifecycle management, and integration with GKE for mesh certificates. Enables organizations to run their own PKI without managing CA infrastructure.",
-      "ccmMapping": ["CEK-01", "CEK-04", "IVS-06"],
+      "ccmMapping": [
+        "CEK-01",
+        "CEK-04",
+        "IVS-06"
+      ],
       "tier": "paid",
-      "keyFeatures": ["Managed private CA", "Certificate templates", "Subordinate CA support", "HSM-backed CA keys", "Integration with GKE/Istio", "Certificate revocation (CRL, OCSP)"]
+      "keyFeatures": [
+        "Managed private CA",
+        "Certificate templates",
+        "Subordinate CA support",
+        "HSM-backed CA keys",
+        "Integration with GKE/Istio",
+        "Certificate revocation (CRL, OCSP)"
+      ]
     },
     {
       "id": "gcp-beyondcorp-enterprise",
       "name": "BeyondCorp Enterprise",
       "category": "identity",
       "description": "Google's zero-trust access platform that enables secure access to applications without a VPN. Evaluates user identity, device security posture, and context (location, time) for every access request. Built on Google's internal BeyondCorp architecture that has protected Google's workforce since 2011.",
-      "ccmMapping": ["IAM-01", "IAM-02", "IAM-14", "IVS-01"],
+      "ccmMapping": [
+        "IAM-01",
+        "IAM-02",
+        "IAM-14",
+        "IVS-01"
+      ],
       "tier": "paid",
-      "keyFeatures": ["Agentless and agent-based access", "Device trust evaluation", "Context-aware access policies", "Threat and data protection", "Integration with Chrome Enterprise", "Access to web apps, VMs, and APIs"]
+      "keyFeatures": [
+        "Agentless and agent-based access",
+        "Device trust evaluation",
+        "Context-aware access policies",
+        "Threat and data protection",
+        "Integration with Chrome Enterprise",
+        "Access to web apps, VMs, and APIs"
+      ]
     },
     {
       "id": "gcp-recaptcha-enterprise",
       "name": "reCAPTCHA Enterprise",
       "category": "protection",
       "description": "Bot detection and fraud prevention service that protects web applications from automated attacks, credential stuffing, account takeover, and scraping. Uses adaptive risk analysis based on user behavior signals. Provides risk scores rather than binary challenge-or-pass decisions.",
-      "ccmMapping": ["IVS-04", "IVS-09", "TVM-01"],
+      "ccmMapping": [
+        "IVS-04",
+        "IVS-09",
+        "TVM-01"
+      ],
       "tier": "paid",
-      "keyFeatures": ["Frictionless score-based detection", "Account defender for ATO prevention", "Password leak detection", "Multi-factor authentication triggers", "Customizable risk thresholds", "Mobile SDK support"]
+      "keyFeatures": [
+        "Frictionless score-based detection",
+        "Account defender for ATO prevention",
+        "Password leak detection",
+        "Multi-factor authentication triggers",
+        "Customizable risk thresholds",
+        "Mobile SDK support"
+      ]
     },
     {
       "id": "gcp-web-security-scanner",
       "name": "Web Security Scanner",
       "category": "detection",
       "description": "Automated web application vulnerability scanner that identifies security issues in App Engine, GKE, and Compute Engine web applications. Scans for OWASP Top 10 vulnerabilities including XSS, SQL injection, mixed content, and outdated libraries. Findings are reported in Security Command Center.",
-      "ccmMapping": ["TVM-01", "TVM-02", "TVM-03", "TVM-09"],
+      "ccmMapping": [
+        "TVM-01",
+        "TVM-02",
+        "TVM-03",
+        "TVM-09"
+      ],
       "tier": "free",
-      "keyFeatures": ["Automated OWASP scanning", "Custom scan configurations", "Authentication support", "App Engine/GKE/GCE coverage", "Integration with Security Command Center", "Scheduled and on-demand scans"]
+      "keyFeatures": [
+        "Automated OWASP scanning",
+        "Custom scan configurations",
+        "Authentication support",
+        "App Engine/GKE/GCE coverage",
+        "Integration with Security Command Center",
+        "Scheduled and on-demand scans"
+      ]
     },
     {
       "id": "gcp-cloud-dlp",
       "name": "Sensitive Data Protection (Cloud DLP)",
       "category": "protection",
       "description": "Service for discovering, classifying, and protecting sensitive data across GCP and beyond. Scans Cloud Storage, BigQuery, Datastore, and external data sources for 150+ built-in infoTypes (PII, credentials, financial data). Supports de-identification techniques: masking, tokenization, bucketing, and format-preserving encryption.",
-      "ccmMapping": ["DSP-01", "DSP-02", "DSP-04", "DSP-05", "DSP-10"],
+      "ccmMapping": [
+        "DSP-01",
+        "DSP-02",
+        "DSP-04",
+        "DSP-05",
+        "DSP-10"
+      ],
       "tier": "paid",
-      "keyFeatures": ["150+ built-in sensitive data detectors", "Custom infoTypes", "De-identification transforms", "Data profiling at org/project level", "Risk analysis (k-anonymity, l-diversity)", "Integration with Security Command Center"]
+      "keyFeatures": [
+        "150+ built-in sensitive data detectors",
+        "Custom infoTypes",
+        "De-identification transforms",
+        "Data profiling at org/project level",
+        "Risk analysis (k-anonymity, l-diversity)",
+        "Integration with Security Command Center"
+      ]
     },
     {
       "id": "gcp-organization-policy",
       "name": "Organization Policy Service",
       "category": "compliance",
       "description": "Centralized constraint enforcement across the GCP resource hierarchy. Organization policies set guardrails that apply to all resources under an organization node. Constraints include restricting resource locations, disabling service account key creation, enforcing uniform bucket-level access, and requiring OS Login.",
-      "ccmMapping": ["GRC-01", "GRC-02", "GRC-03", "IAM-01"],
+      "ccmMapping": [
+        "GRC-01",
+        "GRC-02",
+        "GRC-03",
+        "IAM-01"
+      ],
       "tier": "free",
-      "keyFeatures": ["Boolean and list constraints", "Resource location restrictions", "Inheritance with override", "Custom constraints (in preview)", "Dry-run for impact analysis", "50+ built-in constraints"]
+      "keyFeatures": [
+        "Boolean and list constraints",
+        "Resource location restrictions",
+        "Inheritance with override",
+        "Custom constraints (in preview)",
+        "Dry-run for impact analysis",
+        "50+ built-in constraints"
+      ]
     },
     {
       "id": "gcp-cloud-ids",
       "name": "Cloud IDS (Intrusion Detection System)",
       "category": "detection",
       "description": "Managed network-based intrusion detection system powered by Palo Alto Networks threat intelligence. Provides visibility into network-based threats including malware, spyware, command-and-control attacks, and other network-based threats. Traffic is mirrored for inspection without inline performance impact.",
-      "ccmMapping": ["TVM-01", "TVM-02", "IVS-04", "SEF-02"],
+      "ccmMapping": [
+        "TVM-01",
+        "TVM-02",
+        "IVS-04",
+        "SEF-02"
+      ],
       "tier": "paid",
-      "keyFeatures": ["Palo Alto Networks threat signatures", "Out-of-band traffic inspection", "Threat severity classification", "Integration with Security Command Center", "VPC packet mirroring", "Cloud Logging integration"]
+      "keyFeatures": [
+        "Palo Alto Networks threat signatures",
+        "Out-of-band traffic inspection",
+        "Threat severity classification",
+        "Integration with Security Command Center",
+        "VPC packet mirroring",
+        "Cloud Logging integration"
+      ]
     },
     {
       "id": "gcp-assured-workloads",
       "name": "Assured Workloads",
       "category": "compliance",
       "description": "Enables customers to apply security and compliance controls to GCP environments for regulated workloads. Creates compliant folders with enforced controls for data residency, personnel access restrictions, and encryption requirements. Supports FedRAMP, ITAR, CJIS, IL4/IL5, and regional compliance packages.",
-      "ccmMapping": ["GRC-01", "GRC-02", "GRC-03", "DSP-01", "DSP-04"],
+      "ccmMapping": [
+        "GRC-01",
+        "GRC-02",
+        "GRC-03",
+        "DSP-01",
+        "DSP-04"
+      ],
       "tier": "paid",
-      "keyFeatures": ["Compliance-controlled folders", "Data residency enforcement", "Key access justifications", "Personnel access restrictions", "Compliance monitoring dashboard", "Pre-configured for regulatory frameworks"]
+      "keyFeatures": [
+        "Compliance-controlled folders",
+        "Data residency enforcement",
+        "Key access justifications",
+        "Personnel access restrictions",
+        "Compliance monitoring dashboard",
+        "Pre-configured for regulatory frameworks"
+      ]
     },
     {
       "id": "gcp-security-posture",
       "name": "Security Posture Service",
       "category": "compliance",
       "description": "Defines, deploys, and monitors a security posture across GCP organization. A posture is a set of policy constraints and Security Health Analytics detectors that define an organization's security standards. Detects drift from the defined posture and integrates with Terraform for infrastructure-as-code deployments.",
-      "ccmMapping": ["GRC-01", "GRC-02", "CCC-01", "CCC-02"],
+      "ccmMapping": [
+        "GRC-01",
+        "GRC-02",
+        "CCC-01",
+        "CCC-02"
+      ],
       "tier": "free",
-      "keyFeatures": ["Posture definition as code", "Drift detection", "Pre-built posture templates", "Integration with Terraform", "Organization policy enforcement", "SHA detector management"]
+      "keyFeatures": [
+        "Posture definition as code",
+        "Drift detection",
+        "Pre-built posture templates",
+        "Integration with Terraform",
+        "Organization policy enforcement",
+        "SHA detector management"
+      ]
     }
-  ]
+  ],
+  "sourceType": "constructed-indicative"
 }

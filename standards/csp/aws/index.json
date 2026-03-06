@@ -57,5 +57,6 @@
     "sharedResponsibility": "https://aws.amazon.com/compliance/shared-responsibility-model/",
     "securityBlog": "https://aws.amazon.com/blogs/security/",
     "documentation": "https://docs.aws.amazon.com/security/"
-  }
+  },
+  "sourceType": "constructed-indicative"
 }

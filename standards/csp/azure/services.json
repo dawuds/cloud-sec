@@ -8,180 +8,428 @@
       "name": "Microsoft Entra ID (formerly Azure Active Directory)",
       "category": "identity",
       "description": "Cloud-based identity and access management service. Provides SSO, MFA, conditional access policies, identity protection (risk-based sign-in detection), privileged identity management (PIM), and application registration. The identity backbone for all Azure and Microsoft 365 services.",
-      "ccmMapping": ["IAM-01", "IAM-02", "IAM-03", "IAM-04", "IAM-06", "IAM-12", "IAM-14"],
+      "ccmMapping": [
+        "IAM-01",
+        "IAM-02",
+        "IAM-03",
+        "IAM-04",
+        "IAM-06",
+        "IAM-12",
+        "IAM-14"
+      ],
       "tier": "free",
-      "keyFeatures": ["Conditional Access policies", "Multi-Factor Authentication", "Privileged Identity Management (P2)", "Identity Protection risk detection", "Application proxy", "B2B/B2C identity"]
+      "keyFeatures": [
+        "Conditional Access policies",
+        "Multi-Factor Authentication",
+        "Privileged Identity Management (P2)",
+        "Identity Protection risk detection",
+        "Application proxy",
+        "B2B/B2C identity"
+      ]
     },
     {
       "id": "azure-defender-for-cloud",
       "name": "Microsoft Defender for Cloud",
       "category": "detection",
       "description": "Unified cloud security posture management (CSPM) and cloud workload protection platform (CWPP). Free tier provides security recommendations and secure score. Paid plans add threat protection for VMs, containers, databases, storage, App Service, Key Vault, Resource Manager, and DNS. Supports multi-cloud (AWS, GCP).",
-      "ccmMapping": ["TVM-01", "TVM-02", "TVM-03", "GRC-01", "GRC-02", "SEF-02"],
+      "ccmMapping": [
+        "TVM-01",
+        "TVM-02",
+        "TVM-03",
+        "GRC-01",
+        "GRC-02",
+        "SEF-02"
+      ],
       "tier": "free",
-      "keyFeatures": ["Secure Score", "Security recommendations", "Regulatory compliance dashboard", "Workload protection plans", "Multi-cloud support (AWS, GCP)", "Attack path analysis"]
+      "keyFeatures": [
+        "Secure Score",
+        "Security recommendations",
+        "Regulatory compliance dashboard",
+        "Workload protection plans",
+        "Multi-cloud support (AWS, GCP)",
+        "Attack path analysis"
+      ]
     },
     {
       "id": "azure-sentinel",
       "name": "Microsoft Sentinel",
       "category": "detection",
       "description": "Cloud-native SIEM and SOAR platform built on Azure Log Analytics. Collects data from Azure, on-premises, and multi-cloud sources via 300+ data connectors. Uses KQL for threat hunting, built-in analytics rules, ML-based incident detection, and automated response playbooks (Logic Apps).",
-      "ccmMapping": ["LOG-03", "LOG-09", "SEF-02", "SEF-04", "SEF-05"],
+      "ccmMapping": [
+        "LOG-03",
+        "LOG-09",
+        "SEF-02",
+        "SEF-04",
+        "SEF-05"
+      ],
       "tier": "paid",
-      "keyFeatures": ["300+ data connectors", "KQL-based hunting queries", "UEBA (User Entity Behavior Analytics)", "SOAR playbooks via Logic Apps", "Threat intelligence integration", "Notebooks for investigation"]
+      "keyFeatures": [
+        "300+ data connectors",
+        "KQL-based hunting queries",
+        "UEBA (User Entity Behavior Analytics)",
+        "SOAR playbooks via Logic Apps",
+        "Threat intelligence integration",
+        "Notebooks for investigation"
+      ]
     },
     {
       "id": "azure-key-vault",
       "name": "Azure Key Vault",
       "category": "encryption",
       "description": "Centralized cloud service for securely storing and managing secrets, encryption keys, and certificates. Supports software-protected and HSM-protected keys (FIPS 140-2 Level 2/3). Integrated with Azure services for transparent encryption. Provides access policies and RBAC for fine-grained control.",
-      "ccmMapping": ["CEK-01", "CEK-02", "CEK-03", "CEK-04", "CEK-05", "DSP-01"],
+      "ccmMapping": [
+        "CEK-01",
+        "CEK-02",
+        "CEK-03",
+        "CEK-04",
+        "CEK-05",
+        "DSP-01"
+      ],
       "tier": "paid",
-      "keyFeatures": ["Secrets management", "Key management (RSA, EC)", "Certificate management with auto-renewal", "HSM-backed keys (Premium tier)", "Managed HSM for dedicated HSMs", "Soft-delete and purge protection"]
+      "keyFeatures": [
+        "Secrets management",
+        "Key management (RSA, EC)",
+        "Certificate management with auto-renewal",
+        "HSM-backed keys (Premium tier)",
+        "Managed HSM for dedicated HSMs",
+        "Soft-delete and purge protection"
+      ]
     },
     {
       "id": "azure-policy",
       "name": "Azure Policy",
       "category": "compliance",
       "description": "Service for creating, assigning, and managing policies that enforce rules and effects on Azure resources. Policies can audit, deny, deploy, or modify resources to maintain compliance. Built-in policy initiatives map to CIS, NIST 800-53, PCI DSS, ISO 27001, and other frameworks.",
-      "ccmMapping": ["GRC-01", "GRC-02", "GRC-03", "CCC-01", "CCC-02"],
+      "ccmMapping": [
+        "GRC-01",
+        "GRC-02",
+        "GRC-03",
+        "CCC-01",
+        "CCC-02"
+      ],
       "tier": "free",
-      "keyFeatures": ["Built-in policy definitions", "Custom policy definitions", "Policy initiatives (bundles)", "Compliance dashboard", "Remediation tasks", "Exemption management"]
+      "keyFeatures": [
+        "Built-in policy definitions",
+        "Custom policy definitions",
+        "Policy initiatives (bundles)",
+        "Compliance dashboard",
+        "Remediation tasks",
+        "Exemption management"
+      ]
     },
     {
       "id": "azure-monitor",
       "name": "Azure Monitor",
       "category": "logging",
       "description": "Comprehensive monitoring platform for collecting, analyzing, and acting on telemetry from Azure and hybrid environments. Includes Log Analytics (log queries), Metrics (time-series data), Alerts (notifications and actions), Application Insights (APM), and Workbooks (visualization).",
-      "ccmMapping": ["LOG-01", "LOG-03", "LOG-05", "LOG-09", "SEF-02"],
+      "ccmMapping": [
+        "LOG-01",
+        "LOG-03",
+        "LOG-05",
+        "LOG-09",
+        "SEF-02"
+      ],
       "tier": "free",
-      "keyFeatures": ["Log Analytics workspace (KQL)", "Metric collection and dashboards", "Alert rules and action groups", "Diagnostic settings for all resources", "Activity Log (control plane operations)", "Change Analysis"]
+      "keyFeatures": [
+        "Log Analytics workspace (KQL)",
+        "Metric collection and dashboards",
+        "Alert rules and action groups",
+        "Diagnostic settings for all resources",
+        "Activity Log (control plane operations)",
+        "Change Analysis"
+      ]
     },
     {
       "id": "azure-purview",
       "name": "Microsoft Purview",
       "category": "compliance",
       "description": "Unified data governance and compliance platform. Includes Data Map (automated data discovery and classification), Data Catalog (searchable metadata), Information Protection (sensitivity labels), Data Loss Prevention (DLP), Compliance Manager (assessment tracking), and Insider Risk Management.",
-      "ccmMapping": ["DSP-01", "DSP-02", "DSP-04", "DSP-05", "DSP-10", "GRC-01"],
+      "ccmMapping": [
+        "DSP-01",
+        "DSP-02",
+        "DSP-04",
+        "DSP-05",
+        "DSP-10",
+        "GRC-01"
+      ],
       "tier": "paid",
-      "keyFeatures": ["Automated data discovery and classification", "Sensitivity labels across Microsoft 365 and Azure", "Data Loss Prevention policies", "Compliance Manager assessments", "Data lineage tracking", "eDiscovery and audit"]
+      "keyFeatures": [
+        "Automated data discovery and classification",
+        "Sensitivity labels across Microsoft 365 and Azure",
+        "Data Loss Prevention policies",
+        "Compliance Manager assessments",
+        "Data lineage tracking",
+        "eDiscovery and audit"
+      ]
     },
     {
       "id": "azure-ddos-protection",
       "name": "Azure DDoS Protection",
       "category": "protection",
       "description": "DDoS mitigation service with two tiers. Basic tier provides automatic L3/L4 protection for all Azure resources at no cost. Standard tier adds advanced mitigation for VNet resources, real-time attack metrics, diagnostic logs, cost protection, and access to the DDoS Rapid Response team.",
-      "ccmMapping": ["IVS-04", "IVS-06", "IVS-09"],
+      "ccmMapping": [
+        "IVS-04",
+        "IVS-06",
+        "IVS-09"
+      ],
       "tier": "free",
-      "keyFeatures": ["Basic protection (free, automatic)", "Standard protection (paid, enhanced)", "Adaptive tuning per resource", "Attack analytics and metrics", "DDoS Rapid Response (DRR) team", "Cost protection guarantee"]
+      "keyFeatures": [
+        "Basic protection (free, automatic)",
+        "Standard protection (paid, enhanced)",
+        "Adaptive tuning per resource",
+        "Attack analytics and metrics",
+        "DDoS Rapid Response (DRR) team",
+        "Cost protection guarantee"
+      ]
     },
     {
       "id": "azure-firewall",
       "name": "Azure Firewall",
       "category": "protection",
       "description": "Managed, cloud-native network security service that protects Azure Virtual Network resources. Provides stateful firewalling with built-in high availability, unrestricted scalability, FQDN filtering, network rules, threat intelligence-based filtering, and TLS inspection (Premium SKU).",
-      "ccmMapping": ["IVS-04", "IVS-06", "IVS-09"],
+      "ccmMapping": [
+        "IVS-04",
+        "IVS-06",
+        "IVS-09"
+      ],
       "tier": "paid",
-      "keyFeatures": ["Stateful firewall-as-a-service", "FQDN and application rules", "Threat intelligence filtering", "IDPS signatures (Premium)", "TLS inspection (Premium)", "Centralized management via Firewall Manager"]
+      "keyFeatures": [
+        "Stateful firewall-as-a-service",
+        "FQDN and application rules",
+        "Threat intelligence filtering",
+        "IDPS signatures (Premium)",
+        "TLS inspection (Premium)",
+        "Centralized management via Firewall Manager"
+      ]
     },
     {
       "id": "azure-front-door-waf",
       "name": "Azure Front Door with WAF",
       "category": "protection",
       "description": "Global load balancer and CDN with integrated Web Application Firewall. WAF policies protect web applications against common exploits (OWASP Top 10), bots, and DDoS at the edge. Custom rules support rate limiting, geo-filtering, and IP restriction. Azure-managed rule sets are regularly updated.",
-      "ccmMapping": ["IVS-04", "IVS-06", "IVS-09", "TVM-01"],
+      "ccmMapping": [
+        "IVS-04",
+        "IVS-06",
+        "IVS-09",
+        "TVM-01"
+      ],
       "tier": "paid",
-      "keyFeatures": ["Global L7 load balancing", "Managed WAF rule sets (DRS)", "Custom WAF rules", "Bot protection", "Rate limiting", "Geo-filtering"]
+      "keyFeatures": [
+        "Global L7 load balancing",
+        "Managed WAF rule sets (DRS)",
+        "Custom WAF rules",
+        "Bot protection",
+        "Rate limiting",
+        "Geo-filtering"
+      ]
     },
     {
       "id": "azure-private-link",
       "name": "Azure Private Link",
       "category": "protection",
       "description": "Enables private access to Azure PaaS services, customer-owned services, and Microsoft partner services over a private endpoint in your VNet. Traffic stays on the Microsoft backbone network and never traverses the public internet, eliminating data exfiltration risks.",
-      "ccmMapping": ["IVS-01", "IVS-03", "IVS-06", "DSP-01"],
+      "ccmMapping": [
+        "IVS-01",
+        "IVS-03",
+        "IVS-06",
+        "DSP-01"
+      ],
       "tier": "paid",
-      "keyFeatures": ["Private endpoints in VNet", "Access to PaaS over private IP", "Cross-region connectivity", "On-premises access via VPN/ExpressRoute", "Network security group support", "DNS integration"]
+      "keyFeatures": [
+        "Private endpoints in VNet",
+        "Access to PaaS over private IP",
+        "Cross-region connectivity",
+        "On-premises access via VPN/ExpressRoute",
+        "Network security group support",
+        "DNS integration"
+      ]
     },
     {
       "id": "azure-bastion",
       "name": "Azure Bastion",
       "category": "protection",
       "description": "Fully managed PaaS service that provides secure RDP and SSH access to virtual machines directly through the Azure portal over TLS. Eliminates the need for public IP addresses on VMs and removes the attack surface associated with managing jump boxes.",
-      "ccmMapping": ["IAM-01", "IAM-14", "IVS-01", "IVS-06"],
+      "ccmMapping": [
+        "IAM-01",
+        "IAM-14",
+        "IVS-01",
+        "IVS-06"
+      ],
       "tier": "paid",
-      "keyFeatures": ["Browser-based RDP/SSH", "No public IP required on VMs", "Protection against port scanning", "Hardened bastion host", "Session recording (Standard)", "Shareable links"]
+      "keyFeatures": [
+        "Browser-based RDP/SSH",
+        "No public IP required on VMs",
+        "Protection against port scanning",
+        "Hardened bastion host",
+        "Session recording (Standard)",
+        "Shareable links"
+      ]
     },
     {
       "id": "azure-confidential-computing",
       "name": "Azure Confidential Computing",
       "category": "encryption",
       "description": "Protects data in use through hardware-based Trusted Execution Environments (TEEs). Supports Intel SGX enclaves, AMD SEV-SNP confidential VMs, and confidential containers. Data remains encrypted in memory during processing, protecting against privileged access attacks.",
-      "ccmMapping": ["CEK-01", "DSP-01", "DSP-02", "DSP-04"],
+      "ccmMapping": [
+        "CEK-01",
+        "DSP-01",
+        "DSP-02",
+        "DSP-04"
+      ],
       "tier": "paid",
-      "keyFeatures": ["Confidential VMs (AMD SEV-SNP)", "Application enclaves (Intel SGX)", "Confidential containers on ACI/AKS", "Always Encrypted with secure enclaves", "Confidential Ledger", "Attestation service"]
+      "keyFeatures": [
+        "Confidential VMs (AMD SEV-SNP)",
+        "Application enclaves (Intel SGX)",
+        "Confidential containers on ACI/AKS",
+        "Always Encrypted with secure enclaves",
+        "Confidential Ledger",
+        "Attestation service"
+      ]
     },
     {
       "id": "azure-network-watcher",
       "name": "Azure Network Watcher",
       "category": "logging",
       "description": "Network monitoring and diagnostics service for Azure. Provides NSG flow logs, packet capture, IP flow verify, next hop analysis, connection troubleshoot, and traffic analytics. Essential for network visibility, troubleshooting, and security analysis.",
-      "ccmMapping": ["LOG-01", "LOG-03", "IVS-06", "IVS-09"],
+      "ccmMapping": [
+        "LOG-01",
+        "LOG-03",
+        "IVS-06",
+        "IVS-09"
+      ],
       "tier": "free",
-      "keyFeatures": ["NSG flow logs", "Traffic Analytics", "Packet capture", "Connection troubleshoot", "IP flow verify", "Network topology view"]
+      "keyFeatures": [
+        "NSG flow logs",
+        "Traffic Analytics",
+        "Packet capture",
+        "Connection troubleshoot",
+        "IP flow verify",
+        "Network topology view"
+      ]
     },
     {
       "id": "azure-application-gateway",
       "name": "Azure Application Gateway",
       "category": "protection",
       "description": "Regional L7 load balancer with optional WAF v2 integration. Provides SSL/TLS termination, cookie-based session affinity, URL-based routing, and multi-site hosting. WAF v2 provides OWASP Core Rule Set protection, custom rules, and per-site/per-URI policies.",
-      "ccmMapping": ["IVS-04", "IVS-06", "IVS-09"],
+      "ccmMapping": [
+        "IVS-04",
+        "IVS-06",
+        "IVS-09"
+      ],
       "tier": "paid",
-      "keyFeatures": ["L7 load balancing", "WAF v2 integration", "SSL/TLS termination", "Autoscaling", "URL-based routing", "Mutual TLS authentication"]
+      "keyFeatures": [
+        "L7 load balancing",
+        "WAF v2 integration",
+        "SSL/TLS termination",
+        "Autoscaling",
+        "URL-based routing",
+        "Mutual TLS authentication"
+      ]
     },
     {
       "id": "azure-defender-external-attack-surface",
       "name": "Microsoft Defender External Attack Surface Management",
       "category": "detection",
       "description": "Continuously discovers and maps the external attack surface of an organization. Identifies internet-facing assets, shadow IT, and exposed resources that may not be known to security teams. Provides risk scoring and vulnerability insights for discovered assets.",
-      "ccmMapping": ["TVM-01", "TVM-02", "TVM-09", "IVS-06"],
+      "ccmMapping": [
+        "TVM-01",
+        "TVM-02",
+        "TVM-09",
+        "IVS-06"
+      ],
       "tier": "paid",
-      "keyFeatures": ["Internet-facing asset discovery", "Shadow IT detection", "Risk prioritization", "Vulnerability insights", "Integration with Defender for Cloud", "OWASP categorization"]
+      "keyFeatures": [
+        "Internet-facing asset discovery",
+        "Shadow IT detection",
+        "Risk prioritization",
+        "Vulnerability insights",
+        "Integration with Defender for Cloud",
+        "OWASP categorization"
+      ]
     },
     {
       "id": "azure-managed-identity",
       "name": "Azure Managed Identities",
       "category": "identity",
       "description": "Provides Azure services with an automatically managed identity in Entra ID. Eliminates the need for credentials in code. System-assigned identities are tied to a resource lifecycle. User-assigned identities can be shared across multiple resources. Used for authenticating to Azure services securely.",
-      "ccmMapping": ["IAM-01", "IAM-02", "CEK-03"],
+      "ccmMapping": [
+        "IAM-01",
+        "IAM-02",
+        "CEK-03"
+      ],
       "tier": "free",
-      "keyFeatures": ["System-assigned identity", "User-assigned identity", "No credentials in code", "Automatic token management", "RBAC integration", "Supports 50+ Azure services"]
+      "keyFeatures": [
+        "System-assigned identity",
+        "User-assigned identity",
+        "No credentials in code",
+        "Automatic token management",
+        "RBAC integration",
+        "Supports 50+ Azure services"
+      ]
     },
     {
       "id": "azure-resource-locks",
       "name": "Azure Resource Locks",
       "category": "compliance",
       "description": "Prevents accidental deletion or modification of critical Azure resources. Two lock types: CanNotDelete (allows reads and updates but prevents deletion) and ReadOnly (prevents any changes). Applied at subscription, resource group, or individual resource level with inheritance.",
-      "ccmMapping": ["CCC-01", "CCC-02", "GRC-01"],
+      "ccmMapping": [
+        "CCC-01",
+        "CCC-02",
+        "GRC-01"
+      ],
       "tier": "free",
-      "keyFeatures": ["CanNotDelete locks", "ReadOnly locks", "Subscription/RG/resource scope", "Lock inheritance", "RBAC for lock management", "ARM template support"]
+      "keyFeatures": [
+        "CanNotDelete locks",
+        "ReadOnly locks",
+        "Subscription/RG/resource scope",
+        "Lock inheritance",
+        "RBAC for lock management",
+        "ARM template support"
+      ]
     },
     {
       "id": "azure-defender-identity",
       "name": "Microsoft Defender for Identity",
       "category": "detection",
       "description": "Cloud-based security solution that uses on-premises Active Directory signals to identify, detect, and investigate advanced threats, compromised identities, and malicious insider actions. Detects credential theft (pass-the-hash, pass-the-ticket), lateral movement, and domain dominance attacks.",
-      "ccmMapping": ["IAM-01", "TVM-01", "SEF-02", "SEF-04"],
+      "ccmMapping": [
+        "IAM-01",
+        "TVM-01",
+        "SEF-02",
+        "SEF-04"
+      ],
       "tier": "paid",
-      "keyFeatures": ["AD attack detection", "Lateral movement path analysis", "UEBA for AD identities", "Honeytoken accounts", "Security posture assessments", "Integration with Microsoft 365 Defender"]
+      "keyFeatures": [
+        "AD attack detection",
+        "Lateral movement path analysis",
+        "UEBA for AD identities",
+        "Honeytoken accounts",
+        "Security posture assessments",
+        "Integration with Microsoft 365 Defender"
+      ]
     },
     {
       "id": "azure-blueprint",
       "name": "Azure Blueprints (deprecated) / Deployment Stacks",
       "category": "compliance",
       "description": "Azure Blueprints (now deprecated in favor of Deployment Stacks and Template Specs) defined repeatable environments with ARM templates, policies, RBAC, and resource groups. Deployment Stacks provide managed resource lifecycle, deny settings to prevent tampering, and deletion controls for governed deployments.",
-      "ccmMapping": ["GRC-01", "GRC-02", "CCC-01", "CCC-02"],
+      "ccmMapping": [
+        "GRC-01",
+        "GRC-02",
+        "CCC-01",
+        "CCC-02"
+      ],
       "tier": "free",
-      "keyFeatures": ["Declarative environment definitions", "Policy assignment at deployment", "RBAC assignment at deployment", "Version management", "Deny settings for drift prevention", "Cross-scope deployment"]
+      "keyFeatures": [
+        "Declarative environment definitions",
+        "Policy assignment at deployment",
+        "RBAC assignment at deployment",
+        "Version management",
+        "Deny settings for drift prevention",
+        "Cross-scope deployment"
+      ]
     }
-  ]
+  ],
+  "sourceType": "constructed-indicative"
 }

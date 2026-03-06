@@ -1,0 +1,102 @@
+{
+  "$schema": "cloud-security-v1",
+  "sector": "telecommunications",
+  "sectorName": "Telecommunications",
+  "sourceType": "constructed-indicative",
+  "verificationNote": "Telecommunications cloud security requirements constructed from Communications and Multimedia Act 1998, NACSA Act 854, MCMC guidelines, and telecoms cloud security best practices. These are indicative -- verify against current MCMC directives and NACSA sector lead guidance.",
+  "nacsaSectorLead": "Malaysian Communications and Multimedia Commission (MCMC)",
+  "nacsaSectorNumber": 6,
+  "applicableStandards": [
+    "Communications and Multimedia Act 1998 (Act 588) -- primary telecommunications regulation",
+    "CSA Cloud Controls Matrix v4 (CCM v4)",
+    "ISO 27001:2022 (ISMS for telecommunications)",
+    "ISO 27011:2016 (Telecommunications-specific security controls)",
+    "ISO 27017:2015 (Cloud-specific security controls)",
+    "NACSA Act 854 (telecommunications as NCII sector)",
+    "PDPA 2010 (Act 709) -- subscriber personal data protection",
+    "MCMC General Consumer Code of Practice -- subscriber data handling",
+    "Interception of Communications Act 2024 -- lawful interception obligations",
+    "MCMC Technical Standards -- network security requirements"
+  ],
+  "subscriberDataProtection": {
+    "description": "Telecommunications subscriber data includes call detail records (CDRs), location data, browsing metadata, subscriber identifiers, and billing information. This data is highly sensitive and subject to strict regulatory controls including lawful interception requirements.",
+    "requirements": [
+      "Subscriber data encrypted at rest and in transit in all cloud services",
+      "Strict access controls on CDRs and location data with audit logging",
+      "Data residency in Malaysia for subscriber records and CDRs",
+      "Lawful interception capability preserved when migrating to cloud architecture",
+      "Anonymisation of subscriber data used for analytics and network planning",
+      "Retention per MCMC requirements and Interception of Communications Act provisions"
+    ]
+  },
+  "keyRequirements": [
+    {
+      "id": "TC-R1",
+      "name": "5G core network security in cloud",
+      "description": "Cloud-native 5G core network functions (NFs) deployed on public or private cloud must meet telecommunications-grade security requirements. NFV security must address isolation, service availability, and signalling security.",
+      "implementation": [
+        "Dedicated cloud infrastructure for 5G core NFs with strict tenant isolation",
+        "Service mesh with mTLS between network functions",
+        "Zero-trust architecture for signalling plane (SBI) security",
+        "Redundant deployment across multiple availability zones for five-nines availability",
+        "Real-time security monitoring of NF health and signalling anomalies"
+      ],
+      "ccmControls": ["IVS-01", "IVS-04", "IVS-06", "BCR-01", "BCR-02"]
+    },
+    {
+      "id": "TC-R2",
+      "name": "Subscriber data protection in cloud platforms",
+      "description": "Call detail records, location data, and subscriber information migrated to cloud must maintain the same security controls as on-premises systems. Lawful interception capability must be preserved.",
+      "implementation": [
+        "Encrypt all subscriber data with customer-managed keys in cloud",
+        "Implement data classification separating CDRs, location data, and billing data",
+        "Maintain lawful interception interfaces per MCMC technical standards",
+        "Access audit trail for all subscriber data queries with 7-year retention",
+        "Data residency enforcement in Malaysia for all subscriber data"
+      ],
+      "ccmControls": ["DSP-01", "DSP-02", "DSP-06", "CEK-03", "LOG-01"]
+    },
+    {
+      "id": "TC-R3",
+      "name": "Network function virtualisation (NFV) security",
+      "description": "Virtualised network functions deployed on cloud infrastructure must maintain isolation, performance SLAs, and security monitoring equivalent to physical network elements.",
+      "implementation": [
+        "Container/VM isolation for network functions with dedicated compute resources",
+        "Network segmentation between management, signalling, and data planes",
+        "Performance monitoring with SLA alerting for latency-sensitive NFs",
+        "Automated scaling with security policy inheritance for new instances",
+        "Vulnerability management for NFV infrastructure including hypervisor and container runtime"
+      ],
+      "ccmControls": ["IVS-01", "IVS-05", "IVS-09", "TVM-01", "TVM-02"]
+    },
+    {
+      "id": "TC-R4",
+      "name": "Enterprise cloud service chain security",
+      "description": "Telecommunications operators offering enterprise cloud services must manage the security chain from customer to CSP. Shared responsibility must be clearly defined and liability mapped.",
+      "implementation": [
+        "Clear shared responsibility model between operator and customer",
+        "Security SLAs in enterprise cloud service agreements",
+        "Incident notification chain: CSP to operator to enterprise customer",
+        "Regular third-party security assessments of cloud service offering",
+        "Data processing agreements covering all parties in the service chain"
+      ],
+      "ccmControls": ["STA-01", "STA-03", "GRC-01", "SEF-01"]
+    }
+  ],
+  "nacsaObligations": {
+    "description": "NACSA obligations for NCII-designated telecommunications infrastructure using cloud services.",
+    "applicability": "Applies to telecommunications infrastructure designated as NCII under NACSA Act 854. Core network infrastructure, subscriber management systems, and critical communications platforms are likely designated.",
+    "obligations": [
+      "s18: Cloud-hosted telecommunications NCII must have appropriate cybersecurity measures including network function isolation and signalling security",
+      "s21: Annual risk assessment covering cloud-hosted telecommunications systems including 5G core and subscriber data platforms",
+      "s23: Biennial audit including cloud security posture and NFV security assessment",
+      "s26: 6-hour notification for significant cloud security incidents affecting NCII telecommunications systems"
+    ]
+  },
+  "sectorSpecificThreats": [
+    { "threat": "Nation-state targeting of 5G cloud core for intelligence collection", "ccmControls": ["IVS-01", "IVS-06", "IAM-04", "LOG-01"], "impact": "Subscriber surveillance; national security compromise; signalling manipulation" },
+    { "threat": "CDR database breach from cloud storage misconfiguration", "ccmControls": ["DSP-01", "DSP-02", "DSP-04", "IAM-04"], "impact": "Mass subscriber privacy violation; location tracking exposure; regulatory penalty" },
+    { "threat": "DDoS attack on virtualised network functions causing service outage", "ccmControls": ["IVS-01", "IVS-04", "BCR-01", "BCR-02"], "impact": "Telecommunications service disruption; emergency services impact; SLA breach" },
+    { "threat": "Supply chain compromise in NFV platform affecting multiple operators", "ccmControls": ["STA-01", "STA-03", "TVM-01", "TVM-02"], "impact": "Multi-operator compromise; national telecommunications infrastructure risk" }
+  ]
+}

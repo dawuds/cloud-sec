@@ -133,6 +133,32 @@
     ],
     "ccmControls": ["IVS-01", "IVS-04", "DSP-01", "DSP-02", "TVM-01"]
   },
+  "keyRequirements": [
+    {
+      "id": "HC-R1",
+      "name": "Patient data encryption in cloud",
+      "description": "All patient health data classified as sensitive personal data under PDPA s4 must be encrypted at rest (AES-256) and in transit (TLS 1.2+) across all cloud services. Customer-managed encryption keys required for EMR and diagnostic data.",
+      "ccmControls": ["DSP-01", "DSP-02", "DSP-03", "CEK-03"]
+    },
+    {
+      "id": "HC-R2",
+      "name": "Cloud-hosted EMR access control and audit trail",
+      "description": "Role-based access control for all EMR access with complete audit trail. Break-glass emergency access with post-use review. Minimum 7-year retention for access logs per healthcare records requirements.",
+      "ccmControls": ["IAM-01", "IAM-02", "IAM-04", "IAM-06", "LOG-01", "LOG-03"]
+    },
+    {
+      "id": "HC-R3",
+      "name": "Telemedicine platform security baseline",
+      "description": "End-to-end encryption for all patient-provider communications. Patient identity verification before sharing medical information. Session recording with consent and encrypted storage.",
+      "ccmControls": ["DSP-01", "DSP-10", "IAM-01", "IAM-02", "AIS-01"]
+    },
+    {
+      "id": "HC-R4",
+      "name": "Patient data residency and PDPA compliance",
+      "description": "Patient health data must reside in Malaysia or approved jurisdiction per PDPA s129 cross-border transfer provisions. Explicit patient consent required for cloud processing of sensitive health data.",
+      "ccmControls": ["DSP-06", "DSP-07", "DSP-19", "GRC-01"]
+    }
+  ],
   "nacsaObligations": {
     "description": "NACSA obligations for NCII-designated healthcare infrastructure using cloud services.",
     "applicability": "Applies to healthcare infrastructure designated as NCII under NACSA Act 854. Major hospitals, national health information systems, and critical healthcare platforms may be designated.",

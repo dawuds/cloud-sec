@@ -58,5 +58,6 @@
     "complianceOfferings": "https://learn.microsoft.com/en-us/azure/compliance/",
     "securityBlog": "https://www.microsoft.com/en-us/security/blog/",
     "documentation": "https://learn.microsoft.com/en-us/azure/security/"
-  }
+  },
+  "sourceType": "constructed-indicative"
 }

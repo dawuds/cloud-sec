@@ -27,14 +27,22 @@
         "CSP default guardrails (AWS SCPs, Azure Policy)",
         "Periodic access reviews"
       ],
-      "ccmControls": ["IAM-01", "IAM-02", "IAM-04", "IAM-06", "IAM-09", "IAM-12"],
+      "ccmControls": [
+        "IAM-01",
+        "IAM-02",
+        "IAM-04",
+        "IAM-06",
+        "IAM-09",
+        "IAM-12"
+      ],
       "treatmentOption": "mitigate",
       "treatmentPlan": "Implement least-privilege IAM policies using automated policy analysis tools (AWS IAM Access Analyzer, Azure AD PIM). Enforce permission boundaries (SCPs/permission boundaries). Deploy CSPM with continuous IAM posture assessment. Conduct quarterly IAM policy audits. Eliminate wildcard permissions in all production accounts.",
       "residualLikelihood": 2,
       "residualImpact": 5,
       "residualRisk": "Critical",
       "owner": "Cloud Security Engineer / IAM Team",
-      "reviewDate": "Monthly"
+      "reviewDate": "Monthly",
+      "riskScore": 20
     },
     {
       "id": "CR-002",
@@ -49,14 +57,22 @@
         "Storage access policies reviewed during provisioning",
         "Data classification tagging"
       ],
-      "ccmControls": ["DSP-01", "DSP-02", "DSP-04", "DSP-05", "DSP-10", "DSP-17"],
+      "ccmControls": [
+        "DSP-01",
+        "DSP-02",
+        "DSP-04",
+        "DSP-05",
+        "DSP-10",
+        "DSP-17"
+      ],
       "treatmentOption": "mitigate",
       "treatmentPlan": "Enable account-level block public access on all storage services. Deploy CSPM with real-time alerting on public storage detection. Implement IaC templates that enforce private-only storage by default. Conduct weekly automated scans for public storage. Classify all data in cloud storage and enforce access policies by classification.",
       "residualLikelihood": 1,
       "residualImpact": 4,
       "residualRisk": "High",
       "owner": "Cloud Security Engineer / Data Protection Officer",
-      "reviewDate": "Monthly"
+      "reviewDate": "Monthly",
+      "riskScore": 16
     },
     {
       "id": "CR-003",
@@ -71,14 +87,21 @@
         "Compute instance security groups restrict inbound access",
         "Monthly cost review"
       ],
-      "ccmControls": ["TVM-01", "TVM-02", "IVS-04", "IVS-09", "CCC-03"],
+      "ccmControls": [
+        "TVM-01",
+        "TVM-02",
+        "IVS-04",
+        "IVS-09",
+        "CCC-03"
+      ],
       "treatmentOption": "mitigate",
       "treatmentPlan": "Implement real-time billing anomaly detection with automated alerts (AWS Budgets, Azure Cost Alerts). Deploy CSP-native threat detection (GuardDuty, Defender for Cloud, Security Command Center) to detect cryptomining behaviour. Restrict compute instance creation through IAM policies. Implement network egress controls to block known mining pool destinations.",
       "residualLikelihood": 2,
       "residualImpact": 2,
       "residualRisk": "Medium",
       "owner": "Cloud Operations / Cloud Security Engineer",
-      "reviewDate": "Quarterly"
+      "reviewDate": "Quarterly",
+      "riskScore": 9
     },
     {
       "id": "CR-004",
@@ -93,14 +116,22 @@
         "Container image scanning in CI pipeline",
         "Separate build and production environments"
       ],
-      "ccmControls": ["STA-01", "STA-03", "STA-06", "STA-08", "STA-14", "TVM-04"],
+      "ccmControls": [
+        "STA-01",
+        "STA-03",
+        "STA-06",
+        "STA-08",
+        "STA-14",
+        "TVM-04"
+      ],
       "treatmentOption": "mitigate",
       "treatmentPlan": "Implement code signing and verification for all deployment artefacts. Use immutable container images from a trusted private registry with automated vulnerability scanning. Deploy SBOM (Software Bill of Materials) generation and monitoring. Enforce branch protection rules and mandatory code reviews. Audit CI/CD service account permissions quarterly. Implement pipeline integrity monitoring.",
       "residualLikelihood": 2,
       "residualImpact": 5,
       "residualRisk": "Critical",
       "owner": "DevSecOps Lead / Cloud Security Engineer",
-      "reviewDate": "Monthly"
+      "reviewDate": "Monthly",
+      "riskScore": 15
     },
     {
       "id": "CR-005",
@@ -115,14 +146,21 @@
         "Service-level data residency settings reviewed",
         "Regulatory compliance documentation"
       ],
-      "ccmControls": ["DSP-06", "DSP-07", "DSP-19", "STA-09", "GRC-01"],
+      "ccmControls": [
+        "DSP-06",
+        "DSP-07",
+        "DSP-19",
+        "STA-09",
+        "GRC-01"
+      ],
       "treatmentOption": "mitigate",
       "treatmentPlan": "Implement region restriction policies (AWS SCPs, Azure Policy, GCP Organisation Policies) to prevent resource creation in non-approved regions. Audit all cloud services for default cross-region replication behaviour. Deploy data residency monitoring with automated alerting on policy violations. Maintain data residency compliance register per service. Review CSP data processing agreements for data location guarantees.",
       "residualLikelihood": 1,
       "residualImpact": 4,
       "residualRisk": "High",
       "owner": "Cloud Governance Lead / DPO / Compliance Manager",
-      "reviewDate": "Quarterly"
+      "reviewDate": "Quarterly",
+      "riskScore": 12
     },
     {
       "id": "CR-006",
@@ -137,14 +175,21 @@
         "Approved cloud service catalogue",
         "Periodic IT spend review for cloud charges"
       ],
-      "ccmControls": ["GRC-01", "GRC-02", "GRC-03", "IAM-01", "LOG-01"],
+      "ccmControls": [
+        "GRC-01",
+        "GRC-02",
+        "GRC-03",
+        "IAM-01",
+        "LOG-01"
+      ],
       "treatmentOption": "mitigate",
       "treatmentPlan": "Implement Cloud Access Security Broker (CASB) to discover and monitor all cloud service usage. Establish centralised cloud account provisioning with mandatory security baseline. Deploy network-level cloud service discovery via proxy logs and DNS analysis. Conduct quarterly cloud account inventory reconciliation. Implement financial controls (procurement approval for cloud spending).",
       "residualLikelihood": 2,
       "residualImpact": 3,
       "residualRisk": "Medium",
       "owner": "Cloud Governance Lead / IT Security Manager",
-      "reviewDate": "Quarterly"
+      "reviewDate": "Quarterly",
+      "riskScore": 12
     },
     {
       "id": "CR-007",
@@ -159,14 +204,24 @@
         "Administrative actions logged to CloudTrail/Activity Log",
         "Background screening for IT staff"
       ],
-      "ccmControls": ["IAM-02", "IAM-04", "IAM-06", "IAM-09", "HRS-04", "HRS-09", "LOG-01", "LOG-03"],
+      "ccmControls": [
+        "IAM-02",
+        "IAM-04",
+        "IAM-06",
+        "IAM-09",
+        "HRS-04",
+        "HRS-09",
+        "LOG-01",
+        "LOG-03"
+      ],
       "treatmentOption": "mitigate",
       "treatmentPlan": "Implement just-in-time privileged access (AWS IAM Identity Center, Azure PIM) with approval workflows. Deploy UEBA (User and Entity Behaviour Analytics) on cloud audit logs to detect anomalous administrative patterns. Enforce separation of duties for critical operations (account deletion, data export). Implement break-glass procedures with post-use review for emergency access. Quarterly access certification for all privileged accounts.",
       "residualLikelihood": 1,
       "residualImpact": 4,
       "residualRisk": "High",
       "owner": "Cloud Security Manager / HR",
-      "reviewDate": "Quarterly"
+      "reviewDate": "Quarterly",
+      "riskScore": 8
     },
     {
       "id": "CR-008",
@@ -181,14 +236,21 @@
         ".gitignore patterns for credential files",
         "Developer security awareness training"
       ],
-      "ccmControls": ["IAM-02", "IAM-10", "DSP-01", "DSP-02", "TVM-02"],
+      "ccmControls": [
+        "IAM-02",
+        "IAM-10",
+        "DSP-01",
+        "DSP-02",
+        "TVM-02"
+      ],
       "treatmentOption": "mitigate",
       "treatmentPlan": "Implement centralised secrets management (AWS Secrets Manager, Azure Key Vault, GCP Secret Manager, HashiCorp Vault). Deploy pre-commit hooks for secret detection (git-secrets, gitleaks). Enable CSP credential exposure detection (AWS compromised key detection). Automate credential rotation with short-lived tokens. Prohibit long-lived API keys in favour of IAM roles with temporary credentials. Monitor public repositories for organisation credential exposure.",
       "residualLikelihood": 2,
       "residualImpact": 4,
       "residualRisk": "High",
       "owner": "DevSecOps Lead / Cloud Security Engineer",
-      "reviewDate": "Monthly"
+      "reviewDate": "Monthly",
+      "riskScore": 16
     },
     {
       "id": "CR-009",
@@ -203,14 +265,22 @@
         "Container runtime updated to latest stable version",
         "Pod security policies/standards enforced"
       ],
-      "ccmControls": ["IVS-04", "IVS-06", "IVS-09", "TVM-01", "TVM-02", "CCC-01"],
+      "ccmControls": [
+        "IVS-04",
+        "IVS-06",
+        "IVS-09",
+        "TVM-01",
+        "TVM-02",
+        "CCC-01"
+      ],
       "treatmentOption": "mitigate",
       "treatmentPlan": "Enforce non-root container execution. Implement Kubernetes Pod Security Standards (restricted profile). Deploy runtime security monitoring (Falco, Sysdig). Use gVisor or Kata Containers for workloads requiring stronger isolation. Restrict container capabilities to minimum required set. Automate container runtime patching. For sensitive workloads, use dedicated node pools with no co-tenancy.",
       "residualLikelihood": 1,
       "residualImpact": 5,
       "residualRisk": "Critical",
       "owner": "Platform Engineering / Cloud Security Engineer",
-      "reviewDate": "Monthly"
+      "reviewDate": "Monthly",
+      "riskScore": 10
     },
     {
       "id": "CR-010",
@@ -225,14 +295,21 @@
         "Serverless function execution role with limited permissions",
         "Application-level logging"
       ],
-      "ccmControls": ["AIS-01", "AIS-02", "AIS-04", "IAM-04", "TVM-02"],
+      "ccmControls": [
+        "AIS-01",
+        "AIS-02",
+        "AIS-04",
+        "IAM-04",
+        "TVM-02"
+      ],
       "treatmentOption": "mitigate",
       "treatmentPlan": "Enforce strict input validation and output encoding for all serverless functions. Apply least-privilege execution roles -- each function gets only the permissions it needs. Deploy serverless-aware application security testing (DAST/SAST) in CI/CD pipeline. Implement function timeout and concurrency limits to prevent denial-of-service. Monitor function invocation patterns for anomalies.",
       "residualLikelihood": 2,
       "residualImpact": 3,
       "residualRisk": "Medium",
       "owner": "Application Security / DevSecOps Lead",
-      "reviewDate": "Quarterly"
+      "reviewDate": "Quarterly",
+      "riskScore": 9
     },
     {
       "id": "CR-011",
@@ -247,14 +324,21 @@
         "Phishing awareness training",
         "Conditional access policies"
       ],
-      "ccmControls": ["IAM-02", "IAM-03", "IAM-04", "IAM-12", "HRS-09"],
+      "ccmControls": [
+        "IAM-02",
+        "IAM-03",
+        "IAM-04",
+        "IAM-12",
+        "HRS-09"
+      ],
       "treatmentOption": "mitigate",
       "treatmentPlan": "Upgrade from push-notification MFA to phishing-resistant MFA (FIDO2/WebAuthn hardware security keys) for all administrative accounts. Implement number-matching MFA to prevent fatigue attacks. Deploy conditional access policies with device compliance, impossible travel detection, and IP-based restrictions. Monitor for anomalous authentication patterns. Implement session token binding to prevent token theft.",
       "residualLikelihood": 1,
       "residualImpact": 5,
       "residualRisk": "Critical",
       "owner": "IAM Team / Cloud Security Manager",
-      "reviewDate": "Monthly"
+      "reviewDate": "Monthly",
+      "riskScore": 15
     },
     {
       "id": "CR-012",
@@ -269,14 +353,22 @@
         "Data encrypted at rest with customer-managed keys",
         "CSP shared responsibility documentation reviewed"
       ],
-      "ccmControls": ["IVS-06", "IVS-09", "DSP-01", "DSP-10", "DSP-17", "STA-05"],
+      "ccmControls": [
+        "IVS-06",
+        "IVS-09",
+        "DSP-01",
+        "DSP-10",
+        "DSP-17",
+        "STA-05"
+      ],
       "treatmentOption": "mitigate",
       "treatmentPlan": "For high-sensitivity workloads, use dedicated/isolated instance types (dedicated hosts, isolated VPCs). Encrypt all data with customer-managed encryption keys (CMEK) -- even if cross-tenant access occurs, data remains encrypted. Monitor CSP security advisories for multi-tenancy vulnerabilities. Review CSP SOC 2 Type II reports for tenant isolation control effectiveness. Evaluate CSP commitment to responsible disclosure.",
       "residualLikelihood": 1,
       "residualImpact": 4,
       "residualRisk": "High",
       "owner": "Cloud Security Engineer / Cloud Governance Lead",
-      "reviewDate": "Quarterly"
+      "reviewDate": "Quarterly",
+      "riskScore": 5
     },
     {
       "id": "CR-013",
@@ -291,14 +383,21 @@
         "DNS changes logged in audit trail",
         "MFA on DNS management accounts"
       ],
-      "ccmControls": ["IVS-01", "IVS-04", "IAM-02", "LOG-01", "LOG-03"],
+      "ccmControls": [
+        "IVS-01",
+        "IVS-04",
+        "IAM-02",
+        "LOG-01",
+        "LOG-03"
+      ],
       "treatmentOption": "mitigate",
       "treatmentPlan": "Implement DNSSEC for all externally-facing domains. Enable domain locking and transfer protection at registrar. Restrict DNS record modification to dedicated IAM roles with MFA. Monitor DNS record changes with automated alerting. Implement Certificate Transparency log monitoring to detect unauthorized certificate issuance for organisation domains.",
       "residualLikelihood": 1,
       "residualImpact": 4,
       "residualRisk": "High",
       "owner": "Cloud Infrastructure / Cloud Security Engineer",
-      "reviewDate": "Quarterly"
+      "reviewDate": "Quarterly",
+      "riskScore": 8
     },
     {
       "id": "CR-014",
@@ -313,14 +412,22 @@
         "Root account usage alerts configured",
         "Separate accounts for production and development"
       ],
-      "ccmControls": ["IAM-01", "IAM-02", "IAM-03", "IAM-04", "IAM-12", "BCR-01"],
+      "ccmControls": [
+        "IAM-01",
+        "IAM-02",
+        "IAM-03",
+        "IAM-04",
+        "IAM-12",
+        "BCR-01"
+      ],
       "treatmentOption": "mitigate",
       "treatmentPlan": "Lock root/owner account with hardware MFA token stored in physical safe. Eliminate all root account API keys. Implement multi-account strategy with AWS Organisations/Azure Management Groups/GCP Organisation to limit blast radius. Deploy real-time alerting on root account usage. Establish CSP support relationship with priority incident response for account recovery. Maintain offline backup of critical account configuration.",
       "residualLikelihood": 1,
       "residualImpact": 5,
       "residualRisk": "Critical",
       "owner": "Cloud Security Manager / CISO",
-      "reviewDate": "Monthly"
+      "reviewDate": "Monthly",
+      "riskScore": 10
     },
     {
       "id": "CR-015",
@@ -335,14 +442,22 @@
         "Log storage in centralised SIEM",
         "Basic alerting rules for critical events"
       ],
-      "ccmControls": ["LOG-01", "LOG-02", "LOG-03", "LOG-05", "LOG-08", "LOG-13"],
+      "ccmControls": [
+        "LOG-01",
+        "LOG-02",
+        "LOG-03",
+        "LOG-05",
+        "LOG-08",
+        "LOG-13"
+      ],
       "treatmentOption": "mitigate",
       "treatmentPlan": "Enable comprehensive cloud audit logging across all accounts, all regions, and all services (including data-plane events for sensitive services). Centralise logs in immutable storage with tamper protection. Implement SIEM with cloud-specific detection rules covering CSA Top Threats. Deploy automated alerting for critical events (root login, IAM policy change, security group modification, storage policy change). Conduct quarterly log coverage audits. Ensure log retention meets NACSA s26 7-year requirement for NCII-designated operators.",
       "residualLikelihood": 2,
       "residualImpact": 3,
       "residualRisk": "Medium",
       "owner": "Cloud Security Engineer / SOC Manager",
-      "reviewDate": "Quarterly"
+      "reviewDate": "Quarterly",
+      "riskScore": 12
     }
   ]
 }

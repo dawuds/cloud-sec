@@ -138,11 +138,11 @@ async function renderOverview() {
   ]);
 
   const domainCount = reqs.domains ? reqs.domains.length : 12;
-  const controlCount = Array.isArray(controls) ? controls.length : 0;
+  const controlCount = Array.isArray(controls) ? controls.length : (controls.controls ? controls.controls.length : 0);
   const incidentCount = incidents.incidents ? incidents.incidents.length : 0;
   const actorCount = actors.threatActors ? actors.threatActors.length : 0;
   const sectorCount = sectors.sectors ? sectors.sectors.length : 0;
-  const ccmDomainCount = Array.isArray(domains) ? domains.length : 17;
+  const ccmDomainCount = Array.isArray(domains) ? domains.length : (domains.controlDomains ? domains.controlDomains.length : 17);
 
   const quickLinks = [
     { icon: '&#9729;', label: 'CSA CCM v4 Control Domains', view: 'standards', sub: 'ccm-domains', desc: '17 domains, 197 controls — the primary cloud security framework' },
@@ -258,7 +258,7 @@ async function renderCCMDomains() {
     <div class="page-title">CSA CCM v4 — Control Domains</div>
     <div class="page-sub">17 control domains covering all aspects of cloud security</div>
 
-    ${(Array.isArray(domains) ? domains : []).map(d => `
+    ${(Array.isArray(domains) ? domains : (domains.controlDomains || [])).map(d => `
       <div class="card" style="border-left:3px solid var(--accent2)">
         <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.5rem">
           <span class="badge badge-ccm">${escHtml(d.id)}</span>
@@ -689,10 +689,10 @@ async function renderControls(sub) {
 
   setMain(`
     <div class="page-title">Control Library</div>
-    <div class="page-sub">${(Array.isArray(controls) ? controls : []).length} controls across ${(Array.isArray(domains) ? domains : []).length} domains</div>
+    <div class="page-sub">${(Array.isArray(controls) ? controls : (controls.controls || [])).length} controls across ${(Array.isArray(domains) ? domains : (domains.domains || [])).length} domains</div>
 
-    ${(Array.isArray(domains) ? domains : []).map(d => {
-      const domControls = (Array.isArray(controls) ? controls : []).filter(c => c.domain === d.id);
+    ${(Array.isArray(domains) ? domains : (domains.domains || [])).map(d => {
+      const domControls = (Array.isArray(controls) ? controls : (controls.controls || [])).filter(c => c.domain === d.id);
       return `
         <h2>${escHtml(d.name)} (${domControls.length})</h2>
         ${domControls.map(c => `
@@ -711,7 +711,7 @@ async function renderControls(sub) {
 
 async function renderControlDetail(slug) {
   const controls = await load('controls/library.json');
-  const ctrl = (Array.isArray(controls) ? controls : []).find(c => c.slug === slug || c.id === slug);
+  const ctrl = (Array.isArray(controls) ? controls : (controls.controls || [])).find(c => c.slug === slug || c.id === slug);
   if (!ctrl) { setMain('<div class="empty-state"><div class="empty-state-text">Control not found.</div></div>'); return; }
 
   setMain(`
@@ -748,7 +748,7 @@ async function renderControlDetail(slug) {
 // ─── EVIDENCE ────────────────────────────────────────────────────────────────
 async function renderEvidence(sub) {
   const data = await load('evidence/index.json');
-  const domains = data.domains || data || [];
+  const domains = data.evidenceByDomain || data.domains || data || [];
 
   setMain(`
     <div class="page-title">Audit Evidence</div>
@@ -911,7 +911,7 @@ async function renderSectorDetail(sectorId) {
 
   setMain(`
     <button class="back-link" onclick="navigate('sectors')">&#8592; Sectors</button>
-    <div class="page-title">${escHtml(sector.name || sectorId)}</div>
+    <div class="page-title">${escHtml(data.sectorName || sector.name || sectorId)}</div>
     <div class="page-sub">${escHtml(sector.description || '')}</div>
 
     ${data.rmitSections ? `
@@ -1029,13 +1029,13 @@ async function renderRiskChecklist() {
   setMain(`
     <button class="back-link" onclick="navigate('risk-management')">&#8592; Risk Management</button>
     <div class="page-title">Cloud Security Assessment Checklist</div>
-    <div class="page-sub">${sections.reduce((n,s) => n + (s.checks || s.items || []).length, 0)} checks across ${sections.length} categories</div>
+    <div class="page-sub">${sections.reduce((n,s) => n + (s.items || s.checks || []).length, 0)} checks across ${sections.length} categories</div>
 
     ${sections.map(s => `
       <div class="card">
         <div class="card-title">${escHtml(s.name || s.section || '')}</div>
         <ul style="font-size:0.8rem;padding-left:1.25rem;margin-top:0.5rem">
-          ${(s.checks || s.items || []).map(c => `<li style="margin-bottom:0.25rem">${escHtml(typeof c === 'string' ? c : c.check || c.title || JSON.stringify(c))}</li>`).join('')}
+          ${(s.checks || s.items || []).map(c => `<li style="margin-bottom:0.25rem">${escHtml(typeof c === 'string' ? c : c.item || c.check || c.title || JSON.stringify(c))}</li>`).join('')}
         </ul>
       </div>`).join('')}
   `);
@@ -1048,8 +1048,8 @@ async function renderFramework(sub) {
     load('controls/library.json'),
   ]);
 
-  const ccmDomains = Array.isArray(domains) ? domains : [];
-  const allControls = Array.isArray(controls) ? controls : [];
+  const ccmDomains = Array.isArray(domains) ? domains : (domains.controlDomains || []);
+  const allControls = Array.isArray(controls) ? controls : (controls.controls || []);
 
   setMain(`
     <div class="page-title">Framework Mapping</div>
@@ -1216,7 +1216,7 @@ async function renderSearch(query) {
 
   try {
     const controls = await load('controls/library.json');
-    (Array.isArray(controls) ? controls : []).forEach(c => {
+    (Array.isArray(controls) ? controls : (controls.controls || [])).forEach(c => {
       if ([c.name, c.description, c.slug, c.id].some(f => String(f||'').toLowerCase().includes(q))) {
         results.push({ type: 'Control', title: c.name, desc: c.description || '', action: () => navigate('controls', c.slug || c.id) });
       }

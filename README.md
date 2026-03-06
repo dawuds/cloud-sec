@@ -25,10 +25,10 @@ A structured, open-access knowledge base for cloud cybersecurity — covering CS
 | **Requirements** | 12 security domains with detailed requirements, CCM/NACSA/NIST CSF/MITRE mappings |
 | **Controls** | 49 controls with maturity levels, CSP-specific implementation guidance |
 | **Evidence** | Audit evidence items per domain — what auditors look for |
-| **Artifacts** | 26 security artifacts — policies, procedures, reports, configurations |
-| **Threats** | 8 cloud incidents (Capital One, SolarWinds, Log4Shell, Storm-0558, Snowflake, etc.) + 5 threat actors |
+| **Artifacts** | 29 security artifacts — policies, procedures, reports, configurations |
+| **Threats** | 8 cloud incidents (Capital One, SolarWinds, Log4Shell, Storm-0558, Snowflake, etc.) + 6 threat actors |
 | **Risk Management** | Cloud risk methodology, 5x5 matrix, 15-risk register, assessment checklist, treatment options |
-| **Sectors** | Financial services, healthcare, government, e-commerce — with Malaysia-specific obligations |
+| **Sectors** | Financial services, healthcare, government, e-commerce, education, telecommunications — with Malaysia-specific obligations |
 | **Cross-References** | CCM ↔ NACSA Act 854, NIST CSF 2.0, ISO 27017, MITRE ATT&CK, AWS/Azure/GCP service mappings |
 
 ---
@@ -71,9 +71,9 @@ See full mapping: [`cross-references/ccm-to-nacsa.json`](cross-references/ccm-to
 
 | CSP | CIS Benchmark | Malaysia Region | Data Residency |
 |---|---|---|---|
-| AWS | CIS AWS v3.0 (62 controls) | No (nearest: ap-southeast-1 Singapore) | SCP region restriction |
-| Azure | CIS Azure v2.1 (52 controls) | No (nearest: Southeast Asia Singapore) | Azure Policy allowedLocations |
-| GCP | CIS GCP v3.0 (46 controls) | No (nearest: asia-southeast1 Singapore) | Org Policy resourceLocations |
+| AWS | CIS AWS v3.0 (35 checks) | No (nearest: ap-southeast-1 Singapore) | SCP region restriction |
+| Azure | CIS Azure v2.1 (48 checks) | No (nearest: Southeast Asia Singapore) | Azure Policy allowedLocations |
+| GCP | CIS GCP v3.0 (41 checks) | No (nearest: asia-southeast1 Singapore) | Org Policy resourceLocations |
 | Alibaba | CIS Alibaba v1.0 (34 controls) | **Yes** — ap-southeast-3 (Kuala Lumpur) | Deploy in KL region |
 | Huawei | — | **Yes** — ap-southeast-3 (Kuala Lumpur) | Deploy in KL region |
 | Oracle | CIS OCI v2.0 (42 controls) | No (nearest: ap-singapore-1) | Compartment policies |
@@ -118,16 +118,16 @@ cloud-sec/
 │   ├── index.json                      # 12 domain overview
 │   └── by-domain/                      # Per-domain requirement files (12 files)
 ├── evidence/                           # Audit evidence items
-├── artifacts/                          # 26 security artifacts inventory
-├── threats/                            # 8 incidents + 5 threat actors
+├── artifacts/                          # 29 security artifacts inventory
+├── threats/                            # 8 incidents + 6 threat actors
 ├── risk-management/                    # Methodology, matrix, register, checklist
 ├── sectors/
 │   ├── index.json                      # 6 sectors overview
-│   └── requirements/                   # Per-sector requirement files (4 files)
+│   └── requirements/                   # Per-sector requirement files (6 files)
 └── cross-references/                   # 7 cross-reference mappings
 ```
 
-**Total:** 65 JSON data files, 14 views, zero dependencies
+**Total:** 67 JSON data files, 14 views, zero dependencies
 
 ---
 
@@ -140,13 +140,17 @@ Static single-page application (SPA):
 - **Lazy-loaded JSON** — data fetched on demand and cached in `Map`
 - **GitHub Pages** — deployed via Actions workflow on push to `main`
 - **CSP-specific colours** — AWS (#FF9900), Azure (#0078D4), GCP (#4285F4), Alibaba (#FF6A00), Huawei (#CF0A2C), Oracle (#F80000)
+- **Dark mode** — automatic via `prefers-color-scheme: dark` with WCAG AA contrast
+- **Print styles** — clean output for compliance report generation
+- **Favicon** — SVG shield with "CS" branding
+- **License** — CC BY 4.0 (Creative Commons Attribution)
 
 ---
 
 ## Standards Referenced
 
 - **CSA CCM v4** — Cloud Controls Matrix (paraphrased; obtain from cloudsecurityalliance.org)
-- **CIS Benchmarks** — AWS v3.0, Azure v2.1, GCP v3.0, Alibaba v1.0, OCI v2.0 (indicative; obtain from cisecurity.org)
+- **CIS Benchmarks** — AWS v3.0 (35 checks), Azure v2.1 (48 checks), GCP v3.0 (41 checks), Alibaba v1.0, OCI v2.0 (indicative; obtain from cisecurity.org)
 - **MITRE ATT&CK Cloud** — Cloud adversary tactics and techniques (public; attack.mitre.org/matrices/enterprise/cloud)
 - **NIST SP 800-144** — Guidelines on Security and Privacy in Public Cloud Computing (public; nvlpubs.nist.gov)
 - **NIST SP 800-210** — General Access Control Guidance for Cloud Systems (public; nvlpubs.nist.gov)

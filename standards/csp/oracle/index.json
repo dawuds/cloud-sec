@@ -59,5 +59,6 @@
     "complianceCertifications": "https://www.oracle.com/corporate/cloud-compliance/",
     "securityBlog": "https://blogs.oracle.com/cloudsecurity/",
     "documentation": "https://docs.oracle.com/en-us/iaas/Content/Security/Concepts/security.htm"
-  }
+  },
+  "sourceType": "constructed-indicative"
 }

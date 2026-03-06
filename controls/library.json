@@ -1,1080 +1,1612 @@
-[
-  {
-    "id": "CS-IAM-01",
-    "slug": "cloud-mfa-enforcement",
-    "name": "Multi-Factor Authentication Enforcement",
-    "domain": "identity-access-management",
-    "type": "preventive",
-    "description": "Enforce multi-factor authentication for all human users accessing cloud management consoles and APIs. MFA prevents credential-based attacks, which remain the primary initial access vector for cloud compromise. Apply to all IAM users, federated identities, and root/break-glass accounts.",
-    "maturityLevels": {
-      "1": "MFA enabled for root/owner accounts and cloud administrators only",
-      "2": "MFA enforced for all human users via conditional access policies; phishing-resistant MFA (FIDO2/WebAuthn) for administrators",
-      "3": "Phishing-resistant MFA for all users; hardware security keys for root accounts; continuous authentication with risk-based step-up"
-    },
-    "ccmControls": ["IAM-02", "IAM-04", "IAM-12"],
-    "nacsa": ["s18"],
-    "nistCsf": ["PR.AA-01", "PR.AA-03"],
-    "mitreAttackCloud": ["T1078", "T1110"],
-    "cspImplementation": {
-      "aws": "Enable MFA on all IAM users via IAM policy. Enforce MFA for console and CLI access using aws:MultiFactorAuthPresent condition key. Use AWS Organizations SCP to deny actions without MFA. Hardware MFA for root account.",
-      "azure": "Configure Entra ID Conditional Access policies requiring MFA for all users. Use Authentication Strengths to require phishing-resistant methods for admins. Enable Security Defaults as minimum baseline.",
-      "gcp": "Enforce 2-Step Verification in Google Workspace/Cloud Identity admin console. Use BeyondCorp Enterprise for context-aware access. Require Titan Security Keys for super admin accounts."
-    }
+{
+  "_meta": {
+    "sourceType": "constructed-indicative",
+    "verificationNote": "Cloud security control library with 49 controls across 12 domains. Mapped to CSA CCM v4, NACSA Act 854, NIST CSF 2.0, and MITRE ATT&CK Cloud."
   },
-  {
-    "id": "CS-IAM-02",
-    "slug": "least-privilege-access",
-    "name": "Least Privilege Access Implementation",
-    "domain": "identity-access-management",
-    "type": "preventive",
-    "description": "Implement least privilege access for all cloud identities. Grant only the minimum permissions required for each role. Avoid wildcard permissions and broad predefined roles. Use custom roles where built-in roles are too permissive.",
-    "maturityLevels": {
-      "1": "Avoid use of root/owner accounts for daily operations; use predefined roles with scope limitations",
-      "2": "Custom IAM roles tailored to job functions; no wildcard (*) actions in policies; quarterly access reviews",
-      "3": "Just-in-time privilege elevation; automated unused permission detection and removal; attribute-based access control (ABAC)"
+  "controls": [
+    {
+      "id": "CS-IAM-01",
+      "slug": "cloud-mfa-enforcement",
+      "name": "Multi-Factor Authentication Enforcement",
+      "domain": "identity-access-management",
+      "type": "preventive",
+      "description": "Enforce multi-factor authentication for all human users accessing cloud management consoles and APIs. MFA prevents credential-based attacks, which remain the primary initial access vector for cloud compromise. Apply to all IAM users, federated identities, and root/break-glass accounts.",
+      "maturityLevels": {
+        "1": "MFA enabled for root/owner accounts and cloud administrators only",
+        "2": "MFA enforced for all human users via conditional access policies; phishing-resistant MFA (FIDO2/WebAuthn) for administrators",
+        "3": "Phishing-resistant MFA for all users; hardware security keys for root accounts; continuous authentication with risk-based step-up"
+      },
+      "ccmControls": [
+        "IAM-02",
+        "IAM-04",
+        "IAM-12"
+      ],
+      "nacsa": [
+        "s18"
+      ],
+      "nistCsf": [
+        "PR.AA-01",
+        "PR.AA-03"
+      ],
+      "mitreAttackCloud": [
+        "T1078",
+        "T1110"
+      ],
+      "cspImplementation": {
+        "aws": "Enable MFA on all IAM users via IAM policy. Enforce MFA for console and CLI access using aws:MultiFactorAuthPresent condition key. Use AWS Organizations SCP to deny actions without MFA. Hardware MFA for root account.",
+        "azure": "Configure Entra ID Conditional Access policies requiring MFA for all users. Use Authentication Strengths to require phishing-resistant methods for admins. Enable Security Defaults as minimum baseline.",
+        "gcp": "Enforce 2-Step Verification in Google Workspace/Cloud Identity admin console. Use BeyondCorp Enterprise for context-aware access. Require Titan Security Keys for super admin accounts."
+      }
     },
-    "ccmControls": ["IAM-05", "IAM-09"],
-    "nacsa": ["s18"],
-    "nistCsf": ["PR.AA-05", "PR.AA-06"],
-    "mitreAttackCloud": ["T1078.004", "T1098"],
-    "cspImplementation": {
-      "aws": "Use IAM Access Analyzer to identify unused permissions. Create custom IAM policies with specific resource ARNs. Enable AWS Organizations SCPs for guardrails. Use IAM Access Advisor for last-accessed analysis.",
-      "azure": "Use Entra ID PIM for just-in-time role activation. Configure Azure RBAC with custom role definitions scoped to resource groups. Use Access Reviews for quarterly recertification.",
-      "gcp": "Use IAM Recommender to right-size permissions. Create custom roles. Use IAM Conditions for fine-grained access. Enable Policy Analyzer for access path analysis."
-    }
-  },
-  {
-    "id": "CS-IAM-03",
-    "slug": "service-account-management",
-    "name": "Service Account and Workload Identity Management",
-    "domain": "identity-access-management",
-    "type": "preventive",
-    "description": "Manage non-human identities (service accounts, managed identities, workload identities) with the same rigor as human accounts. Eliminate long-lived credentials where possible. Use cloud-native workload identity federation for cross-service authentication.",
-    "maturityLevels": {
-      "1": "Service accounts inventoried; long-lived keys rotated on schedule; unused accounts disabled",
-      "2": "Workload identity federation replaces static credentials; managed identities for all cloud services; key expiry enforced",
-      "3": "Zero long-lived credentials; all service-to-service auth via short-lived tokens; automated credential lifecycle management"
+    {
+      "id": "CS-IAM-02",
+      "slug": "least-privilege-access",
+      "name": "Least Privilege Access Implementation",
+      "domain": "identity-access-management",
+      "type": "preventive",
+      "description": "Implement least privilege access for all cloud identities. Grant only the minimum permissions required for each role. Avoid wildcard permissions and broad predefined roles. Use custom roles where built-in roles are too permissive.",
+      "maturityLevels": {
+        "1": "Avoid use of root/owner accounts for daily operations; use predefined roles with scope limitations",
+        "2": "Custom IAM roles tailored to job functions; no wildcard (*) actions in policies; quarterly access reviews",
+        "3": "Just-in-time privilege elevation; automated unused permission detection and removal; attribute-based access control (ABAC)"
+      },
+      "ccmControls": [
+        "IAM-05",
+        "IAM-09"
+      ],
+      "nacsa": [
+        "s18"
+      ],
+      "nistCsf": [
+        "PR.AA-05",
+        "PR.AA-06"
+      ],
+      "mitreAttackCloud": [
+        "T1078.004",
+        "T1098"
+      ],
+      "cspImplementation": {
+        "aws": "Use IAM Access Analyzer to identify unused permissions. Create custom IAM policies with specific resource ARNs. Enable AWS Organizations SCPs for guardrails. Use IAM Access Advisor for last-accessed analysis.",
+        "azure": "Use Entra ID PIM for just-in-time role activation. Configure Azure RBAC with custom role definitions scoped to resource groups. Use Access Reviews for quarterly recertification.",
+        "gcp": "Use IAM Recommender to right-size permissions. Create custom roles. Use IAM Conditions for fine-grained access. Enable Policy Analyzer for access path analysis."
+      }
     },
-    "ccmControls": ["IAM-06", "IAM-10"],
-    "nacsa": ["s18"],
-    "nistCsf": ["PR.AA-01", "PR.AA-02"],
-    "mitreAttackCloud": ["T1528", "T1550.001"],
-    "cspImplementation": {
-      "aws": "Use IAM Roles for EC2/ECS/Lambda instead of access keys. Enable OIDC federation for external workloads. Use AWS Secrets Manager for credential rotation. Disable unused access keys via Access Advisor.",
-      "azure": "Use Managed Identities (system-assigned preferred) for all Azure services. Use Workload Identity Federation for external workloads. Enforce credential expiry on app registrations.",
-      "gcp": "Use attached service accounts instead of key files. Enable Workload Identity Federation for GKE and external workloads. Use IAM Conditions to restrict service account impersonation."
-    }
-  },
-  {
-    "id": "CS-IAM-04",
-    "slug": "federation-sso",
-    "name": "Identity Federation and Single Sign-On",
-    "domain": "identity-access-management",
-    "type": "preventive",
-    "description": "Federate cloud identity with the enterprise identity provider (IdP) using SAML 2.0 or OIDC. Centralise authentication to enable consistent MFA, conditional access, and session management across all cloud accounts.",
-    "maturityLevels": {
-      "1": "SSO configured for primary cloud accounts; local cloud accounts exist as backup",
-      "2": "All cloud access through federated SSO; no local cloud accounts except break-glass; session policies enforced",
-      "3": "Cross-cloud federation with unified identity governance; real-time session termination on identity risk detection; zero standing cloud accounts"
+    {
+      "id": "CS-IAM-03",
+      "slug": "service-account-management",
+      "name": "Service Account and Workload Identity Management",
+      "domain": "identity-access-management",
+      "type": "preventive",
+      "description": "Manage non-human identities (service accounts, managed identities, workload identities) with the same rigor as human accounts. Eliminate long-lived credentials where possible. Use cloud-native workload identity federation for cross-service authentication.",
+      "maturityLevels": {
+        "1": "Service accounts inventoried; long-lived keys rotated on schedule; unused accounts disabled",
+        "2": "Workload identity federation replaces static credentials; managed identities for all cloud services; key expiry enforced",
+        "3": "Zero long-lived credentials; all service-to-service auth via short-lived tokens; automated credential lifecycle management"
+      },
+      "ccmControls": [
+        "IAM-06",
+        "IAM-10"
+      ],
+      "nacsa": [
+        "s18"
+      ],
+      "nistCsf": [
+        "PR.AA-01",
+        "PR.AA-02"
+      ],
+      "mitreAttackCloud": [
+        "T1528",
+        "T1550.001"
+      ],
+      "cspImplementation": {
+        "aws": "Use IAM Roles for EC2/ECS/Lambda instead of access keys. Enable OIDC federation for external workloads. Use AWS Secrets Manager for credential rotation. Disable unused access keys via Access Advisor.",
+        "azure": "Use Managed Identities (system-assigned preferred) for all Azure services. Use Workload Identity Federation for external workloads. Enforce credential expiry on app registrations.",
+        "gcp": "Use attached service accounts instead of key files. Enable Workload Identity Federation for GKE and external workloads. Use IAM Conditions to restrict service account impersonation."
+      }
     },
-    "ccmControls": ["IAM-01", "IAM-03"],
-    "nacsa": ["s18"],
-    "nistCsf": ["PR.AA-01", "PR.AA-04"],
-    "mitreAttackCloud": ["T1078", "T1199"],
-    "cspImplementation": {
-      "aws": "Configure AWS IAM Identity Center (SSO) with external IdP (Entra ID, Okta). Map IdP groups to AWS permission sets. Enforce session duration limits.",
-      "azure": "Entra ID is the native IdP. Configure SAML/OIDC app registrations for third-party clouds. Enable Conditional Access for session controls.",
-      "gcp": "Configure Cloud Identity federation with external IdP. Use Workforce Identity Federation for console and API access. Map IdP groups to GCP IAM roles."
-    }
-  },
-  {
-    "id": "CS-DSP-01",
-    "slug": "encryption-at-rest",
-    "name": "Encryption at Rest for Cloud Storage and Databases",
-    "domain": "data-protection-encryption",
-    "type": "preventive",
-    "description": "Encrypt all data at rest in cloud storage, databases, and compute volumes. Use customer-managed keys (CMKs) for sensitive data to maintain key control. Ensure encryption is enforced by policy, not optional.",
-    "maturityLevels": {
-      "1": "Cloud provider default encryption enabled on all storage services (SSE with provider-managed keys)",
-      "2": "Customer-managed keys (CMKs) for sensitive data; encryption enforcement via resource policies; key usage auditing",
-      "3": "Client-side encryption for highest-sensitivity data; key management in external HSM; automated detection of unencrypted resources"
+    {
+      "id": "CS-IAM-04",
+      "slug": "federation-sso",
+      "name": "Identity Federation and Single Sign-On",
+      "domain": "identity-access-management",
+      "type": "preventive",
+      "description": "Federate cloud identity with the enterprise identity provider (IdP) using SAML 2.0 or OIDC. Centralise authentication to enable consistent MFA, conditional access, and session management across all cloud accounts.",
+      "maturityLevels": {
+        "1": "SSO configured for primary cloud accounts; local cloud accounts exist as backup",
+        "2": "All cloud access through federated SSO; no local cloud accounts except break-glass; session policies enforced",
+        "3": "Cross-cloud federation with unified identity governance; real-time session termination on identity risk detection; zero standing cloud accounts"
+      },
+      "ccmControls": [
+        "IAM-01",
+        "IAM-03"
+      ],
+      "nacsa": [
+        "s18"
+      ],
+      "nistCsf": [
+        "PR.AA-01",
+        "PR.AA-04"
+      ],
+      "mitreAttackCloud": [
+        "T1078",
+        "T1199"
+      ],
+      "cspImplementation": {
+        "aws": "Configure AWS IAM Identity Center (SSO) with external IdP (Entra ID, Okta). Map IdP groups to AWS permission sets. Enforce session duration limits.",
+        "azure": "Entra ID is the native IdP. Configure SAML/OIDC app registrations for third-party clouds. Enable Conditional Access for session controls.",
+        "gcp": "Configure Cloud Identity federation with external IdP. Use Workforce Identity Federation for console and API access. Map IdP groups to GCP IAM roles."
+      }
     },
-    "ccmControls": ["DSP-01", "DSP-10", "CEK-03"],
-    "nacsa": ["s18"],
-    "nistCsf": ["PR.DS-01", "PR.DS-02"],
-    "mitreAttackCloud": ["T1530", "T1537"],
-    "cspImplementation": {
-      "aws": "Enable default encryption on S3 buckets (SSE-S3 or SSE-KMS). Use AWS KMS CMKs for RDS, EBS, EFS. Deploy AWS Config rule s3-bucket-server-side-encryption-enabled. Use SCP to deny unencrypted resource creation.",
-      "azure": "All Azure Storage encrypted by default (Microsoft-managed keys). Use customer-managed keys in Azure Key Vault for sensitive data. Enable Azure Disk Encryption for VMs. Use Azure Policy to enforce encryption.",
-      "gcp": "All GCP data encrypted at rest by default (Google-managed keys). Use Cloud KMS CMEK for sensitive data. Enable customer-supplied encryption keys (CSEK) for highest sensitivity. Use Organization Policy to enforce CMEK."
-    }
-  },
-  {
-    "id": "CS-DSP-02",
-    "slug": "encryption-in-transit",
-    "name": "Encryption in Transit",
-    "domain": "data-protection-encryption",
-    "type": "preventive",
-    "description": "Enforce TLS 1.2+ for all data in transit between clients and cloud services, between cloud services, and between cloud regions. Disable legacy TLS versions and weak cipher suites.",
-    "maturityLevels": {
-      "1": "TLS 1.2 enforced on all public-facing endpoints; HTTPS-only on storage buckets and APIs",
-      "2": "TLS 1.2+ enforced on all internal service communications; mutual TLS (mTLS) for service mesh; certificate lifecycle management",
-      "3": "TLS 1.3 preferred everywhere; mTLS for all service-to-service; automated certificate rotation; post-quantum cryptography roadmap"
+    {
+      "id": "CS-DSP-01",
+      "slug": "encryption-at-rest",
+      "name": "Encryption at Rest for Cloud Storage and Databases",
+      "domain": "data-protection-encryption",
+      "type": "preventive",
+      "description": "Encrypt all data at rest in cloud storage, databases, and compute volumes. Use customer-managed keys (CMKs) for sensitive data to maintain key control. Ensure encryption is enforced by policy, not optional.",
+      "maturityLevels": {
+        "1": "Cloud provider default encryption enabled on all storage services (SSE with provider-managed keys)",
+        "2": "Customer-managed keys (CMKs) for sensitive data; encryption enforcement via resource policies; key usage auditing",
+        "3": "Client-side encryption for highest-sensitivity data; key management in external HSM; automated detection of unencrypted resources"
+      },
+      "ccmControls": [
+        "DSP-01",
+        "DSP-10",
+        "CEK-03"
+      ],
+      "nacsa": [
+        "s18"
+      ],
+      "nistCsf": [
+        "PR.DS-01",
+        "PR.DS-02"
+      ],
+      "mitreAttackCloud": [
+        "T1530",
+        "T1537"
+      ],
+      "cspImplementation": {
+        "aws": "Enable default encryption on S3 buckets (SSE-S3 or SSE-KMS). Use AWS KMS CMKs for RDS, EBS, EFS. Deploy AWS Config rule s3-bucket-server-side-encryption-enabled. Use SCP to deny unencrypted resource creation.",
+        "azure": "All Azure Storage encrypted by default (Microsoft-managed keys). Use customer-managed keys in Azure Key Vault for sensitive data. Enable Azure Disk Encryption for VMs. Use Azure Policy to enforce encryption.",
+        "gcp": "All GCP data encrypted at rest by default (Google-managed keys). Use Cloud KMS CMEK for sensitive data. Enable customer-supplied encryption keys (CSEK) for highest sensitivity. Use Organization Policy to enforce CMEK."
+      }
     },
-    "ccmControls": ["DSP-03", "CEK-04"],
-    "nacsa": ["s18"],
-    "nistCsf": ["PR.DS-02"],
-    "mitreAttackCloud": ["T1557", "T1040"],
-    "cspImplementation": {
-      "aws": "Set minimum TLS version on ALB/NLB/CloudFront. Enable S3 bucket policy to deny non-HTTPS. Use AWS Certificate Manager for TLS cert lifecycle. Enforce TLS on RDS connections.",
-      "azure": "Set minimum TLS version on App Service, Storage Accounts, Azure SQL. Use Azure Front Door with TLS 1.2+. Configure Application Gateway WAF policy for TLS enforcement.",
-      "gcp": "Set SSL policies on Cloud Load Balancer with MODERN or RESTRICTED profile. Enforce HTTPS on Cloud Storage. Use Certificate Manager for lifecycle. Enable VPC Service Controls for data exfiltration prevention."
-    }
-  },
-  {
-    "id": "CS-DSP-03",
-    "slug": "data-classification",
-    "name": "Cloud Data Classification and Labelling",
-    "domain": "data-protection-encryption",
-    "type": "preventive",
-    "description": "Classify all cloud-hosted data by sensitivity level and apply labels/tags that drive automated policy enforcement. Classification should determine encryption requirements, access controls, retention, and geographic restrictions.",
-    "maturityLevels": {
-      "1": "Data classification policy defined; manual classification of major data stores",
-      "2": "Automated data discovery and classification scanning; resource tags enforce policies; regular reclassification reviews",
-      "3": "Continuous automated classification with ML-driven detection; classification drives dynamic access controls; cross-cloud unified classification taxonomy"
+    {
+      "id": "CS-DSP-02",
+      "slug": "encryption-in-transit",
+      "name": "Encryption in Transit",
+      "domain": "data-protection-encryption",
+      "type": "preventive",
+      "description": "Enforce TLS 1.2+ for all data in transit between clients and cloud services, between cloud services, and between cloud regions. Disable legacy TLS versions and weak cipher suites.",
+      "maturityLevels": {
+        "1": "TLS 1.2 enforced on all public-facing endpoints; HTTPS-only on storage buckets and APIs",
+        "2": "TLS 1.2+ enforced on all internal service communications; mutual TLS (mTLS) for service mesh; certificate lifecycle management",
+        "3": "TLS 1.3 preferred everywhere; mTLS for all service-to-service; automated certificate rotation; post-quantum cryptography roadmap"
+      },
+      "ccmControls": [
+        "DSP-03",
+        "CEK-04"
+      ],
+      "nacsa": [
+        "s18"
+      ],
+      "nistCsf": [
+        "PR.DS-02"
+      ],
+      "mitreAttackCloud": [
+        "T1557",
+        "T1040"
+      ],
+      "cspImplementation": {
+        "aws": "Set minimum TLS version on ALB/NLB/CloudFront. Enable S3 bucket policy to deny non-HTTPS. Use AWS Certificate Manager for TLS cert lifecycle. Enforce TLS on RDS connections.",
+        "azure": "Set minimum TLS version on App Service, Storage Accounts, Azure SQL. Use Azure Front Door with TLS 1.2+. Configure Application Gateway WAF policy for TLS enforcement.",
+        "gcp": "Set SSL policies on Cloud Load Balancer with MODERN or RESTRICTED profile. Enforce HTTPS on Cloud Storage. Use Certificate Manager for lifecycle. Enable VPC Service Controls for data exfiltration prevention."
+      }
     },
-    "ccmControls": ["DSP-04", "DSP-05"],
-    "nacsa": ["s18"],
-    "nistCsf": ["ID.AM-07", "ID.AM-08"],
-    "mitreAttackCloud": ["T1530"],
-    "cspImplementation": {
-      "aws": "Use Amazon Macie for S3 data discovery and classification. Apply resource tags for classification levels. Use AWS Config rules to enforce tag-based policies. Lake Formation for structured data governance.",
-      "azure": "Use Microsoft Purview for data discovery, classification, and labelling. Apply sensitivity labels across Microsoft 365 and Azure. Use Azure Policy for tag enforcement.",
-      "gcp": "Use Cloud DLP API for data discovery and classification. Apply resource labels. Use Data Catalog for metadata management. Organization policies enforce label-based controls."
-    }
-  },
-  {
-    "id": "CS-DSP-04",
-    "slug": "data-loss-prevention",
-    "name": "Cloud Data Loss Prevention",
-    "domain": "data-protection-encryption",
-    "type": "detective",
-    "description": "Deploy data loss prevention controls to detect and prevent unauthorised exfiltration of sensitive data from cloud environments. Monitor data movement across storage services, email, file sharing, and API boundaries.",
-    "maturityLevels": {
-      "1": "DLP policies for known sensitive data patterns (PII, credentials) on major storage services",
-      "2": "DLP integrated across storage, email, and collaboration; automated blocking of policy violations; incident workflow",
-      "3": "ML-driven DLP with behavioural analysis; cross-cloud DLP with unified policies; real-time exfiltration detection and automated response"
+    {
+      "id": "CS-DSP-03",
+      "slug": "data-classification",
+      "name": "Cloud Data Classification and Labelling",
+      "domain": "data-protection-encryption",
+      "type": "preventive",
+      "description": "Classify all cloud-hosted data by sensitivity level and apply labels/tags that drive automated policy enforcement. Classification should determine encryption requirements, access controls, retention, and geographic restrictions.",
+      "maturityLevels": {
+        "1": "Data classification policy defined; manual classification of major data stores",
+        "2": "Automated data discovery and classification scanning; resource tags enforce policies; regular reclassification reviews",
+        "3": "Continuous automated classification with ML-driven detection; classification drives dynamic access controls; cross-cloud unified classification taxonomy"
+      },
+      "ccmControls": [
+        "DSP-04",
+        "DSP-05"
+      ],
+      "nacsa": [
+        "s18"
+      ],
+      "nistCsf": [
+        "ID.AM-07",
+        "ID.AM-08"
+      ],
+      "mitreAttackCloud": [
+        "T1530"
+      ],
+      "cspImplementation": {
+        "aws": "Use Amazon Macie for S3 data discovery and classification. Apply resource tags for classification levels. Use AWS Config rules to enforce tag-based policies. Lake Formation for structured data governance.",
+        "azure": "Use Microsoft Purview for data discovery, classification, and labelling. Apply sensitivity labels across Microsoft 365 and Azure. Use Azure Policy for tag enforcement.",
+        "gcp": "Use Cloud DLP API for data discovery and classification. Apply resource labels. Use Data Catalog for metadata management. Organization policies enforce label-based controls."
+      }
     },
-    "ccmControls": ["DSP-08", "DSP-17"],
-    "nacsa": ["s18"],
-    "nistCsf": ["PR.DS-01", "DE.CM-01"],
-    "mitreAttackCloud": ["T1537", "T1567"],
-    "cspImplementation": {
-      "aws": "Use Amazon Macie for S3 DLP. Configure VPC endpoints to prevent data exfiltration via public internet. Enable S3 Block Public Access. Use CloudTrail for data event monitoring.",
-      "azure": "Deploy Microsoft Purview DLP across SharePoint, OneDrive, Exchange, Teams, and Azure Storage. Configure endpoint DLP for managed devices. Use Defender for Cloud Apps for shadow IT DLP.",
-      "gcp": "Use Cloud DLP API with inspection jobs. Configure VPC Service Controls perimeters to prevent data exfiltration. Enable Data Access audit logs. Use DLP on BigQuery and Cloud Storage."
-    }
-  },
-  {
-    "id": "CS-IVS-01",
-    "slug": "vpc-network-design",
-    "name": "Virtual Private Cloud Network Design",
-    "domain": "network-security",
-    "type": "preventive",
-    "description": "Design cloud virtual networks with defence-in-depth: multiple subnets (public, private, data), route table isolation, and network ACLs. Avoid flat network architectures. Use hub-and-spoke or transit gateway topology for multi-VPC environments.",
-    "maturityLevels": {
-      "1": "Separate VPCs/VNets for production, staging, and development; public and private subnets defined",
-      "2": "Hub-and-spoke topology with transit gateway; centralised ingress/egress; network ACLs and route tables locked down",
-      "3": "Microsegmentation with service mesh; zero trust network architecture; automated network topology validation"
+    {
+      "id": "CS-DSP-04",
+      "slug": "data-loss-prevention",
+      "name": "Cloud Data Loss Prevention",
+      "domain": "data-protection-encryption",
+      "type": "detective",
+      "description": "Deploy data loss prevention controls to detect and prevent unauthorised exfiltration of sensitive data from cloud environments. Monitor data movement across storage services, email, file sharing, and API boundaries.",
+      "maturityLevels": {
+        "1": "DLP policies for known sensitive data patterns (PII, credentials) on major storage services",
+        "2": "DLP integrated across storage, email, and collaboration; automated blocking of policy violations; incident workflow",
+        "3": "ML-driven DLP with behavioural analysis; cross-cloud DLP with unified policies; real-time exfiltration detection and automated response"
+      },
+      "ccmControls": [
+        "DSP-08",
+        "DSP-17"
+      ],
+      "nacsa": [
+        "s18"
+      ],
+      "nistCsf": [
+        "PR.DS-01",
+        "DE.CM-01"
+      ],
+      "mitreAttackCloud": [
+        "T1537",
+        "T1567"
+      ],
+      "cspImplementation": {
+        "aws": "Use Amazon Macie for S3 DLP. Configure VPC endpoints to prevent data exfiltration via public internet. Enable S3 Block Public Access. Use CloudTrail for data event monitoring.",
+        "azure": "Deploy Microsoft Purview DLP across SharePoint, OneDrive, Exchange, Teams, and Azure Storage. Configure endpoint DLP for managed devices. Use Defender for Cloud Apps for shadow IT DLP.",
+        "gcp": "Use Cloud DLP API with inspection jobs. Configure VPC Service Controls perimeters to prevent data exfiltration. Enable Data Access audit logs. Use DLP on BigQuery and Cloud Storage."
+      }
     },
-    "ccmControls": ["IVS-01", "IVS-03", "IVS-09"],
-    "nacsa": ["s18"],
-    "nistCsf": ["PR.IR-01", "PR.IR-02"],
-    "mitreAttackCloud": ["T1599", "T1046"],
-    "cspImplementation": {
-      "aws": "Use AWS Transit Gateway for multi-VPC connectivity. Deploy public, private, and isolated subnets per VPC. Use VPC Flow Logs. Configure NACLs as stateless backup to security groups.",
-      "azure": "Use Azure Virtual WAN or Hub-and-Spoke with VNet Peering. Deploy Azure Firewall in hub VNet. Use NSGs on all subnets. Enable Azure Network Watcher for monitoring.",
-      "gcp": "Use Shared VPC for multi-project networking. Configure Cloud NAT for private subnet egress. Use VPC firewall rules with priority ordering. Enable VPC Flow Logs."
-    }
-  },
-  {
-    "id": "CS-IVS-02",
-    "slug": "security-groups-firewall",
-    "name": "Security Group and Firewall Rule Management",
-    "domain": "network-security",
-    "type": "preventive",
-    "description": "Configure cloud security groups and firewall rules with deny-by-default posture. Allow only required traffic by source, destination, port, and protocol. Eliminate overly permissive rules (0.0.0.0/0 ingress on management ports).",
-    "maturityLevels": {
-      "1": "No 0.0.0.0/0 ingress on SSH/RDP; security groups reference other security groups where possible",
-      "2": "All rules documented with business justification; automated detection of overly permissive rules; quarterly rule review",
-      "3": "Policy-as-code for firewall rules; automated remediation of non-compliant rules; continuous compliance monitoring"
+    {
+      "id": "CS-IVS-01",
+      "slug": "vpc-network-design",
+      "name": "Virtual Private Cloud Network Design",
+      "domain": "network-security",
+      "type": "preventive",
+      "description": "Design cloud virtual networks with defence-in-depth: multiple subnets (public, private, data), route table isolation, and network ACLs. Avoid flat network architectures. Use hub-and-spoke or transit gateway topology for multi-VPC environments.",
+      "maturityLevels": {
+        "1": "Separate VPCs/VNets for production, staging, and development; public and private subnets defined",
+        "2": "Hub-and-spoke topology with transit gateway; centralised ingress/egress; network ACLs and route tables locked down",
+        "3": "Microsegmentation with service mesh; zero trust network architecture; automated network topology validation"
+      },
+      "ccmControls": [
+        "IVS-01",
+        "IVS-03",
+        "IVS-09"
+      ],
+      "nacsa": [
+        "s18"
+      ],
+      "nistCsf": [
+        "PR.IR-01",
+        "PR.IR-02"
+      ],
+      "mitreAttackCloud": [
+        "T1599",
+        "T1046"
+      ],
+      "cspImplementation": {
+        "aws": "Use AWS Transit Gateway for multi-VPC connectivity. Deploy public, private, and isolated subnets per VPC. Use VPC Flow Logs. Configure NACLs as stateless backup to security groups.",
+        "azure": "Use Azure Virtual WAN or Hub-and-Spoke with VNet Peering. Deploy Azure Firewall in hub VNet. Use NSGs on all subnets. Enable Azure Network Watcher for monitoring.",
+        "gcp": "Use Shared VPC for multi-project networking. Configure Cloud NAT for private subnet egress. Use VPC firewall rules with priority ordering. Enable VPC Flow Logs."
+      }
     },
-    "ccmControls": ["IVS-04", "IVS-06"],
-    "nacsa": ["s18"],
-    "nistCsf": ["PR.IR-01", "PR.IR-02"],
-    "mitreAttackCloud": ["T1190", "T1133"],
-    "cspImplementation": {
-      "aws": "Use Security Groups with least-privilege rules. Deploy AWS Config rules (restricted-ssh, restricted-common-ports). Enable VPC Reachability Analyzer. Use AWS Firewall Manager for organisation-wide rules.",
-      "azure": "Configure NSGs with deny-all default. Use Application Security Groups (ASGs) for role-based rules. Deploy Azure Firewall for centralised filtering. Use Azure Policy for NSG compliance.",
-      "gcp": "Use VPC Firewall Rules with priority ordering and deny-all default. Enable Hierarchical Firewall Policies for org-wide rules. Use Firewall Insights for rule usage analysis."
-    }
-  },
-  {
-    "id": "CS-IVS-03",
-    "slug": "private-endpoints",
-    "name": "Private Endpoint and Service Connectivity",
-    "domain": "network-security",
-    "type": "preventive",
-    "description": "Use private endpoints (AWS PrivateLink, Azure Private Link, GCP Private Service Connect) to access cloud services without traversing the public internet. Eliminate public IP addresses on databases, storage, and internal services.",
-    "maturityLevels": {
-      "1": "Private endpoints for databases and storage services; public access disabled where private endpoints exist",
-      "2": "Private endpoints for all PaaS services; VPC endpoint policies restrict accessible services; DNS resolution through private zones",
-      "3": "All cloud API access via private endpoints; no public IP addresses on any workload; automated detection of public exposure"
+    {
+      "id": "CS-IVS-02",
+      "slug": "security-groups-firewall",
+      "name": "Security Group and Firewall Rule Management",
+      "domain": "network-security",
+      "type": "preventive",
+      "description": "Configure cloud security groups and firewall rules with deny-by-default posture. Allow only required traffic by source, destination, port, and protocol. Eliminate overly permissive rules (0.0.0.0/0 ingress on management ports).",
+      "maturityLevels": {
+        "1": "No 0.0.0.0/0 ingress on SSH/RDP; security groups reference other security groups where possible",
+        "2": "All rules documented with business justification; automated detection of overly permissive rules; quarterly rule review",
+        "3": "Policy-as-code for firewall rules; automated remediation of non-compliant rules; continuous compliance monitoring"
+      },
+      "ccmControls": [
+        "IVS-04",
+        "IVS-06"
+      ],
+      "nacsa": [
+        "s18"
+      ],
+      "nistCsf": [
+        "PR.IR-01",
+        "PR.IR-02"
+      ],
+      "mitreAttackCloud": [
+        "T1190",
+        "T1133"
+      ],
+      "cspImplementation": {
+        "aws": "Use Security Groups with least-privilege rules. Deploy AWS Config rules (restricted-ssh, restricted-common-ports). Enable VPC Reachability Analyzer. Use AWS Firewall Manager for organisation-wide rules.",
+        "azure": "Configure NSGs with deny-all default. Use Application Security Groups (ASGs) for role-based rules. Deploy Azure Firewall for centralised filtering. Use Azure Policy for NSG compliance.",
+        "gcp": "Use VPC Firewall Rules with priority ordering and deny-all default. Enable Hierarchical Firewall Policies for org-wide rules. Use Firewall Insights for rule usage analysis."
+      }
     },
-    "ccmControls": ["IVS-01", "IVS-09"],
-    "nacsa": ["s18"],
-    "nistCsf": ["PR.IR-01", "PR.DS-02"],
-    "mitreAttackCloud": ["T1190", "T1530"],
-    "cspImplementation": {
-      "aws": "Deploy VPC Interface Endpoints for S3, DynamoDB, SQS, SNS, KMS, ECR. Use VPC Endpoint Policies to restrict accessible resources. Configure S3 bucket policies to deny non-VPC access.",
-      "azure": "Deploy Private Endpoints for Azure SQL, Storage, Key Vault, Container Registry. Disable public network access on PaaS resources. Use Private DNS Zones for name resolution.",
-      "gcp": "Enable Private Google Access for VPC subnets. Use Private Service Connect for Google APIs. Configure Cloud SQL with private IP only. Use VPC Service Controls for API access boundaries."
-    }
-  },
-  {
-    "id": "CS-IVS-04",
-    "slug": "waf-deployment",
-    "name": "Web Application Firewall Deployment",
-    "domain": "network-security",
-    "type": "preventive",
-    "description": "Deploy a Web Application Firewall (WAF) in front of all internet-facing web applications and APIs. Configure OWASP Top 10 rule sets, rate limiting, bot management, and geo-blocking as appropriate.",
-    "maturityLevels": {
-      "1": "WAF deployed with managed rule sets (OWASP Core Rule Set) on primary web applications",
-      "2": "Custom WAF rules for application-specific threats; rate limiting; bot detection; regular rule tuning to reduce false positives",
-      "3": "ML-based WAF with behavioural analysis; automated rule updates from threat intelligence; integrated with SIEM for correlation"
+    {
+      "id": "CS-IVS-03",
+      "slug": "private-endpoints",
+      "name": "Private Endpoint and Service Connectivity",
+      "domain": "network-security",
+      "type": "preventive",
+      "description": "Use private endpoints (AWS PrivateLink, Azure Private Link, GCP Private Service Connect) to access cloud services without traversing the public internet. Eliminate public IP addresses on databases, storage, and internal services.",
+      "maturityLevels": {
+        "1": "Private endpoints for databases and storage services; public access disabled where private endpoints exist",
+        "2": "Private endpoints for all PaaS services; VPC endpoint policies restrict accessible services; DNS resolution through private zones",
+        "3": "All cloud API access via private endpoints; no public IP addresses on any workload; automated detection of public exposure"
+      },
+      "ccmControls": [
+        "IVS-01",
+        "IVS-09"
+      ],
+      "nacsa": [
+        "s18"
+      ],
+      "nistCsf": [
+        "PR.IR-01",
+        "PR.DS-02"
+      ],
+      "mitreAttackCloud": [
+        "T1190",
+        "T1530"
+      ],
+      "cspImplementation": {
+        "aws": "Deploy VPC Interface Endpoints for S3, DynamoDB, SQS, SNS, KMS, ECR. Use VPC Endpoint Policies to restrict accessible resources. Configure S3 bucket policies to deny non-VPC access.",
+        "azure": "Deploy Private Endpoints for Azure SQL, Storage, Key Vault, Container Registry. Disable public network access on PaaS resources. Use Private DNS Zones for name resolution.",
+        "gcp": "Enable Private Google Access for VPC subnets. Use Private Service Connect for Google APIs. Configure Cloud SQL with private IP only. Use VPC Service Controls for API access boundaries."
+      }
     },
-    "ccmControls": ["IVS-06", "IVS-08"],
-    "nacsa": ["s18"],
-    "nistCsf": ["PR.IR-02", "DE.CM-01"],
-    "mitreAttackCloud": ["T1190", "T1595"],
-    "cspImplementation": {
-      "aws": "Deploy AWS WAF on CloudFront, ALB, or API Gateway. Use AWS Managed Rules (Core Rule Set, SQL injection, XSS). Configure rate-based rules. Enable WAF logging to S3/CloudWatch.",
-      "azure": "Deploy Azure WAF on Application Gateway or Front Door. Use OWASP 3.2 rule set. Configure custom rules for rate limiting. Enable WAF diagnostics logging.",
-      "gcp": "Deploy Cloud Armor WAF on external HTTP(S) Load Balancer. Use preconfigured WAF rules (OWASP Top 10). Configure adaptive protection for DDoS. Enable logging to Cloud Logging."
-    }
-  },
-  {
-    "id": "CS-IVS-05",
-    "slug": "ddos-protection",
-    "name": "DDoS Protection",
-    "domain": "network-security",
-    "type": "preventive",
-    "description": "Enable DDoS protection services for all internet-facing cloud workloads. Configure automatic mitigation, traffic scrubbing, and alerting for volumetric, protocol, and application-layer attacks.",
-    "maturityLevels": {
-      "1": "Cloud provider basic DDoS protection enabled (included by default on most platforms)",
-      "2": "Advanced DDoS protection with automatic mitigation; DDoS response team access; application-layer protection",
-      "3": "DDoS response runbook tested quarterly; integrated with WAF and CDN; real-time traffic analysis with automated scaling"
+    {
+      "id": "CS-IVS-04",
+      "slug": "waf-deployment",
+      "name": "Web Application Firewall Deployment",
+      "domain": "network-security",
+      "type": "preventive",
+      "description": "Deploy a Web Application Firewall (WAF) in front of all internet-facing web applications and APIs. Configure OWASP Top 10 rule sets, rate limiting, bot management, and geo-blocking as appropriate.",
+      "maturityLevels": {
+        "1": "WAF deployed with managed rule sets (OWASP Core Rule Set) on primary web applications",
+        "2": "Custom WAF rules for application-specific threats; rate limiting; bot detection; regular rule tuning to reduce false positives",
+        "3": "ML-based WAF with behavioural analysis; automated rule updates from threat intelligence; integrated with SIEM for correlation"
+      },
+      "ccmControls": [
+        "IVS-06",
+        "IVS-08"
+      ],
+      "nacsa": [
+        "s18"
+      ],
+      "nistCsf": [
+        "PR.IR-02",
+        "DE.CM-01"
+      ],
+      "mitreAttackCloud": [
+        "T1190",
+        "T1595"
+      ],
+      "cspImplementation": {
+        "aws": "Deploy AWS WAF on CloudFront, ALB, or API Gateway. Use AWS Managed Rules (Core Rule Set, SQL injection, XSS). Configure rate-based rules. Enable WAF logging to S3/CloudWatch.",
+        "azure": "Deploy Azure WAF on Application Gateway or Front Door. Use OWASP 3.2 rule set. Configure custom rules for rate limiting. Enable WAF diagnostics logging.",
+        "gcp": "Deploy Cloud Armor WAF on external HTTP(S) Load Balancer. Use preconfigured WAF rules (OWASP Top 10). Configure adaptive protection for DDoS. Enable logging to Cloud Logging."
+      }
     },
-    "ccmControls": ["IVS-06", "IVS-08"],
-    "nacsa": ["s18"],
-    "nistCsf": ["PR.IR-02", "DE.CM-01"],
-    "mitreAttackCloud": ["T1498", "T1499"],
-    "cspImplementation": {
-      "aws": "AWS Shield Standard is automatic. Enable AWS Shield Advanced for critical workloads (24/7 DDoS Response Team, cost protection). Combine with CloudFront and Route 53 for edge-level protection.",
-      "azure": "Azure DDoS Network Protection is enabled by default. Deploy Azure DDoS Protection Plan for advanced features on production VNets. Configure DDoS diagnostic logs and alerts.",
-      "gcp": "Cloud Armor provides DDoS protection. Enable Adaptive Protection for ML-based detection. Use Cloud CDN for edge caching and absorption. Configure Cloud Armor security policies."
-    }
-  },
-  {
-    "id": "CS-LOG-01",
-    "slug": "cloud-audit-logging",
-    "name": "Cloud Audit Logging",
-    "domain": "logging-monitoring",
-    "type": "detective",
-    "description": "Enable comprehensive audit logging for all cloud management plane operations. Capture who did what, when, from where, and to which resource. Protect audit logs from tampering and ensure they cannot be disabled by individual account administrators.",
-    "maturityLevels": {
-      "1": "Management event logging enabled in all cloud accounts/projects; logs stored in centralised bucket",
-      "2": "Data event logging enabled for sensitive resources; organisation-level log aggregation; log integrity validation enabled",
-      "3": "Immutable log storage with WORM retention; real-time log streaming to SIEM; automated alerting on log tampering attempts"
+    {
+      "id": "CS-IVS-05",
+      "slug": "ddos-protection",
+      "name": "DDoS Protection",
+      "domain": "network-security",
+      "type": "preventive",
+      "description": "Enable DDoS protection services for all internet-facing cloud workloads. Configure automatic mitigation, traffic scrubbing, and alerting for volumetric, protocol, and application-layer attacks.",
+      "maturityLevels": {
+        "1": "Cloud provider basic DDoS protection enabled (included by default on most platforms)",
+        "2": "Advanced DDoS protection with automatic mitigation; DDoS response team access; application-layer protection",
+        "3": "DDoS response runbook tested quarterly; integrated with WAF and CDN; real-time traffic analysis with automated scaling"
+      },
+      "ccmControls": [
+        "IVS-06",
+        "IVS-08"
+      ],
+      "nacsa": [
+        "s18"
+      ],
+      "nistCsf": [
+        "PR.IR-02",
+        "DE.CM-01"
+      ],
+      "mitreAttackCloud": [
+        "T1498",
+        "T1499"
+      ],
+      "cspImplementation": {
+        "aws": "AWS Shield Standard is automatic. Enable AWS Shield Advanced for critical workloads (24/7 DDoS Response Team, cost protection). Combine with CloudFront and Route 53 for edge-level protection.",
+        "azure": "Azure DDoS Network Protection is enabled by default. Deploy Azure DDoS Protection Plan for advanced features on production VNets. Configure DDoS diagnostic logs and alerts.",
+        "gcp": "Cloud Armor provides DDoS protection. Enable Adaptive Protection for ML-based detection. Use Cloud CDN for edge caching and absorption. Configure Cloud Armor security policies."
+      }
     },
-    "ccmControls": ["LOG-01", "LOG-03", "LOG-05"],
-    "nacsa": ["s18", "s26"],
-    "nistCsf": ["DE.AE-02", "DE.AE-03"],
-    "mitreAttackCloud": ["T1562.008", "T1078"],
-    "cspImplementation": {
-      "aws": "Enable AWS CloudTrail in all regions with organization trail. Enable S3 data events for sensitive buckets. Store in S3 with Object Lock (WORM). Enable CloudTrail Insights for anomaly detection.",
-      "azure": "Enable Azure Activity Log at subscription level. Configure Diagnostic Settings to Log Analytics workspace. Enable Microsoft Defender for Cloud audit recommendations. Export to Event Hub for SIEM.",
-      "gcp": "Cloud Audit Logs enabled by default for Admin Activity. Enable Data Access audit logs for sensitive services. Export to Cloud Storage with retention lock. Stream to BigQuery for analysis."
-    }
-  },
-  {
-    "id": "CS-LOG-02",
-    "slug": "siem-integration",
-    "name": "SIEM Integration for Cloud",
-    "domain": "logging-monitoring",
-    "type": "detective",
-    "description": "Integrate cloud logs with a Security Information and Event Management (SIEM) platform for correlation, detection, and investigation. Cloud logs must be normalised and enriched for effective security analysis alongside on-premises data.",
-    "maturityLevels": {
-      "1": "Cloud audit logs forwarded to SIEM; basic correlation rules for high-severity events",
-      "2": "All cloud log sources integrated (audit, flow, DNS, WAF, GuardDuty/Defender/SCC); cloud-specific detection rules tuned",
-      "3": "SOAR integration for automated triage; ML-based anomaly detection; unified cloud and on-prem investigation workflow"
+    {
+      "id": "CS-LOG-01",
+      "slug": "cloud-audit-logging",
+      "name": "Cloud Audit Logging",
+      "domain": "logging-monitoring",
+      "type": "detective",
+      "description": "Enable comprehensive audit logging for all cloud management plane operations. Capture who did what, when, from where, and to which resource. Protect audit logs from tampering and ensure they cannot be disabled by individual account administrators.",
+      "maturityLevels": {
+        "1": "Management event logging enabled in all cloud accounts/projects; logs stored in centralised bucket",
+        "2": "Data event logging enabled for sensitive resources; organisation-level log aggregation; log integrity validation enabled",
+        "3": "Immutable log storage with WORM retention; real-time log streaming to SIEM; automated alerting on log tampering attempts"
+      },
+      "ccmControls": [
+        "LOG-01",
+        "LOG-03",
+        "LOG-05"
+      ],
+      "nacsa": [
+        "s18",
+        "s26"
+      ],
+      "nistCsf": [
+        "DE.AE-02",
+        "DE.AE-03"
+      ],
+      "mitreAttackCloud": [
+        "T1562.008",
+        "T1078"
+      ],
+      "cspImplementation": {
+        "aws": "Enable AWS CloudTrail in all regions with organization trail. Enable S3 data events for sensitive buckets. Store in S3 with Object Lock (WORM). Enable CloudTrail Insights for anomaly detection.",
+        "azure": "Enable Azure Activity Log at subscription level. Configure Diagnostic Settings to Log Analytics workspace. Enable Microsoft Defender for Cloud audit recommendations. Export to Event Hub for SIEM.",
+        "gcp": "Cloud Audit Logs enabled by default for Admin Activity. Enable Data Access audit logs for sensitive services. Export to Cloud Storage with retention lock. Stream to BigQuery for analysis."
+      }
     },
-    "ccmControls": ["LOG-02", "LOG-09"],
-    "nacsa": ["s18", "s26"],
-    "nistCsf": ["DE.AE-02", "DE.AE-06"],
-    "mitreAttackCloud": ["T1562.008"],
-    "cspImplementation": {
-      "aws": "Use Amazon Security Lake or S3 exports for SIEM ingestion. Stream CloudTrail, VPC Flow Logs, GuardDuty, and SecurityHub findings to SIEM via Kinesis Data Firehose or EventBridge.",
-      "azure": "Use Microsoft Sentinel as cloud-native SIEM, or export via Event Hub to external SIEM. Enable data connectors for all Azure services, Microsoft 365, and Entra ID.",
-      "gcp": "Export Cloud Audit Logs and Security Command Center findings to SIEM via Pub/Sub. Use Chronicle SIEM for Google-native detection. Export VPC Flow Logs and Cloud Armor logs."
-    }
-  },
-  {
-    "id": "CS-LOG-03",
-    "slug": "cloud-alerting",
-    "name": "Cloud Security Alerting",
-    "domain": "logging-monitoring",
-    "type": "detective",
-    "description": "Configure automated alerting for security-relevant events in cloud environments. Define alert severity levels, routing, and escalation procedures. Alerts must be actionable, not just informational.",
-    "maturityLevels": {
-      "1": "Alerts for critical events: root account login, IAM policy changes, security group modifications, encryption key deletion",
-      "2": "Tiered alerting with severity-based routing; suppression rules to reduce noise; on-call integration",
-      "3": "Automated alert enrichment and triage; false positive reduction via ML; alert-to-incident workflow automation"
+    {
+      "id": "CS-LOG-02",
+      "slug": "siem-integration",
+      "name": "SIEM Integration for Cloud",
+      "domain": "logging-monitoring",
+      "type": "detective",
+      "description": "Integrate cloud logs with a Security Information and Event Management (SIEM) platform for correlation, detection, and investigation. Cloud logs must be normalised and enriched for effective security analysis alongside on-premises data.",
+      "maturityLevels": {
+        "1": "Cloud audit logs forwarded to SIEM; basic correlation rules for high-severity events",
+        "2": "All cloud log sources integrated (audit, flow, DNS, WAF, GuardDuty/Defender/SCC); cloud-specific detection rules tuned",
+        "3": "SOAR integration for automated triage; ML-based anomaly detection; unified cloud and on-prem investigation workflow"
+      },
+      "ccmControls": [
+        "LOG-02",
+        "LOG-09"
+      ],
+      "nacsa": [
+        "s18",
+        "s26"
+      ],
+      "nistCsf": [
+        "DE.AE-02",
+        "DE.AE-06"
+      ],
+      "mitreAttackCloud": [
+        "T1562.008"
+      ],
+      "cspImplementation": {
+        "aws": "Use Amazon Security Lake or S3 exports for SIEM ingestion. Stream CloudTrail, VPC Flow Logs, GuardDuty, and SecurityHub findings to SIEM via Kinesis Data Firehose or EventBridge.",
+        "azure": "Use Microsoft Sentinel as cloud-native SIEM, or export via Event Hub to external SIEM. Enable data connectors for all Azure services, Microsoft 365, and Entra ID.",
+        "gcp": "Export Cloud Audit Logs and Security Command Center findings to SIEM via Pub/Sub. Use Chronicle SIEM for Google-native detection. Export VPC Flow Logs and Cloud Armor logs."
+      }
     },
-    "ccmControls": ["LOG-08", "LOG-10"],
-    "nacsa": ["s18"],
-    "nistCsf": ["DE.AE-06", "DE.AE-07"],
-    "mitreAttackCloud": ["T1078", "T1562.008"],
-    "cspImplementation": {
-      "aws": "Use Amazon EventBridge rules for CloudTrail events. Configure GuardDuty for threat detection. Route alerts to SNS topics for email/Slack/PagerDuty. Use Security Hub for centralised findings.",
-      "azure": "Configure Azure Monitor Alerts on Activity Log events. Enable Microsoft Defender for Cloud alerts. Use Logic Apps for alert routing and enrichment. Configure Action Groups for notification channels.",
-      "gcp": "Use Cloud Monitoring alerting policies. Enable Security Command Center Premium for threat detection. Use Pub/Sub for alert routing. Configure notification channels for email, SMS, PagerDuty."
-    }
-  },
-  {
-    "id": "CS-LOG-04",
-    "slug": "log-retention",
-    "name": "Cloud Log Retention and Integrity",
-    "domain": "logging-monitoring",
-    "type": "detective",
-    "description": "Define and enforce log retention periods for all cloud log types. Protect log integrity with immutable storage. Ensure retention meets regulatory requirements and supports incident investigation timelines.",
-    "maturityLevels": {
-      "1": "Audit logs retained for 12 months minimum; stored in dedicated log account/project",
-      "2": "Tiered retention (90 days hot, 1 year warm, 7 years cold for compliance); log integrity validation enabled; automated lifecycle management",
-      "3": "Immutable storage with WORM retention; cryptographic integrity verification; automated compliance reporting on retention adherence"
+    {
+      "id": "CS-LOG-03",
+      "slug": "cloud-alerting",
+      "name": "Cloud Security Alerting",
+      "domain": "logging-monitoring",
+      "type": "detective",
+      "description": "Configure automated alerting for security-relevant events in cloud environments. Define alert severity levels, routing, and escalation procedures. Alerts must be actionable, not just informational.",
+      "maturityLevels": {
+        "1": "Alerts for critical events: root account login, IAM policy changes, security group modifications, encryption key deletion",
+        "2": "Tiered alerting with severity-based routing; suppression rules to reduce noise; on-call integration",
+        "3": "Automated alert enrichment and triage; false positive reduction via ML; alert-to-incident workflow automation"
+      },
+      "ccmControls": [
+        "LOG-08",
+        "LOG-10"
+      ],
+      "nacsa": [
+        "s18"
+      ],
+      "nistCsf": [
+        "DE.AE-06",
+        "DE.AE-07"
+      ],
+      "mitreAttackCloud": [
+        "T1078",
+        "T1562.008"
+      ],
+      "cspImplementation": {
+        "aws": "Use Amazon EventBridge rules for CloudTrail events. Configure GuardDuty for threat detection. Route alerts to SNS topics for email/Slack/PagerDuty. Use Security Hub for centralised findings.",
+        "azure": "Configure Azure Monitor Alerts on Activity Log events. Enable Microsoft Defender for Cloud alerts. Use Logic Apps for alert routing and enrichment. Configure Action Groups for notification channels.",
+        "gcp": "Use Cloud Monitoring alerting policies. Enable Security Command Center Premium for threat detection. Use Pub/Sub for alert routing. Configure notification channels for email, SMS, PagerDuty."
+      }
     },
-    "ccmControls": ["LOG-06", "LOG-11"],
-    "nacsa": ["s18", "s26"],
-    "nistCsf": ["PR.DS-11", "DE.AE-02"],
-    "mitreAttackCloud": ["T1562.008", "T1070"],
-    "cspImplementation": {
-      "aws": "Store CloudTrail logs in S3 with Object Lock (Compliance mode) for WORM. Enable CloudTrail log file integrity validation. Use S3 Lifecycle rules for tiered retention. Dedicated log archive account.",
-      "azure": "Configure Log Analytics workspace retention (up to 730 days). Archive to Storage Account with immutability policy. Use Azure Policy to enforce diagnostic settings and retention.",
-      "gcp": "Configure Cloud Logging retention (up to 3650 days). Export to Cloud Storage with retention policies and Bucket Lock. Use BigQuery for long-term queryable retention."
-    }
-  },
-  {
-    "id": "CS-LOG-05",
-    "slug": "threat-detection",
-    "name": "Cloud-Native Threat Detection",
-    "domain": "logging-monitoring",
-    "type": "detective",
-    "description": "Enable cloud-native threat detection services that analyse cloud audit logs, network flows, and DNS queries for indicators of compromise. These services provide turnkey detection for common cloud attack patterns.",
-    "maturityLevels": {
-      "1": "Cloud-native threat detection enabled (GuardDuty/Defender/SCC) in all accounts; findings reviewed weekly",
-      "2": "All threat detection features enabled (container, serverless, malware, DNS); findings integrated with SIEM; automated suppression of known false positives",
-      "3": "Custom threat detection rules for organisation-specific patterns; threat intelligence integration; automated response for high-confidence findings"
+    {
+      "id": "CS-LOG-04",
+      "slug": "log-retention",
+      "name": "Cloud Log Retention and Integrity",
+      "domain": "logging-monitoring",
+      "type": "detective",
+      "description": "Define and enforce log retention periods for all cloud log types. Protect log integrity with immutable storage. Ensure retention meets regulatory requirements and supports incident investigation timelines.",
+      "maturityLevels": {
+        "1": "Audit logs retained for 12 months minimum; stored in dedicated log account/project",
+        "2": "Tiered retention (90 days hot, 1 year warm, 7 years cold for compliance); log integrity validation enabled; automated lifecycle management",
+        "3": "Immutable storage with WORM retention; cryptographic integrity verification; automated compliance reporting on retention adherence"
+      },
+      "ccmControls": [
+        "LOG-06",
+        "LOG-11"
+      ],
+      "nacsa": [
+        "s18",
+        "s26"
+      ],
+      "nistCsf": [
+        "PR.DS-11",
+        "DE.AE-02"
+      ],
+      "mitreAttackCloud": [
+        "T1562.008",
+        "T1070"
+      ],
+      "cspImplementation": {
+        "aws": "Store CloudTrail logs in S3 with Object Lock (Compliance mode) for WORM. Enable CloudTrail log file integrity validation. Use S3 Lifecycle rules for tiered retention. Dedicated log archive account.",
+        "azure": "Configure Log Analytics workspace retention (up to 730 days). Archive to Storage Account with immutability policy. Use Azure Policy to enforce diagnostic settings and retention.",
+        "gcp": "Configure Cloud Logging retention (up to 3650 days). Export to Cloud Storage with retention policies and Bucket Lock. Use BigQuery for long-term queryable retention."
+      }
     },
-    "ccmControls": ["LOG-08", "LOG-10"],
-    "nacsa": ["s18"],
-    "nistCsf": ["DE.CM-01", "DE.CM-09"],
-    "mitreAttackCloud": ["T1078", "T1190", "T1530"],
-    "cspImplementation": {
-      "aws": "Enable Amazon GuardDuty in all accounts and regions via Organizations. Enable all protection plans (S3, EKS, Lambda, Malware, RDS). Aggregate findings in Security Hub.",
-      "azure": "Enable Microsoft Defender for Cloud on all subscriptions. Activate all Defender plans (Servers, Storage, SQL, Containers, Key Vault, Resource Manager, DNS). Configure continuous export.",
-      "gcp": "Enable Security Command Center Premium. Activate Event Threat Detection, Container Threat Detection, and Virtual Machine Threat Detection. Configure findings export to SIEM."
-    }
-  },
-  {
-    "id": "CS-SEF-01",
-    "slug": "cloud-ir-plan",
-    "name": "Cloud Incident Response Plan",
-    "domain": "incident-response",
-    "type": "corrective",
-    "description": "Develop and maintain a cloud-specific incident response plan that addresses cloud attack scenarios: compromised credentials, data exfiltration, cryptomining, exposed storage buckets, and supply chain compromise. Define roles, escalation paths, and cloud-specific containment procedures.",
-    "maturityLevels": {
-      "1": "Cloud IR plan documented; basic roles defined; contact list maintained",
-      "2": "Cloud-specific playbooks for common scenarios; tabletop exercises conducted annually; CSP support engagement procedure documented",
-      "3": "Automated IR workflows for high-confidence detections; quarterly exercises including CSP coordination; post-incident review drives continuous improvement"
+    {
+      "id": "CS-LOG-05",
+      "slug": "threat-detection",
+      "name": "Cloud-Native Threat Detection",
+      "domain": "logging-monitoring",
+      "type": "detective",
+      "description": "Enable cloud-native threat detection services that analyse cloud audit logs, network flows, and DNS queries for indicators of compromise. These services provide turnkey detection for common cloud attack patterns.",
+      "maturityLevels": {
+        "1": "Cloud-native threat detection enabled (GuardDuty/Defender/SCC) in all accounts; findings reviewed weekly",
+        "2": "All threat detection features enabled (container, serverless, malware, DNS); findings integrated with SIEM; automated suppression of known false positives",
+        "3": "Custom threat detection rules for organisation-specific patterns; threat intelligence integration; automated response for high-confidence findings"
+      },
+      "ccmControls": [
+        "LOG-08",
+        "LOG-10"
+      ],
+      "nacsa": [
+        "s18"
+      ],
+      "nistCsf": [
+        "DE.CM-01",
+        "DE.CM-09"
+      ],
+      "mitreAttackCloud": [
+        "T1078",
+        "T1190",
+        "T1530"
+      ],
+      "cspImplementation": {
+        "aws": "Enable Amazon GuardDuty in all accounts and regions via Organizations. Enable all protection plans (S3, EKS, Lambda, Malware, RDS). Aggregate findings in Security Hub.",
+        "azure": "Enable Microsoft Defender for Cloud on all subscriptions. Activate all Defender plans (Servers, Storage, SQL, Containers, Key Vault, Resource Manager, DNS). Configure continuous export.",
+        "gcp": "Enable Security Command Center Premium. Activate Event Threat Detection, Container Threat Detection, and Virtual Machine Threat Detection. Configure findings export to SIEM."
+      }
     },
-    "ccmControls": ["SEF-01", "SEF-02", "SEF-04"],
-    "nacsa": ["s26"],
-    "nistCsf": ["RS.MA-01", "RS.MA-02"],
-    "mitreAttackCloud": ["T1078", "T1530", "T1496"],
-    "cspImplementation": {
-      "aws": "Document procedures for: IAM credential compromise (disable keys, revoke sessions), S3 data exposure (block public access, enable logging), EC2 compromise (isolate via SG, snapshot for forensics). Use AWS Incident Manager.",
-      "azure": "Document procedures for: Entra ID compromise (revoke sessions, block sign-in), storage exposure (disable public access), VM compromise (isolate via NSG). Use Microsoft Sentinel playbooks.",
-      "gcp": "Document procedures for: service account key compromise (disable key, rotate), GCS exposure (remove public access), GCE compromise (isolate via firewall rules). Use Security Command Center for investigation."
-    }
-  },
-  {
-    "id": "CS-SEF-02",
-    "slug": "forensic-readiness",
-    "name": "Cloud Forensic Readiness",
-    "domain": "incident-response",
-    "type": "detective",
-    "description": "Ensure cloud environments are pre-configured for forensic investigation: comprehensive logging enabled, disk snapshots available, network packet capture capability, and forensic tooling pre-deployed. Forensic readiness is the difference between a one-hour investigation and a one-week investigation.",
-    "maturityLevels": {
-      "1": "Audit logs and VPC flow logs enabled; disk snapshot capability available; forensic procedures documented",
-      "2": "Dedicated forensic account/project; pre-built forensic AMI/image; automated evidence collection scripts; chain of custody procedures",
-      "3": "Automated forensic snapshot on detection; memory acquisition capability; forensic data lake for cross-incident analysis; third-party forensic retainer in place"
+    {
+      "id": "CS-SEF-01",
+      "slug": "cloud-ir-plan",
+      "name": "Cloud Incident Response Plan",
+      "domain": "incident-response",
+      "type": "corrective",
+      "description": "Develop and maintain a cloud-specific incident response plan that addresses cloud attack scenarios: compromised credentials, data exfiltration, cryptomining, exposed storage buckets, and supply chain compromise. Define roles, escalation paths, and cloud-specific containment procedures.",
+      "maturityLevels": {
+        "1": "Cloud IR plan documented; basic roles defined; contact list maintained",
+        "2": "Cloud-specific playbooks for common scenarios; tabletop exercises conducted annually; CSP support engagement procedure documented",
+        "3": "Automated IR workflows for high-confidence detections; quarterly exercises including CSP coordination; post-incident review drives continuous improvement"
+      },
+      "ccmControls": [
+        "SEF-01",
+        "SEF-02",
+        "SEF-04"
+      ],
+      "nacsa": [
+        "s26"
+      ],
+      "nistCsf": [
+        "RS.MA-01",
+        "RS.MA-02"
+      ],
+      "mitreAttackCloud": [
+        "T1078",
+        "T1530",
+        "T1496"
+      ],
+      "cspImplementation": {
+        "aws": "Document procedures for: IAM credential compromise (disable keys, revoke sessions), S3 data exposure (block public access, enable logging), EC2 compromise (isolate via SG, snapshot for forensics). Use AWS Incident Manager.",
+        "azure": "Document procedures for: Entra ID compromise (revoke sessions, block sign-in), storage exposure (disable public access), VM compromise (isolate via NSG). Use Microsoft Sentinel playbooks.",
+        "gcp": "Document procedures for: service account key compromise (disable key, rotate), GCS exposure (remove public access), GCE compromise (isolate via firewall rules). Use Security Command Center for investigation."
+      }
     },
-    "ccmControls": ["SEF-03", "SEF-05"],
-    "nacsa": ["s26"],
-    "nistCsf": ["RS.AN-03", "RS.AN-06"],
-    "mitreAttackCloud": ["T1078", "T1070"],
-    "cspImplementation": {
-      "aws": "Enable CloudTrail data events. Pre-configure EBS snapshot automation via Lambda. Deploy forensic EC2 instance in isolated VPC. Use AWS Step Functions for automated evidence collection. Enable VPC Traffic Mirroring.",
-      "azure": "Enable all diagnostic logs. Configure VM disk snapshot automation via Azure Automation. Deploy forensic VM in isolated VNet. Use Microsoft Sentinel for investigation. Enable NSG Flow Logs.",
-      "gcp": "Enable all audit logs including Data Access. Configure persistent disk snapshot scheduling. Deploy forensic GCE instance in isolated VPC. Use Packet Mirroring for network capture."
-    }
-  },
-  {
-    "id": "CS-SEF-03",
-    "slug": "cloud-containment",
-    "name": "Cloud Incident Containment Procedures",
-    "domain": "incident-response",
-    "type": "corrective",
-    "description": "Define and test cloud-specific containment procedures for isolating compromised resources without disrupting unaffected workloads. Cloud containment leverages IAM policy changes, network rule modifications, and resource-level access blocks.",
-    "maturityLevels": {
-      "1": "Documented containment procedures for: disable IAM user, restrict security group, block public access",
-      "2": "Pre-built containment automation (Lambda/Automation/Cloud Functions); tested containment procedures; rollback capability",
-      "3": "Automated containment triggered by high-confidence detections; chaos engineering for containment validation; sub-5-minute containment SLA"
+    {
+      "id": "CS-SEF-02",
+      "slug": "forensic-readiness",
+      "name": "Cloud Forensic Readiness",
+      "domain": "incident-response",
+      "type": "detective",
+      "description": "Ensure cloud environments are pre-configured for forensic investigation: comprehensive logging enabled, disk snapshots available, network packet capture capability, and forensic tooling pre-deployed. Forensic readiness is the difference between a one-hour investigation and a one-week investigation.",
+      "maturityLevels": {
+        "1": "Audit logs and VPC flow logs enabled; disk snapshot capability available; forensic procedures documented",
+        "2": "Dedicated forensic account/project; pre-built forensic AMI/image; automated evidence collection scripts; chain of custody procedures",
+        "3": "Automated forensic snapshot on detection; memory acquisition capability; forensic data lake for cross-incident analysis; third-party forensic retainer in place"
+      },
+      "ccmControls": [
+        "SEF-03",
+        "SEF-05"
+      ],
+      "nacsa": [
+        "s26"
+      ],
+      "nistCsf": [
+        "RS.AN-03",
+        "RS.AN-06"
+      ],
+      "mitreAttackCloud": [
+        "T1078",
+        "T1070"
+      ],
+      "cspImplementation": {
+        "aws": "Enable CloudTrail data events. Pre-configure EBS snapshot automation via Lambda. Deploy forensic EC2 instance in isolated VPC. Use AWS Step Functions for automated evidence collection. Enable VPC Traffic Mirroring.",
+        "azure": "Enable all diagnostic logs. Configure VM disk snapshot automation via Azure Automation. Deploy forensic VM in isolated VNet. Use Microsoft Sentinel for investigation. Enable NSG Flow Logs.",
+        "gcp": "Enable all audit logs including Data Access. Configure persistent disk snapshot scheduling. Deploy forensic GCE instance in isolated VPC. Use Packet Mirroring for network capture."
+      }
     },
-    "ccmControls": ["SEF-04", "SEF-06"],
-    "nacsa": ["s26"],
-    "nistCsf": ["RS.MI-01", "RS.MI-02"],
-    "mitreAttackCloud": ["T1078", "T1530"],
-    "cspImplementation": {
-      "aws": "Use IAM deny policies to isolate compromised users. Apply restrictive security groups (deny-all) to isolate EC2 instances. Use S3 Block Public Access. Automate via Lambda triggered by GuardDuty.",
-      "azure": "Use Conditional Access to block compromised accounts. Apply deny-all NSG to isolate VMs. Disable Storage Account public access. Automate via Logic Apps triggered by Defender alerts.",
-      "gcp": "Disable compromised service account keys. Apply restrictive firewall rules to isolate instances. Remove allUsers/allAuthenticatedUsers from IAM bindings. Automate via Cloud Functions triggered by SCC findings."
-    }
-  },
-  {
-    "id": "CS-SEF-04",
-    "slug": "incident-notification",
-    "name": "Regulatory Incident Notification",
-    "domain": "incident-response",
-    "type": "corrective",
-    "description": "Establish procedures for notifying regulators, affected parties, and CSPs of cloud security incidents within required timeframes. For Malaysian NCII entities, NACSA notification within 6 hours of a significant incident is mandatory under Act 854.",
-    "maturityLevels": {
-      "1": "Notification procedure documented; contact lists maintained; classification criteria defined",
-      "2": "Pre-populated notification templates; tabletop exercise validates notification within required timeframe; CSP incident coordination procedure",
-      "3": "Automated notification workflow with approval gates; sub-6-hour demonstrated in exercises; cross-border notification for multi-region incidents"
+    {
+      "id": "CS-SEF-03",
+      "slug": "cloud-containment",
+      "name": "Cloud Incident Containment Procedures",
+      "domain": "incident-response",
+      "type": "corrective",
+      "description": "Define and test cloud-specific containment procedures for isolating compromised resources without disrupting unaffected workloads. Cloud containment leverages IAM policy changes, network rule modifications, and resource-level access blocks.",
+      "maturityLevels": {
+        "1": "Documented containment procedures for: disable IAM user, restrict security group, block public access",
+        "2": "Pre-built containment automation (Lambda/Automation/Cloud Functions); tested containment procedures; rollback capability",
+        "3": "Automated containment triggered by high-confidence detections; chaos engineering for containment validation; sub-5-minute containment SLA"
+      },
+      "ccmControls": [
+        "SEF-04",
+        "SEF-06"
+      ],
+      "nacsa": [
+        "s26"
+      ],
+      "nistCsf": [
+        "RS.MI-01",
+        "RS.MI-02"
+      ],
+      "mitreAttackCloud": [
+        "T1078",
+        "T1530"
+      ],
+      "cspImplementation": {
+        "aws": "Use IAM deny policies to isolate compromised users. Apply restrictive security groups (deny-all) to isolate EC2 instances. Use S3 Block Public Access. Automate via Lambda triggered by GuardDuty.",
+        "azure": "Use Conditional Access to block compromised accounts. Apply deny-all NSG to isolate VMs. Disable Storage Account public access. Automate via Logic Apps triggered by Defender alerts.",
+        "gcp": "Disable compromised service account keys. Apply restrictive firewall rules to isolate instances. Remove allUsers/allAuthenticatedUsers from IAM bindings. Automate via Cloud Functions triggered by SCC findings."
+      }
     },
-    "ccmControls": ["SEF-02", "SEF-07"],
-    "nacsa": ["s26"],
-    "nistCsf": ["RS.CO-02", "RS.CO-03"],
-    "mitreAttackCloud": [],
-    "cspImplementation": {
-      "aws": "Document AWS Abuse Team and AWS Security contact procedures. Configure AWS Health events for infrastructure incidents. Integrate AWS Security Hub findings with notification workflow.",
-      "azure": "Document Microsoft Security Response Center (MSRC) engagement. Configure Azure Service Health alerts. Use Microsoft Sentinel incident management for notification tracking.",
-      "gcp": "Document Google Cloud Security Team engagement. Configure Personalized Service Health alerts. Use Security Command Center for incident tracking and notification audit trail."
-    }
-  },
-  {
-    "id": "CS-CCC-01",
-    "slug": "container-image-scanning",
-    "name": "Container Image Scanning",
-    "domain": "container-security",
-    "type": "detective",
-    "description": "Scan all container images for known vulnerabilities, malware, misconfigurations, and embedded secrets before deployment. Block deployment of images with critical/high vulnerabilities. Implement continuous scanning for images already in production.",
-    "maturityLevels": {
-      "1": "Image scanning in CI/CD pipeline; critical vulnerabilities block deployment",
-      "2": "Continuous scanning of running images; vulnerability SLA (critical: 24h, high: 7d, medium: 30d); base image standardisation",
-      "3": "Software composition analysis with licence compliance; signed images with provenance; automated patching of base images"
+    {
+      "id": "CS-SEF-04",
+      "slug": "incident-notification",
+      "name": "Regulatory Incident Notification",
+      "domain": "incident-response",
+      "type": "corrective",
+      "description": "Establish procedures for notifying regulators, affected parties, and CSPs of cloud security incidents within required timeframes. For Malaysian NCII entities, NACSA notification within 6 hours of a significant incident is mandatory under Act 854.",
+      "maturityLevels": {
+        "1": "Notification procedure documented; contact lists maintained; classification criteria defined",
+        "2": "Pre-populated notification templates; tabletop exercise validates notification within required timeframe; CSP incident coordination procedure",
+        "3": "Automated notification workflow with approval gates; sub-6-hour demonstrated in exercises; cross-border notification for multi-region incidents"
+      },
+      "ccmControls": [
+        "SEF-02",
+        "SEF-07"
+      ],
+      "nacsa": [
+        "s26"
+      ],
+      "nistCsf": [
+        "RS.CO-02",
+        "RS.CO-03"
+      ],
+      "mitreAttackCloud": [],
+      "cspImplementation": {
+        "aws": "Document AWS Abuse Team and AWS Security contact procedures. Configure AWS Health events for infrastructure incidents. Integrate AWS Security Hub findings with notification workflow.",
+        "azure": "Document Microsoft Security Response Center (MSRC) engagement. Configure Azure Service Health alerts. Use Microsoft Sentinel incident management for notification tracking.",
+        "gcp": "Document Google Cloud Security Team engagement. Configure Personalized Service Health alerts. Use Security Command Center for incident tracking and notification audit trail."
+      }
     },
-    "ccmControls": ["CCC-01", "CCC-04"],
-    "nacsa": ["s18"],
-    "nistCsf": ["PR.DS-06", "ID.RA-01"],
-    "mitreAttackCloud": ["T1525", "T1610"],
-    "cspImplementation": {
-      "aws": "Enable Amazon ECR image scanning (basic + enhanced with Inspector). Configure EventBridge rules to alert on critical findings. Use ECR lifecycle policies to expire unscanned images.",
-      "azure": "Enable Microsoft Defender for Containers for ACR image scanning. Configure Azure Policy to deny deployment of unscanned images. Use Qualys or Trivy in CI/CD pipeline.",
-      "gcp": "Enable Artifact Registry vulnerability scanning. Use Binary Authorization to enforce scan-before-deploy. Configure Container Analysis API for continuous scanning."
-    }
-  },
-  {
-    "id": "CS-CCC-02",
-    "slug": "container-runtime-security",
-    "name": "Container Runtime Security",
-    "domain": "container-security",
-    "type": "detective",
-    "description": "Monitor container runtime behaviour for anomalous activity: unexpected process execution, network connections, file system modifications, and privilege escalation. Detect container breakout attempts and lateral movement.",
-    "maturityLevels": {
-      "1": "Container runtime monitoring deployed; alerts on known-bad process execution",
-      "2": "Behavioural baseline per container workload; drift detection; network policy enforcement",
-      "3": "eBPF-based deep runtime monitoring; automated container termination on anomaly; forensic data capture on detection"
+    {
+      "id": "CS-CCC-01",
+      "slug": "container-image-scanning",
+      "name": "Container Image Scanning",
+      "domain": "container-security",
+      "type": "detective",
+      "description": "Scan all container images for known vulnerabilities, malware, misconfigurations, and embedded secrets before deployment. Block deployment of images with critical/high vulnerabilities. Implement continuous scanning for images already in production.",
+      "maturityLevels": {
+        "1": "Image scanning in CI/CD pipeline; critical vulnerabilities block deployment",
+        "2": "Continuous scanning of running images; vulnerability SLA (critical: 24h, high: 7d, medium: 30d); base image standardisation",
+        "3": "Software composition analysis with licence compliance; signed images with provenance; automated patching of base images"
+      },
+      "ccmControls": [
+        "CCC-01",
+        "CCC-04"
+      ],
+      "nacsa": [
+        "s18"
+      ],
+      "nistCsf": [
+        "PR.DS-06",
+        "ID.RA-01"
+      ],
+      "mitreAttackCloud": [
+        "T1525",
+        "T1610"
+      ],
+      "cspImplementation": {
+        "aws": "Enable Amazon ECR image scanning (basic + enhanced with Inspector). Configure EventBridge rules to alert on critical findings. Use ECR lifecycle policies to expire unscanned images.",
+        "azure": "Enable Microsoft Defender for Containers for ACR image scanning. Configure Azure Policy to deny deployment of unscanned images. Use Qualys or Trivy in CI/CD pipeline.",
+        "gcp": "Enable Artifact Registry vulnerability scanning. Use Binary Authorization to enforce scan-before-deploy. Configure Container Analysis API for continuous scanning."
+      }
     },
-    "ccmControls": ["CCC-02", "CCC-05"],
-    "nacsa": ["s18"],
-    "nistCsf": ["DE.CM-01", "DE.CM-07"],
-    "mitreAttackCloud": ["T1610", "T1611"],
-    "cspImplementation": {
-      "aws": "Enable GuardDuty EKS Runtime Monitoring. Deploy Falco or Aqua for runtime detection. Use EKS Pod Security Standards. Configure GuardDuty Lambda protection for serverless containers.",
-      "azure": "Enable Microsoft Defender for Containers runtime protection. Deploy Azure Policy for AKS with pod security standards. Use Falco or Prisma Cloud for deep runtime monitoring.",
-      "gcp": "Enable Container Threat Detection in Security Command Center. Use GKE Workload Identity for pod-level IAM. Deploy GKE Security Posture for configuration analysis."
-    }
-  },
-  {
-    "id": "CS-CCC-03",
-    "slug": "container-registry-security",
-    "name": "Container Registry Security",
-    "domain": "container-security",
-    "type": "preventive",
-    "description": "Secure container registries with access controls, vulnerability scanning, and image signing. Restrict which registries can be used as image sources. Implement image provenance verification to prevent supply chain attacks.",
-    "maturityLevels": {
-      "1": "Private registry for all internal images; authentication required for push/pull; public image usage documented",
-      "2": "Image signing and verification enforced; approved base image catalogue; registry access audit logging",
-      "3": "Binary authorisation/admission control enforced; SLSA provenance for all images; automated base image updates with signature chain"
+    {
+      "id": "CS-CCC-02",
+      "slug": "container-runtime-security",
+      "name": "Container Runtime Security",
+      "domain": "container-security",
+      "type": "detective",
+      "description": "Monitor container runtime behaviour for anomalous activity: unexpected process execution, network connections, file system modifications, and privilege escalation. Detect container breakout attempts and lateral movement.",
+      "maturityLevels": {
+        "1": "Container runtime monitoring deployed; alerts on known-bad process execution",
+        "2": "Behavioural baseline per container workload; drift detection; network policy enforcement",
+        "3": "eBPF-based deep runtime monitoring; automated container termination on anomaly; forensic data capture on detection"
+      },
+      "ccmControls": [
+        "CCC-02",
+        "CCC-05"
+      ],
+      "nacsa": [
+        "s18"
+      ],
+      "nistCsf": [
+        "DE.CM-01",
+        "DE.CM-07"
+      ],
+      "mitreAttackCloud": [
+        "T1610",
+        "T1611"
+      ],
+      "cspImplementation": {
+        "aws": "Enable GuardDuty EKS Runtime Monitoring. Deploy Falco or Aqua for runtime detection. Use EKS Pod Security Standards. Configure GuardDuty Lambda protection for serverless containers.",
+        "azure": "Enable Microsoft Defender for Containers runtime protection. Deploy Azure Policy for AKS with pod security standards. Use Falco or Prisma Cloud for deep runtime monitoring.",
+        "gcp": "Enable Container Threat Detection in Security Command Center. Use GKE Workload Identity for pod-level IAM. Deploy GKE Security Posture for configuration analysis."
+      }
     },
-    "ccmControls": ["CCC-01", "CCC-03"],
-    "nacsa": ["s18"],
-    "nistCsf": ["PR.DS-06", "PR.PS-01"],
-    "mitreAttackCloud": ["T1525", "T1195.002"],
-    "cspImplementation": {
-      "aws": "Use Amazon ECR with IAM-based access control. Enable ECR image tag immutability. Use AWS Signer for image signing. Configure ECR replication for cross-region availability.",
-      "azure": "Use Azure Container Registry with RBAC. Enable content trust for image signing. Configure ACR tasks for automated base image updates. Use Azure Policy to restrict allowed registries.",
-      "gcp": "Use Artifact Registry with IAM access control. Enable Binary Authorization for deployment-time verification. Use Cloud Build for provenance. Configure vulnerability scanning policies."
-    }
-  },
-  {
-    "id": "CS-CCC-04",
-    "slug": "orchestrator-hardening",
-    "name": "Container Orchestrator Hardening",
-    "domain": "container-security",
-    "type": "preventive",
-    "description": "Harden Kubernetes and container orchestrator configurations following CIS benchmarks. Restrict API server access, enforce pod security standards, configure RBAC, and enable audit logging.",
-    "maturityLevels": {
-      "1": "CIS Kubernetes benchmark applied; API server restricted to private network; RBAC enabled; default service account tokens disabled",
-      "2": "Pod Security Standards enforced (restricted profile); network policies deployed; secrets encrypted at rest with KMS; regular CIS benchmark scanning",
-      "3": "OPA/Gatekeeper or Kyverno for policy enforcement; automated compliance remediation; workload identity for all pods; regular penetration testing"
+    {
+      "id": "CS-CCC-03",
+      "slug": "container-registry-security",
+      "name": "Container Registry Security",
+      "domain": "container-security",
+      "type": "preventive",
+      "description": "Secure container registries with access controls, vulnerability scanning, and image signing. Restrict which registries can be used as image sources. Implement image provenance verification to prevent supply chain attacks.",
+      "maturityLevels": {
+        "1": "Private registry for all internal images; authentication required for push/pull; public image usage documented",
+        "2": "Image signing and verification enforced; approved base image catalogue; registry access audit logging",
+        "3": "Binary authorisation/admission control enforced; SLSA provenance for all images; automated base image updates with signature chain"
+      },
+      "ccmControls": [
+        "CCC-01",
+        "CCC-03"
+      ],
+      "nacsa": [
+        "s18"
+      ],
+      "nistCsf": [
+        "PR.DS-06",
+        "PR.PS-01"
+      ],
+      "mitreAttackCloud": [
+        "T1525",
+        "T1195.002"
+      ],
+      "cspImplementation": {
+        "aws": "Use Amazon ECR with IAM-based access control. Enable ECR image tag immutability. Use AWS Signer for image signing. Configure ECR replication for cross-region availability.",
+        "azure": "Use Azure Container Registry with RBAC. Enable content trust for image signing. Configure ACR tasks for automated base image updates. Use Azure Policy to restrict allowed registries.",
+        "gcp": "Use Artifact Registry with IAM access control. Enable Binary Authorization for deployment-time verification. Use Cloud Build for provenance. Configure vulnerability scanning policies."
+      }
     },
-    "ccmControls": ["CCC-02", "CCC-05"],
-    "nacsa": ["s18"],
-    "nistCsf": ["PR.PS-01", "PR.PS-02"],
-    "mitreAttackCloud": ["T1610", "T1613"],
-    "cspImplementation": {
-      "aws": "Use EKS with private API endpoint. Enable envelope encryption for Secrets with KMS. Deploy AWS Managed Policies for EKS. Run kube-bench for CIS compliance.",
-      "azure": "Use AKS with private cluster. Enable Azure Key Vault CSI driver for secrets. Apply Azure Policy for AKS (built-in CIS initiative). Enable AKS Defender profile.",
-      "gcp": "Use GKE Autopilot for opinionated security. Enable Shielded GKE Nodes. Apply GKE security posture dashboard. Enable Workload Identity for pod-level IAM."
-    }
-  },
-  {
-    "id": "CS-AIS-01",
-    "slug": "serverless-function-security",
-    "name": "Serverless Function Security",
-    "domain": "serverless-security",
-    "type": "preventive",
-    "description": "Secure serverless functions with least-privilege IAM roles, environment variable encryption, VPC placement for sensitive workloads, and resource limits. Prevent common serverless vulnerabilities: event injection, insecure deserialisation, and excessive permissions.",
-    "maturityLevels": {
-      "1": "Each function has its own IAM role with minimal permissions; sensitive config in encrypted environment variables; timeout and memory limits set",
-      "2": "Functions in VPC for database access; dead letter queues for error handling; input validation on all event sources; dependency vulnerability scanning",
-      "3": "Runtime application self-protection (RASP) for functions; automated least-privilege refinement; function-level network policies; canary deployments with security validation"
+    {
+      "id": "CS-CCC-04",
+      "slug": "orchestrator-hardening",
+      "name": "Container Orchestrator Hardening",
+      "domain": "container-security",
+      "type": "preventive",
+      "description": "Harden Kubernetes and container orchestrator configurations following CIS benchmarks. Restrict API server access, enforce pod security standards, configure RBAC, and enable audit logging.",
+      "maturityLevels": {
+        "1": "CIS Kubernetes benchmark applied; API server restricted to private network; RBAC enabled; default service account tokens disabled",
+        "2": "Pod Security Standards enforced (restricted profile); network policies deployed; secrets encrypted at rest with KMS; regular CIS benchmark scanning",
+        "3": "OPA/Gatekeeper or Kyverno for policy enforcement; automated compliance remediation; workload identity for all pods; regular penetration testing"
+      },
+      "ccmControls": [
+        "CCC-02",
+        "CCC-05"
+      ],
+      "nacsa": [
+        "s18"
+      ],
+      "nistCsf": [
+        "PR.PS-01",
+        "PR.PS-02"
+      ],
+      "mitreAttackCloud": [
+        "T1610",
+        "T1613"
+      ],
+      "cspImplementation": {
+        "aws": "Use EKS with private API endpoint. Enable envelope encryption for Secrets with KMS. Deploy AWS Managed Policies for EKS. Run kube-bench for CIS compliance.",
+        "azure": "Use AKS with private cluster. Enable Azure Key Vault CSI driver for secrets. Apply Azure Policy for AKS (built-in CIS initiative). Enable AKS Defender profile.",
+        "gcp": "Use GKE Autopilot for opinionated security. Enable Shielded GKE Nodes. Apply GKE security posture dashboard. Enable Workload Identity for pod-level IAM."
+      }
     },
-    "ccmControls": ["AIS-01", "AIS-04"],
-    "nacsa": ["s18"],
-    "nistCsf": ["PR.AA-05", "PR.DS-01"],
-    "mitreAttackCloud": ["T1190", "T1059"],
-    "cspImplementation": {
-      "aws": "Create per-function IAM roles with minimal policies. Use AWS Secrets Manager for sensitive configuration. Place functions in VPC when accessing private resources. Enable Lambda Insights for monitoring.",
-      "azure": "Use Managed Identity per Function App. Store secrets in Key Vault with Key Vault references. Deploy in VNet-integrated App Service Plan for private access. Enable Application Insights.",
-      "gcp": "Use per-function service accounts. Store secrets in Secret Manager with automatic mounting. Use VPC connectors for private resource access. Enable Cloud Functions min instances for cold start security."
-    }
-  },
-  {
-    "id": "CS-AIS-02",
-    "slug": "api-gateway-security",
-    "name": "API Gateway Security",
-    "domain": "serverless-security",
-    "type": "preventive",
-    "description": "Secure API gateways with authentication, authorisation, rate limiting, request validation, and TLS enforcement. API gateways are the front door to serverless and microservice architectures and must be hardened accordingly.",
-    "maturityLevels": {
-      "1": "API authentication required (API keys or OAuth); rate limiting configured; HTTPS enforced",
-      "2": "OAuth 2.0/OIDC authentication; request/response schema validation; per-client rate limits; API versioning",
-      "3": "Mutual TLS for service-to-service APIs; automated API security testing; API threat protection (injection, payload analysis)"
+    {
+      "id": "CS-AIS-01",
+      "slug": "serverless-function-security",
+      "name": "Serverless Function Security",
+      "domain": "serverless-security",
+      "type": "preventive",
+      "description": "Secure serverless functions with least-privilege IAM roles, environment variable encryption, VPC placement for sensitive workloads, and resource limits. Prevent common serverless vulnerabilities: event injection, insecure deserialisation, and excessive permissions.",
+      "maturityLevels": {
+        "1": "Each function has its own IAM role with minimal permissions; sensitive config in encrypted environment variables; timeout and memory limits set",
+        "2": "Functions in VPC for database access; dead letter queues for error handling; input validation on all event sources; dependency vulnerability scanning",
+        "3": "Runtime application self-protection (RASP) for functions; automated least-privilege refinement; function-level network policies; canary deployments with security validation"
+      },
+      "ccmControls": [
+        "AIS-01",
+        "AIS-04"
+      ],
+      "nacsa": [
+        "s18"
+      ],
+      "nistCsf": [
+        "PR.AA-05",
+        "PR.DS-01"
+      ],
+      "mitreAttackCloud": [
+        "T1190",
+        "T1059"
+      ],
+      "cspImplementation": {
+        "aws": "Create per-function IAM roles with minimal policies. Use AWS Secrets Manager for sensitive configuration. Place functions in VPC when accessing private resources. Enable Lambda Insights for monitoring.",
+        "azure": "Use Managed Identity per Function App. Store secrets in Key Vault with Key Vault references. Deploy in VNet-integrated App Service Plan for private access. Enable Application Insights.",
+        "gcp": "Use per-function service accounts. Store secrets in Secret Manager with automatic mounting. Use VPC connectors for private resource access. Enable Cloud Functions min instances for cold start security."
+      }
     },
-    "ccmControls": ["AIS-02", "AIS-03"],
-    "nacsa": ["s18"],
-    "nistCsf": ["PR.AA-01", "PR.IR-02"],
-    "mitreAttackCloud": ["T1190", "T1059"],
-    "cspImplementation": {
-      "aws": "Use Amazon API Gateway with Lambda authorizers or Cognito. Configure usage plans and API keys for rate limiting. Enable request validation. Deploy WAF on API Gateway.",
-      "azure": "Use Azure API Management with OAuth 2.0 policies. Configure rate limiting and throttling. Enable request validation policies. Integrate with Azure AD for authentication.",
-      "gcp": "Use Cloud Endpoints or Apigee for API management. Configure API keys and OAuth. Set quota policies. Enable Cloud Armor for API protection."
-    }
-  },
-  {
-    "id": "CS-AIS-03",
-    "slug": "serverless-dependency-scanning",
-    "name": "Serverless Dependency Scanning",
-    "domain": "serverless-security",
-    "type": "detective",
-    "description": "Scan serverless function dependencies for known vulnerabilities. Serverless functions typically bundle third-party libraries that may contain vulnerabilities. Automate dependency scanning in CI/CD pipelines and monitor for newly disclosed vulnerabilities.",
-    "maturityLevels": {
-      "1": "Dependency scanning in CI/CD pipeline; critical vulnerabilities block deployment",
-      "2": "Continuous monitoring of deployed function dependencies; automated PR creation for dependency updates; licence compliance checking",
-      "3": "Software composition analysis with reachability analysis; SBOM generation for all functions; automated patching pipeline"
+    {
+      "id": "CS-AIS-02",
+      "slug": "api-gateway-security",
+      "name": "API Gateway Security",
+      "domain": "serverless-security",
+      "type": "preventive",
+      "description": "Secure API gateways with authentication, authorisation, rate limiting, request validation, and TLS enforcement. API gateways are the front door to serverless and microservice architectures and must be hardened accordingly.",
+      "maturityLevels": {
+        "1": "API authentication required (API keys or OAuth); rate limiting configured; HTTPS enforced",
+        "2": "OAuth 2.0/OIDC authentication; request/response schema validation; per-client rate limits; API versioning",
+        "3": "Mutual TLS for service-to-service APIs; automated API security testing; API threat protection (injection, payload analysis)"
+      },
+      "ccmControls": [
+        "AIS-02",
+        "AIS-03"
+      ],
+      "nacsa": [
+        "s18"
+      ],
+      "nistCsf": [
+        "PR.AA-01",
+        "PR.IR-02"
+      ],
+      "mitreAttackCloud": [
+        "T1190",
+        "T1059"
+      ],
+      "cspImplementation": {
+        "aws": "Use Amazon API Gateway with Lambda authorizers or Cognito. Configure usage plans and API keys for rate limiting. Enable request validation. Deploy WAF on API Gateway.",
+        "azure": "Use Azure API Management with OAuth 2.0 policies. Configure rate limiting and throttling. Enable request validation policies. Integrate with Azure AD for authentication.",
+        "gcp": "Use Cloud Endpoints or Apigee for API management. Configure API keys and OAuth. Set quota policies. Enable Cloud Armor for API protection."
+      }
     },
-    "ccmControls": ["AIS-04", "STA-03"],
-    "nacsa": ["s18"],
-    "nistCsf": ["ID.RA-01", "PR.DS-06"],
-    "mitreAttackCloud": ["T1195.001", "T1195.002"],
-    "cspImplementation": {
-      "aws": "Use AWS Inspector for Lambda function scanning. Integrate Snyk or OWASP Dependency-Check in CodePipeline. Enable Lambda code signing. Use CodeGuru for code quality.",
-      "azure": "Use Microsoft Defender for Cloud DevOps security. Integrate Snyk or WhiteSource in Azure Pipelines. Enable GitHub Advanced Security for dependency scanning.",
-      "gcp": "Use Artifact Analysis for dependency scanning. Integrate in Cloud Build pipeline. Enable Software Delivery Shield for supply chain security."
-    }
-  },
-  {
-    "id": "CS-STA-01",
-    "slug": "pipeline-security",
-    "name": "CI/CD Pipeline Security",
-    "domain": "supply-chain-devsecops",
-    "type": "preventive",
-    "description": "Secure CI/CD pipelines against tampering, credential theft, and supply chain injection. Pipelines have elevated privileges and are high-value targets. Implement pipeline hardening, secret management, and build provenance.",
-    "maturityLevels": {
-      "1": "Pipeline secrets stored in secret manager (not in code); pipeline runs in isolated environment; branch protection on main branch",
-      "2": "Pipeline-as-code with code review; OIDC authentication to cloud (no long-lived credentials); build artifact signing; separate build and deploy stages",
-      "3": "SLSA Level 3 provenance; hermetic builds; reproducible builds; pipeline security monitoring and anomaly detection"
+    {
+      "id": "CS-AIS-03",
+      "slug": "serverless-dependency-scanning",
+      "name": "Serverless Dependency Scanning",
+      "domain": "serverless-security",
+      "type": "detective",
+      "description": "Scan serverless function dependencies for known vulnerabilities. Serverless functions typically bundle third-party libraries that may contain vulnerabilities. Automate dependency scanning in CI/CD pipelines and monitor for newly disclosed vulnerabilities.",
+      "maturityLevels": {
+        "1": "Dependency scanning in CI/CD pipeline; critical vulnerabilities block deployment",
+        "2": "Continuous monitoring of deployed function dependencies; automated PR creation for dependency updates; licence compliance checking",
+        "3": "Software composition analysis with reachability analysis; SBOM generation for all functions; automated patching pipeline"
+      },
+      "ccmControls": [
+        "AIS-04",
+        "STA-03"
+      ],
+      "nacsa": [
+        "s18"
+      ],
+      "nistCsf": [
+        "ID.RA-01",
+        "PR.DS-06"
+      ],
+      "mitreAttackCloud": [
+        "T1195.001",
+        "T1195.002"
+      ],
+      "cspImplementation": {
+        "aws": "Use AWS Inspector for Lambda function scanning. Integrate Snyk or OWASP Dependency-Check in CodePipeline. Enable Lambda code signing. Use CodeGuru for code quality.",
+        "azure": "Use Microsoft Defender for Cloud DevOps security. Integrate Snyk or WhiteSource in Azure Pipelines. Enable GitHub Advanced Security for dependency scanning.",
+        "gcp": "Use Artifact Analysis for dependency scanning. Integrate in Cloud Build pipeline. Enable Software Delivery Shield for supply chain security."
+      }
     },
-    "ccmControls": ["STA-01", "STA-02"],
-    "nacsa": ["s18"],
-    "nistCsf": ["PR.PS-01", "PR.DS-06"],
-    "mitreAttackCloud": ["T1195.002", "T1199"],
-    "cspImplementation": {
-      "aws": "Use CodePipeline with CodeBuild in isolated VPC. Store secrets in Secrets Manager. Use OIDC federation from GitHub Actions to AWS. Enable CodeBuild build badges and artifact encryption.",
-      "azure": "Use Azure DevOps with service connections using Workload Identity Federation. Store secrets in Key Vault. Enable pipeline approvals and gates. Use GitHub Actions with OIDC for Azure.",
-      "gcp": "Use Cloud Build with Workload Identity Federation. Store secrets in Secret Manager. Enable Binary Authorization for deployment. Use Cloud Deploy for controlled rollouts."
-    }
-  },
-  {
-    "id": "CS-STA-02",
-    "slug": "dependency-management",
-    "name": "Software Dependency Management",
-    "domain": "supply-chain-devsecops",
-    "type": "preventive",
-    "description": "Manage software dependencies to prevent supply chain attacks via compromised packages. Use private package registries, dependency pinning, integrity verification, and vulnerability scanning for all third-party libraries.",
-    "maturityLevels": {
-      "1": "Dependency vulnerability scanning in CI/CD; known vulnerable packages blocked; dependency pinning with lock files",
-      "2": "Private package registry proxying public registries; dependency allow-listing for critical applications; automated dependency update PRs",
-      "3": "Package provenance verification (Sigstore); dependency firewall blocking known-malicious packages; reachability analysis for vulnerability prioritisation"
+    {
+      "id": "CS-STA-01",
+      "slug": "pipeline-security",
+      "name": "CI/CD Pipeline Security",
+      "domain": "supply-chain-devsecops",
+      "type": "preventive",
+      "description": "Secure CI/CD pipelines against tampering, credential theft, and supply chain injection. Pipelines have elevated privileges and are high-value targets. Implement pipeline hardening, secret management, and build provenance.",
+      "maturityLevels": {
+        "1": "Pipeline secrets stored in secret manager (not in code); pipeline runs in isolated environment; branch protection on main branch",
+        "2": "Pipeline-as-code with code review; OIDC authentication to cloud (no long-lived credentials); build artifact signing; separate build and deploy stages",
+        "3": "SLSA Level 3 provenance; hermetic builds; reproducible builds; pipeline security monitoring and anomaly detection"
+      },
+      "ccmControls": [
+        "STA-01",
+        "STA-02"
+      ],
+      "nacsa": [
+        "s18"
+      ],
+      "nistCsf": [
+        "PR.PS-01",
+        "PR.DS-06"
+      ],
+      "mitreAttackCloud": [
+        "T1195.002",
+        "T1199"
+      ],
+      "cspImplementation": {
+        "aws": "Use CodePipeline with CodeBuild in isolated VPC. Store secrets in Secrets Manager. Use OIDC federation from GitHub Actions to AWS. Enable CodeBuild build badges and artifact encryption.",
+        "azure": "Use Azure DevOps with service connections using Workload Identity Federation. Store secrets in Key Vault. Enable pipeline approvals and gates. Use GitHub Actions with OIDC for Azure.",
+        "gcp": "Use Cloud Build with Workload Identity Federation. Store secrets in Secret Manager. Enable Binary Authorization for deployment. Use Cloud Deploy for controlled rollouts."
+      }
     },
-    "ccmControls": ["STA-03", "STA-07"],
-    "nacsa": ["s18"],
-    "nistCsf": ["PR.DS-06", "ID.RA-01"],
-    "mitreAttackCloud": ["T1195.001", "T1195.002"],
-    "cspImplementation": {
-      "aws": "Use AWS CodeArtifact as private package registry. Integrate Amazon Inspector in CI/CD. Use CodeGuru Security for code scanning. Enable CodeBuild dependency caching with integrity checks.",
-      "azure": "Use Azure Artifacts as private package registry. Integrate GitHub Advanced Security or Snyk. Use Azure DevOps upstream sources with approval gates.",
-      "gcp": "Use Artifact Registry for private package management. Integrate OSS-Fuzz for fuzzing. Use Assured Open Source Software for curated packages. Enable Software Delivery Shield."
-    }
-  },
-  {
-    "id": "CS-STA-03",
-    "slug": "iac-scanning",
-    "name": "Infrastructure as Code Security Scanning",
-    "domain": "supply-chain-devsecops",
-    "type": "detective",
-    "description": "Scan all Infrastructure as Code (IaC) templates -- Terraform, CloudFormation, Bicep, Pulumi -- for security misconfigurations before deployment. Shift security left by catching misconfigurations at the code review stage rather than in production.",
-    "maturityLevels": {
-      "1": "IaC scanning in CI/CD pipeline with checkov, tfsec, or equivalent; critical misconfigurations block merge",
-      "2": "Custom scanning rules for organisation-specific policies; scanning integrated with PR workflow; remediation guidance in scan results",
-      "3": "Policy-as-code with OPA/Sentinel; plan-time validation against cloud policies; drift detection between IaC state and live infrastructure"
+    {
+      "id": "CS-STA-02",
+      "slug": "dependency-management",
+      "name": "Software Dependency Management",
+      "domain": "supply-chain-devsecops",
+      "type": "preventive",
+      "description": "Manage software dependencies to prevent supply chain attacks via compromised packages. Use private package registries, dependency pinning, integrity verification, and vulnerability scanning for all third-party libraries.",
+      "maturityLevels": {
+        "1": "Dependency vulnerability scanning in CI/CD; known vulnerable packages blocked; dependency pinning with lock files",
+        "2": "Private package registry proxying public registries; dependency allow-listing for critical applications; automated dependency update PRs",
+        "3": "Package provenance verification (Sigstore); dependency firewall blocking known-malicious packages; reachability analysis for vulnerability prioritisation"
+      },
+      "ccmControls": [
+        "STA-03",
+        "STA-07"
+      ],
+      "nacsa": [
+        "s18"
+      ],
+      "nistCsf": [
+        "PR.DS-06",
+        "ID.RA-01"
+      ],
+      "mitreAttackCloud": [
+        "T1195.001",
+        "T1195.002"
+      ],
+      "cspImplementation": {
+        "aws": "Use AWS CodeArtifact as private package registry. Integrate Amazon Inspector in CI/CD. Use CodeGuru Security for code scanning. Enable CodeBuild dependency caching with integrity checks.",
+        "azure": "Use Azure Artifacts as private package registry. Integrate GitHub Advanced Security or Snyk. Use Azure DevOps upstream sources with approval gates.",
+        "gcp": "Use Artifact Registry for private package management. Integrate OSS-Fuzz for fuzzing. Use Assured Open Source Software for curated packages. Enable Software Delivery Shield."
+      }
     },
-    "ccmControls": ["STA-05", "DCS-01"],
-    "nacsa": ["s18"],
-    "nistCsf": ["PR.PS-01", "DE.CM-09"],
-    "mitreAttackCloud": ["T1078", "T1190"],
-    "cspImplementation": {
-      "aws": "Use AWS CloudFormation Guard for template validation. Integrate checkov or Bridgecrew in CI/CD. Use Terraform Sentinel for policy enforcement. Enable AWS Config for drift detection.",
-      "azure": "Use Azure Policy with deny effects for IaC enforcement. Integrate checkov or tfsec in Azure Pipelines. Use Terraform Sentinel or OPA for policy-as-code.",
-      "gcp": "Use gcloud terraform vet for validation. Integrate checkov in Cloud Build. Use Config Connector for declarative resource management. Enable Asset Inventory for drift detection."
-    }
-  },
-  {
-    "id": "CS-STA-04",
-    "slug": "sbom-management",
-    "name": "Software Bill of Materials (SBOM) Management",
-    "domain": "supply-chain-devsecops",
-    "type": "detective",
-    "description": "Generate, maintain, and analyse Software Bills of Materials for all deployed applications and container images. SBOMs enable rapid vulnerability response by identifying which deployments contain affected components when new CVEs are disclosed.",
-    "maturityLevels": {
-      "1": "SBOM generated for production applications during build; stored in central repository",
-      "2": "Automated SBOM generation in CI/CD for all builds; SBOM-based vulnerability matching; SBOM shared with customers on request",
-      "3": "Continuous SBOM validation against live deployments; automated CVE-to-SBOM correlation with notification; SBOM compliance with NTIA minimum elements"
+    {
+      "id": "CS-STA-03",
+      "slug": "iac-scanning",
+      "name": "Infrastructure as Code Security Scanning",
+      "domain": "supply-chain-devsecops",
+      "type": "detective",
+      "description": "Scan all Infrastructure as Code (IaC) templates -- Terraform, CloudFormation, Bicep, Pulumi -- for security misconfigurations before deployment. Shift security left by catching misconfigurations at the code review stage rather than in production.",
+      "maturityLevels": {
+        "1": "IaC scanning in CI/CD pipeline with checkov, tfsec, or equivalent; critical misconfigurations block merge",
+        "2": "Custom scanning rules for organisation-specific policies; scanning integrated with PR workflow; remediation guidance in scan results",
+        "3": "Policy-as-code with OPA/Sentinel; plan-time validation against cloud policies; drift detection between IaC state and live infrastructure"
+      },
+      "ccmControls": [
+        "STA-05",
+        "DCS-01"
+      ],
+      "nacsa": [
+        "s18"
+      ],
+      "nistCsf": [
+        "PR.PS-01",
+        "DE.CM-09"
+      ],
+      "mitreAttackCloud": [
+        "T1078",
+        "T1190"
+      ],
+      "cspImplementation": {
+        "aws": "Use AWS CloudFormation Guard for template validation. Integrate checkov or Bridgecrew in CI/CD. Use Terraform Sentinel for policy enforcement. Enable AWS Config for drift detection.",
+        "azure": "Use Azure Policy with deny effects for IaC enforcement. Integrate checkov or tfsec in Azure Pipelines. Use Terraform Sentinel or OPA for policy-as-code.",
+        "gcp": "Use gcloud terraform vet for validation. Integrate checkov in Cloud Build. Use Config Connector for declarative resource management. Enable Asset Inventory for drift detection."
+      }
     },
-    "ccmControls": ["STA-06", "STA-08"],
-    "nacsa": ["s18"],
-    "nistCsf": ["ID.AM-02", "ID.RA-01"],
-    "mitreAttackCloud": ["T1195.001", "T1195.002"],
-    "cspImplementation": {
-      "aws": "Use Amazon Inspector for SBOM generation. Store SBOMs in S3. Integrate Syft/Grype in CodeBuild. Use AWS Security Hub for CVE-to-deployment mapping.",
-      "azure": "Use Microsoft Defender for Cloud DevOps Security for SBOM. Integrate Syft in Azure Pipelines. Store SBOMs in Azure Artifacts. Use GitHub dependency graph.",
-      "gcp": "Use Artifact Analysis for SBOM generation in Artifact Registry. Integrate in Cloud Build. Use Software Delivery Shield for end-to-end supply chain visibility."
-    }
-  },
-  {
-    "id": "CS-CEK-01",
-    "slug": "kms-usage",
-    "name": "Cloud KMS for All Encryption Operations",
-    "domain": "key-management",
-    "type": "preventive",
-    "description": "Use cloud-native Key Management Service (KMS) for all encryption key operations. Centralise key management to ensure consistent access control, audit logging, and key lifecycle management. Never store encryption keys alongside encrypted data.",
-    "maturityLevels": {
-      "1": "Cloud KMS used for all customer-managed encryption; no application-managed keys in code or config files",
-      "2": "Key policies enforce least-privilege access; key usage audit logging enabled; separate keys per environment and data classification",
-      "3": "Automated key usage anomaly detection; cross-account key sharing with explicit grants; key policy compliance monitoring"
+    {
+      "id": "CS-STA-04",
+      "slug": "sbom-management",
+      "name": "Software Bill of Materials (SBOM) Management",
+      "domain": "supply-chain-devsecops",
+      "type": "detective",
+      "description": "Generate, maintain, and analyse Software Bills of Materials for all deployed applications and container images. SBOMs enable rapid vulnerability response by identifying which deployments contain affected components when new CVEs are disclosed.",
+      "maturityLevels": {
+        "1": "SBOM generated for production applications during build; stored in central repository",
+        "2": "Automated SBOM generation in CI/CD for all builds; SBOM-based vulnerability matching; SBOM shared with customers on request",
+        "3": "Continuous SBOM validation against live deployments; automated CVE-to-SBOM correlation with notification; SBOM compliance with NTIA minimum elements"
+      },
+      "ccmControls": [
+        "STA-06",
+        "STA-08"
+      ],
+      "nacsa": [
+        "s18"
+      ],
+      "nistCsf": [
+        "ID.AM-02",
+        "ID.RA-01"
+      ],
+      "mitreAttackCloud": [
+        "T1195.001",
+        "T1195.002"
+      ],
+      "cspImplementation": {
+        "aws": "Use Amazon Inspector for SBOM generation. Store SBOMs in S3. Integrate Syft/Grype in CodeBuild. Use AWS Security Hub for CVE-to-deployment mapping.",
+        "azure": "Use Microsoft Defender for Cloud DevOps Security for SBOM. Integrate Syft in Azure Pipelines. Store SBOMs in Azure Artifacts. Use GitHub dependency graph.",
+        "gcp": "Use Artifact Analysis for SBOM generation in Artifact Registry. Integrate in Cloud Build. Use Software Delivery Shield for end-to-end supply chain visibility."
+      }
     },
-    "ccmControls": ["CEK-01", "CEK-02"],
-    "nacsa": ["s18"],
-    "nistCsf": ["PR.DS-01", "PR.DS-02"],
-    "mitreAttackCloud": ["T1552", "T1530"],
-    "cspImplementation": {
-      "aws": "Use AWS KMS for all encryption (S3-SSE-KMS, EBS, RDS, Secrets Manager). Create per-application key policies. Enable CloudTrail logging for all KMS operations. Use key aliases for key management.",
-      "azure": "Use Azure Key Vault for all key management. Configure access policies or RBAC for key access. Enable Key Vault diagnostics logging. Use Managed HSM for high-security workloads.",
-      "gcp": "Use Cloud KMS for all encryption (CMEK for Cloud Storage, BigQuery, GCE). Configure IAM policies per key ring. Enable Data Access audit logs for KMS. Use key rotation schedules."
-    }
-  },
-  {
-    "id": "CS-CEK-02",
-    "slug": "key-rotation",
-    "name": "Encryption Key Rotation",
-    "domain": "key-management",
-    "type": "preventive",
-    "description": "Implement automatic key rotation for all encryption keys. Key rotation limits the window of exposure if a key is compromised. Define rotation schedules based on data sensitivity and compliance requirements.",
-    "maturityLevels": {
-      "1": "Automatic key rotation enabled on cloud KMS keys (annual rotation minimum)",
-      "2": "Rotation schedules aligned to data classification (sensitive: 90 days, standard: 365 days); rotation audit logging; old key version disable after grace period",
-      "3": "Crypto-shredding capability for data disposal; rotation tied to incident response (immediate rotation on compromise); automated re-encryption on rotation where required"
+    {
+      "id": "CS-CEK-01",
+      "slug": "kms-usage",
+      "name": "Cloud KMS for All Encryption Operations",
+      "domain": "key-management",
+      "type": "preventive",
+      "description": "Use cloud-native Key Management Service (KMS) for all encryption key operations. Centralise key management to ensure consistent access control, audit logging, and key lifecycle management. Never store encryption keys alongside encrypted data.",
+      "maturityLevels": {
+        "1": "Cloud KMS used for all customer-managed encryption; no application-managed keys in code or config files",
+        "2": "Key policies enforce least-privilege access; key usage audit logging enabled; separate keys per environment and data classification",
+        "3": "Automated key usage anomaly detection; cross-account key sharing with explicit grants; key policy compliance monitoring"
+      },
+      "ccmControls": [
+        "CEK-01",
+        "CEK-02"
+      ],
+      "nacsa": [
+        "s18"
+      ],
+      "nistCsf": [
+        "PR.DS-01",
+        "PR.DS-02"
+      ],
+      "mitreAttackCloud": [
+        "T1552",
+        "T1530"
+      ],
+      "cspImplementation": {
+        "aws": "Use AWS KMS for all encryption (S3-SSE-KMS, EBS, RDS, Secrets Manager). Create per-application key policies. Enable CloudTrail logging for all KMS operations. Use key aliases for key management.",
+        "azure": "Use Azure Key Vault for all key management. Configure access policies or RBAC for key access. Enable Key Vault diagnostics logging. Use Managed HSM for high-security workloads.",
+        "gcp": "Use Cloud KMS for all encryption (CMEK for Cloud Storage, BigQuery, GCE). Configure IAM policies per key ring. Enable Data Access audit logs for KMS. Use key rotation schedules."
+      }
     },
-    "ccmControls": ["CEK-04", "CEK-05"],
-    "nacsa": ["s18"],
-    "nistCsf": ["PR.DS-01"],
-    "mitreAttackCloud": ["T1552"],
-    "cspImplementation": {
-      "aws": "Enable automatic key rotation on AWS KMS CMKs (rotates annually). Use Secrets Manager with custom rotation Lambda for application secrets. Monitor rotation status via AWS Config.",
-      "azure": "Enable automatic key rotation in Azure Key Vault. Set rotation policies with notification before expiry. Use Key Vault certificate auto-rotation. Monitor with Azure Policy.",
-      "gcp": "Enable automatic key rotation in Cloud KMS (configurable period). Use Secret Manager with automatic rotation. Monitor key rotation compliance with Security Command Center."
-    }
-  },
-  {
-    "id": "CS-CEK-03",
-    "slug": "hsm-sensitive-keys",
-    "name": "HSM-Backed Keys for Sensitive Workloads",
-    "domain": "key-management",
-    "type": "preventive",
-    "description": "Use Hardware Security Module (HSM) backed keys for the most sensitive encryption operations: payment processing, certificate authority, regulatory-mandated key protection, and high-value data encryption. HSMs provide FIPS 140-2 Level 3 hardware protection.",
-    "maturityLevels": {
-      "1": "HSM requirement identified for sensitive workloads; cloud HSM service evaluated",
-      "2": "HSM-backed keys deployed for payment and regulatory workloads; HSM access restricted to key administrators; audit logging enabled",
-      "3": "Dedicated HSM cluster for highest-sensitivity workloads; HSM DR with cross-region replication; regular HSM compliance audit"
+    {
+      "id": "CS-CEK-02",
+      "slug": "key-rotation",
+      "name": "Encryption Key Rotation",
+      "domain": "key-management",
+      "type": "preventive",
+      "description": "Implement automatic key rotation for all encryption keys. Key rotation limits the window of exposure if a key is compromised. Define rotation schedules based on data sensitivity and compliance requirements.",
+      "maturityLevels": {
+        "1": "Automatic key rotation enabled on cloud KMS keys (annual rotation minimum)",
+        "2": "Rotation schedules aligned to data classification (sensitive: 90 days, standard: 365 days); rotation audit logging; old key version disable after grace period",
+        "3": "Crypto-shredding capability for data disposal; rotation tied to incident response (immediate rotation on compromise); automated re-encryption on rotation where required"
+      },
+      "ccmControls": [
+        "CEK-04",
+        "CEK-05"
+      ],
+      "nacsa": [
+        "s18"
+      ],
+      "nistCsf": [
+        "PR.DS-01"
+      ],
+      "mitreAttackCloud": [
+        "T1552"
+      ],
+      "cspImplementation": {
+        "aws": "Enable automatic key rotation on AWS KMS CMKs (rotates annually). Use Secrets Manager with custom rotation Lambda for application secrets. Monitor rotation status via AWS Config.",
+        "azure": "Enable automatic key rotation in Azure Key Vault. Set rotation policies with notification before expiry. Use Key Vault certificate auto-rotation. Monitor with Azure Policy.",
+        "gcp": "Enable automatic key rotation in Cloud KMS (configurable period). Use Secret Manager with automatic rotation. Monitor key rotation compliance with Security Command Center."
+      }
     },
-    "ccmControls": ["CEK-01", "CEK-03"],
-    "nacsa": ["s18"],
-    "nistCsf": ["PR.DS-01"],
-    "mitreAttackCloud": ["T1552"],
-    "cspImplementation": {
-      "aws": "Use AWS CloudHSM for dedicated HSM clusters. Use KMS Custom Key Store backed by CloudHSM. Use KMS keys with FIPS 140-2 Level 3 validation for regulated workloads.",
-      "azure": "Use Azure Managed HSM for dedicated FIPS 140-2 Level 3 key management. Azure Dedicated HSM for full HSM control. Use Key Vault Premium tier for HSM-backed keys.",
-      "gcp": "Use Cloud HSM for FIPS 140-2 Level 3 key protection. Cloud KMS with HSM protection level for regulated keys. Cloud External Key Manager for keys in external HSM."
-    }
-  },
-  {
-    "id": "CS-CEK-04",
-    "slug": "byok-strategy",
-    "name": "Bring Your Own Key (BYOK) Strategy",
-    "domain": "key-management",
-    "type": "preventive",
-    "description": "Implement Bring Your Own Key (BYOK) or Hold Your Own Key (HYOK) for workloads requiring customer key control beyond cloud-managed KMS. BYOK provides key provenance assurance and supports regulatory requirements for key custody.",
-    "maturityLevels": {
-      "1": "BYOK capability evaluated; use cases identified for regulatory or contractual requirements",
-      "2": "BYOK implemented for regulated workloads; key import procedures documented; split-knowledge key ceremony for key generation",
-      "3": "External key manager (EKM) integration for full key custody outside CSP; key access justification monitoring; revocation capability tested"
+    {
+      "id": "CS-CEK-03",
+      "slug": "hsm-sensitive-keys",
+      "name": "HSM-Backed Keys for Sensitive Workloads",
+      "domain": "key-management",
+      "type": "preventive",
+      "description": "Use Hardware Security Module (HSM) backed keys for the most sensitive encryption operations: payment processing, certificate authority, regulatory-mandated key protection, and high-value data encryption. HSMs provide FIPS 140-2 Level 3 hardware protection.",
+      "maturityLevels": {
+        "1": "HSM requirement identified for sensitive workloads; cloud HSM service evaluated",
+        "2": "HSM-backed keys deployed for payment and regulatory workloads; HSM access restricted to key administrators; audit logging enabled",
+        "3": "Dedicated HSM cluster for highest-sensitivity workloads; HSM DR with cross-region replication; regular HSM compliance audit"
+      },
+      "ccmControls": [
+        "CEK-01",
+        "CEK-03"
+      ],
+      "nacsa": [
+        "s18"
+      ],
+      "nistCsf": [
+        "PR.DS-01"
+      ],
+      "mitreAttackCloud": [
+        "T1552"
+      ],
+      "cspImplementation": {
+        "aws": "Use AWS CloudHSM for dedicated HSM clusters. Use KMS Custom Key Store backed by CloudHSM. Use KMS keys with FIPS 140-2 Level 3 validation for regulated workloads.",
+        "azure": "Use Azure Managed HSM for dedicated FIPS 140-2 Level 3 key management. Azure Dedicated HSM for full HSM control. Use Key Vault Premium tier for HSM-backed keys.",
+        "gcp": "Use Cloud HSM for FIPS 140-2 Level 3 key protection. Cloud KMS with HSM protection level for regulated keys. Cloud External Key Manager for keys in external HSM."
+      }
     },
-    "ccmControls": ["CEK-02", "CEK-06"],
-    "nacsa": ["s18"],
-    "nistCsf": ["PR.DS-01"],
-    "mitreAttackCloud": ["T1552"],
-    "cspImplementation": {
-      "aws": "Import key material into AWS KMS CMK. Use External Key Store (XKS) for keys managed outside AWS. Document key import ceremony with split-knowledge procedures.",
-      "azure": "Import keys into Azure Key Vault or Managed HSM. Use Azure Key Vault with customer-managed keys. Double Key Encryption for Microsoft 365 data residency.",
-      "gcp": "Import key material into Cloud KMS. Use Cloud External Key Manager (EKM) with external key managers (Thales, Fortanix). Enable Key Access Justifications for transparency."
-    }
-  },
-  {
-    "id": "CS-DCS-01",
-    "slug": "cspm-deployment",
-    "name": "Cloud Security Posture Management (CSPM)",
-    "domain": "configuration-posture",
-    "type": "detective",
-    "description": "Deploy Cloud Security Posture Management tooling to continuously assess cloud configurations against security benchmarks. CSPM provides visibility into misconfigurations that create exposure: public storage, overly permissive IAM, unencrypted resources, and missing logging.",
-    "maturityLevels": {
-      "1": "Cloud-native CSPM enabled (Security Hub, Defender for Cloud, SCC); weekly review of critical findings",
-      "2": "CSPM integrated with ticketing for finding remediation; SLA for critical (24h), high (7d), medium (30d); automated remediation for common findings",
-      "3": "Multi-cloud CSPM with unified dashboard; custom benchmarks; compliance-as-code; continuous posture scoring with trend tracking"
+    {
+      "id": "CS-CEK-04",
+      "slug": "byok-strategy",
+      "name": "Bring Your Own Key (BYOK) Strategy",
+      "domain": "key-management",
+      "type": "preventive",
+      "description": "Implement Bring Your Own Key (BYOK) or Hold Your Own Key (HYOK) for workloads requiring customer key control beyond cloud-managed KMS. BYOK provides key provenance assurance and supports regulatory requirements for key custody.",
+      "maturityLevels": {
+        "1": "BYOK capability evaluated; use cases identified for regulatory or contractual requirements",
+        "2": "BYOK implemented for regulated workloads; key import procedures documented; split-knowledge key ceremony for key generation",
+        "3": "External key manager (EKM) integration for full key custody outside CSP; key access justification monitoring; revocation capability tested"
+      },
+      "ccmControls": [
+        "CEK-02",
+        "CEK-06"
+      ],
+      "nacsa": [
+        "s18"
+      ],
+      "nistCsf": [
+        "PR.DS-01"
+      ],
+      "mitreAttackCloud": [
+        "T1552"
+      ],
+      "cspImplementation": {
+        "aws": "Import key material into AWS KMS CMK. Use External Key Store (XKS) for keys managed outside AWS. Document key import ceremony with split-knowledge procedures.",
+        "azure": "Import keys into Azure Key Vault or Managed HSM. Use Azure Key Vault with customer-managed keys. Double Key Encryption for Microsoft 365 data residency.",
+        "gcp": "Import key material into Cloud KMS. Use Cloud External Key Manager (EKM) with external key managers (Thales, Fortanix). Enable Key Access Justifications for transparency."
+      }
     },
-    "ccmControls": ["CCC-01", "DCS-01", "DCS-06"],
-    "nacsa": ["s18"],
-    "nistCsf": ["DE.CM-09", "ID.RA-01"],
-    "mitreAttackCloud": ["T1078", "T1530"],
-    "cspImplementation": {
-      "aws": "Enable AWS Security Hub with CIS and AWS Foundational Security Best Practices standards. Configure automated remediation via EventBridge and Lambda. Aggregate across accounts via Organizations.",
-      "azure": "Enable Microsoft Defender for Cloud (CSPM plan). Apply Azure Security Benchmark initiative. Configure continuous export to Log Analytics. Use Governance rules for remediation assignment.",
-      "gcp": "Enable Security Command Center Premium. Activate Security Health Analytics for misconfiguration detection. Use Asset Inventory for resource visibility. Configure findings export."
-    }
-  },
-  {
-    "id": "CS-DCS-02",
-    "slug": "cis-benchmark-compliance",
-    "name": "CIS Benchmark Compliance",
-    "domain": "configuration-posture",
-    "type": "detective",
-    "description": "Assess cloud accounts against CIS Benchmarks for the relevant cloud platform. CIS Benchmarks provide consensus-driven security configuration guidance covering IAM, logging, monitoring, networking, and storage.",
-    "maturityLevels": {
-      "1": "CIS Benchmark assessment run quarterly; critical findings tracked and remediated",
-      "2": "Continuous CIS compliance monitoring; Level 1 fully implemented; Level 2 for production workloads; exception register for non-compliant items",
-      "3": "Automated CIS compliance enforcement via policy-as-code; zero critical/high non-compliance in production; compliance trend reporting to management"
+    {
+      "id": "CS-DCS-01",
+      "slug": "cspm-deployment",
+      "name": "Cloud Security Posture Management (CSPM)",
+      "domain": "configuration-posture",
+      "type": "detective",
+      "description": "Deploy Cloud Security Posture Management tooling to continuously assess cloud configurations against security benchmarks. CSPM provides visibility into misconfigurations that create exposure: public storage, overly permissive IAM, unencrypted resources, and missing logging.",
+      "maturityLevels": {
+        "1": "Cloud-native CSPM enabled (Security Hub, Defender for Cloud, SCC); weekly review of critical findings",
+        "2": "CSPM integrated with ticketing for finding remediation; SLA for critical (24h), high (7d), medium (30d); automated remediation for common findings",
+        "3": "Multi-cloud CSPM with unified dashboard; custom benchmarks; compliance-as-code; continuous posture scoring with trend tracking"
+      },
+      "ccmControls": [
+        "CCC-01",
+        "DCS-01",
+        "DCS-06"
+      ],
+      "nacsa": [
+        "s18"
+      ],
+      "nistCsf": [
+        "DE.CM-09",
+        "ID.RA-01"
+      ],
+      "mitreAttackCloud": [
+        "T1078",
+        "T1530"
+      ],
+      "cspImplementation": {
+        "aws": "Enable AWS Security Hub with CIS and AWS Foundational Security Best Practices standards. Configure automated remediation via EventBridge and Lambda. Aggregate across accounts via Organizations.",
+        "azure": "Enable Microsoft Defender for Cloud (CSPM plan). Apply Azure Security Benchmark initiative. Configure continuous export to Log Analytics. Use Governance rules for remediation assignment.",
+        "gcp": "Enable Security Command Center Premium. Activate Security Health Analytics for misconfiguration detection. Use Asset Inventory for resource visibility. Configure findings export."
+      }
     },
-    "ccmControls": ["DCS-01", "DCS-02"],
-    "nacsa": ["s18"],
-    "nistCsf": ["PR.PS-01", "DE.CM-09"],
-    "mitreAttackCloud": ["T1078", "T1562.008"],
-    "cspImplementation": {
-      "aws": "Enable CIS AWS Foundations Benchmark in Security Hub. Use Prowler for comprehensive CIS scanning. Configure AWS Config conformance packs for CIS rules.",
-      "azure": "Apply CIS Microsoft Azure Foundations Benchmark in Defender for Cloud. Use Azure Policy CIS initiative. Run ScoutSuite for independent assessment.",
-      "gcp": "Enable CIS Google Cloud Foundation Benchmark in Security Command Center. Use Forseti or ScoutSuite for independent scanning. Apply Organization Policy constraints."
-    }
-  },
-  {
-    "id": "CS-DCS-03",
-    "slug": "drift-detection",
-    "name": "Configuration Drift Detection",
-    "domain": "configuration-posture",
-    "type": "detective",
-    "description": "Detect when cloud resource configurations drift from their approved baseline. Configuration drift occurs when manual changes bypass IaC pipelines or when automated processes modify security-relevant settings. Drift detection closes the gap between intended and actual state.",
-    "maturityLevels": {
-      "1": "Cloud Config service recording all resource changes; alerting on security-relevant changes",
-      "2": "Drift detection comparing live state to IaC state file; automated notification on drift; reconciliation procedure defined",
-      "3": "Automated drift remediation (reset to IaC-defined state); continuous reconciliation; drift as security incident trigger"
+    {
+      "id": "CS-DCS-02",
+      "slug": "cis-benchmark-compliance",
+      "name": "CIS Benchmark Compliance",
+      "domain": "configuration-posture",
+      "type": "detective",
+      "description": "Assess cloud accounts against CIS Benchmarks for the relevant cloud platform. CIS Benchmarks provide consensus-driven security configuration guidance covering IAM, logging, monitoring, networking, and storage.",
+      "maturityLevels": {
+        "1": "CIS Benchmark assessment run quarterly; critical findings tracked and remediated",
+        "2": "Continuous CIS compliance monitoring; Level 1 fully implemented; Level 2 for production workloads; exception register for non-compliant items",
+        "3": "Automated CIS compliance enforcement via policy-as-code; zero critical/high non-compliance in production; compliance trend reporting to management"
+      },
+      "ccmControls": [
+        "DCS-01",
+        "DCS-02"
+      ],
+      "nacsa": [
+        "s18"
+      ],
+      "nistCsf": [
+        "PR.PS-01",
+        "DE.CM-09"
+      ],
+      "mitreAttackCloud": [
+        "T1078",
+        "T1562.008"
+      ],
+      "cspImplementation": {
+        "aws": "Enable CIS AWS Foundations Benchmark in Security Hub. Use Prowler for comprehensive CIS scanning. Configure AWS Config conformance packs for CIS rules.",
+        "azure": "Apply CIS Microsoft Azure Foundations Benchmark in Defender for Cloud. Use Azure Policy CIS initiative. Run ScoutSuite for independent assessment.",
+        "gcp": "Enable CIS Google Cloud Foundation Benchmark in Security Command Center. Use Forseti or ScoutSuite for independent scanning. Apply Organization Policy constraints."
+      }
     },
-    "ccmControls": ["DCS-03", "CCC-02"],
-    "nacsa": ["s18"],
-    "nistCsf": ["DE.CM-09", "PR.PS-01"],
-    "mitreAttackCloud": ["T1078", "T1098"],
-    "cspImplementation": {
-      "aws": "Enable AWS Config with recording for all resource types. Deploy Config rules for security baselines. Use CloudFormation drift detection. Alert via EventBridge on non-compliant changes.",
-      "azure": "Use Azure Policy with audit and deny effects. Enable Change Analysis in Azure Monitor. Use Terraform Cloud drift detection. Configure Activity Log alerts for critical resource changes.",
-      "gcp": "Enable Cloud Asset Inventory with real-time feed. Use Config Connector for desired-state reconciliation. Alert on Security Command Center findings for configuration changes."
-    }
-  },
-  {
-    "id": "CS-DCS-04",
-    "slug": "resource-tagging",
-    "name": "Resource Tagging Governance",
-    "domain": "configuration-posture",
-    "type": "preventive",
-    "description": "Enforce mandatory resource tags/labels on all cloud resources for cost allocation, ownership, environment identification, data classification, and compliance scope. Tags enable automated policy enforcement and incident response scoping.",
-    "maturityLevels": {
-      "1": "Tagging policy defined with mandatory tags (owner, environment, cost-centre, data-classification); enforcement via documentation",
-      "2": "Tag enforcement via cloud policy (deny creation of untagged resources); automated tag compliance reporting; tag-based access controls",
-      "3": "Tag-driven automation for security policies, backup schedules, and lifecycle management; cross-cloud unified tagging taxonomy; real-time tag compliance dashboard"
+    {
+      "id": "CS-DCS-03",
+      "slug": "drift-detection",
+      "name": "Configuration Drift Detection",
+      "domain": "configuration-posture",
+      "type": "detective",
+      "description": "Detect when cloud resource configurations drift from their approved baseline. Configuration drift occurs when manual changes bypass IaC pipelines or when automated processes modify security-relevant settings. Drift detection closes the gap between intended and actual state.",
+      "maturityLevels": {
+        "1": "Cloud Config service recording all resource changes; alerting on security-relevant changes",
+        "2": "Drift detection comparing live state to IaC state file; automated notification on drift; reconciliation procedure defined",
+        "3": "Automated drift remediation (reset to IaC-defined state); continuous reconciliation; drift as security incident trigger"
+      },
+      "ccmControls": [
+        "DCS-03",
+        "CCC-02"
+      ],
+      "nacsa": [
+        "s18"
+      ],
+      "nistCsf": [
+        "DE.CM-09",
+        "PR.PS-01"
+      ],
+      "mitreAttackCloud": [
+        "T1078",
+        "T1098"
+      ],
+      "cspImplementation": {
+        "aws": "Enable AWS Config with recording for all resource types. Deploy Config rules for security baselines. Use CloudFormation drift detection. Alert via EventBridge on non-compliant changes.",
+        "azure": "Use Azure Policy with audit and deny effects. Enable Change Analysis in Azure Monitor. Use Terraform Cloud drift detection. Configure Activity Log alerts for critical resource changes.",
+        "gcp": "Enable Cloud Asset Inventory with real-time feed. Use Config Connector for desired-state reconciliation. Alert on Security Command Center findings for configuration changes."
+      }
     },
-    "ccmControls": ["DCS-05", "CCC-01"],
-    "nacsa": ["s18"],
-    "nistCsf": ["ID.AM-01", "ID.AM-02"],
-    "mitreAttackCloud": [],
-    "cspImplementation": {
-      "aws": "Use AWS Organizations tag policies. Deploy AWS Config rule required-tags. Use SCP to deny resource creation without mandatory tags. Use Tag Editor for bulk management.",
-      "azure": "Use Azure Policy to require tags on resource groups and resources. Configure tag inheritance policies. Use Azure Resource Graph for tag compliance queries.",
-      "gcp": "Use Organization Policy for label requirements. Deploy custom constraints for mandatory labels. Use Cloud Asset Inventory for label compliance reporting."
-    }
-  },
-  {
-    "id": "CS-BCR-01",
-    "slug": "backup-strategy",
-    "name": "Cloud Backup Strategy",
-    "domain": "backup-disaster-recovery",
-    "type": "corrective",
-    "description": "Define and implement a comprehensive backup strategy for all cloud workloads. Backup scope must include compute instances, databases, object storage (versioning), configuration state, and secrets. Backup frequency aligned to RPO requirements.",
-    "maturityLevels": {
-      "1": "Automated backups enabled on all databases and critical compute; backup retention meets minimum requirements",
-      "2": "Backup policy aligned to data classification; RPO-driven backup frequency; automated backup compliance monitoring; backup encryption with CMK",
-      "3": "Immutable backups (WORM); backup isolation from production accounts; automated restore testing; backup coverage validated against asset inventory"
+    {
+      "id": "CS-DCS-04",
+      "slug": "resource-tagging",
+      "name": "Resource Tagging Governance",
+      "domain": "configuration-posture",
+      "type": "preventive",
+      "description": "Enforce mandatory resource tags/labels on all cloud resources for cost allocation, ownership, environment identification, data classification, and compliance scope. Tags enable automated policy enforcement and incident response scoping.",
+      "maturityLevels": {
+        "1": "Tagging policy defined with mandatory tags (owner, environment, cost-centre, data-classification); enforcement via documentation",
+        "2": "Tag enforcement via cloud policy (deny creation of untagged resources); automated tag compliance reporting; tag-based access controls",
+        "3": "Tag-driven automation for security policies, backup schedules, and lifecycle management; cross-cloud unified tagging taxonomy; real-time tag compliance dashboard"
+      },
+      "ccmControls": [
+        "DCS-05",
+        "CCC-01"
+      ],
+      "nacsa": [
+        "s18"
+      ],
+      "nistCsf": [
+        "ID.AM-01",
+        "ID.AM-02"
+      ],
+      "mitreAttackCloud": [],
+      "cspImplementation": {
+        "aws": "Use AWS Organizations tag policies. Deploy AWS Config rule required-tags. Use SCP to deny resource creation without mandatory tags. Use Tag Editor for bulk management.",
+        "azure": "Use Azure Policy to require tags on resource groups and resources. Configure tag inheritance policies. Use Azure Resource Graph for tag compliance queries.",
+        "gcp": "Use Organization Policy for label requirements. Deploy custom constraints for mandatory labels. Use Cloud Asset Inventory for label compliance reporting."
+      }
     },
-    "ccmControls": ["BCR-01", "BCR-03"],
-    "nacsa": ["s18"],
-    "nistCsf": ["PR.DS-11", "RC.RP-01"],
-    "mitreAttackCloud": ["T1485", "T1490"],
-    "cspImplementation": {
-      "aws": "Use AWS Backup for centralised backup management across EC2, RDS, EFS, DynamoDB, S3. Configure backup plans with RPO-aligned schedules. Enable backup vault lock for immutability.",
-      "azure": "Use Azure Backup for VMs, SQL, Files, Blobs. Configure backup policies per data classification. Enable soft delete and immutability on Recovery Services vault.",
-      "gcp": "Use Cloud Backup and DR for GCE. Enable automated backups on Cloud SQL. Use Object Versioning on Cloud Storage. Configure snapshot schedules for persistent disks."
-    }
-  },
-  {
-    "id": "CS-BCR-02",
-    "slug": "cross-region-replication",
-    "name": "Cross-Region Replication",
-    "domain": "backup-disaster-recovery",
-    "type": "corrective",
-    "description": "Replicate critical data and backups to a secondary cloud region for disaster recovery. Cross-region replication protects against regional outages, data corruption, and regional disaster events. Ensure replication does not violate data residency requirements.",
-    "maturityLevels": {
-      "1": "Critical database backups copied to secondary region; storage replication for most important data",
-      "2": "Automated cross-region replication for all production data; replication lag monitoring; DR region pre-provisioned",
-      "3": "Active-active multi-region architecture for critical workloads; automatic failover; replication verified with integrity checks"
+    {
+      "id": "CS-BCR-01",
+      "slug": "backup-strategy",
+      "name": "Cloud Backup Strategy",
+      "domain": "backup-disaster-recovery",
+      "type": "corrective",
+      "description": "Define and implement a comprehensive backup strategy for all cloud workloads. Backup scope must include compute instances, databases, object storage (versioning), configuration state, and secrets. Backup frequency aligned to RPO requirements.",
+      "maturityLevels": {
+        "1": "Automated backups enabled on all databases and critical compute; backup retention meets minimum requirements",
+        "2": "Backup policy aligned to data classification; RPO-driven backup frequency; automated backup compliance monitoring; backup encryption with CMK",
+        "3": "Immutable backups (WORM); backup isolation from production accounts; automated restore testing; backup coverage validated against asset inventory"
+      },
+      "ccmControls": [
+        "BCR-01",
+        "BCR-03"
+      ],
+      "nacsa": [
+        "s18"
+      ],
+      "nistCsf": [
+        "PR.DS-11",
+        "RC.RP-01"
+      ],
+      "mitreAttackCloud": [
+        "T1485",
+        "T1490"
+      ],
+      "cspImplementation": {
+        "aws": "Use AWS Backup for centralised backup management across EC2, RDS, EFS, DynamoDB, S3. Configure backup plans with RPO-aligned schedules. Enable backup vault lock for immutability.",
+        "azure": "Use Azure Backup for VMs, SQL, Files, Blobs. Configure backup policies per data classification. Enable soft delete and immutability on Recovery Services vault.",
+        "gcp": "Use Cloud Backup and DR for GCE. Enable automated backups on Cloud SQL. Use Object Versioning on Cloud Storage. Configure snapshot schedules for persistent disks."
+      }
     },
-    "ccmControls": ["BCR-02", "BCR-05"],
-    "nacsa": ["s18"],
-    "nistCsf": ["PR.DS-11", "RC.RP-04"],
-    "mitreAttackCloud": ["T1485", "T1490"],
-    "cspImplementation": {
-      "aws": "Enable S3 Cross-Region Replication. Configure RDS read replicas in DR region. Use AWS Backup with cross-region copy. Deploy CloudFormation StackSets for infrastructure replication.",
-      "azure": "Enable Geo-Redundant Storage (GRS) or Read-Access GRS. Configure Azure SQL geo-replication. Use Azure Site Recovery for VM replication. Deploy Paired Regions for DR.",
-      "gcp": "Enable dual-region or multi-region Cloud Storage. Configure Cloud SQL cross-region read replicas. Use Persistent Disk regional snapshots. Deploy GKE multi-cluster for HA."
-    }
-  },
-  {
-    "id": "CS-BCR-03",
-    "slug": "dr-testing",
-    "name": "Disaster Recovery Testing",
-    "domain": "backup-disaster-recovery",
-    "type": "corrective",
-    "description": "Conduct regular disaster recovery tests to validate that cloud workloads can be restored within defined RTO/RPO. DR testing must include full failover exercises, not just backup restore verification. Document results and remediate gaps.",
-    "maturityLevels": {
-      "1": "Annual DR test with documented results; critical workloads tested for restore capability",
-      "2": "Semi-annual DR testing including full failover; automated DR orchestration; test results drive improvement actions",
-      "3": "Quarterly DR exercises with unannounced scenarios; chaos engineering for resilience validation; DR metrics tracked and reported to management"
+    {
+      "id": "CS-BCR-02",
+      "slug": "cross-region-replication",
+      "name": "Cross-Region Replication",
+      "domain": "backup-disaster-recovery",
+      "type": "corrective",
+      "description": "Replicate critical data and backups to a secondary cloud region for disaster recovery. Cross-region replication protects against regional outages, data corruption, and regional disaster events. Ensure replication does not violate data residency requirements.",
+      "maturityLevels": {
+        "1": "Critical database backups copied to secondary region; storage replication for most important data",
+        "2": "Automated cross-region replication for all production data; replication lag monitoring; DR region pre-provisioned",
+        "3": "Active-active multi-region architecture for critical workloads; automatic failover; replication verified with integrity checks"
+      },
+      "ccmControls": [
+        "BCR-02",
+        "BCR-05"
+      ],
+      "nacsa": [
+        "s18"
+      ],
+      "nistCsf": [
+        "PR.DS-11",
+        "RC.RP-04"
+      ],
+      "mitreAttackCloud": [
+        "T1485",
+        "T1490"
+      ],
+      "cspImplementation": {
+        "aws": "Enable S3 Cross-Region Replication. Configure RDS read replicas in DR region. Use AWS Backup with cross-region copy. Deploy CloudFormation StackSets for infrastructure replication.",
+        "azure": "Enable Geo-Redundant Storage (GRS) or Read-Access GRS. Configure Azure SQL geo-replication. Use Azure Site Recovery for VM replication. Deploy Paired Regions for DR.",
+        "gcp": "Enable dual-region or multi-region Cloud Storage. Configure Cloud SQL cross-region read replicas. Use Persistent Disk regional snapshots. Deploy GKE multi-cluster for HA."
+      }
     },
-    "ccmControls": ["BCR-04", "BCR-06"],
-    "nacsa": ["s18"],
-    "nistCsf": ["RC.RP-04", "RC.RP-05"],
-    "mitreAttackCloud": ["T1485", "T1490"],
-    "cspImplementation": {
-      "aws": "Use AWS Elastic Disaster Recovery for automated failover testing. Run AWS Resilience Hub assessments. Document RTO/RPO test results. Use Fault Injection Simulator for chaos testing.",
-      "azure": "Use Azure Site Recovery test failover. Run Azure Chaos Studio experiments. Document recovery metrics. Use Azure Business Continuity Center for DR orchestration.",
-      "gcp": "Use DiRT (Disaster Recovery Testing) methodology. Test Cloud SQL failover. Validate GCE instance recreation from snapshots. Document actual vs target RTO/RPO."
-    }
-  },
-  {
-    "id": "CS-BCR-04",
-    "slug": "rto-rpo-definition",
-    "name": "RTO/RPO Definition and Validation",
-    "domain": "backup-disaster-recovery",
-    "type": "corrective",
-    "description": "Define Recovery Time Objective (RTO) and Recovery Point Objective (RPO) for every cloud workload based on business impact analysis. RTO/RPO must be validated through testing and drive backup frequency, replication strategy, and DR architecture decisions.",
-    "maturityLevels": {
-      "1": "RTO/RPO defined for critical workloads; backup frequency aligned to RPO",
-      "2": "RTO/RPO defined for all workloads; tiered by criticality; validated through annual DR testing; documented in service catalogue",
-      "3": "Continuous RTO/RPO monitoring via automated restore testing; RTO/RPO breach alerting; architecture decisions driven by RTO/RPO requirements"
+    {
+      "id": "CS-BCR-03",
+      "slug": "dr-testing",
+      "name": "Disaster Recovery Testing",
+      "domain": "backup-disaster-recovery",
+      "type": "corrective",
+      "description": "Conduct regular disaster recovery tests to validate that cloud workloads can be restored within defined RTO/RPO. DR testing must include full failover exercises, not just backup restore verification. Document results and remediate gaps.",
+      "maturityLevels": {
+        "1": "Annual DR test with documented results; critical workloads tested for restore capability",
+        "2": "Semi-annual DR testing including full failover; automated DR orchestration; test results drive improvement actions",
+        "3": "Quarterly DR exercises with unannounced scenarios; chaos engineering for resilience validation; DR metrics tracked and reported to management"
+      },
+      "ccmControls": [
+        "BCR-04",
+        "BCR-06"
+      ],
+      "nacsa": [
+        "s18"
+      ],
+      "nistCsf": [
+        "RC.RP-04",
+        "RC.RP-05"
+      ],
+      "mitreAttackCloud": [
+        "T1485",
+        "T1490"
+      ],
+      "cspImplementation": {
+        "aws": "Use AWS Elastic Disaster Recovery for automated failover testing. Run AWS Resilience Hub assessments. Document RTO/RPO test results. Use Fault Injection Simulator for chaos testing.",
+        "azure": "Use Azure Site Recovery test failover. Run Azure Chaos Studio experiments. Document recovery metrics. Use Azure Business Continuity Center for DR orchestration.",
+        "gcp": "Use DiRT (Disaster Recovery Testing) methodology. Test Cloud SQL failover. Validate GCE instance recreation from snapshots. Document actual vs target RTO/RPO."
+      }
     },
-    "ccmControls": ["BCR-01", "BCR-04"],
-    "nacsa": ["s18"],
-    "nistCsf": ["RC.RP-01", "RC.RP-04"],
-    "mitreAttackCloud": [],
-    "cspImplementation": {
-      "aws": "Use AWS Resilience Hub to set and validate RTO/RPO targets. Configure AWS Backup plans aligned to RPO. Track actual recovery times in DR tests. Publish in service catalogue.",
-      "azure": "Define RTO/RPO in Azure Site Recovery replication policies. Configure backup frequency in Azure Backup policies aligned to RPO. Track in Azure Business Continuity Center.",
-      "gcp": "Define RTO/RPO per service in architecture documentation. Configure backup schedules aligned to RPO. Validate in DR exercises. Use SLO monitoring for availability targets."
-    }
-  },
-  {
-    "id": "CS-GRC-01",
-    "slug": "cloud-governance-framework",
-    "name": "Cloud Governance Framework",
-    "domain": "compliance-governance",
-    "type": "preventive",
-    "description": "Establish a cloud governance framework that defines policies, standards, guardrails, and accountability for cloud security. The framework must cover account/subscription structure, approved services, data residency, cost management, and security baseline requirements.",
-    "maturityLevels": {
-      "1": "Cloud security policy approved by management; account structure with separate production/non-production; basic guardrails (SCPs, policies)",
-      "2": "Cloud Centre of Excellence with defined responsibilities; service catalogue with approved architectures; guardrails enforced via policy-as-code; exception process defined",
-      "3": "Automated governance with self-service provisioning within guardrails; continuous compliance monitoring; governance metrics reported to board"
+    {
+      "id": "CS-BCR-04",
+      "slug": "rto-rpo-definition",
+      "name": "RTO/RPO Definition and Validation",
+      "domain": "backup-disaster-recovery",
+      "type": "corrective",
+      "description": "Define Recovery Time Objective (RTO) and Recovery Point Objective (RPO) for every cloud workload based on business impact analysis. RTO/RPO must be validated through testing and drive backup frequency, replication strategy, and DR architecture decisions.",
+      "maturityLevels": {
+        "1": "RTO/RPO defined for critical workloads; backup frequency aligned to RPO",
+        "2": "RTO/RPO defined for all workloads; tiered by criticality; validated through annual DR testing; documented in service catalogue",
+        "3": "Continuous RTO/RPO monitoring via automated restore testing; RTO/RPO breach alerting; architecture decisions driven by RTO/RPO requirements"
+      },
+      "ccmControls": [
+        "BCR-01",
+        "BCR-04"
+      ],
+      "nacsa": [
+        "s18"
+      ],
+      "nistCsf": [
+        "RC.RP-01",
+        "RC.RP-04"
+      ],
+      "mitreAttackCloud": [],
+      "cspImplementation": {
+        "aws": "Use AWS Resilience Hub to set and validate RTO/RPO targets. Configure AWS Backup plans aligned to RPO. Track actual recovery times in DR tests. Publish in service catalogue.",
+        "azure": "Define RTO/RPO in Azure Site Recovery replication policies. Configure backup frequency in Azure Backup policies aligned to RPO. Track in Azure Business Continuity Center.",
+        "gcp": "Define RTO/RPO per service in architecture documentation. Configure backup schedules aligned to RPO. Validate in DR exercises. Use SLO monitoring for availability targets."
+      }
     },
-    "ccmControls": ["GRC-01", "GRC-02"],
-    "nacsa": ["s18"],
-    "nistCsf": ["GV.OC-01", "GV.RM-01"],
-    "mitreAttackCloud": [],
-    "cspImplementation": {
-      "aws": "Use AWS Organizations with SCPs for guardrails. Deploy AWS Control Tower for landing zone. Define account vending process. Publish approved architecture patterns in Service Catalog.",
-      "azure": "Use Azure Management Groups with Azure Policy for governance. Deploy Azure Landing Zones (Enterprise Scale). Define subscription vending process. Use Azure Blueprints for standardisation.",
-      "gcp": "Use Organization Policies for guardrails. Deploy Cloud Foundation Toolkit for landing zone. Define project factory process. Use Assured Workloads for compliance requirements."
-    }
-  },
-  {
-    "id": "CS-GRC-02",
-    "slug": "policy-as-code",
-    "name": "Policy as Code",
-    "domain": "compliance-governance",
-    "type": "preventive",
-    "description": "Implement cloud security policies as machine-readable code that can be version controlled, tested, and automatically enforced. Policy-as-code eliminates manual policy enforcement gaps and enables continuous compliance validation.",
-    "maturityLevels": {
-      "1": "Key security policies encoded as cloud-native policies (SCPs, Azure Policy, Organization Policy); deny effects on critical rules",
-      "2": "Comprehensive policy library covering all security domains; policies tested in CI/CD; exception management with time-limited exemptions",
-      "3": "Custom policy framework (OPA, Sentinel); cross-cloud unified policy engine; policy compliance dashboard; automated drift remediation"
+    {
+      "id": "CS-GRC-01",
+      "slug": "cloud-governance-framework",
+      "name": "Cloud Governance Framework",
+      "domain": "compliance-governance",
+      "type": "preventive",
+      "description": "Establish a cloud governance framework that defines policies, standards, guardrails, and accountability for cloud security. The framework must cover account/subscription structure, approved services, data residency, cost management, and security baseline requirements.",
+      "maturityLevels": {
+        "1": "Cloud security policy approved by management; account structure with separate production/non-production; basic guardrails (SCPs, policies)",
+        "2": "Cloud Centre of Excellence with defined responsibilities; service catalogue with approved architectures; guardrails enforced via policy-as-code; exception process defined",
+        "3": "Automated governance with self-service provisioning within guardrails; continuous compliance monitoring; governance metrics reported to board"
+      },
+      "ccmControls": [
+        "GRC-01",
+        "GRC-02"
+      ],
+      "nacsa": [
+        "s18"
+      ],
+      "nistCsf": [
+        "GV.OC-01",
+        "GV.RM-01"
+      ],
+      "mitreAttackCloud": [],
+      "cspImplementation": {
+        "aws": "Use AWS Organizations with SCPs for guardrails. Deploy AWS Control Tower for landing zone. Define account vending process. Publish approved architecture patterns in Service Catalog.",
+        "azure": "Use Azure Management Groups with Azure Policy for governance. Deploy Azure Landing Zones (Enterprise Scale). Define subscription vending process. Use Azure Blueprints for standardisation.",
+        "gcp": "Use Organization Policies for guardrails. Deploy Cloud Foundation Toolkit for landing zone. Define project factory process. Use Assured Workloads for compliance requirements."
+      }
     },
-    "ccmControls": ["GRC-03", "DCS-01"],
-    "nacsa": ["s18"],
-    "nistCsf": ["GV.PO-01", "PR.PS-01"],
-    "mitreAttackCloud": ["T1078", "T1562.008"],
-    "cspImplementation": {
-      "aws": "Use AWS Organizations SCPs for preventive guardrails. Deploy AWS Config rules for detective controls. Use CloudFormation Guard for IaC validation. Manage policies in Git with CI/CD deployment.",
-      "azure": "Use Azure Policy with deny, audit, and modify effects. Create policy initiatives for compliance frameworks. Use Azure Policy as Code workflow with GitHub. Deploy via Azure DevOps pipelines.",
-      "gcp": "Use Organization Policies for project-level constraints. Deploy custom constraints with Organization Policy. Use Config Connector for declarative state. Manage in Git with Cloud Build."
-    }
-  },
-  {
-    "id": "CS-GRC-03",
-    "slug": "audit-readiness",
-    "name": "Cloud Audit Readiness",
-    "domain": "compliance-governance",
-    "type": "detective",
-    "description": "Maintain continuous audit readiness for cloud environments. Pre-collect evidence, maintain compliance documentation, and ensure that cloud configurations can be demonstrated to auditors at any time. Reduce audit preparation time from weeks to hours.",
-    "maturityLevels": {
-      "1": "Compliance documentation maintained; CSP compliance reports (SOC 2, ISO 27001) collected; annual audit conducted",
-      "2": "Automated evidence collection for common audit questions; continuous compliance dashboard; pre-built audit packages per framework",
-      "3": "Continuous compliance monitoring with real-time audit evidence; automated regulatory mapping; audit API integration for external auditors"
+    {
+      "id": "CS-GRC-02",
+      "slug": "policy-as-code",
+      "name": "Policy as Code",
+      "domain": "compliance-governance",
+      "type": "preventive",
+      "description": "Implement cloud security policies as machine-readable code that can be version controlled, tested, and automatically enforced. Policy-as-code eliminates manual policy enforcement gaps and enables continuous compliance validation.",
+      "maturityLevels": {
+        "1": "Key security policies encoded as cloud-native policies (SCPs, Azure Policy, Organization Policy); deny effects on critical rules",
+        "2": "Comprehensive policy library covering all security domains; policies tested in CI/CD; exception management with time-limited exemptions",
+        "3": "Custom policy framework (OPA, Sentinel); cross-cloud unified policy engine; policy compliance dashboard; automated drift remediation"
+      },
+      "ccmControls": [
+        "GRC-03",
+        "DCS-01"
+      ],
+      "nacsa": [
+        "s18"
+      ],
+      "nistCsf": [
+        "GV.PO-01",
+        "PR.PS-01"
+      ],
+      "mitreAttackCloud": [
+        "T1078",
+        "T1562.008"
+      ],
+      "cspImplementation": {
+        "aws": "Use AWS Organizations SCPs for preventive guardrails. Deploy AWS Config rules for detective controls. Use CloudFormation Guard for IaC validation. Manage policies in Git with CI/CD deployment.",
+        "azure": "Use Azure Policy with deny, audit, and modify effects. Create policy initiatives for compliance frameworks. Use Azure Policy as Code workflow with GitHub. Deploy via Azure DevOps pipelines.",
+        "gcp": "Use Organization Policies for project-level constraints. Deploy custom constraints with Organization Policy. Use Config Connector for declarative state. Manage in Git with Cloud Build."
+      }
     },
-    "ccmControls": ["GRC-04", "GRC-06"],
-    "nacsa": ["s18", "s23"],
-    "nistCsf": ["GV.OC-03", "ID.GV-01"],
-    "mitreAttackCloud": [],
-    "cspImplementation": {
-      "aws": "Use AWS Audit Manager for automated evidence collection. Access AWS Artifact for CSP compliance reports. Configure Security Hub compliance standards. Export Config compliance data.",
-      "azure": "Use Microsoft Purview Compliance Manager for assessment. Access Azure Compliance documentation. Configure Defender for Cloud regulatory compliance dashboard. Export compliance data via API.",
-      "gcp": "Use Assured Workloads for compliance requirements. Access Google Cloud compliance reports. Configure Security Command Center compliance findings. Use Access Transparency for audit trail."
-    }
-  },
-  {
-    "id": "CS-GRC-04",
-    "slug": "vendor-assessment",
-    "name": "Cloud Vendor Security Assessment",
-    "domain": "compliance-governance",
-    "type": "preventive",
-    "description": "Assess cloud service provider security posture using standardised frameworks. Review CSP certifications, audit reports, shared responsibility model, data processing agreements, and incident notification commitments. Extend assessment to SaaS providers built on cloud infrastructure.",
-    "maturityLevels": {
-      "1": "CSP compliance certifications reviewed (SOC 2, ISO 27001, CSA STAR); shared responsibility model understood and documented",
-      "2": "Annual CSP assessment using CAIQ (Consensus Assessments Initiative Questionnaire); SaaS vendor cloud security assessment; contractual security requirements enforced",
-      "3": "Continuous CSP monitoring via trust portals; SaaS vendor risk scoring; third-party cloud security assessment; exit strategy documented for each CSP"
+    {
+      "id": "CS-GRC-03",
+      "slug": "audit-readiness",
+      "name": "Cloud Audit Readiness",
+      "domain": "compliance-governance",
+      "type": "detective",
+      "description": "Maintain continuous audit readiness for cloud environments. Pre-collect evidence, maintain compliance documentation, and ensure that cloud configurations can be demonstrated to auditors at any time. Reduce audit preparation time from weeks to hours.",
+      "maturityLevels": {
+        "1": "Compliance documentation maintained; CSP compliance reports (SOC 2, ISO 27001) collected; annual audit conducted",
+        "2": "Automated evidence collection for common audit questions; continuous compliance dashboard; pre-built audit packages per framework",
+        "3": "Continuous compliance monitoring with real-time audit evidence; automated regulatory mapping; audit API integration for external auditors"
+      },
+      "ccmControls": [
+        "GRC-04",
+        "GRC-06"
+      ],
+      "nacsa": [
+        "s18",
+        "s23"
+      ],
+      "nistCsf": [
+        "GV.OC-03",
+        "ID.GV-01"
+      ],
+      "mitreAttackCloud": [],
+      "cspImplementation": {
+        "aws": "Use AWS Audit Manager for automated evidence collection. Access AWS Artifact for CSP compliance reports. Configure Security Hub compliance standards. Export Config compliance data.",
+        "azure": "Use Microsoft Purview Compliance Manager for assessment. Access Azure Compliance documentation. Configure Defender for Cloud regulatory compliance dashboard. Export compliance data via API.",
+        "gcp": "Use Assured Workloads for compliance requirements. Access Google Cloud compliance reports. Configure Security Command Center compliance findings. Use Access Transparency for audit trail."
+      }
     },
-    "ccmControls": ["GRC-05", "GRC-07"],
-    "nacsa": ["s18"],
-    "nistCsf": ["GV.SC-06", "GV.SC-09"],
-    "mitreAttackCloud": ["T1199"],
-    "cspImplementation": {
-      "aws": "Review AWS SOC reports via AWS Artifact. Complete CAIQ assessment using AWS responses. Review AWS Shared Responsibility Model. Monitor AWS Security Bulletins.",
-      "azure": "Review Microsoft SOC reports via Service Trust Portal. Complete CAIQ using Microsoft responses. Review Azure Shared Responsibility documentation. Monitor Microsoft Security Response Center.",
-      "gcp": "Review Google SOC reports via Compliance Reports Manager. Complete CAIQ using Google responses. Review Google Shared Responsibility documentation. Monitor Google Cloud Security Bulletins."
+    {
+      "id": "CS-GRC-04",
+      "slug": "vendor-assessment",
+      "name": "Cloud Vendor Security Assessment",
+      "domain": "compliance-governance",
+      "type": "preventive",
+      "description": "Assess cloud service provider security posture using standardised frameworks. Review CSP certifications, audit reports, shared responsibility model, data processing agreements, and incident notification commitments. Extend assessment to SaaS providers built on cloud infrastructure.",
+      "maturityLevels": {
+        "1": "CSP compliance certifications reviewed (SOC 2, ISO 27001, CSA STAR); shared responsibility model understood and documented",
+        "2": "Annual CSP assessment using CAIQ (Consensus Assessments Initiative Questionnaire); SaaS vendor cloud security assessment; contractual security requirements enforced",
+        "3": "Continuous CSP monitoring via trust portals; SaaS vendor risk scoring; third-party cloud security assessment; exit strategy documented for each CSP"
+      },
+      "ccmControls": [
+        "GRC-05",
+        "GRC-07"
+      ],
+      "nacsa": [
+        "s18"
+      ],
+      "nistCsf": [
+        "GV.SC-06",
+        "GV.SC-09"
+      ],
+      "mitreAttackCloud": [
+        "T1199"
+      ],
+      "cspImplementation": {
+        "aws": "Review AWS SOC reports via AWS Artifact. Complete CAIQ assessment using AWS responses. Review AWS Shared Responsibility Model. Monitor AWS Security Bulletins.",
+        "azure": "Review Microsoft SOC reports via Service Trust Portal. Complete CAIQ using Microsoft responses. Review Azure Shared Responsibility documentation. Monitor Microsoft Security Response Center.",
+        "gcp": "Review Google SOC reports via Compliance Reports Manager. Complete CAIQ using Google responses. Review Google Shared Responsibility documentation. Monitor Google Cloud Security Bulletins."
+      }
     }
-  }
-]
+  ]
+}
