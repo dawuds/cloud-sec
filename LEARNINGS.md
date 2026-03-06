@@ -158,5 +158,12 @@ Before publishing any new content in this repo:
 
 **Fix:** Changed to `data.sectorName || sector.name || sectorId`.
 
+### Search Gap: RMiT Data Not Searchable
+The search function (`renderSearch()`) only searched controls, incidents, and threat actors. RMiT clauses (10.50-10.52, 17.1-17.5) were not indexed, so searching for "BNM", "10.50", "data residency" etc. returned nothing.
+
+**Fix:** Added RMiT clause search block — searches `id`, `title`, `summary`, `section`, `subsection` fields.
+
+**Lesson:** When adding a new data section (like RMiT), also add it to the search function. The search function doesn't auto-discover new data sources.
+
 ### Root Cause
-All four bugs are instances of Pattern 2 from the Data-Code Field Name Mismatches lesson above. JSON data files were generated with different field names than the app.js render functions expected. The SPA renders silently empty content instead of throwing errors, making these bugs invisible without browser dev tools.
+All four rendering bugs are instances of Pattern 2 from the Data-Code Field Name Mismatches lesson above. JSON data files were generated with different field names than the app.js render functions expected. The SPA renders silently empty content instead of throwing errors, making these bugs invisible without browser dev tools.
