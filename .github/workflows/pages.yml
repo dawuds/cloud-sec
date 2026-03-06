@@ -26,6 +26,8 @@ jobs:
             python3 -c "import json,sys; json.load(open('$f'))" || { echo "FAIL: $f"; exit 1; }
           done
           echo "All JSON files valid."
+      - name: Validate JSON cross-references
+        run: node validate.js
 
   deploy:
     needs: validate

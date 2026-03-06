@@ -61,10 +61,10 @@ Tracking all planned enhancements. Grouped by phase. Check off items as complete
 
 ---
 
-## Phase 5 — Quality & Validation (Partial)
+## Phase 5 — Quality & Validation (Mostly Complete)
 
-- [ ] Add validation script (validate.js) — check field names, IDs, cross-reference integrity
-- [ ] Verify all CCM domain IDs match across control-domains.json, controls library, and cross-references
+- [x] Add validation script (validate.js) — 8 checks: JSON parsing, controlSlug resolution, domain file matching, evidence domain matching, risk math, CCM domain consistency, sector file matching, duplicate slug detection
+- [x] Verify all CCM domain IDs match across control-domains.json, controls library, and cross-references (fixed A&A/AAC mismatch)
 - [ ] Verify all CIS Benchmark control IDs against published benchmarks
 - [x] Add `sourceType` and `verificationNote` to all 19 files that were missing them
 - [x] Fix renderEvidence() data key mismatch (`data.domains` → `data.evidenceByDomain`)
@@ -73,8 +73,10 @@ Tracking all planned enhancements. Grouped by phase. Check off items as complete
 - [x] Fix renderSectorDetail() title (`data.sectorName` not `sector.name`)
 - [x] Add RMiT clauses to search function
 - [x] Replace hardcoded counts with dynamic values in overview and CCM views
-- [ ] Ensure all domain IDs are consistent across requirements, controls, evidence, and artifacts
+- [x] Ensure all domain IDs are consistent across requirements, controls, evidence, and artifacts (validated by validate.js)
 - [x] Add controlSlugs to all artifacts (Audit Package pattern — artifacts ↔ controls mapping)
+- [x] Audit Package UI in control detail view — shows related artifacts (by controlSlugs) and evidence (by domain)
+- [x] Well-Architected framework rendering in CSP detail pages — design principles + expandable best practice areas (AWS, Azure, GCP)
 
 ---
 

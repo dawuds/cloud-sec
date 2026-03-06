@@ -21,9 +21,9 @@ A structured, open-access knowledge base for cloud cybersecurity — covering CS
 | **Standards** | CSA CCM v4 (17 domains), MITRE ATT&CK Cloud (35 techniques), NIST SP 800-144/800-210 |
 | **RMiT Cloud** | BNM RMiT cloud-specific clauses (10.50-10.52, 17.1-17.5), Appendix 10 domains, CCM v4 mapping |
 | **Architecture** | Shared responsibility model, reference architecture, service models (IaaS/PaaS/SaaS), asset types, CSP comparison |
-| **Cloud Providers** | AWS, Azure, GCP, Alibaba, Huawei, Oracle — services inventory, CIS Benchmarks, Well-Architected guidance |
+| **Cloud Providers** | AWS, Azure, GCP, Alibaba, Huawei, Oracle — services inventory, CIS Benchmarks, Well-Architected framework rendering |
 | **Requirements** | 12 security domains with detailed requirements, CCM/NACSA/NIST CSF/MITRE mappings |
-| **Controls** | 49 controls with maturity levels, CSP-specific implementation guidance |
+| **Controls** | 49 controls with maturity levels, CSP-specific implementation guidance, Audit Package (related artifacts + evidence) |
 | **Evidence** | Audit evidence items per domain — what auditors look for |
 | **Artifacts** | 29 security artifacts — policies, procedures, reports, configurations |
 | **Threats** | 8 cloud incidents (Capital One, SolarWinds, Log4Shell, Storm-0558, Snowflake, etc.) + 6 threat actors |
@@ -97,11 +97,12 @@ See full mapping: [`cross-references/ccm-to-nacsa.json`](cross-references/ccm-to
 ```
 cloud-sec/
 ├── index.html                          # SPA entry point
-├── app.js                              # All rendering logic (1,575 lines)
+├── app.js                              # All rendering logic (~1,640 lines)
 ├── style.css                           # Full CSS with CSP-specific colours (484 lines)
+├── validate.js                         # Data integrity checks (8 validations, run with node)
 ├── favicon.svg                         # SVG shield with "CS" branding
 ├── LICENSE                             # CC BY 4.0
-├── .github/workflows/pages.yml         # GitHub Pages deployment
+├── .github/workflows/pages.yml         # GitHub Pages deployment + validation
 ├── standards/
 │   ├── csa-ccm/                        # CCM v4 overview + 17 control domains
 │   ├── mitre-attack-cloud/             # 35 cloud ATT&CK techniques
@@ -140,6 +141,7 @@ Static single-page application (SPA):
 - **Zero dependencies** — no build step, no framework, no npm
 - **Hash-routed** — `#view/sub` pattern, pushState for clean navigation
 - **Lazy-loaded JSON** — data fetched on demand and cached in `Map`
+- **Validation** — `validate.js` checks JSON parsing, cross-reference integrity, risk math, domain consistency, CCM IDs, sector files, and duplicate slugs (runs in CI and locally via `node validate.js`)
 - **GitHub Pages** — deployed via Actions workflow on push to `main`
 - **CSP-specific colours** — AWS (#FF9900), Azure (#0078D4), GCP (#4285F4), Alibaba (#FF6A00), Huawei (#CF0A2C), Oracle (#F80000)
 - **Dark mode** — automatic via `prefers-color-scheme: dark` with WCAG AA contrast

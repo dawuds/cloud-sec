@@ -562,6 +562,53 @@ async function renderCSPDetail(cspId) {
     </div>`;
   } catch(e) { /* no benchmark file */ }
 
+  // Well-Architected framework (only AWS, Azure, GCP have data)
+  let wellArchSection = '';
+  try {
+    const wa = await load(`standards/csp/${cspId}/well-architected.json`);
+    const principles = wa.designPrinciples || [];
+    const areas = wa.bestPracticeAreas || [];
+
+    wellArchSection = `
+      <h2>Well-Architected Framework — Security Pillar</h2>
+      <div class="card" style="border-left:3px solid var(--accent2);margin-bottom:1rem">
+        <div class="card-desc">${escHtml(wa.description || '')}</div>
+        ${wa.url ? `<div style="margin-top:0.5rem;font-size:0.8rem"><a href="${escHtml(wa.url)}" target="_blank" rel="noopener">${escHtml(wa.url)}</a></div>` : ''}
+      </div>
+
+      ${principles.length ? `
+        <h3>Design Principles (${principles.length})</h3>
+        ${principles.map(p => `
+          <div class="card">
+            <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.25rem">
+              <span class="badge badge-ccm">${escHtml(p.id)}</span>
+              <span class="card-title" style="margin:0">${escHtml(p.title)}</span>
+            </div>
+            <div class="card-desc">${escHtml(p.description || '')}</div>
+          </div>`).join('')}
+      ` : ''}
+
+      ${areas.length ? `
+        <h3>Best Practice Areas (${areas.length})</h3>
+        ${areas.map(a => `
+          <div class="accordion-item" onclick="this.classList.toggle('open')">
+            <div class="accordion-header">
+              <span><span class="badge badge-medium" style="margin-right:0.5rem">${escHtml(a.id)}</span>${escHtml(a.title)}</span>
+              <span class="accordion-arrow">&#9654;</span>
+            </div>
+            <div class="accordion-body">
+              <div class="card-desc" style="margin-bottom:0.75rem">${escHtml(a.description || '')}</div>
+              ${(a.questions || []).map(q => `
+                <div style="margin-bottom:0.75rem">
+                  <div style="font-weight:600;font-size:0.8125rem;margin-bottom:0.35rem"><code style="color:var(--accent2);margin-right:0.35rem">${escHtml(q.id)}</code>${escHtml(q.title)}</div>
+                  ${(q.practices || []).length ? `<ul style="font-size:0.8rem;padding-left:1.25rem;color:var(--text-muted)">${q.practices.map(p => `<li style="margin-bottom:0.2rem">${escHtml(p)}</li>`).join('')}</ul>` : ''}
+                </div>`).join('')}
+            </div>
+          </div>`).join('')}
+      ` : ''}
+    `;
+  } catch(e) { /* no well-architected file for this CSP */ }
+
   setMain(`
     <button class="back-link" onclick="navigate('csp')">&#8592; Cloud Providers</button>
     <div class="page-title">${escHtml(info.name || cspId.toUpperCase())}</div>
@@ -587,6 +634,8 @@ async function renderCSPDetail(cspId) {
           ${s.ccmMapping ? `<div style="margin-top:0.5rem">${ccmBadge(Array.isArray(s.ccmMapping) ? s.ccmMapping : [s.ccmMapping])}</div>` : ''}
         </div>`).join('')}
     </div>
+
+    ${wellArchSection}
   `);
 }
 
@@ -710,9 +759,23 @@ async function renderControls(sub) {
 }
 
 async function renderControlDetail(slug) {
-  const controls = await load('controls/library.json');
-  const ctrl = (Array.isArray(controls) ? controls : (controls.controls || [])).find(c => c.slug === slug || c.id === slug);
+  const [controls, artifactData, evidenceData] = await Promise.all([
+    load('controls/library.json'),
+    load('artifacts/inventory.json'),
+    load('evidence/index.json'),
+  ]);
+  const allControls = Array.isArray(controls) ? controls : (controls.controls || []);
+  const ctrl = allControls.find(c => c.slug === slug || c.id === slug);
   if (!ctrl) { setMain('<div class="empty-state"><div class="empty-state-text">Control not found.</div></div>'); return; }
+
+  // Audit Package: find related artifacts by controlSlugs
+  const allArtifacts = Array.isArray(artifactData) ? artifactData : (artifactData.artifacts || []);
+  const relatedArtifacts = allArtifacts.filter(a => (a.controlSlugs || []).includes(ctrl.slug || slug));
+
+  // Audit Package: find related evidence by domain match
+  const evidenceDomains = evidenceData.evidenceByDomain || evidenceData.domains || [];
+  const domainEvidence = evidenceDomains.find(d => d.domainId === ctrl.domain || d.id === ctrl.domain);
+  const relatedEvidence = domainEvidence ? (domainEvidence.items || []) : [];
 
   setMain(`
     <button class="back-link" onclick="navigate('controls')">&#8592; Controls</button>
@@ -741,6 +804,35 @@ async function renderControlDetail(slug) {
       ${ctrl.cspImplementation.aws ? `<div class="card csp-card aws"><div class="card-title">${cspBadge('AWS')}</div><div class="card-desc">${escHtml(ctrl.cspImplementation.aws)}</div></div>` : ''}
       ${ctrl.cspImplementation.azure ? `<div class="card csp-card azure"><div class="card-title">${cspBadge('Azure')}</div><div class="card-desc">${escHtml(ctrl.cspImplementation.azure)}</div></div>` : ''}
       ${ctrl.cspImplementation.gcp ? `<div class="card csp-card gcp"><div class="card-title">${cspBadge('GCP')}</div><div class="card-desc">${escHtml(ctrl.cspImplementation.gcp)}</div></div>` : ''}
+    ` : ''}
+
+    ${(relatedArtifacts.length || relatedEvidence.length) ? `
+      <h2>Audit Package</h2>
+      ${relatedArtifacts.length ? `
+        <h3>Related Artifacts (${relatedArtifacts.length})</h3>
+        ${relatedArtifacts.map(a => `
+          <div class="artifact-link-card">
+            <div class="artifact-link-header">
+              <span class="artifact-link-name">${escHtml(a.name)}</span>
+              ${a.format ? `<span class="badge badge-medium">${escHtml(a.format)}</span>` : ''}
+            </div>
+            <div class="artifact-link-meta">${escHtml(a.domain || '')} · ${escHtml(a.frequency || '')} · ${escHtml(a.owner || '')}</div>
+            <div class="artifact-link-desc">${escHtml(a.description || '')}</div>
+            ${a.ccmControls ? `<div style="margin-top:0.5rem">${ccmBadge(a.ccmControls)}</div>` : ''}
+          </div>`).join('')}
+      ` : ''}
+      ${relatedEvidence.length ? `
+        <h3>Related Evidence (${relatedEvidence.length})</h3>
+        ${relatedEvidence.map(e => `
+          <div class="artifact-link-card">
+            <div class="artifact-link-header">
+              <span class="artifact-link-name">${escHtml(e.name)}</span>
+              ${e.id ? `<code style="font-size:0.7rem;color:var(--accent2)">${escHtml(e.id)}</code>` : ''}
+            </div>
+            <div class="artifact-link-desc">${escHtml(e.description || '')}</div>
+            ${e.howToVerify ? `<div style="margin-top:0.35rem;font-size:0.8rem;color:var(--text-muted)"><strong>How to verify:</strong> ${escHtml(e.howToVerify)}</div>` : ''}
+          </div>`).join('')}
+      ` : ''}
     ` : ''}
   `);
 }

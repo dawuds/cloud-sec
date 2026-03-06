@@ -169,3 +169,13 @@ The search function (`renderSearch()`) only searched controls, incidents, and th
 
 ### Root Cause
 All four rendering bugs are instances of Pattern 2 from the Data-Code Field Name Mismatches lesson above. JSON data files were generated with different field names than the app.js render functions expected. The SPA renders silently empty content instead of throwing errors, making these bugs invisible without browser dev tools.
+
+### Orphaned Data: Well-Architected JSON Files Without UI
+Well-Architected framework data existed for AWS, Azure, and GCP (`standards/csp/{aws,azure,gcp}/well-architected.json`) since Phase 3, but no render function displayed it. The `renderCSPDetail()` function showed CIS Benchmark links and service lists but completely ignored Well-Architected data. This pattern -- data files existing without corresponding UI -- is invisible unless you diff the JSON file list against the app.js `load()` calls.
+
+**Fix:** Added Well-Architected section to `renderCSPDetail()` using `try/catch` around `load()` so CSPs without Well-Architected data (Alibaba, Huawei, Oracle) silently skip the section. Renders design principles as cards and best practice areas as expandable accordions.
+
+### CCM Domain ID Mismatch: "AAC" vs "A&A"
+The `control-domains.json` file used "AAC" as the ID for the Audit & Assurance domain, but all 6 cross-reference files used "A&A" (the official CSA CCM v4 abbreviation). This mismatch was undetectable by manual review because the control-domains.json rendering worked fine (it just displayed the ID). Only a cross-reference validation script (`validate.js`) caught it by comparing domain IDs across files.
+
+**Fix:** Changed `control-domains.json` to use "A&A" matching the canonical CSA CCM v4 domain abbreviation and all cross-reference files.
