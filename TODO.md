@@ -59,12 +59,18 @@ Tracking all planned enhancements. Grouped by phase. Check off items as complete
 
 ---
 
-## Phase 5 — Quality & Validation (Pending)
+## Phase 5 — Quality & Validation (Partial)
 
 - [ ] Add validation script (validate.js) — check field names, IDs, cross-reference integrity
 - [ ] Verify all CCM domain IDs match across control-domains.json, controls library, and cross-references
 - [ ] Verify all CIS Benchmark control IDs against published benchmarks
 - [x] Add `sourceType` and `verificationNote` to all 19 files that were missing them
+- [x] Fix renderEvidence() data key mismatch (`data.domains` → `data.evidenceByDomain`)
+- [x] Fix renderCCMDomains() to handle `controlDomains` key in JSON
+- [x] Fix renderRiskChecklist() field name (`c.item` not `c.check`)
+- [x] Fix renderSectorDetail() title (`data.sectorName` not `sector.name`)
+- [x] Add RMiT clauses to search function
+- [x] Replace hardcoded counts with dynamic values in overview and CCM views
 - [ ] Ensure all domain IDs are consistent across requirements, controls, evidence, and artifacts
 - [x] Add controlSlugs to all artifacts (Audit Package pattern — artifacts ↔ controls mapping)
 

@@ -145,7 +145,7 @@ async function renderOverview() {
   const ccmDomainCount = Array.isArray(domains) ? domains.length : (domains.controlDomains ? domains.controlDomains.length : 17);
 
   const quickLinks = [
-    { icon: '&#9729;', label: 'CSA CCM v4 Control Domains', view: 'standards', sub: 'ccm-domains', desc: '17 domains, 197 controls — the primary cloud security framework' },
+    { icon: '&#9729;', label: 'CSA CCM v4 Control Domains', view: 'standards', sub: 'ccm-domains', desc: `${ccmDomainCount} domains — the primary cloud security framework` },
     { icon: '&#128274;', label: 'Shared Responsibility Model', view: 'architecture', sub: 'shared-responsibility', desc: 'Who secures what — IaaS vs PaaS vs SaaS' },
     { icon: '&#9881;', label: 'Cloud Provider Comparison', view: 'csp', sub: null, desc: 'AWS, Azure, GCP, Alibaba, Huawei, Oracle — services and benchmarks' },
     { icon: '&#128737;', label: 'Identity & Access Management', view: 'requirements', sub: 'identity-access-management', desc: 'MFA, least privilege, federation, PAM' },
@@ -1241,6 +1241,15 @@ async function renderSearch(query) {
     });
   } catch(e) {}
 
+  try {
+    const rmit = await load('standards/rmit-cloud/clauses.json');
+    (rmit.clauses || []).forEach(c => {
+      if ([c.id, c.title, c.summary, c.section, c.subsection].some(f => String(f||'').toLowerCase().includes(q))) {
+        results.push({ type: 'RMiT Clause', title: `${c.id} — ${c.title}`, desc: c.summary || '', action: () => navigate('rmit', `clause-${c.id}`) });
+      }
+    });
+  } catch(e) {}
+
   setMain(`
     <div class="page-title">Search Results</div>
     <div class="page-sub">${results.length} results for "${escHtml(query)}"</div>
@@ -1313,7 +1322,7 @@ async function renderRMiT(sub) {
     <div style="display:flex;gap:1rem;margin-top:1.5rem;flex-wrap:wrap">
       <div class="card card-link" onclick="navigate('rmit','clauses')" style="flex:1;min-width:200px">
         <div class="card-title">Browse Clauses</div>
-        <div class="card-desc">All 8 cloud-specific clauses (10.50-10.52, 17.1-17.5) with requirements, evidence, and CSP guidance</div>
+        <div class="card-desc">Cloud-specific clauses (10.50-10.52, 17.1-17.5) with requirements, evidence, and CSP guidance</div>
       </div>
       <div class="card card-link" onclick="navigate('rmit','ccm-mapping')" style="flex:1;min-width:200px">
         <div class="card-title">CCM v4 Mapping</div>
