@@ -575,6 +575,30 @@
         "serverless-dependency-scanning",
         "serverless-function-security"
       ]
+    },
+    {
+      "id": "shared-responsibility-matrix",
+      "name": "Cloud Shared Responsibility Matrix (SRM)",
+      "category": "governance",
+      "description": "Delineation of security duties between CSP and Customer based on service model.",
+      "format": "Markdown / Spreadsheet",
+      "mandatory": true,
+      "controlSlugs": [
+        "cloud-governance-framework",
+        "vendor-assessment"
+      ]
+    },
+    {
+      "id": "rmit-appendix-7-assessment",
+      "name": "RMiT Appendix 7: Cloud Service Risk Assessment",
+      "category": "compliance",
+      "description": "Mandatory cloud risk assessment template for financial institutions as per BNM requirements.",
+      "format": "Markdown / PDF",
+      "mandatory": true,
+      "controlSlugs": [
+        "vendor-assessment",
+        "audit-readiness"
+      ]
     }
   ]
 }
