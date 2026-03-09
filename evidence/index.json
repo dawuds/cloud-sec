@@ -25,7 +25,8 @@
             "Service accounts with console access but no MFA",
             "Root account MFA enabled but using virtual MFA instead of hardware key",
             "Break-glass accounts without MFA"
-          ]
+          ],
+          "controlSlugs": []
         },
         {
           "id": "E-IAM-02",
@@ -43,7 +44,8 @@
             "Access reviews conducted but remediation not completed",
             "No tooling for unused permission detection",
             "Wildcard actions in policies with no review"
-          ]
+          ],
+          "controlSlugs": []
         },
         {
           "id": "E-IAM-03",
@@ -61,7 +63,8 @@
             "Access keys older than 1 year still active",
             "Static credentials in CI/CD pipelines instead of OIDC federation",
             "Service accounts with admin-level permissions"
-          ]
+          ],
+          "controlSlugs": []
         },
         {
           "id": "E-IAM-04",
@@ -76,9 +79,10 @@
           "commonGaps": [
             "Local IAM users created outside of federation",
             "SSO configured but bypass via direct console login still possible",
-            "No session timeout — sessions persist indefinitely",
-            "Federation configured for primary account only — child accounts use local auth"
-          ]
+            "No session timeout \u2014 sessions persist indefinitely",
+            "Federation configured for primary account only \u2014 child accounts use local auth"
+          ],
+          "controlSlugs": []
         },
         {
           "id": "E-IAM-05",
@@ -88,14 +92,15 @@
             "Just-in-time privileged access with time-limited role activation",
             "Approval workflow for privileged role requests",
             "All privileged sessions recorded and auditable",
-            "Standing admin access eliminated — zero standing privileges"
+            "Standing admin access eliminated \u2014 zero standing privileges"
           ],
           "commonGaps": [
             "Permanent admin role assignments without time limits",
             "No approval workflow for privileged access",
             "Privileged sessions not recorded or monitored",
             "Break-glass accounts used for routine operations"
-          ]
+          ],
+          "controlSlugs": []
         }
       ]
     },
@@ -119,7 +124,8 @@
             "Legacy resources created before encryption defaults were enabled",
             "Temporary or test resources without encryption",
             "No automated detection of unencrypted resource creation"
-          ]
+          ],
+          "controlSlugs": []
         },
         {
           "id": "E-DSP-02",
@@ -137,7 +143,8 @@
             "Storage endpoints accessible via HTTP without redirect",
             "Internal services using unencrypted protocols",
             "Certificate expiry monitoring not configured"
-          ]
+          ],
+          "controlSlugs": []
         },
         {
           "id": "E-DSP-03",
@@ -155,7 +162,8 @@
             "No automated data discovery -- manual classification only",
             "DLP deployed but in monitor-only mode with no blocking",
             "Classification tags missing from resources"
-          ]
+          ],
+          "controlSlugs": []
         },
         {
           "id": "E-DSP-04",
@@ -168,11 +176,12 @@
             "Regular compliance checks for data location via CSPM"
           ],
           "commonGaps": [
-            "No region restriction policies — data can be created in any region",
+            "No region restriction policies \u2014 data can be created in any region",
             "Geo-redundant storage replicating data to non-approved regions",
-            "No data flow mapping — unknown cross-border transfers",
+            "No data flow mapping \u2014 unknown cross-border transfers",
             "CDN edge caching exposing data in non-approved jurisdictions"
-          ]
+          ],
+          "controlSlugs": []
         },
         {
           "id": "E-DSP-05",
@@ -185,11 +194,12 @@
             "Integration with DLP policies for automated protection"
           ],
           "commonGaps": [
-            "No automated data discovery — relying on manual classification only",
-            "Discovery scanning limited to primary storage — databases and file shares excluded",
+            "No automated data discovery \u2014 relying on manual classification only",
+            "Discovery scanning limited to primary storage \u2014 databases and file shares excluded",
             "Findings generated but not reviewed or remediated",
             "No integration between discovery and DLP enforcement"
-          ]
+          ],
+          "controlSlugs": []
         }
       ]
     },
@@ -213,7 +223,8 @@
             "No separation between production and non-production",
             "Diagram outdated or non-existent",
             "Direct internet access from database subnets"
-          ]
+          ],
+          "controlSlugs": []
         },
         {
           "id": "E-IVS-02",
@@ -231,7 +242,8 @@
             "Security groups with hundreds of rules and no documentation",
             "No review process -- rules accumulate over time",
             "Allow-all outbound with no egress filtering"
-          ]
+          ],
+          "controlSlugs": []
         },
         {
           "id": "E-IVS-03",
@@ -249,7 +261,8 @@
             "Private endpoints deployed but public access not disabled",
             "DNS resolution still using public endpoints",
             "No VPC endpoint policies restricting service access"
-          ]
+          ],
+          "controlSlugs": []
         },
         {
           "id": "E-IVS-04",
@@ -262,11 +275,12 @@
             "Regular DDoS simulation testing conducted"
           ],
           "commonGaps": [
-            "Basic DDoS protection only — no advanced/standard tier",
+            "Basic DDoS protection only \u2014 no advanced/standard tier",
             "DDoS protection not enabled on all internet-facing resources",
-            "No custom mitigation policies — relying on default thresholds",
+            "No custom mitigation policies \u2014 relying on default thresholds",
             "DDoS events not monitored or integrated with incident response"
-          ]
+          ],
+          "controlSlugs": []
         },
         {
           "id": "E-IVS-05",
@@ -280,10 +294,11 @@
           ],
           "commonGaps": [
             "WAF deployed in detection-only mode (not blocking)",
-            "Default rule sets without tuning — excessive false positives",
+            "Default rule sets without tuning \u2014 excessive false positives",
             "WAF on primary application but not all internet-facing services",
             "No regular rule review or update process"
-          ]
+          ],
+          "controlSlugs": []
         }
       ]
     },
@@ -307,7 +322,8 @@
             "Data event logging disabled -- only management events captured",
             "Logs stored in same account as production workloads",
             "No log integrity validation"
-          ]
+          ],
+          "controlSlugs": []
         },
         {
           "id": "E-LOG-02",
@@ -325,7 +341,8 @@
             "Generic detection rules without cloud-specific tuning",
             "Alerts generated but not reviewed or investigated",
             "No defined alert response SLAs"
-          ]
+          ],
+          "controlSlugs": []
         },
         {
           "id": "E-LOG-03",
@@ -343,7 +360,8 @@
             "Logs in modifiable storage without integrity controls",
             "No capacity monitoring -- logs silently deleted on overflow",
             "Retention not aligned to regulatory requirements"
-          ]
+          ],
+          "controlSlugs": []
         },
         {
           "id": "E-LOG-04",
@@ -358,9 +376,10 @@
           "commonGaps": [
             "Threat detection not enabled in all accounts or regions",
             "Findings generated but not triaged or investigated",
-            "Alert fatigue from untuned detection — team ignores findings",
+            "Alert fatigue from untuned detection \u2014 team ignores findings",
             "No automated response for critical severity findings"
-          ]
+          ],
+          "controlSlugs": []
         },
         {
           "id": "E-LOG-05",
@@ -373,11 +392,12 @@
             "Flow log data integrated with SIEM or dedicated NTA tool"
           ],
           "commonGaps": [
-            "Flow logs not enabled — no network visibility",
+            "Flow logs not enabled \u2014 no network visibility",
             "Flow logs enabled but not analysed or reviewed",
-            "Flow logs in same account as production — modifiable by attackers",
-            "Only accepted traffic logged — rejected traffic not captured"
-          ]
+            "Flow logs in same account as production \u2014 modifiable by attackers",
+            "Only accepted traffic logged \u2014 rejected traffic not captured"
+          ],
+          "controlSlugs": []
         }
       ]
     },
@@ -401,7 +421,8 @@
             "No tabletop exercises conducted",
             "CSP engagement not documented -- team unsure how to engage cloud vendor during incident",
             "Contact lists outdated"
-          ]
+          ],
+          "controlSlugs": []
         },
         {
           "id": "E-SEF-02",
@@ -419,7 +440,8 @@
             "No procedure for capturing disk snapshots during incident",
             "Forensic analysis performed in production environment",
             "No chain of custody for cloud evidence"
-          ]
+          ],
+          "controlSlugs": []
         },
         {
           "id": "E-SEF-03",
@@ -437,7 +459,8 @@
             "Containment procedures not tested",
             "No rollback procedures -- containment may cause outage",
             "No defined containment SLA"
-          ]
+          ],
+          "controlSlugs": []
         },
         {
           "id": "E-SEF-04",
@@ -454,7 +477,8 @@
             "Notification procedures documented but never tested",
             "Single point of failure in notification chain (one person)",
             "Notification templates not aligned to regulatory requirements"
-          ]
+          ],
+          "controlSlugs": []
         }
       ]
     },
@@ -478,7 +502,8 @@
             "Scanning enabled but results not reviewed",
             "Critical vulnerabilities in production with no remediation timeline",
             "Base images not regularly updated"
-          ]
+          ],
+          "controlSlugs": []
         },
         {
           "id": "E-CCC-02",
@@ -496,7 +521,8 @@
             "Default pod security settings (no restrictions)",
             "Cluster-admin bound to service accounts unnecessarily",
             "API server accessible from public network"
-          ]
+          ],
+          "controlSlugs": []
         },
         {
           "id": "E-CCC-03",
@@ -509,11 +535,12 @@
             "Runtime alerts integrated with SIEM and incident response workflow"
           ],
           "commonGaps": [
-            "No runtime security monitoring — only pre-deployment scanning",
+            "No runtime security monitoring \u2014 only pre-deployment scanning",
             "Runtime agent deployed but alerts not reviewed",
-            "No baseline profiling — excessive false positives",
+            "No baseline profiling \u2014 excessive false positives",
             "Container escape attempts not detected"
-          ]
+          ],
+          "controlSlugs": []
         },
         {
           "id": "E-CCC-04",
@@ -530,7 +557,8 @@
             "No image signing or provenance verification",
             "Direct pull from public registries (Docker Hub) in production",
             "No approved base image catalogue or governance"
-          ]
+          ],
+          "controlSlugs": []
         }
       ]
     },
@@ -554,7 +582,8 @@
             "Admin-level permissions on function roles",
             "Secrets hardcoded in environment variables or source code",
             "No VPC placement for functions accessing databases"
-          ]
+          ],
+          "controlSlugs": []
         },
         {
           "id": "E-AIS-02",
@@ -572,7 +601,8 @@
             "No rate limiting -- vulnerable to abuse",
             "No request validation -- accepting arbitrary input",
             "No WAF protection on API endpoints"
-          ]
+          ],
+          "controlSlugs": []
         },
         {
           "id": "E-AIS-03",
@@ -587,9 +617,10 @@
           "commonGaps": [
             "No dependency scanning for serverless functions",
             "Outdated dependencies with known vulnerabilities in production",
-            "No runtime monitoring — only invocation count metrics",
-            "No resource limits — functions can consume unlimited resources"
-          ]
+            "No runtime monitoring \u2014 only invocation count metrics",
+            "No resource limits \u2014 functions can consume unlimited resources"
+          ],
+          "controlSlugs": []
         },
         {
           "id": "E-AIS-04",
@@ -602,11 +633,12 @@
             "Functions tested for injection attacks via event payloads"
           ],
           "commonGaps": [
-            "No event source validation — any authenticated principal can invoke functions",
-            "No input sanitisation — event payloads passed directly to processing logic",
+            "No event source validation \u2014 any authenticated principal can invoke functions",
+            "No input sanitisation \u2014 event payloads passed directly to processing logic",
             "No schema validation on API gateway or event bus",
             "No security testing of serverless functions"
-          ]
+          ],
+          "controlSlugs": []
         }
       ]
     },
@@ -630,7 +662,8 @@
             "Secrets in pipeline variables without encryption",
             "No branch protection -- direct push to main allowed",
             "No artifact signing or provenance"
-          ]
+          ],
+          "controlSlugs": []
         },
         {
           "id": "E-STA-02",
@@ -648,7 +681,8 @@
             "Scanning enabled but findings not reviewed or remediated",
             "No SBOM generation",
             "No process for CVE-to-SBOM correlation when new vulnerabilities disclosed"
-          ]
+          ],
+          "controlSlugs": []
         },
         {
           "id": "E-STA-03",
@@ -661,11 +695,12 @@
             "Dependency update automation (Dependabot, Renovate) enabled"
           ],
           "commonGaps": [
-            "No SBOM generation — unknown third-party dependencies in production",
+            "No SBOM generation \u2014 unknown third-party dependencies in production",
             "SBOMs generated but no CVE correlation process",
             "No response SLA for third-party vulnerability remediation",
-            "Manual dependency updates — no automation"
-          ]
+            "Manual dependency updates \u2014 no automation"
+          ],
+          "controlSlugs": []
         },
         {
           "id": "E-STA-04",
@@ -682,7 +717,8 @@
             "IaC modules sourced from public registries without review or pinning",
             "No scanning for embedded secrets in container images",
             "No supply chain provenance tracking"
-          ]
+          ],
+          "controlSlugs": []
         }
       ]
     },
@@ -706,7 +742,8 @@
             "KMS key policies with broad access (full account access)",
             "No key usage audit logging",
             "Orphaned keys with no documented purpose or owner"
-          ]
+          ],
+          "controlSlugs": []
         },
         {
           "id": "E-CEK-02",
@@ -724,7 +761,8 @@
             "Keys older than 2 years with no rotation",
             "No monitoring of rotation compliance",
             "Old key versions never disabled"
-          ]
+          ],
+          "controlSlugs": []
         },
         {
           "id": "E-CEK-03",
@@ -737,11 +775,12 @@
             "No expired certificates in production environments"
           ],
           "commonGaps": [
-            "No certificate inventory — certificates discovered only on expiry",
-            "Manual certificate renewal process — prone to missed renewals",
+            "No certificate inventory \u2014 certificates discovered only on expiry",
+            "Manual certificate renewal process \u2014 prone to missed renewals",
             "No expiry monitoring or alerting",
             "Self-signed certificates used in production without documented exception"
-          ]
+          ],
+          "controlSlugs": []
         },
         {
           "id": "E-CEK-04",
@@ -754,11 +793,12 @@
             "FIPS 140-2 Level 3 or equivalent compliance verified for HSM"
           ],
           "commonGaps": [
-            "No HSM usage — all keys in software-based KMS",
+            "No HSM usage \u2014 all keys in software-based KMS",
             "HSM deployed but key isolation not verified via CSP attestation",
             "HSM audit logs not monitored independently",
             "FIPS compliance level not verified or insufficient for regulatory requirements"
-          ]
+          ],
+          "controlSlugs": []
         }
       ]
     },
@@ -782,7 +822,8 @@
             "Findings generated but not tracked or remediated",
             "No defined remediation SLAs",
             "Alert fatigue from untuned CSPM rules"
-          ]
+          ],
+          "controlSlugs": []
         },
         {
           "id": "E-DCS-02",
@@ -800,7 +841,8 @@
             "Assessment conducted once but never repeated",
             "Non-compliance with no exception register or risk acceptance",
             "CIS assessment in primary account only -- not all accounts"
-          ]
+          ],
+          "controlSlugs": []
         },
         {
           "id": "E-DCS-03",
@@ -818,7 +860,8 @@
             "Tags defined but no enforcement mechanism",
             "Low compliance percentage with no improvement plan",
             "Tags applied inconsistently with no standard taxonomy"
-          ]
+          ],
+          "controlSlugs": []
         },
         {
           "id": "E-DCS-04",
@@ -831,11 +874,12 @@
             "Baseline configurations version-controlled as infrastructure-as-code"
           ],
           "commonGaps": [
-            "No drift detection — configuration changes go unnoticed",
+            "No drift detection \u2014 configuration changes go unnoticed",
             "Drift detected but no automated remediation",
             "Baseline configurations not documented or version-controlled",
             "Manual changes made directly in console without tracking"
-          ]
+          ],
+          "controlSlugs": []
         }
       ]
     },
@@ -859,7 +903,8 @@
             "Backup frequency not aligned to RPO -- potential data loss exceeds tolerance",
             "Backups in same account as production -- vulnerable to account compromise",
             "No immutable backups -- vulnerable to ransomware"
-          ]
+          ],
+          "controlSlugs": []
         },
         {
           "id": "E-BCR-02",
@@ -877,7 +922,8 @@
             "DR test limited to backup restore -- no full failover test",
             "RTO/RPO targets not defined or not validated",
             "Test findings not remediated"
-          ]
+          ],
+          "controlSlugs": []
         },
         {
           "id": "E-BCR-03",
@@ -890,11 +936,12 @@
             "Replication lag monitored with alerting on delays"
           ],
           "commonGaps": [
-            "Backups stored in same region as production — single region failure risk",
-            "Backups in same account — account compromise deletes production and backups",
+            "Backups stored in same region as production \u2014 single region failure risk",
+            "Backups in same account \u2014 account compromise deletes production and backups",
             "Cross-region restore never tested",
             "No monitoring of replication lag"
-          ]
+          ],
+          "controlSlugs": []
         },
         {
           "id": "E-BCR-04",
@@ -907,11 +954,12 @@
             "Recovery from ransomware scenario tested in tabletop or simulation"
           ],
           "commonGaps": [
-            "No immutable backups — attacker with admin access can delete all backups",
+            "No immutable backups \u2014 attacker with admin access can delete all backups",
             "Backup deletion possible with single administrator account",
             "No backup integrity verification",
             "Ransomware recovery scenario never tested"
-          ]
+          ],
+          "controlSlugs": []
         }
       ]
     },
@@ -935,7 +983,8 @@
             "Accounts created ad hoc without security baseline",
             "No guardrails -- relying on user awareness for security",
             "Governance framework exists but not enforced"
-          ]
+          ],
+          "controlSlugs": []
         },
         {
           "id": "E-GRC-02",
@@ -953,7 +1002,8 @@
             "Policy-as-code deployed in primary account only",
             "No compliance dashboard or monitoring",
             "Permanent exceptions without review"
-          ]
+          ],
+          "controlSlugs": []
         },
         {
           "id": "E-GRC-03",
@@ -971,7 +1021,8 @@
             "Shared responsibility model not understood -- security gaps at boundary",
             "No SaaS vendor security assessment process",
             "Relying solely on CSP certifications without reviewing report content"
-          ]
+          ],
+          "controlSlugs": []
         },
         {
           "id": "E-GRC-04",
@@ -985,10 +1036,11 @@
           ],
           "commonGaps": [
             "No cloud budgets or spending alerts configured",
-            "Cost anomalies not monitored — cryptomining would go undetected",
+            "Cost anomalies not monitored \u2014 cryptomining would go undetected",
             "Anomaly alerts generated but not investigated",
             "Significant unused resource waste with no cleanup process"
-          ]
+          ],
+          "controlSlugs": []
         },
         {
           "id": "E-GRC-05",
@@ -1001,11 +1053,12 @@
             "Cloud security certifications (CCSK, CCSP) for key staff"
           ],
           "commonGaps": [
-            "No cloud-specific security training — general IT security only",
+            "No cloud-specific security training \u2014 general IT security only",
             "Training available but not tracked or enforced",
-            "Training content outdated — does not cover current cloud services",
+            "Training content outdated \u2014 does not cover current cloud services",
             "No certification requirements for cloud security roles"
-          ]
+          ],
+          "controlSlugs": []
         }
       ]
     }
