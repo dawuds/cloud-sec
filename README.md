@@ -105,6 +105,24 @@ See full mapping: [`cross-references/rmit-to-nacsa.json`](cross-references/rmit-
 
 ---
 
+## Technical Architecture
+
+This repository follows the **GRC Portfolio v2.0 Standardized Schema**, optimized for machine-readability and dynamic SPA rendering.
+
+### The Compliance Chain
+Data is structured to maintain a strict bidirectional mapping:
+`CCM Control / RMiT Clause` $\leftrightarrow$ `Cloud Security Control` $\leftrightarrow$ `Audit Evidence` $\leftrightarrow$ `Artifact Template`
+
+### Data Layers
+- **Controls (`/controls/library.json`):** 49 controls mapped across 12 domains using the unified schema.
+- **Evidence (`/evidence/index.json`):** Mapped to 197 CSA CCM v4 controls and 8 RMiT Cloud clauses.
+- **Artifacts:** High-authority templates including Shared Responsibility Matrix and RMiT Appendix 7.
+
+### Consistency & Style
+- **Naming:** Kebab-case slugs; verified CSP regions for Malaysia (AWS, Azure, GCP).
+- **Scoring:** Standardized 5x5 Likelihood/Impact risk matrix.
+- **Audit Ready:** CCM v4.0.10 alignment with mapping to NIST CSF 2.0.
+
 ## Repository Structure
 
 ```
