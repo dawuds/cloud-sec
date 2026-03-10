@@ -169,6 +169,18 @@ tr:hover td { background: var(--surface-hover); }
   color: var(--text-muted);
 }
 
+/* ===== Accordion — data-accordion + .open pattern ===== */
+.accordion-trigger-left { display: flex; align-items: center; gap: 0.5rem; }
+.chevron { font-size: 0.625rem; transition: transform 0.2s; color: var(--text-muted); }
+.accordion-item.open > .accordion-trigger .chevron { transform: rotate(90deg); }
+
+/* Hide accordion content by default; reveal when .open */
+.accordion-content { display: none; padding: 0 1rem 0.75rem; }
+.accordion-item.open > .accordion-content { display: block; }
+/* Keep audit package accordions working with aria-expanded */
+.accordion-content[role="region"] { display: block; }
+.accordion-trigger[aria-expanded="false"] + .accordion-content[role="region"] { display: none; }
+
 /* ===== Incident-specific styles ===== */
 .incident-card { border-left: 4px solid var(--danger) !important; }
 

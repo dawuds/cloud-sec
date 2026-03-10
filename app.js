@@ -158,15 +158,30 @@ function initSubTabs() {
 }
 
 function initAccordions() {
-  document.querySelectorAll('.accordion-trigger').forEach(trigger => {
-    trigger.addEventListener('click', () => {
-      const content = trigger.nextElementSibling;
-      const expanded = trigger.getAttribute('aria-expanded') === 'true';
-      trigger.setAttribute('aria-expanded', !expanded);
-      content.hidden = expanded;
-    });
-  });
+  // Legacy per-element binding — kept for backward compat but the global
+  // delegated handler (below) now covers both data-accordion and
+  // aria-expanded patterns, so this is essentially a no-op for new code.
 }
+
+// ─── Global delegated accordion handler ──────────────────────────────────────
+document.addEventListener('click', function(e) {
+  // data-accordion pattern (controls browser, etc.)
+  const dataAcc = e.target.closest('[data-accordion]');
+  if (dataAcc) {
+    const item = dataAcc.closest('.accordion-item');
+    if (item) item.classList.toggle('open');
+    return;
+  }
+  // aria-expanded pattern (audit package accordions)
+  const ariaTrigger = e.target.closest('.accordion-trigger[aria-expanded]');
+  if (ariaTrigger) {
+    const expanded = ariaTrigger.getAttribute('aria-expanded') === 'true';
+    ariaTrigger.setAttribute('aria-expanded', !expanded);
+    const content = ariaTrigger.nextElementSibling;
+    if (content) content.hidden = expanded;
+    return;
+  }
+});
 
 // ─── OVERVIEW ────────────────────────────────────────────────────────────────
 async function renderOverview() {
