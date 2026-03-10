@@ -56,6 +56,13 @@
       ]
     },
     {
+      "ccmDomain": "DCS",
+      "ccmDomainName": "Datacenter Security",
+      "nacsaSections": [
+        { "section": "s18", "title": "Duties of NCII entity", "alignment": "DCS controls (physical datacenter security) are primarily a CSP responsibility in the shared responsibility model. NCII entities must verify CSP datacenter security through compliance reports (SOC 2, ISO 27001) as part of their s18 duties." }
+      ]
+    },
+    {
       "ccmDomain": "GRC",
       "ccmDomainName": "Governance, Risk & Compliance",
       "nacsaSections": [

@@ -61,6 +61,15 @@
       ]
     },
     {
+      "ccmDomain": "DCS",
+      "ccmDomainName": "Datacenter Security",
+      "iso27017Controls": [
+        { "clause": "11.1.1", "name": "Physical security perimeter", "applicability": "cloud-provider", "alignment": "DCS controls (DCS-01 through DCS-09) implement physical security perimeter requirements for cloud datacenters. This is primarily a CSP responsibility." },
+        { "clause": "11.1.2", "name": "Physical entry controls", "applicability": "cloud-provider", "alignment": "DCS-03 (controlled access points) maps to physical entry control requirements for datacenter facilities." },
+        { "clause": "11.2.1", "name": "Equipment siting and protection", "applicability": "cloud-provider", "alignment": "DCS controls address equipment protection and environmental controls within cloud datacenters." }
+      ]
+    },
+    {
       "ccmDomain": "GRC",
       "ccmDomainName": "Governance, Risk & Compliance",
       "iso27017Controls": [

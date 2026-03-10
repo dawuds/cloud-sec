@@ -38,6 +38,11 @@
       "nistCsfMappings": ["PR.DS-01", "PR.DS-02", "PR.DS-10", "PR.DS-11", "GV.DP-01", "GV.DP-02", "GV.DP-03", "GV.DP-04", "GV.DP-05", "ID.AM-07"]
     },
     {
+      "ccmDomain": "DCS",
+      "ccmDomainName": "Datacenter Security",
+      "nistCsfMappings": ["PR.IR-01", "PR.IR-02", "PR.AC-02"]
+    },
+    {
       "ccmDomain": "GRC",
       "ccmDomainName": "Governance, Risk & Compliance",
       "nistCsfMappings": ["GV.OC-01", "GV.OC-02", "GV.OC-03", "GV.OC-04", "GV.OC-05", "GV.PO-01", "GV.PO-02", "GV.RM-01", "GV.RM-02", "GV.RM-03", "GV.RM-04", "GV.RM-05", "GV.RM-06", "GV.RM-07", "GV.RR-01", "GV.RR-02", "GV.RR-03", "GV.RR-04"]
