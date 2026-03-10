@@ -213,14 +213,14 @@ async function renderOverview() {
     <div class="page-sub">CSA CCM v4 · CIS Benchmarks · MITRE ATT&amp;CK Cloud · NIST CSF 2.0 · NACSA Act 854 (Malaysia)</div>
 
     <div class="stats-banner">
-      <div class="stat-card"><div class="stat-number">${ccmDomainCount}</div><div class="stat-label">CCM Domains</div></div>
-      <div class="stat-card"><div class="stat-number">197</div><div class="stat-label">CCM Controls</div></div>
-      <div class="stat-card"><div class="stat-number">${domainCount}</div><div class="stat-label">Security Domains</div></div>
-      <div class="stat-card"><div class="stat-number">${controlCount}</div><div class="stat-label">Controls</div></div>
-      <div class="stat-card"><div class="stat-number">6</div><div class="stat-label">Cloud Providers</div></div>
-      <div class="stat-card"><div class="stat-number">${incidentCount}</div><div class="stat-label">Incidents</div></div>
-      <div class="stat-card"><div class="stat-number">${actorCount}</div><div class="stat-label">Threat Actors</div></div>
-      <div class="stat-card"><div class="stat-number">${sectorCount}</div><div class="stat-label">Sectors</div></div>
+      <div class="stat-card"><div class="stat-value">${ccmDomainCount}</div><div class="stat-label">CCM Domains</div></div>
+      <div class="stat-card"><div class="stat-value">197</div><div class="stat-label">CCM Controls</div></div>
+      <div class="stat-card"><div class="stat-value">${domainCount}</div><div class="stat-label">Security Domains</div></div>
+      <div class="stat-card"><div class="stat-value">${controlCount}</div><div class="stat-label">Controls</div></div>
+      <div class="stat-card"><div class="stat-value">6</div><div class="stat-label">Cloud Providers</div></div>
+      <div class="stat-card"><div class="stat-value">${incidentCount}</div><div class="stat-label">Incidents</div></div>
+      <div class="stat-card"><div class="stat-value">${actorCount}</div><div class="stat-label">Threat Actors</div></div>
+      <div class="stat-card"><div class="stat-value">${sectorCount}</div><div class="stat-label">Sectors</div></div>
     </div>
 
     <h2>Quick Start</h2>
@@ -817,40 +817,34 @@ async function renderControls() {
     <div class="page-title">Control Library</div>
     <div class="page-sub">${allControls.length} controls across ${allDomains.length} domains</div>
 
-    <div class="domain-filter" id="domain-filter">
-      <button class="domain-pill active" data-domain="all">All (${allControls.length})</button>
+    <div class="accordion">
       ${allDomains.map(d => {
-        const count = allControls.filter(c => c.domain === d.id).length;
-        return `<button class="domain-pill" data-domain="${escHtml(d.id)}">${escHtml(d.name)} (${count})</button>`;
+        const domainControls = allControls.filter(c => c.domain === d.id);
+        return `
+          <div class="accordion-item">
+            <button class="accordion-trigger" data-accordion>
+              <span class="accordion-trigger-left">
+                <span>${escHtml(d.name)}</span>
+                <span style="color:var(--text-muted);font-weight:400;font-size:0.8125rem">(${domainControls.length})</span>
+              </span>
+              <span class="chevron">\u25B6</span>
+            </button>
+            <div class="accordion-content">
+              <p style="font-size:0.8125rem;color:var(--text-secondary);margin-bottom:0.75rem;padding-bottom:0.75rem;border-bottom:1px solid var(--border)">${escHtml(d.description || '')}</p>
+              <ul class="clause-list">
+                ${domainControls.map(c => `
+                  <li><a class="clause-link" href="#control/${escHtml(c.slug || c.id)}">
+                    <span class="clause-title">${escHtml(c.name)}</span>
+                    ${c.type ? `<span class="badge badge-type">${escHtml(c.type)}</span>` : ''}
+                  </a></li>`).join('')}
+              </ul>
+            </div>
+          </div>`;
       }).join('')}
-    </div>
-
-    <div class="control-grid" id="controls-grid">
-      ${allControls.map(c => `
-        <div class="control-card" onclick="navigate('control/${escHtml(c.slug || c.id)}')" data-domain="${escHtml(c.domain || '')}">
-          <div class="control-card-header">
-            <span class="control-id">${escHtml(c.id || c.slug || '')}</span>
-            ${typeBadge(c.type)}
-          </div>
-          <h3 class="control-card-title">${escHtml(c.name)}</h3>
-          <p class="control-card-desc">${escHtml(c.description || '')}</p>
-          <div class="control-card-meta">
-            ${c.ccmControls ? ccmBadge(c.ccmControls) : ''}
-          </div>
-        </div>`).join('')}
     </div>
   `);
 
-  document.getElementById('domain-filter').addEventListener('click', (e) => {
-    const pill = e.target.closest('.domain-pill');
-    if (!pill) return;
-    document.querySelectorAll('#domain-filter .domain-pill').forEach(b => b.classList.remove('active'));
-    pill.classList.add('active');
-    const domain = pill.dataset.domain;
-    document.querySelectorAll('#controls-grid .control-card').forEach(c => {
-      c.style.display = (domain === 'all' || c.dataset.domain === domain) ? '' : 'none';
-    });
-  });
+  initAccordions();
 }
 
 // ─── CONTROL DETAIL — Auditor Flow ──────────────────────────────────────────
