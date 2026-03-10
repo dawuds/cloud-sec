@@ -1763,7 +1763,11 @@ async function renderSearch(query) {
 }
 
 // ─── EXPORT ──────────────────────────────────────────────────────────────────
-function exportToPDF() { window.print(); }
+function exportToPDF() {
+  document.body.classList.add('printing');
+  window.print();
+  document.body.classList.remove('printing');
+}
 
 function exportToCSV() {
   const { view } = parseHash();
