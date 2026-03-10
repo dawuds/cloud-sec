@@ -61,7 +61,12 @@ async function route() {
 
 function updateNav(view) {
   document.querySelectorAll('.nav-link').forEach(el => {
-    el.classList.toggle('active', el.dataset.view === view);
+    const dv = el.dataset.view;
+    el.classList.toggle('active',
+      dv === view ||
+      (dv === 'framework' && (view === 'sectors' || view === 'sector')) ||
+      (dv === 'reference' && view === 'architecture')
+    );
   });
 }
 
@@ -75,9 +80,9 @@ async function render(view, sub, extra) {
     case 'risk':          return renderRisk(sub);
     case 'threats':       return renderThreats(sub);
     case 'threat':        return renderThreatDetail(sub);
-    case 'sectors':       return renderSectors();
+    case 'sectors':       return renderFramework('_sectors', extra);
     case 'sector':        return renderSectorDetail(sub);
-    case 'architecture':  return renderArchitecture(sub);
+    case 'architecture':  return sub ? renderArchitecture(sub) : renderReference('_architecture');
     case 'reference':     return renderReference(sub);
     case 'search':        return renderSearch(sub);
     default:              return renderOverview();
@@ -286,19 +291,25 @@ async function renderFramework(sub, extra) {
   if (sub === 'cis') return renderFramework(null, null); // show framework landing with CIS tab
   if (sub === 'rmit') return renderRMiT(extra);
 
+  // Determine if sectors sub-tab should be active
+  const showSectors = (sub === '_sectors');
+
   // Framework landing with sub-tabs
-  const [ccm, controls] = await Promise.all([
+  const [ccm, controls, sectorsData] = await Promise.all([
     load('standards/csa-ccm/control-domains.json'),
     load('controls/library.json'),
+    load('sectors/index.json'),
   ]);
   const ccmDomains = Array.isArray(ccm) ? ccm : (ccm.controlDomains || []);
   const allControls = Array.isArray(controls) ? controls : (controls.controls || []);
+  const sectors = sectorsData.sectors || [];
 
   const tabs = [
     { key: 'ccm', label: `CCM Domains (${ccmDomains.length})` },
     { key: 'cis', label: 'CIS Benchmarks' },
     { key: 'csp', label: 'Cloud Providers' },
     { key: 'rmit', label: 'RMiT Cloud' },
+    { key: 'sectors', label: `Sectors (${sectors.length})` },
   ];
 
   // CCM Domains table
@@ -382,12 +393,29 @@ async function renderFramework(sub, extra) {
     </div>
   `;
 
+  // Sectors content
+  const sectorsContent = `
+    <div class="control-grid">
+      ${sectors.map(s => `
+        <div class="control-card" onclick="navigate('sector/${escHtml(s.id)}')">
+          <div class="control-card-header">
+            <h3 class="control-card-title" style="margin:0">${escHtml(s.name)}</h3>
+            <span class="badge badge-${s.cloudAdoption === 'high' ? 'mandatory' : s.cloudAdoption === 'medium' ? 'artifacts' : 'category'}">${escHtml(s.cloudAdoption || '')} adoption</span>
+          </div>
+          <p class="control-card-desc">${escHtml(s.description || '')}</p>
+          ${s.regulatoryOverlap ? `<div style="margin-top:0.5rem">${tagList(s.regulatoryOverlap)}</div>` : ''}
+        </div>`).join('')}
+    </div>
+  `;
+
+  const activeIdx = showSectors ? 4 : 0;
+
   setApp(`
     <div class="page-title">Framework</div>
-    <div class="page-sub">CSA CCM v4 domains, CIS Benchmarks, Cloud Providers, RMiT Cloud</div>
+    <div class="page-sub">CSA CCM v4 domains, CIS Benchmarks, Cloud Providers, RMiT Cloud, Sectors</div>
 
-    ${buildSubTabs(tabs, 0)}
-    ${buildSubPanels(tabs, [ccmContent, cisContent, cspContent, rmitContent], 0)}
+    ${buildSubTabs(tabs, activeIdx)}
+    ${buildSubPanels(tabs, [ccmContent, cisContent, cspContent, rmitContent, sectorsContent], activeIdx)}
   `);
   initSubTabs();
 }
@@ -1554,11 +1582,62 @@ async function renderReference(sub) {
   if (sub === 'mitre') return renderCrossMitre();
   if (sub === 'csp-mapping') return renderCrossCSP();
   if (sub === 'rmit-nacsa') return renderCrossRmitNacsa();
+  // Architecture sub-routes still work
+  if (sub === 'shared-responsibility') return renderSharedResp();
+  if (sub === 'reference') return renderRefArch();
+  if (sub === 'service-models') return renderServiceModels();
+  if (sub === 'asset-types') return renderAssetTypes();
+  if (sub === 'csp-comparison') return renderCSPComparisonArch();
 
-  setApp(`
-    <div class="page-title">Reference</div>
-    <div class="page-sub">Cross-framework mappings and bidirectional references</div>
+  const showArch = (sub === '_architecture');
 
+  const archTabs = [
+    { key: 'service-models', label: 'Service Models' },
+    { key: 'shared-responsibility', label: 'Shared Responsibility' },
+    { key: 'arch-reference', label: 'Reference Architecture' },
+    { key: 'csp-comparison', label: 'CSP Comparison' },
+  ];
+
+  const archContent = `
+    ${buildSubTabs(archTabs, 0)}
+    <div class="sub-panel active" data-subpanel="service-models">
+      <div class="control-grid">
+        <div class="control-card" onclick="navigate('architecture/service-models')">
+          <h3 class="control-card-title">Service Models</h3>
+          <p class="control-card-desc">IaaS / PaaS / SaaS / FaaS — security scope and key risks</p>
+        </div>
+        <div class="control-card" onclick="navigate('architecture/asset-types')">
+          <h3 class="control-card-title">Cloud Asset Types</h3>
+          <p class="control-card-desc">VMs, containers, serverless, storage — security profiles</p>
+        </div>
+      </div>
+    </div>
+    <div class="sub-panel" data-subpanel="shared-responsibility">
+      <div class="control-card" onclick="navigate('architecture/shared-responsibility')" style="margin-bottom:0.75rem">
+        <h3 class="control-card-title">Shared Responsibility Model</h3>
+        <p class="control-card-desc">Who secures what — customer vs CSP across IaaS, PaaS, SaaS</p>
+      </div>
+    </div>
+    <div class="sub-panel" data-subpanel="arch-reference">
+      <div class="control-card" onclick="navigate('architecture/reference')" style="margin-bottom:0.75rem">
+        <h3 class="control-card-title">Reference Architecture</h3>
+        <p class="control-card-desc">Multi-tier cloud security architecture layers</p>
+      </div>
+    </div>
+    <div class="sub-panel" data-subpanel="csp-comparison">
+      <div class="control-card" onclick="navigate('architecture/csp-comparison')" style="margin-bottom:0.75rem">
+        <h3 class="control-card-title">CSP Service Comparison</h3>
+        <p class="control-card-desc">Side-by-side security services across AWS, Azure, GCP, Alibaba, Huawei, Oracle</p>
+      </div>
+    </div>
+  `;
+
+  const refTabs = [
+    { key: 'cross-refs', label: 'Cross-References' },
+    { key: 'architecture', label: 'Architecture' },
+  ];
+
+  const crossRefsContent = `
     <div class="control-grid">
       <div class="control-card" onclick="navigate('reference/nacsa')">
         <h3 class="control-card-title">CCM v4 &rarr; NACSA Act 854</h3>
@@ -1581,7 +1660,18 @@ async function renderReference(sub) {
         <p class="control-card-desc">CCM domains mapped to AWS, Azure, and GCP services</p>
       </div>
     </div>
+  `;
+
+  const activeIdx = showArch ? 1 : 0;
+
+  setApp(`
+    <div class="page-title">Reference</div>
+    <div class="page-sub">Cross-framework mappings, bidirectional references, and architecture</div>
+
+    ${buildSubTabs(refTabs, activeIdx)}
+    ${buildSubPanels(refTabs, [crossRefsContent, archContent], activeIdx)}
   `);
+  initSubTabs();
 }
 
 async function renderCrossNacsa() {
