@@ -101,6 +101,96 @@
             "Break-glass accounts used for routine operations"
           ],
           "controlSlugs": []
+        },
+        {
+          "id": "E-IAM-06",
+          "name": "Privileged access management (PAM) configuration",
+          "description": "Evidence that privileged access to cloud environments is managed through a PAM solution with just-in-time elevation, session recording, and approval workflows.",
+          "howToVerify": "Review PAM tool configuration for cloud admin roles. Verify just-in-time access requests require approval. Check session recording is enabled for privileged sessions. Confirm time-bound access with automatic revocation.",
+          "whatGoodLooksLike": [
+            "All privileged access requires just-in-time elevation via PAM",
+            "Approval workflow with manager or security team sign-off",
+            "Session recording enabled for all elevated access",
+            "Time-bound access with automatic revocation after defined period"
+          ],
+          "commonGaps": [
+            "Standing admin privileges without JIT elevation",
+            "PAM configured but bypass paths exist through direct console access",
+            "Session recording not enabled or recordings not retained",
+            "No approval workflow for emergency access"
+          ],
+          "controlSlugs": [
+            "least-privilege-access"
+          ],
+          "sourceType": "constructed-indicative"
+        },
+        {
+          "id": "E-IAM-07",
+          "name": "Access review and recertification records",
+          "description": "Evidence that cloud IAM access is periodically reviewed and recertified by resource owners, with stale or excessive permissions removed.",
+          "howToVerify": "Request access review reports for the last two cycles. Verify that reviewers are appropriate resource owners. Check that flagged accounts were remediated. Confirm review cadence meets policy requirements.",
+          "whatGoodLooksLike": [
+            "Quarterly access reviews completed on schedule",
+            "Resource owners perform reviews, not just IT administrators",
+            "Remediation of flagged access within defined SLA",
+            "Automated tooling to identify unused permissions for review"
+          ],
+          "commonGaps": [
+            "Access reviews not performed or performed annually instead of quarterly",
+            "Reviews rubber-stamped without meaningful evaluation",
+            "No tracking of remediation actions from reviews",
+            "Service accounts excluded from access review scope"
+          ],
+          "controlSlugs": [
+            "least-privilege-access"
+          ],
+          "sourceType": "constructed-indicative"
+        },
+        {
+          "id": "E-IAM-08",
+          "name": "Cross-account and cross-tenant access inventory",
+          "description": "Evidence that all cross-account trust relationships and cross-tenant access grants are documented, justified, and regularly reviewed.",
+          "howToVerify": "Export cross-account IAM roles and trust policies. Review resource-based policies allowing external account access. Verify each trust relationship has documented business justification. Check for overly permissive trust conditions.",
+          "whatGoodLooksLike": [
+            "Complete inventory of all cross-account trust relationships",
+            "Each relationship has documented business justification and owner",
+            "Trust policies use external ID conditions to prevent confused deputy",
+            "Regular review cycle for cross-account access"
+          ],
+          "commonGaps": [
+            "Unknown or undocumented cross-account trust relationships",
+            "Trust policies without external ID conditions",
+            "Overly permissive cross-account roles granting admin access",
+            "No regular review of cross-tenant access"
+          ],
+          "controlSlugs": [
+            "service-account-management",
+            "federation-sso"
+          ],
+          "sourceType": "constructed-indicative"
+        },
+        {
+          "id": "E-IAM-09",
+          "name": "Identity provider (IdP) hardening and configuration",
+          "description": "Evidence that the identity provider used for cloud SSO is hardened, with secure token lifetimes, conditional access policies, and compromise detection.",
+          "howToVerify": "Review IdP configuration for session timeout settings, token lifetimes, and conditional access policies. Verify impossible travel and anomalous sign-in detection is enabled. Check that IdP admin access is restricted and audited.",
+          "whatGoodLooksLike": [
+            "Short token lifetimes aligned with risk (e.g. 1 hour for access tokens)",
+            "Conditional access policies enforcing device compliance and location restrictions",
+            "Impossible travel and risky sign-in detection enabled",
+            "IdP administrator access restricted to dedicated admin accounts"
+          ],
+          "commonGaps": [
+            "Long-lived refresh tokens without re-authentication requirements",
+            "No conditional access policies beyond MFA",
+            "Anomalous sign-in detection disabled or alerts not monitored",
+            "IdP admin access from regular user accounts"
+          ],
+          "controlSlugs": [
+            "federation-sso",
+            "cloud-mfa-enforcement"
+          ],
+          "sourceType": "constructed-indicative"
         }
       ]
     },
@@ -200,6 +290,97 @@
             "No integration between discovery and DLP enforcement"
           ],
           "controlSlugs": []
+        },
+        {
+          "id": "E-DSP-06",
+          "name": "Data residency and sovereignty compliance",
+          "description": "Evidence that cloud data storage locations comply with data residency requirements and sovereignty regulations.",
+          "howToVerify": "Review cloud resource deployment regions against data residency policy. Check for SCPs or organization policies restricting resource creation to approved regions. Verify data replication does not cross restricted boundaries.",
+          "whatGoodLooksLike": [
+            "Organization policies restricting resource deployment to approved regions",
+            "Data residency requirements mapped to specific workloads and datasets",
+            "Automated enforcement preventing resource creation in unapproved regions",
+            "Regular audit of resource locations against residency requirements"
+          ],
+          "commonGaps": [
+            "No technical enforcement of data residency -- relies on process",
+            "CDN or caching layers storing data in unapproved regions",
+            "Disaster recovery replication crossing sovereignty boundaries",
+            "Managed services using global endpoints without regional restriction"
+          ],
+          "controlSlugs": [
+            "data-classification"
+          ],
+          "sourceType": "constructed-indicative"
+        },
+        {
+          "id": "E-DSP-07",
+          "name": "Database encryption and access controls",
+          "description": "Evidence that all cloud databases have encryption at rest enabled, transparent data encryption configured, and access restricted to authorized applications and administrators.",
+          "howToVerify": "List all database instances and verify encryption status. Check that database credentials are stored in secrets managers. Verify network access is restricted to private subnets. Confirm audit logging is enabled on all databases.",
+          "whatGoodLooksLike": [
+            "All database instances encrypted at rest with customer-managed keys",
+            "Database credentials rotated automatically via secrets manager",
+            "Network access restricted to application subnets via security groups",
+            "Database audit logging enabled and forwarded to SIEM"
+          ],
+          "commonGaps": [
+            "Legacy databases without encryption at rest",
+            "Database credentials hardcoded in application configuration",
+            "Databases accessible from public subnets",
+            "Audit logging not enabled on all database instances"
+          ],
+          "controlSlugs": [
+            "encryption-at-rest",
+            "data-loss-prevention"
+          ],
+          "sourceType": "constructed-indicative"
+        },
+        {
+          "id": "E-DSP-08",
+          "name": "Object storage access controls and public exposure",
+          "description": "Evidence that cloud object storage (S3, GCS, Azure Blob) has appropriate access controls preventing unauthorized public exposure.",
+          "howToVerify": "Run storage bucket enumeration and check public access settings. Verify account-level public access blocks are enabled. Review bucket policies and ACLs for overly permissive grants. Check for sensitive data in publicly accessible buckets.",
+          "whatGoodLooksLike": [
+            "Account-level public access block enabled for all storage accounts",
+            "No buckets with public read or write access",
+            "Bucket policies follow least privilege with specific principal ARNs",
+            "Automated scanning for sensitive data exposure in storage"
+          ],
+          "commonGaps": [
+            "Public access blocks not enabled at account level",
+            "Legacy buckets with public ACLs for static website hosting",
+            "Bucket policies granting access to wildcard principals",
+            "No automated detection of sensitive data in public storage"
+          ],
+          "controlSlugs": [
+            "data-loss-prevention",
+            "encryption-at-rest"
+          ],
+          "sourceType": "constructed-indicative"
+        },
+        {
+          "id": "E-DSP-09",
+          "name": "Sensitive data discovery and inventory",
+          "description": "Evidence that automated tools are used to discover and inventory sensitive data across cloud storage, databases, and data lakes.",
+          "howToVerify": "Review sensitive data discovery tool configuration and scan results. Verify scan scope covers all storage accounts, databases, and data lakes. Check that discovered sensitive data is classified and tagged. Confirm remediation of improperly stored sensitive data.",
+          "whatGoodLooksLike": [
+            "Automated sensitive data discovery running on regular schedule",
+            "Scan scope covers all cloud storage, databases, and data processing services",
+            "Discovered sensitive data automatically classified and tagged",
+            "Alerting and remediation workflow for improperly stored sensitive data"
+          ],
+          "commonGaps": [
+            "No automated sensitive data discovery tool deployed",
+            "Discovery scans limited to specific accounts or storage types",
+            "Discovered sensitive data not classified or remediated",
+            "Data lakes and analytics services excluded from discovery scope"
+          ],
+          "controlSlugs": [
+            "data-classification",
+            "data-loss-prevention"
+          ],
+          "sourceType": "constructed-indicative"
         }
       ]
     },
@@ -299,6 +480,97 @@
             "No regular rule review or update process"
           ],
           "controlSlugs": []
+        },
+        {
+          "id": "E-IVS-06",
+          "name": "Network segmentation and micro-segmentation controls",
+          "description": "Evidence that cloud networks implement segmentation between workload tiers and micro-segmentation for sensitive workloads.",
+          "howToVerify": "Review VPC and subnet architecture diagrams. Verify that production, staging, and development environments are in separate VPCs or accounts. Check that application tiers (web, app, data) are in separate subnets with restricted inter-tier traffic. Review network policy or security group rules for micro-segmentation.",
+          "whatGoodLooksLike": [
+            "Environment isolation via separate VPCs or accounts",
+            "Application tiers segmented into separate subnets",
+            "Inter-tier traffic restricted to required ports and protocols",
+            "Micro-segmentation for sensitive workloads using network policies"
+          ],
+          "commonGaps": [
+            "Flat network with all workloads in a single subnet",
+            "Development and production in the same VPC",
+            "Security groups allow all traffic between tiers",
+            "No micro-segmentation for container or serverless workloads"
+          ],
+          "controlSlugs": [
+            "vpc-network-design",
+            "security-groups-firewall"
+          ],
+          "sourceType": "constructed-indicative"
+        },
+        {
+          "id": "E-IVS-07",
+          "name": "Egress traffic controls and data exfiltration prevention",
+          "description": "Evidence that cloud network egress traffic is controlled, monitored, and restricted to prevent data exfiltration.",
+          "howToVerify": "Review egress firewall rules and NAT gateway configurations. Check for VPC flow log analysis of outbound traffic patterns. Verify DNS filtering or proxy for outbound internet access. Confirm alerting on anomalous egress traffic volumes.",
+          "whatGoodLooksLike": [
+            "Egress traffic restricted to approved destinations via firewall rules",
+            "Outbound internet access routed through inspection proxy",
+            "DNS filtering blocking known malicious domains",
+            "Anomalous egress traffic volume alerting configured"
+          ],
+          "commonGaps": [
+            "Unrestricted egress to the internet from all workloads",
+            "No monitoring or analysis of outbound traffic patterns",
+            "DNS resolution not filtered or logged",
+            "No alerting on large data transfers to external destinations"
+          ],
+          "controlSlugs": [
+            "vpc-network-design",
+            "security-groups-firewall"
+          ],
+          "sourceType": "constructed-indicative"
+        },
+        {
+          "id": "E-IVS-08",
+          "name": "DNS security configuration",
+          "description": "Evidence that DNS services are secured with DNSSEC, logging, and protection against DNS-based attacks.",
+          "howToVerify": "Check DNSSEC signing on hosted zones. Verify DNS query logging is enabled. Review DNS firewall rules for blocking malicious domains. Confirm private DNS zones are used for internal service discovery.",
+          "whatGoodLooksLike": [
+            "DNSSEC signing enabled on all public hosted zones",
+            "DNS query logging enabled and forwarded to SIEM",
+            "DNS firewall blocking known malicious and DGA domains",
+            "Private DNS zones for internal service resolution"
+          ],
+          "commonGaps": [
+            "DNSSEC not enabled on public zones",
+            "DNS query logging not enabled",
+            "No DNS firewall or filtering for malicious domains",
+            "Internal services using public DNS resolution"
+          ],
+          "controlSlugs": [
+            "vpc-network-design",
+            "ddos-protection"
+          ],
+          "sourceType": "constructed-indicative"
+        },
+        {
+          "id": "E-IVS-09",
+          "name": "TLS certificate management and enforcement",
+          "description": "Evidence that TLS certificates are properly managed with automated renewal, minimum protocol versions, and strong cipher suites.",
+          "howToVerify": "Inventory all TLS certificates and check expiration dates. Verify minimum TLS version is 1.2 or higher. Review cipher suite configuration for deprecated algorithms. Confirm automated certificate renewal via managed certificate services.",
+          "whatGoodLooksLike": [
+            "All public endpoints use TLS 1.2 or higher",
+            "Automated certificate management via cloud certificate services",
+            "No certificates using deprecated ciphers (RC4, 3DES, SHA-1)",
+            "Certificate expiration monitoring with alerting"
+          ],
+          "commonGaps": [
+            "TLS 1.0 or 1.1 still enabled on load balancers",
+            "Manual certificate management leading to expiration incidents",
+            "Self-signed certificates used for internal services without PKI",
+            "Weak cipher suites enabled for backward compatibility"
+          ],
+          "controlSlugs": [
+            "private-endpoints"
+          ],
+          "sourceType": "constructed-indicative"
         }
       ]
     },
@@ -398,6 +670,98 @@
             "Only accepted traffic logged \u2014 rejected traffic not captured"
           ],
           "controlSlugs": []
+        },
+        {
+          "id": "E-LOG-06",
+          "name": "Cloud resource change tracking and audit trail",
+          "description": "Evidence that all cloud resource configuration changes are tracked with full audit trail including who, what, when, and from where.",
+          "howToVerify": "Verify cloud configuration recording service is enabled (AWS Config, Azure Activity Log, GCP Asset Inventory). Check that all resource types are in scope. Confirm change history is retained for required period. Test retrieval of change history for sample resources.",
+          "whatGoodLooksLike": [
+            "Configuration recording enabled for all resource types in all regions",
+            "Change history retained for minimum 1 year",
+            "Changes correlated with IAM principal and source IP",
+            "Configuration snapshots taken on regular schedule"
+          ],
+          "commonGaps": [
+            "Configuration recording not enabled in all regions",
+            "Limited resource types in scope -- missing newer service types",
+            "Change history retention shorter than compliance requirements",
+            "No correlation between changes and approvals"
+          ],
+          "controlSlugs": [
+            "cloud-audit-logging",
+            "log-retention"
+          ],
+          "sourceType": "constructed-indicative"
+        },
+        {
+          "id": "E-LOG-07",
+          "name": "Application-level security logging",
+          "description": "Evidence that cloud-hosted applications produce security-relevant logs including authentication events, authorization failures, and input validation errors.",
+          "howToVerify": "Review application logging configuration for security event categories. Verify logs include authentication success and failure events. Check that authorization failures and privilege escalation attempts are logged. Confirm log format includes correlation IDs for request tracing.",
+          "whatGoodLooksLike": [
+            "Applications log authentication, authorization, and security events",
+            "Structured log format with correlation IDs for tracing",
+            "Security logs forwarded to centralized SIEM",
+            "Sensitive data masked or excluded from log entries"
+          ],
+          "commonGaps": [
+            "Applications only log errors without security event context",
+            "No standardized log format across applications",
+            "Security logs stored locally and not centralized",
+            "Sensitive data (PII, credentials) appearing in log entries"
+          ],
+          "controlSlugs": [
+            "cloud-audit-logging",
+            "siem-integration"
+          ],
+          "sourceType": "constructed-indicative"
+        },
+        {
+          "id": "E-LOG-08",
+          "name": "Log tamper protection and integrity verification",
+          "description": "Evidence that cloud audit logs are protected from tampering with integrity validation, immutable storage, and cross-account log archival.",
+          "howToVerify": "Check log file validation and digest verification settings. Verify logs are stored in immutable storage (S3 Object Lock, WORM). Confirm cross-account log archival to a restricted security account. Test that log deletion is prevented by IAM policies.",
+          "whatGoodLooksLike": [
+            "Log file integrity validation enabled with digest verification",
+            "Logs archived to immutable storage with retention lock",
+            "Cross-account log delivery to security-owned account",
+            "IAM policies preventing log deletion by workload account administrators"
+          ],
+          "commonGaps": [
+            "Log file integrity validation not enabled",
+            "Logs stored in mutable storage without object lock",
+            "Same account stores logs and workloads -- admin can delete logs",
+            "No verification process for log integrity"
+          ],
+          "controlSlugs": [
+            "log-retention",
+            "cloud-audit-logging"
+          ],
+          "sourceType": "constructed-indicative"
+        },
+        {
+          "id": "E-LOG-09",
+          "name": "Cost and usage anomaly detection",
+          "description": "Evidence that cloud spending and resource usage patterns are monitored for anomalies that may indicate security incidents such as cryptomining or data exfiltration.",
+          "howToVerify": "Review cost anomaly detection configuration and alert thresholds. Check for alerts on unusual resource provisioning patterns. Verify budget alerts are configured for each account or project. Confirm response procedures for cost anomalies.",
+          "whatGoodLooksLike": [
+            "Cost anomaly detection enabled with automatic alerting",
+            "Alerts configured for unusual compute, storage, and data transfer spikes",
+            "Budget limits set per account with automatic notification",
+            "Response procedures documented for cost anomaly investigation"
+          ],
+          "commonGaps": [
+            "No cost anomaly detection configured",
+            "Alerts only on monthly totals without real-time anomaly detection",
+            "No correlation between cost anomalies and security investigation",
+            "Budget alerts go to finance team only, not security"
+          ],
+          "controlSlugs": [
+            "cloud-alerting",
+            "threat-detection"
+          ],
+          "sourceType": "constructed-indicative"
         }
       ]
     },
@@ -479,6 +843,95 @@
             "Notification templates not aligned to regulatory requirements"
           ],
           "controlSlugs": []
+        },
+        {
+          "id": "E-SEF-05",
+          "name": "Cloud incident response tabletop exercise records",
+          "description": "Evidence that cloud-specific incident response tabletop exercises are conducted regularly with documented findings and improvement actions.",
+          "howToVerify": "Request tabletop exercise reports from the last 12 months. Verify scenarios include cloud-specific attack vectors. Check that findings resulted in documented improvement actions. Confirm participation from cloud engineering, security, and leadership teams.",
+          "whatGoodLooksLike": [
+            "At least two tabletop exercises per year with cloud-specific scenarios",
+            "Scenarios cover common cloud attacks: credential compromise, data exposure, supply chain",
+            "Findings result in tracked improvement actions with deadlines",
+            "Cross-functional participation including cloud ops, security, legal, and communications"
+          ],
+          "commonGaps": [
+            "No tabletop exercises conducted or exercises are generic (not cloud-specific)",
+            "Findings documented but no improvement actions tracked",
+            "Exercises limited to security team without cross-functional participation",
+            "Same scenario repeated without addressing previous findings"
+          ],
+          "controlSlugs": [
+            "cloud-ir-plan"
+          ],
+          "sourceType": "constructed-indicative"
+        },
+        {
+          "id": "E-SEF-06",
+          "name": "Cloud forensic tooling and evidence collection capability",
+          "description": "Evidence that tooling and procedures exist for collecting forensic evidence from cloud environments including disk snapshots, memory captures, and log preservation.",
+          "howToVerify": "Review forensic toolkit documentation and automation scripts. Verify ability to capture disk snapshots and memory dumps from cloud instances. Check that forensic evidence is stored in isolated, tamper-evident storage. Test forensic collection procedure on a sample instance.",
+          "whatGoodLooksLike": [
+            "Automated forensic collection toolkit deployed and tested",
+            "Procedures for disk snapshot, memory capture, and network capture documented",
+            "Forensic evidence stored in isolated account with immutable storage",
+            "Chain of custody procedures documented for cloud evidence"
+          ],
+          "commonGaps": [
+            "No forensic collection tooling or procedures for cloud environments",
+            "Forensic evidence collected manually without standardized process",
+            "Evidence stored in same account as compromised workload",
+            "No chain of custody documentation for cloud forensic evidence"
+          ],
+          "controlSlugs": [
+            "forensic-readiness"
+          ],
+          "sourceType": "constructed-indicative"
+        },
+        {
+          "id": "E-SEF-07",
+          "name": "Automated incident containment playbooks",
+          "description": "Evidence that automated containment playbooks exist for common cloud security incidents including compromised credentials, exposed data, and malicious compute.",
+          "howToVerify": "Review automated containment playbook inventory and triggers. Test containment actions for credential compromise scenario. Verify playbooks include isolation, evidence preservation, and notification steps. Confirm playbooks are tested regularly.",
+          "whatGoodLooksLike": [
+            "Automated playbooks for top 5 cloud incident scenarios",
+            "Containment actions execute within minutes of detection",
+            "Playbooks preserve evidence before containment actions",
+            "Regular testing and update cycle for playbooks"
+          ],
+          "commonGaps": [
+            "No automated containment -- all responses are manual",
+            "Playbooks exist in documentation but not implemented as automation",
+            "Containment actions destroy evidence needed for investigation",
+            "Playbooks not tested or updated after environment changes"
+          ],
+          "controlSlugs": [
+            "cloud-containment",
+            "cloud-ir-plan"
+          ],
+          "sourceType": "constructed-indicative"
+        },
+        {
+          "id": "E-SEF-08",
+          "name": "Regulatory breach notification compliance",
+          "description": "Evidence that procedures and templates exist for timely regulatory breach notification in compliance with NACSA, PDPA, and other applicable regulations.",
+          "howToVerify": "Review breach notification procedures and templates. Verify notification timelines align with regulatory requirements (e.g. 72-hour PDPA notification). Check that responsible parties are identified and contact information current. Confirm notification was tested in tabletop exercises.",
+          "whatGoodLooksLike": [
+            "Breach notification procedures with clear timelines per regulation",
+            "Pre-approved notification templates for common breach scenarios",
+            "Designated notification officers with current contact information",
+            "Notification procedures tested in tabletop exercises"
+          ],
+          "commonGaps": [
+            "No documented breach notification procedure",
+            "Notification timelines not mapped to specific regulatory requirements",
+            "Templates not pre-approved by legal counsel",
+            "Notification procedures never tested in exercises"
+          ],
+          "controlSlugs": [
+            "incident-notification"
+          ],
+          "sourceType": "constructed-indicative"
         }
       ]
     },
@@ -559,6 +1012,96 @@
             "No approved base image catalogue or governance"
           ],
           "controlSlugs": []
+        },
+        {
+          "id": "E-CCC-05",
+          "name": "Container network policy enforcement",
+          "description": "Evidence that container network policies restrict inter-pod and inter-service communication to explicitly allowed flows.",
+          "howToVerify": "Review Kubernetes NetworkPolicy resources or service mesh configuration. Verify default-deny network policies are applied. Check that inter-service communication is restricted to required paths. Test that unauthorized network connections between pods are blocked.",
+          "whatGoodLooksLike": [
+            "Default-deny network policies in all namespaces",
+            "Explicit allow policies for each required communication path",
+            "Service mesh enforcing mTLS between services",
+            "Network policy violations logged and alerted"
+          ],
+          "commonGaps": [
+            "No network policies applied -- all pods can communicate freely",
+            "Default-deny policy applied but overly broad allow rules negate it",
+            "Network policies in production but not in staging or development",
+            "No monitoring of network policy violations"
+          ],
+          "controlSlugs": [
+            "orchestrator-hardening"
+          ],
+          "sourceType": "constructed-indicative"
+        },
+        {
+          "id": "E-CCC-06",
+          "name": "Container secret management",
+          "description": "Evidence that container workloads retrieve secrets from external secret managers rather than embedding them in images, environment variables, or ConfigMaps.",
+          "howToVerify": "Check for secrets stored as Kubernetes Secrets vs external secret references. Verify integration with cloud KMS or external secret manager. Scan container images for embedded credentials. Review pod specifications for environment variable secrets.",
+          "whatGoodLooksLike": [
+            "All secrets retrieved from external secret manager (Vault, AWS Secrets Manager)",
+            "No secrets embedded in container images or Dockerfiles",
+            "Secret rotation implemented without pod restart required",
+            "Kubernetes Secrets encrypted at rest with KMS"
+          ],
+          "commonGaps": [
+            "Secrets stored as plain Kubernetes Secrets without external manager",
+            "Credentials embedded in container images or environment variables",
+            "No secret rotation -- static credentials with long lifetimes",
+            "Kubernetes Secrets not encrypted at rest"
+          ],
+          "controlSlugs": [
+            "container-image-scanning",
+            "orchestrator-hardening"
+          ],
+          "sourceType": "constructed-indicative"
+        },
+        {
+          "id": "E-CCC-07",
+          "name": "Container resource limits and quotas",
+          "description": "Evidence that containers have CPU and memory limits configured to prevent resource exhaustion and that namespace quotas prevent noisy-neighbor issues.",
+          "howToVerify": "Review pod specifications for resource requests and limits. Check namespace resource quotas and limit ranges. Verify that pods without resource limits are rejected by admission controller. Confirm monitoring of resource utilization against limits.",
+          "whatGoodLooksLike": [
+            "All pods have CPU and memory requests and limits defined",
+            "Namespace resource quotas prevent unbounded resource consumption",
+            "Admission controller rejects pods without resource limits",
+            "Resource utilization monitoring with alerting on approaching limits"
+          ],
+          "commonGaps": [
+            "Pods deployed without resource limits allowing unbounded consumption",
+            "No namespace quotas -- single workload can exhaust cluster resources",
+            "Resource limits set but not enforced by admission controller",
+            "No monitoring of actual resource utilization against limits"
+          ],
+          "controlSlugs": [
+            "orchestrator-hardening"
+          ],
+          "sourceType": "constructed-indicative"
+        },
+        {
+          "id": "E-CCC-08",
+          "name": "Container image provenance and signing",
+          "description": "Evidence that container images are signed and verified before deployment, with image provenance tracked through the build pipeline.",
+          "howToVerify": "Check image signing configuration in CI/CD pipeline. Verify admission controller enforces image signature verification. Review image provenance attestations. Confirm that unsigned or untrusted images are rejected at deployment.",
+          "whatGoodLooksLike": [
+            "All images signed in CI/CD pipeline using cosign or Notary",
+            "Admission controller verifies image signatures before deployment",
+            "Image provenance attestations (SLSA) generated during build",
+            "Only images from trusted registries allowed in cluster"
+          ],
+          "commonGaps": [
+            "Images not signed -- no verification of image provenance",
+            "Image signing configured but admission controller does not verify",
+            "No image provenance attestations generated during build",
+            "Untrusted registries allowed as image sources"
+          ],
+          "controlSlugs": [
+            "container-image-scanning",
+            "container-registry-security"
+          ],
+          "sourceType": "constructed-indicative"
         }
       ]
     },
@@ -639,6 +1182,95 @@
             "No security testing of serverless functions"
           ],
           "controlSlugs": []
+        },
+        {
+          "id": "E-AIS-05",
+          "name": "Serverless function timeout and concurrency limits",
+          "description": "Evidence that serverless functions have appropriate timeout values, concurrency limits, and resource constraints to prevent abuse and cost overruns.",
+          "howToVerify": "Review function configurations for timeout and concurrency settings. Verify reserved concurrency limits prevent resource exhaustion. Check that function memory and execution time align with expected workload. Confirm cost alerting for unexpected function invocations.",
+          "whatGoodLooksLike": [
+            "All functions have timeout values appropriate to their workload",
+            "Reserved concurrency limits prevent runaway invocations",
+            "Memory allocation right-sized based on profiling data",
+            "Cost alerting configured for unusual invocation patterns"
+          ],
+          "commonGaps": [
+            "Default maximum timeout on all functions regardless of workload",
+            "No concurrency limits -- vulnerable to invocation flooding",
+            "Over-provisioned memory increasing cost without benefit",
+            "No monitoring of function invocation costs or patterns"
+          ],
+          "controlSlugs": [
+            "serverless-function-security"
+          ],
+          "sourceType": "constructed-indicative"
+        },
+        {
+          "id": "E-AIS-06",
+          "name": "API gateway authentication and rate limiting",
+          "description": "Evidence that API gateways enforce authentication, authorization, and rate limiting on all exposed API endpoints.",
+          "howToVerify": "Review API gateway configuration for authentication requirements. Verify rate limiting and throttling policies per endpoint. Check that API keys or OAuth tokens are required for all endpoints. Test that unauthenticated requests are rejected.",
+          "whatGoodLooksLike": [
+            "All API endpoints require authentication (API key, OAuth, or IAM)",
+            "Rate limiting configured per client and per endpoint",
+            "Request validation enabled for input schema enforcement",
+            "API usage monitoring with anomaly detection"
+          ],
+          "commonGaps": [
+            "API endpoints accessible without authentication",
+            "No rate limiting allowing API abuse and cost escalation",
+            "Request validation not enabled -- backend processes all input",
+            "No monitoring of API usage patterns for abuse detection"
+          ],
+          "controlSlugs": [
+            "api-gateway-security"
+          ],
+          "sourceType": "constructed-indicative"
+        },
+        {
+          "id": "E-AIS-07",
+          "name": "Serverless event source security",
+          "description": "Evidence that event sources triggering serverless functions are authenticated and validated to prevent event injection attacks.",
+          "howToVerify": "Review event source mappings and trigger configurations. Verify that event sources use authenticated delivery (e.g. signed SNS messages). Check that function code validates event source identity. Confirm that direct invocation is restricted to authorized principals.",
+          "whatGoodLooksLike": [
+            "Event sources authenticated with signature verification",
+            "Function resource policies restrict invocation to specific services and accounts",
+            "Input validation on event payloads before processing",
+            "Direct function invocation restricted to authorized IAM principals"
+          ],
+          "commonGaps": [
+            "Functions accept events from any source without verification",
+            "Resource policies allow invocation from wildcard principals",
+            "No input validation on event payloads",
+            "Direct invocation allowed from any authenticated principal"
+          ],
+          "controlSlugs": [
+            "serverless-function-security",
+            "api-gateway-security"
+          ],
+          "sourceType": "constructed-indicative"
+        },
+        {
+          "id": "E-AIS-08",
+          "name": "Serverless VPC integration and network isolation",
+          "description": "Evidence that serverless functions accessing sensitive resources are deployed within VPCs with appropriate network controls.",
+          "howToVerify": "Review function VPC configuration for functions accessing databases or internal services. Verify that VPC-connected functions use private subnets. Check security group rules for VPC-connected functions. Confirm NAT gateway or VPC endpoint for internet or service access.",
+          "whatGoodLooksLike": [
+            "Functions accessing internal resources deployed in VPC private subnets",
+            "Security groups restrict function network access to required endpoints",
+            "VPC endpoints used for AWS service access without internet routing",
+            "Functions not requiring internal access deployed without VPC for simplicity"
+          ],
+          "commonGaps": [
+            "Functions access databases over public endpoints instead of VPC",
+            "VPC-connected functions in public subnets with internet gateway",
+            "Overly permissive security groups on VPC-connected functions",
+            "All functions deployed in VPC regardless of need, increasing complexity"
+          ],
+          "controlSlugs": [
+            "serverless-function-security"
+          ],
+          "sourceType": "constructed-indicative"
         }
       ]
     },
@@ -719,6 +1351,96 @@
             "No supply chain provenance tracking"
           ],
           "controlSlugs": []
+        },
+        {
+          "id": "E-STA-05",
+          "name": "CI/CD pipeline access controls and audit trail",
+          "description": "Evidence that CI/CD pipeline access is restricted with role-based permissions, approval gates, and complete audit trail of pipeline executions.",
+          "howToVerify": "Review CI/CD platform access controls and role assignments. Verify approval gates for production deployments. Check audit logs for pipeline configuration changes. Confirm separation of duties between pipeline developers and approvers.",
+          "whatGoodLooksLike": [
+            "Role-based access control on pipeline configuration and execution",
+            "Mandatory approval gates for production deployments",
+            "Complete audit trail of pipeline executions and configuration changes",
+            "Separation of duties -- pipeline authors cannot approve their own deployments"
+          ],
+          "commonGaps": [
+            "All developers have admin access to CI/CD platform",
+            "No approval gates -- code merges automatically deploy to production",
+            "Pipeline execution logs not retained or audited",
+            "Same person can author, approve, and deploy pipeline changes"
+          ],
+          "controlSlugs": [
+            "pipeline-security"
+          ],
+          "sourceType": "constructed-indicative"
+        },
+        {
+          "id": "E-STA-06",
+          "name": "Dependency vulnerability scanning and remediation",
+          "description": "Evidence that software dependencies are scanned for vulnerabilities with documented remediation timelines and exception processes.",
+          "howToVerify": "Review dependency scanning tool configuration and integration with CI/CD. Check vulnerability report for open findings and remediation status. Verify that critical and high vulnerabilities block pipeline. Confirm exception process for accepted vulnerabilities.",
+          "whatGoodLooksLike": [
+            "Dependency scanning integrated in CI/CD pipeline blocking on critical/high findings",
+            "Vulnerability database updated continuously with new CVEs",
+            "Remediation SLAs: critical 24h, high 7d, medium 30d",
+            "Exception process requiring security team approval with expiration date"
+          ],
+          "commonGaps": [
+            "Dependency scanning not integrated in CI/CD -- runs ad hoc",
+            "Scanning enabled but does not block pipeline on findings",
+            "Large backlog of unaddressed vulnerability findings",
+            "No defined remediation timelines or exception process"
+          ],
+          "controlSlugs": [
+            "dependency-management",
+            "serverless-dependency-scanning"
+          ],
+          "sourceType": "constructed-indicative"
+        },
+        {
+          "id": "E-STA-07",
+          "name": "Infrastructure as Code security review process",
+          "description": "Evidence that infrastructure as code templates undergo security review with automated scanning and peer review before deployment.",
+          "howToVerify": "Review IaC scanning tool configuration and policy rules. Check that IaC changes require security review in pull request process. Verify scanning catches common misconfigurations. Confirm that high-severity IaC findings block deployment.",
+          "whatGoodLooksLike": [
+            "IaC scanning integrated in pull request workflow with automated comments",
+            "Policy rules cover CIS benchmarks and cloud security best practices",
+            "High-severity findings block merge and deployment",
+            "Security team reviews IaC changes for sensitive resources"
+          ],
+          "commonGaps": [
+            "IaC scanning not integrated in development workflow",
+            "Scanning rules are defaults without customization for organization",
+            "Findings are informational only and do not block deployment",
+            "No security review for IaC changes to sensitive resources"
+          ],
+          "controlSlugs": [
+            "iac-scanning"
+          ],
+          "sourceType": "constructed-indicative"
+        },
+        {
+          "id": "E-STA-08",
+          "name": "Build environment security and integrity",
+          "description": "Evidence that CI/CD build environments are secured with ephemeral runners, minimal tooling, and protection against build-time attacks.",
+          "howToVerify": "Review build runner configuration for ephemeral vs persistent runners. Check that build environments use minimal base images. Verify that build secrets are injected securely and not persisted. Confirm that build outputs are signed or attested.",
+          "whatGoodLooksLike": [
+            "Ephemeral build runners destroyed after each job",
+            "Minimal base images for build environments without unnecessary tools",
+            "Build secrets injected via secure mechanism and not persisted to disk",
+            "Build outputs include provenance attestation (SLSA level 2+)"
+          ],
+          "commonGaps": [
+            "Persistent build runners reused across jobs and teams",
+            "Build environments with broad tooling that could be exploited",
+            "Build secrets stored in environment variables accessible to all steps",
+            "No build output signing or provenance attestation"
+          ],
+          "controlSlugs": [
+            "pipeline-security",
+            "sbom-management"
+          ],
+          "sourceType": "constructed-indicative"
         }
       ]
     },
@@ -799,6 +1521,98 @@
             "FIPS compliance level not verified or insufficient for regulatory requirements"
           ],
           "controlSlugs": []
+        },
+        {
+          "id": "E-CEK-05",
+          "name": "Key access policy and usage audit",
+          "description": "Evidence that encryption key access policies follow least privilege and that key usage is audited for unauthorized access attempts.",
+          "howToVerify": "Review KMS key policies for overly broad access grants. Check key usage logs for unauthorized or anomalous access patterns. Verify that key administrators cannot use keys for encryption and vice versa. Confirm separation of duties between key management and key usage roles.",
+          "whatGoodLooksLike": [
+            "Key policies grant access only to specific services and principals",
+            "Key usage logged and monitored for anomalous access patterns",
+            "Separation of duties: key admins cannot encrypt/decrypt and operators cannot manage keys",
+            "Regular review of key access policies"
+          ],
+          "commonGaps": [
+            "Key policies grant access to root account or all principals in account",
+            "Key usage not monitored or audited",
+            "Same role can manage keys and use them for encryption",
+            "Key policies never reviewed after initial creation"
+          ],
+          "controlSlugs": [
+            "kms-usage",
+            "key-rotation"
+          ],
+          "sourceType": "constructed-indicative"
+        },
+        {
+          "id": "E-CEK-06",
+          "name": "Cryptographic key lifecycle management",
+          "description": "Evidence that encryption keys follow a defined lifecycle including creation, activation, rotation, deactivation, and destruction with documented procedures for each phase.",
+          "howToVerify": "Review key lifecycle management procedures and documentation. Verify key states are tracked (active, suspended, deactivated, destroyed). Check that key destruction procedures include waiting periods and multi-party authorization. Confirm old key versions are deactivated on schedule.",
+          "whatGoodLooksLike": [
+            "Documented key lifecycle policy covering all phases",
+            "Automated key rotation with configurable schedules",
+            "Multi-party authorization required for key destruction",
+            "Key state tracking with scheduled transitions"
+          ],
+          "commonGaps": [
+            "No documented key lifecycle procedures",
+            "Keys created but never rotated or destroyed",
+            "Single administrator can destroy keys without approval",
+            "No tracking of key states or scheduled transitions"
+          ],
+          "controlSlugs": [
+            "key-rotation",
+            "kms-usage"
+          ],
+          "sourceType": "constructed-indicative"
+        },
+        {
+          "id": "E-CEK-07",
+          "name": "Certificate and TLS key management",
+          "description": "Evidence that TLS certificates and their private keys are managed securely with automated issuance, renewal, and revocation capabilities.",
+          "howToVerify": "Review certificate inventory and management tooling. Verify automated renewal via cloud certificate manager or internal PKI. Check certificate revocation procedures and CRL/OCSP configuration. Confirm private keys are stored in HSM or KMS.",
+          "whatGoodLooksLike": [
+            "Automated certificate issuance and renewal via managed service",
+            "Certificate inventory with expiration monitoring and alerting",
+            "Private keys stored in HSM or cloud KMS -- never exported",
+            "Certificate revocation procedures tested and documented"
+          ],
+          "commonGaps": [
+            "Manual certificate management leading to expiration outages",
+            "Private keys stored on disk or in version control",
+            "No certificate inventory -- unknown certificates in environment",
+            "No certificate revocation procedure or CRL distribution"
+          ],
+          "controlSlugs": [
+            "kms-usage",
+            "hsm-sensitive-keys"
+          ],
+          "sourceType": "constructed-indicative"
+        },
+        {
+          "id": "E-CEK-08",
+          "name": "Data encryption key envelope architecture",
+          "description": "Evidence that envelope encryption is used with data encryption keys (DEKs) protected by key encryption keys (KEKs) in a hierarchical key management architecture.",
+          "howToVerify": "Review encryption architecture documentation for envelope encryption pattern. Verify DEKs are encrypted by KEKs stored in KMS. Check that DEKs are generated per-object or per-resource. Confirm KEK rotation re-wraps DEKs without data re-encryption.",
+          "whatGoodLooksLike": [
+            "Envelope encryption with DEKs protected by KEKs in cloud KMS",
+            "Unique DEKs per object or resource for blast radius limitation",
+            "KEK rotation re-wraps DEKs without requiring data re-encryption",
+            "Encryption architecture documented and reviewed by security team"
+          ],
+          "commonGaps": [
+            "Single encryption key used for all data without envelope encryption",
+            "Key rotation requires full data re-encryption causing operational issues",
+            "Encryption architecture not documented or understood by team",
+            "DEKs stored alongside encrypted data without protection"
+          ],
+          "controlSlugs": [
+            "kms-usage",
+            "byok-strategy"
+          ],
+          "sourceType": "constructed-indicative"
         }
       ]
     },
@@ -880,6 +1694,97 @@
             "Manual changes made directly in console without tracking"
           ],
           "controlSlugs": []
+        },
+        {
+          "id": "E-DCS-05",
+          "name": "Automated remediation for critical misconfigurations",
+          "description": "Evidence that automated remediation is configured for critical cloud misconfigurations such as public access, missing encryption, and overly permissive security groups.",
+          "howToVerify": "Review automated remediation rules and triggers. Verify that critical misconfigurations trigger automatic corrective action. Check remediation logs for execution history. Confirm that remediation does not cause service disruption.",
+          "whatGoodLooksLike": [
+            "Auto-remediation for top 10 critical misconfigurations",
+            "Remediation rules tested in non-production before production deployment",
+            "Remediation execution logged with notification to resource owners",
+            "Guardrails prevent remediation from causing service disruption"
+          ],
+          "commonGaps": [
+            "No automated remediation -- all corrections are manual",
+            "Auto-remediation configured but not tested, causing outages",
+            "Remediation limited to alerting without corrective action",
+            "Resource owners not notified of automated corrections"
+          ],
+          "controlSlugs": [
+            "cspm-deployment",
+            "drift-detection"
+          ],
+          "sourceType": "constructed-indicative"
+        },
+        {
+          "id": "E-DCS-06",
+          "name": "Multi-account security baseline enforcement",
+          "description": "Evidence that a security baseline is enforced across all cloud accounts or projects using organization-level policies (SCPs, Organization Policies, Azure Policies).",
+          "howToVerify": "Review organization-level policy configuration (SCPs, OrgPolicies). Verify baseline includes required security controls (encryption, logging, network). Check that new accounts automatically inherit security baseline. Confirm policy exceptions are documented and approved.",
+          "whatGoodLooksLike": [
+            "Organization-level policies enforce security baseline on all accounts",
+            "Baseline includes: encryption, logging, network restrictions, region restrictions",
+            "New accounts automatically provisioned with security baseline",
+            "Policy exceptions require security team approval with documented justification"
+          ],
+          "commonGaps": [
+            "No organization-level security policies -- each account configured independently",
+            "Baseline policies exist but not applied to all organizational units",
+            "New accounts provisioned without security baseline",
+            "Exceptions granted without formal process or expiration"
+          ],
+          "controlSlugs": [
+            "cspm-deployment",
+            "cis-benchmark-compliance"
+          ],
+          "sourceType": "constructed-indicative"
+        },
+        {
+          "id": "E-DCS-07",
+          "name": "Cloud resource inventory and ownership tracking",
+          "description": "Evidence that all cloud resources are inventoried with defined ownership, cost center, and data classification tags.",
+          "howToVerify": "Review resource tagging policy and compliance reports. Check that required tags (owner, cost center, data classification, environment) are enforced. Verify tag compliance percentage across all resources. Confirm untagged resources are identified and remediated.",
+          "whatGoodLooksLike": [
+            "Mandatory tags enforced via tag policies or admission webhooks",
+            "Greater than 95% tag compliance across all resources",
+            "Automated reporting on untagged or non-compliant resources",
+            "Tag values validated against approved lists (cost centers, teams)"
+          ],
+          "commonGaps": [
+            "No tag policy enforcement -- tagging is voluntary",
+            "Low tag compliance making cost allocation and ownership unclear",
+            "Tag keys inconsistent across teams (owner vs Owner vs resource-owner)",
+            "No automated reporting on tag compliance"
+          ],
+          "controlSlugs": [
+            "resource-tagging"
+          ],
+          "sourceType": "constructed-indicative"
+        },
+        {
+          "id": "E-DCS-08",
+          "name": "Service enablement and API controls",
+          "description": "Evidence that cloud service APIs are restricted to approved services with unapproved or risky services blocked at the organization level.",
+          "howToVerify": "Review organization policies for service restriction (SCP deny lists, GCP Organization Policy constraints). Verify that only approved services are available in workload accounts. Check exception process for enabling new services. Confirm that high-risk services require additional approval.",
+          "whatGoodLooksLike": [
+            "Organization policies restrict available services to approved list",
+            "New service enablement requires security review and approval",
+            "High-risk services (e.g. public-facing, data processing) require additional controls",
+            "Regular review of approved service list against actual usage"
+          ],
+          "commonGaps": [
+            "All cloud services available without restriction",
+            "No security review process for new service adoption",
+            "Service restrictions applied inconsistently across accounts",
+            "No visibility into which services are actively used"
+          ],
+          "controlSlugs": [
+            "cspm-deployment",
+            "cis-benchmark-compliance"
+          ],
+          "sourceType": "constructed-indicative"
         }
       ]
     },
@@ -960,6 +1865,97 @@
             "Ransomware recovery scenario never tested"
           ],
           "controlSlugs": []
+        },
+        {
+          "id": "E-BCR-05",
+          "name": "Backup encryption and access controls",
+          "description": "Evidence that all backups are encrypted at rest with controlled access and that backup encryption keys are managed separately from production keys.",
+          "howToVerify": "Verify all backup vaults and snapshots are encrypted. Check that backup access policies restrict access to backup administrators only. Verify backup encryption keys are separate from production data keys. Confirm backup access is logged and monitored.",
+          "whatGoodLooksLike": [
+            "All backups encrypted with customer-managed keys",
+            "Backup vault access restricted to dedicated backup administrator role",
+            "Backup encryption keys managed separately from production keys",
+            "Backup access logged and monitored for unauthorized access"
+          ],
+          "commonGaps": [
+            "Backups encrypted with default service keys instead of customer-managed",
+            "Backup access available to all administrators in the account",
+            "Same encryption keys used for backups and production data",
+            "Backup access not logged or monitored"
+          ],
+          "controlSlugs": [
+            "backup-strategy"
+          ],
+          "sourceType": "constructed-indicative"
+        },
+        {
+          "id": "E-BCR-06",
+          "name": "Backup restoration testing records",
+          "description": "Evidence that backup restoration is tested regularly with documented results including restoration time, data integrity verification, and comparison against RTO/RPO targets.",
+          "howToVerify": "Request backup restoration test reports for the last 12 months. Verify restoration was tested for critical systems. Check that actual restoration time is compared against RTO target. Confirm data integrity verification was performed after restoration.",
+          "whatGoodLooksLike": [
+            "Quarterly restoration testing for critical systems",
+            "Actual restoration times documented and within RTO targets",
+            "Data integrity verified after restoration using checksums or application validation",
+            "Test findings result in improvement actions for backup procedures"
+          ],
+          "commonGaps": [
+            "Backup restoration never tested -- assumed to work",
+            "Restoration tested but results not documented",
+            "Restoration time exceeds RTO target without remediation plan",
+            "Data integrity not verified after test restoration"
+          ],
+          "controlSlugs": [
+            "dr-testing",
+            "rto-rpo-definition"
+          ],
+          "sourceType": "constructed-indicative"
+        },
+        {
+          "id": "E-BCR-07",
+          "name": "Ransomware-resilient backup architecture",
+          "description": "Evidence that backup architecture is resilient to ransomware with immutable backups, air-gapped copies, and protection against administrative compromise.",
+          "howToVerify": "Verify backup immutability settings (vault lock, object lock). Check for air-gapped or cross-account backup copies. Verify that backup deletion requires multi-party authorization. Confirm backups cannot be encrypted or deleted by compromised admin credentials.",
+          "whatGoodLooksLike": [
+            "Immutable backups with vault lock preventing deletion",
+            "Cross-account backup copies in isolated security account",
+            "Multi-party authorization required for backup deletion or policy changes",
+            "Backup retention independent of production account administrators"
+          ],
+          "commonGaps": [
+            "Backups not immutable -- can be deleted by account administrator",
+            "No cross-account or air-gapped backup copies",
+            "Single administrator can delete backups without approval",
+            "Backup account accessible from production environment"
+          ],
+          "controlSlugs": [
+            "backup-strategy",
+            "cross-region-replication"
+          ],
+          "sourceType": "constructed-indicative"
+        },
+        {
+          "id": "E-BCR-08",
+          "name": "Disaster recovery failover and failback procedures",
+          "description": "Evidence that disaster recovery failover and failback procedures are documented, automated where possible, and tested with actual failover exercises.",
+          "howToVerify": "Review DR failover and failback runbooks. Check automation for DNS failover, database promotion, and service redirection. Verify DR exercise reports with actual failover execution. Confirm failback procedures are tested in addition to failover.",
+          "whatGoodLooksLike": [
+            "Documented failover and failback runbooks for all critical systems",
+            "Automated failover for DNS, load balancers, and database promotion",
+            "Annual DR exercise with actual failover to secondary region",
+            "Failback procedures tested and documented"
+          ],
+          "commonGaps": [
+            "DR procedures documented but never tested with actual failover",
+            "Manual failover process taking hours instead of minutes",
+            "Failover tested but failback procedures not documented or tested",
+            "DR exercise limited to tabletop without actual system failover"
+          ],
+          "controlSlugs": [
+            "dr-testing",
+            "rto-rpo-definition"
+          ],
+          "sourceType": "constructed-indicative"
         }
       ]
     },
@@ -1059,6 +2055,119 @@
             "No certification requirements for cloud security roles"
           ],
           "controlSlugs": []
+        },
+        {
+          "id": "E-GRC-06",
+          "name": "Cloud risk register and treatment plans",
+          "description": "Evidence that a cloud-specific risk register is maintained with identified risks, risk owners, treatment plans, and residual risk acceptance.",
+          "howToVerify": "Review cloud risk register for completeness and currency. Verify each risk has an assigned owner and treatment plan. Check that risk assessments are updated after significant changes. Confirm residual risks are formally accepted by appropriate authority.",
+          "whatGoodLooksLike": [
+            "Cloud-specific risk register maintained and updated quarterly",
+            "Each risk has assigned owner, likelihood, impact, and treatment plan",
+            "Risk assessments updated after architecture changes or incidents",
+            "Residual risk formally accepted by CISO or risk committee"
+          ],
+          "commonGaps": [
+            "No cloud-specific risk register -- cloud risks not separately tracked",
+            "Risk register exists but not updated regularly",
+            "Risks identified but no treatment plans or owners assigned",
+            "Residual risk not formally accepted by appropriate authority"
+          ],
+          "controlSlugs": [
+            "cloud-governance-framework"
+          ],
+          "sourceType": "constructed-indicative"
+        },
+        {
+          "id": "E-GRC-07",
+          "name": "Cloud security training and awareness program",
+          "description": "Evidence that cloud security training is provided to development and operations teams with role-specific content and completion tracking.",
+          "howToVerify": "Review cloud security training program curriculum and schedule. Check training completion rates for relevant teams. Verify training content covers cloud-specific threats and controls. Confirm training is updated regularly to reflect new services and threats.",
+          "whatGoodLooksLike": [
+            "Role-specific cloud security training for developers, operators, and architects",
+            "Training completion tracked with greater than 90% completion rate",
+            "Training content updated annually to reflect new cloud services and threats",
+            "Hands-on labs and exercises supplement classroom or online training"
+          ],
+          "commonGaps": [
+            "No cloud-specific security training -- only generic security awareness",
+            "Training not tracked or low completion rates",
+            "Training content outdated and not reflecting current cloud services",
+            "Training is lecture-only without hands-on exercises"
+          ],
+          "controlSlugs": [
+            "cloud-governance-framework"
+          ],
+          "sourceType": "constructed-indicative"
+        },
+        {
+          "id": "E-GRC-08",
+          "name": "Cloud shared responsibility model documentation",
+          "description": "Evidence that the shared responsibility model is documented for each CSP, with clear delineation of customer vs provider responsibilities and gap analysis.",
+          "howToVerify": "Review shared responsibility documentation for each CSP in use. Verify that responsibilities are mapped to specific security controls. Check that gaps in the customer responsibility area are identified with mitigation plans. Confirm documentation is reviewed when adopting new cloud services.",
+          "whatGoodLooksLike": [
+            "Shared responsibility matrix documented for each CSP",
+            "Customer responsibilities mapped to specific security controls and evidence",
+            "Gaps identified with mitigation or risk acceptance plans",
+            "Documentation updated when adopting new services or changing architecture"
+          ],
+          "commonGaps": [
+            "No documented shared responsibility understanding",
+            "Assumption that CSP handles security responsibilities that are customer-owned",
+            "Shared responsibility understood for IaaS but not for PaaS/SaaS services",
+            "Documentation not updated for new services"
+          ],
+          "controlSlugs": [
+            "cloud-governance-framework",
+            "vendor-assessment"
+          ],
+          "sourceType": "constructed-indicative"
+        },
+        {
+          "id": "E-GRC-09",
+          "name": "Regulatory compliance mapping and gap analysis",
+          "description": "Evidence that applicable regulatory requirements (NACSA, PDPA, etc.) are mapped to cloud security controls with gap analysis and remediation tracking.",
+          "howToVerify": "Review regulatory compliance mapping matrix. Verify each applicable requirement is mapped to implementing control(s). Check gap analysis for unmapped or partially implemented requirements. Confirm remediation tracking for identified gaps.",
+          "whatGoodLooksLike": [
+            "Complete mapping of regulatory requirements to cloud security controls",
+            "Gap analysis identifying partially or unimplemented requirements",
+            "Remediation plan with timelines for closing identified gaps",
+            "Regular review and update of mapping as regulations change"
+          ],
+          "commonGaps": [
+            "No formal mapping between regulations and cloud controls",
+            "Mapping exists but incomplete -- newer regulations not covered",
+            "Gaps identified but no remediation plan or timeline",
+            "Mapping not updated when regulations are amended"
+          ],
+          "controlSlugs": [
+            "audit-readiness",
+            "cloud-governance-framework"
+          ],
+          "sourceType": "constructed-indicative"
+        },
+        {
+          "id": "E-GRC-10",
+          "name": "Cloud service provider audit reports and certifications",
+          "description": "Evidence that CSP audit reports (SOC 2, ISO 27001, etc.) are obtained, reviewed, and any relevant findings tracked for customer impact assessment.",
+          "howToVerify": "Request copies of CSP audit reports (SOC 2 Type II, ISO 27001 certificates). Verify reports cover the services and regions in use. Check that complementary user entity controls (CUECs) are implemented. Confirm any CSP audit findings are assessed for customer impact.",
+          "whatGoodLooksLike": [
+            "Current SOC 2 Type II and ISO 27001 reports obtained for all CSPs",
+            "Reports reviewed for coverage of services and regions in use",
+            "CUECs from SOC reports implemented and evidenced",
+            "CSP audit findings assessed for customer environment impact"
+          ],
+          "commonGaps": [
+            "CSP audit reports not obtained or reviewed",
+            "Reports obtained but CUECs not implemented",
+            "Reports cover different services or regions than those in use",
+            "No assessment of CSP findings for customer impact"
+          ],
+          "controlSlugs": [
+            "vendor-assessment",
+            "audit-readiness"
+          ],
+          "sourceType": "constructed-indicative"
         }
       ]
     }

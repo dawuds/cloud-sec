@@ -1080,6 +1080,14 @@ async function renderControlDetail(slug) {
       </div>
     </section>` : '';
 
+  // Section 7: Cross-Reference Lookup (bidirectional)
+  let crossRefSection = '';
+  if (ctrl.ccmControls && ctrl.ccmControls.length) {
+    // Extract CCM domain from control ID (e.g., "IAM-02" -> "IAM")
+    const ccmDomain = ctrl.ccmControls[0].replace(/-\d+$/, '');
+    crossRefSection = await renderBidirectionalLookup(ccmDomain);
+  }
+
   // CSP Implementation (extra, shown after source provisions)
   const cspSection = ctrl.cspImplementation ? `
     <section class="detail-section">
@@ -1113,6 +1121,7 @@ async function renderControlDetail(slug) {
       ${maturitySection}
       ${auditPackageSection}
       ${fwSection}
+      ${crossRefSection}
       ${provisionSection}
       ${cspSection}
     </article>
@@ -1657,7 +1666,7 @@ async function renderReference(sub) {
       </div>
       <div class="control-card" onclick="navigate('reference/csp-mapping')">
         <h3 class="control-card-title">CCM v4 &rarr; CSP Services</h3>
-        <p class="control-card-desc">CCM domains mapped to AWS, Azure, and GCP services</p>
+        <p class="control-card-desc">CCM domains mapped to AWS, Azure, GCP, Alibaba, Huawei, and OCI services</p>
       </div>
     </div>
   `;
@@ -1740,8 +1749,116 @@ async function renderCrossMitre() {
   `);
 }
 
+// ─── Bidirectional Cross-Reference Lookup ─────────────────────────────────
+async function renderBidirectionalLookup(ccmDomain) {
+  const csps = ['aws', 'azure', 'gcp', 'alibaba', 'huawei', 'oracle'];
+  const cspLabels = { aws: 'AWS', azure: 'Azure', gcp: 'GCP', alibaba: 'Alibaba', huawei: 'Huawei', oracle: 'OCI' };
+
+  const [iso27017Data, rmitNacsaData, nacsaData, nistCsfData, ...cspResults] = await Promise.all([
+    load('cross-references/ccm-to-iso27017.json').catch(() => null),
+    load('cross-references/rmit-to-nacsa.json').catch(() => null),
+    load('cross-references/ccm-to-nacsa.json').catch(() => null),
+    load('cross-references/ccm-to-nist-csf.json').catch(() => null),
+    ...csps.map(c => load(`cross-references/ccm-to-${c}.json`).catch(() => null)),
+  ]);
+
+  const results = [];
+
+  // CSP service mappings
+  csps.forEach((csp, i) => {
+    if (!cspResults[i]) return;
+    const mappings = cspResults[i].mappings || [];
+    const entry = mappings.find(m => m.ccmDomain === ccmDomain);
+    if (!entry) return;
+    const svcArr = entry.services || entry.awsServices || entry.azureServices || entry.gcpServices || entry.alibabaServices || entry.huaweiServices || entry.ociServices || [];
+    svcArr.forEach(s => {
+      const svcName = typeof s === 'string' ? s : (s.service || s.name || '');
+      if (svcName) results.push({ framework: cspLabels[csp], ref: svcName, type: 'csp' });
+    });
+  });
+
+  // ISO 27017 mappings
+  if (iso27017Data) {
+    const mappings = iso27017Data.mappings || [];
+    const entry = mappings.find(m => m.ccmDomain === ccmDomain);
+    if (entry && entry.iso27017Controls) {
+      entry.iso27017Controls.forEach(c => {
+        results.push({ framework: 'ISO 27017', ref: c.clause + ' ' + (c.name || ''), type: 'standard' });
+      });
+    }
+  }
+
+  // NACSA mappings
+  if (nacsaData) {
+    const mappings = nacsaData.mappings || [];
+    const entry = mappings.find(m => m.ccmDomain === ccmDomain);
+    if (entry && entry.nacsaSections) {
+      (Array.isArray(entry.nacsaSections) ? entry.nacsaSections : []).forEach(s => {
+        const sec = typeof s === 'string' ? s : (s.section || '');
+        const title = typeof s === 'object' ? (s.title || '') : '';
+        results.push({ framework: 'NACSA Act 854', ref: sec + (title ? ' — ' + title : ''), type: 'regulation' });
+      });
+    }
+  }
+
+  // NIST CSF mappings
+  if (nistCsfData) {
+    const mappings = nistCsfData.mappings || [];
+    const entry = mappings.find(m => m.ccmDomain === ccmDomain);
+    if (entry && entry.nistCsfMappings) {
+      entry.nistCsfMappings.forEach(n => {
+        results.push({ framework: 'NIST CSF 2.0', ref: n, type: 'standard' });
+      });
+    }
+  }
+
+  // RMiT-NACSA cross-references (find RMiT clauses related to this CCM domain via NACSA sections)
+  if (rmitNacsaData && nacsaData) {
+    const nacsaMappings = nacsaData.mappings || [];
+    const nacsaEntry = nacsaMappings.find(m => m.ccmDomain === ccmDomain);
+    if (nacsaEntry && nacsaEntry.nacsaSections) {
+      const nacsaSecs = (Array.isArray(nacsaEntry.nacsaSections) ? nacsaEntry.nacsaSections : []).map(s => typeof s === 'string' ? s : (s.section || ''));
+      const rmitMappings = rmitNacsaData.mappings || [];
+      rmitMappings.forEach(rm => {
+        const rmNacsaSecs = rm.nacsaSections || [];
+        if (rmNacsaSecs.some(s => nacsaSecs.includes(s))) {
+          results.push({ framework: 'BNM RMiT', ref: rm.rmitClause + ' — ' + (rm.rmitTitle || ''), type: 'regulation' });
+        }
+      });
+    }
+  }
+
+  if (!results.length) return '';
+
+  const typeColors = { csp: 'badge-csp-aws', standard: 'badge-domain', regulation: 'badge-evidence' };
+  const grouped = {};
+  results.forEach(r => {
+    if (!grouped[r.framework]) grouped[r.framework] = [];
+    // Deduplicate
+    if (!grouped[r.framework].some(e => e.ref === r.ref)) grouped[r.framework].push(r);
+  });
+
+  return `
+    <section class="detail-section">
+      <h2 class="detail-section-title">Cross-Reference Lookup</h2>
+      <p style="color:var(--text-secondary);font-size:var(--font-size-sm);margin-bottom:1rem">
+        Bidirectional mappings for CCM domain <strong>${escHtml(ccmDomain)}</strong> across all frameworks, standards, and CSP services.
+      </p>
+      <div style="display:flex;flex-wrap:wrap;gap:0.75rem">
+        ${Object.entries(grouped).map(([fw, items]) => `
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:0.75rem;min-width:220px;flex:1">
+            <div style="font-weight:600;margin-bottom:0.5rem;font-size:var(--font-size-sm)">${escHtml(fw)}</div>
+            ${items.map(it => `<div style="font-size:var(--font-size-xs);padding:0.2rem 0;border-bottom:1px solid var(--border)">
+              <span class="badge ${typeColors[it.type] || 'badge-category'}" style="font-size:0.65rem">${escHtml(it.ref)}</span>
+            </div>`).join('')}
+          </div>`).join('')}
+      </div>
+    </section>`;
+}
+
 async function renderCrossCSP() {
-  const csps = ['aws', 'azure', 'gcp'];
+  const csps = ['aws', 'azure', 'gcp', 'alibaba', 'huawei', 'oracle'];
+  const cspLabels = { aws: 'AWS', azure: 'Azure', gcp: 'GCP', alibaba: 'Alibaba', huawei: 'Huawei', oracle: 'OCI' };
   const results = await Promise.all(csps.map(c => load(`cross-references/ccm-to-${c}.json`).catch(() => null)));
 
   const data = {};
@@ -1749,26 +1866,29 @@ async function renderCrossCSP() {
 
   const allDomains = [...new Set(Object.values(data).flatMap(arr => (Array.isArray(arr) ? arr : []).map(m => m.ccmDomain)))];
 
+  const getSvcArr = (entry) => {
+    if (!entry) return [];
+    return entry.services || entry.awsServices || entry.azureServices || entry.gcpServices || entry.alibabaServices || entry.huaweiServices || entry.ociServices || [];
+  };
+
   setApp(`
     <nav class="breadcrumbs"><a href="#reference">Reference</a><span class="sep">/</span><span class="current">CCM &rarr; CSP</span></nav>
     <div class="page-title">CCM v4 &rarr; CSP Services</div>
 
     <div class="table-wrap"><table>
-      <thead><tr><th>CCM Domain</th><th>${cspBadge('AWS')}</th><th>${cspBadge('Azure')}</th><th>${cspBadge('GCP')}</th></tr></thead>
+      <thead><tr><th>CCM Domain</th>${csps.map(c => `<th>${cspBadge(cspLabels[c])}</th>`).join('')}</tr></thead>
       <tbody>
         ${allDomains.map(d => {
           const get = (csp) => {
             const arr = data[csp] || [];
             const entry = (Array.isArray(arr) ? arr : []).find(m => m.ccmDomain === d);
             if (!entry) return '-';
-            const svcArr = entry.services || entry.awsServices || entry.azureServices || entry.gcpServices || [];
+            const svcArr = getSvcArr(entry);
             return safeJoin(svcArr.map(s => typeof s === 'string' ? s : s.service || s.name || JSON.stringify(s)));
           };
           return `<tr>
             <td>${ccmBadge([d])}</td>
-            <td style="font-size:var(--font-size-xs)">${escHtml(get('aws'))}</td>
-            <td style="font-size:var(--font-size-xs)">${escHtml(get('azure'))}</td>
-            <td style="font-size:var(--font-size-xs)">${escHtml(get('gcp'))}</td>
+            ${csps.map(c => `<td style="font-size:var(--font-size-xs)">${escHtml(get(c))}</td>`).join('')}
           </tr>`;
         }).join('')}
       </tbody>

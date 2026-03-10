@@ -1,0 +1,157 @@
+{
+  "$schema": "cloud-security-v1",
+  "title": "CSA CCM v4 to Oracle Cloud Infrastructure (OCI) Security Services Cross-Reference",
+  "description": "Maps CSA Cloud Controls Matrix v4 domains to Oracle Cloud Infrastructure (OCI) security services and features that implement or support each domain's control objectives. Use to identify which OCI services satisfy CCM requirements for cloud security assessments.",
+  "sourceType": "constructed-indicative",
+  "verificationNote": "OCI service mappings are based on publicly documented service capabilities. OCI services evolve frequently -- verify current capabilities against Oracle Cloud documentation. Not endorsed by CSA or Oracle.",
+  "ccmVersion": "CSA Cloud Controls Matrix v4.0",
+  "cspProvider": "Oracle Cloud Infrastructure (OCI)",
+  "mappings": [
+    {
+      "ccmDomain": "A&A",
+      "ccmDomainName": "Audit & Assurance",
+      "ociServices": [
+        { "service": "OCI Audit Service", "description": "Records API calls and operations across OCI services. Provides immutable audit trail retained for 365 days. Maps to A&A-01 (audit planning) and A&A-02 (independent assessments)." },
+        { "service": "OCI Cloud Guard", "description": "Continuous security monitoring with detectors for configuration drift, threat activity, and compliance violations. Supports A&A-03 (risk-based planning)." },
+        { "service": "Oracle Cloud Compliance", "description": "Access to OCI compliance certifications (ISO 27001, SOC 2, PCI DSS, FedRAMP, CSA STAR). Supports A&A-05 (information system regulatory mapping)." }
+      ]
+    },
+    {
+      "ccmDomain": "AIS",
+      "ccmDomainName": "Application & Interface Security",
+      "ociServices": [
+        { "service": "OCI WAF", "description": "Managed Web Application Firewall with OWASP Top 10 protection, bot management, and rate limiting. Implements AIS-01 (application security) for web applications." },
+        { "service": "OCI Vulnerability Scanning Service", "description": "Automated vulnerability assessment for compute instances and container images. Supports AIS-02 (application security testing)." },
+        { "service": "OCI API Gateway", "description": "Managed API gateway with authentication, throttling, and request validation. Supports AIS-04 (secure application design) for API security." },
+        { "service": "OCI DevOps Service", "description": "CI/CD pipeline with security scanning integration and artifact management. Supports AIS-02 (security testing in SDLC)." }
+      ]
+    },
+    {
+      "ccmDomain": "BCR",
+      "ccmDomainName": "Business Continuity Management & Operational Resilience",
+      "ociServices": [
+        { "service": "OCI Block Volume Backups / Boot Volume Backups", "description": "Automated backup service for block volumes with cross-region copy. Supports BCR-01 and BCR-04 (backup and recovery)." },
+        { "service": "OCI Full Stack Disaster Recovery", "description": "Automated disaster recovery orchestration with switchover and failover across regions. Supports BCR-02 (business continuity testing)." },
+        { "service": "Object Storage Replication", "description": "Cross-region replication for Object Storage buckets. Supports BCR-03 and BCR-04 (backup integrity)." },
+        { "service": "Multi-AD and Multi-Region Architecture", "description": "Availability Domains and Fault Domains within OCI regions provide infrastructure redundancy. Supports BCR-01 (business continuity planning)." }
+      ]
+    },
+    {
+      "ccmDomain": "CCC",
+      "ccmDomainName": "Change Control & Configuration Management",
+      "ociServices": [
+        { "service": "OCI Cloud Guard (Configuration Detector)", "description": "Continuous configuration monitoring and drift detection with automated remediation. Implements CCC-03 (configuration management)." },
+        { "service": "OCI Resource Manager (Terraform)", "description": "Infrastructure as Code using Terraform for controlled, repeatable deployments. Implements CCC-01 (change management) through code-based changes." },
+        { "service": "OCI OS Management Service", "description": "Configuration management, patching, and compliance monitoring for compute instances. Supports CCC-03." }
+      ]
+    },
+    {
+      "ccmDomain": "CEK",
+      "ccmDomainName": "Cryptography, Encryption & Key Management",
+      "ociServices": [
+        { "service": "OCI Vault (Key Management)", "description": "Customer-managed encryption key management with CMK creation, rotation, and access policies. FIPS 140-2 Level 3 HSM-backed. Implements EKM-01 through EKM-04." },
+        { "service": "OCI Vault (Dedicated HSM / External KMS)", "description": "Dedicated HSM partitions and external key management support (BYOK/HYOK). Implements EKM-02 for highest assurance key management." },
+        { "service": "OCI Certificates Service", "description": "TLS certificate provisioning and lifecycle management with private CA. Implements DSP-02 (encryption in transit)." },
+        { "service": "OCI Default Encryption (Block Volume / Object Storage)", "description": "Service-level encryption at rest using Oracle-managed or customer-managed keys. Implements DSP-01 (encryption at rest)." }
+      ]
+    },
+    {
+      "ccmDomain": "DSP",
+      "ccmDomainName": "Data Security & Privacy Lifecycle Management",
+      "ociServices": [
+        { "service": "OCI Data Safe", "description": "Unified data security platform for Oracle databases with sensitive data discovery, masking, activity auditing, and security assessment. Implements DSP-01 (data classification)." },
+        { "service": "OCI IAM Policies (compartment-based)", "description": "Compartment-level access control with fine-grained IAM policies. Supports DSP-05 (data access control)." },
+        { "service": "OCI Security Zones", "description": "Prevents insecure configurations (e.g., public buckets, unencrypted volumes) through preventive security policies. Implements DSP-04 (data access restriction)." },
+        { "service": "Object Storage Lifecycle Rules", "description": "Automated data lifecycle management with retention, archival, and deletion policies. Implements DSP-17 (data retention and deletion)." },
+        { "service": "Object Storage Retention Rules", "description": "Immutable retention policies preventing data deletion or modification. Supports DSP-17 compliance." }
+      ]
+    },
+    {
+      "ccmDomain": "DCS",
+      "ccmDomainName": "Datacenter Security",
+      "ociServices": [
+        { "service": "Oracle Cloud Compliance Reports", "description": "Datacenter physical security is an Oracle responsibility. Customers verify via SOC 2 Type II, ISO 27001, and PCI DSS reports covering physical access controls, environmental protections, and equipment security. Maps to DCS-01 through DCS-09." },
+        { "service": "OCI Compliance Programs", "description": "OCI datacenters comply with SOC 1/2/3, ISO 27001, ISO 27017, PCI DSS, FedRAMP, and CSA STAR — all include physical security audit scope." }
+      ]
+    },
+    {
+      "ccmDomain": "GRC",
+      "ccmDomainName": "Governance, Risk & Compliance",
+      "ociServices": [
+        { "service": "OCI Tenancy (Compartments)", "description": "Hierarchical compartment structure for resource isolation, governance, and cost management. Implements GRC-01 (governance programme)." },
+        { "service": "OCI Security Zones", "description": "Automated preventive security guardrails for compartments preventing insecure configurations. Implements GRC-01 and GRC-03 (policy enforcement)." },
+        { "service": "OCI Cloud Guard", "description": "Centralised security posture management with risk scoring, threat detection, and automated remediation. Supports GRC-02 (risk management)." }
+      ]
+    },
+    {
+      "ccmDomain": "IAM",
+      "ccmDomainName": "Identity & Access Management",
+      "ociServices": [
+        { "service": "OCI IAM with Identity Domains", "description": "Core identity and access management with users, groups, dynamic groups, and policy-based access. Implements IAM-01 (access control policy) and IAM-04 (provisioning)." },
+        { "service": "OCI IAM Identity Domains (SSO/MFA)", "description": "Centralised SSO, MFA, and adaptive authentication with FIDO2 support. Implements IAM-02 (strong authentication) and IAM-03 (MFA)." },
+        { "service": "OCI IAM Policy Analyser", "description": "Analysis of IAM policies to identify overly permissive access. Implements IAM-06 (access reviews) and IAM-09 (least privilege)." },
+        { "service": "OCI Audit Service", "description": "API call logging for all IAM operations. Supports IAM-12 (access logging) and LOG-01." },
+        { "service": "OCI Instance Principals / Resource Principals", "description": "Instance and resource-level identity without long-lived credentials. Implements IAM-10 (credential management)." }
+      ]
+    },
+    {
+      "ccmDomain": "IVS",
+      "ccmDomainName": "Infrastructure & Virtualization Security",
+      "ociServices": [
+        { "service": "OCI VCN (Virtual Cloud Network)", "description": "Virtual private network with subnets, security lists, network security groups, and DRG. Implements IVS-01 (network security) and IVS-06 (segmentation)." },
+        { "service": "OCI DDoS Protection", "description": "Always-on DDoS protection for OCI resources. Implements IVS-04." },
+        { "service": "OCI Network Firewall", "description": "Managed network firewall with stateful inspection, IDS/IPS, and URL filtering. Implements IVS-01 and IVS-04." },
+        { "service": "OCI Cloud Guard (Threat Detector)", "description": "Intelligent threat detection using ML on audit logs, VCN flow logs, and cloud activity. Implements IVS-09 (threat detection)." },
+        { "service": "OCI Service Gateway / Private Endpoints", "description": "Private connectivity to OCI services without internet transit. Implements IVS-06 (network segmentation)." }
+      ]
+    },
+    {
+      "ccmDomain": "LOG",
+      "ccmDomainName": "Logging & Monitoring",
+      "ociServices": [
+        { "service": "OCI Audit Service", "description": "Management event logging across all OCI services with 365-day immutable retention. Implements LOG-01 (logging policy) and LOG-03 (security monitoring)." },
+        { "service": "OCI Logging Service", "description": "Centralised log collection and management with custom and service log ingestion. Implements LOG-02 (log centralisation) and LOG-05 (log retention)." },
+        { "service": "OCI Monitoring Service", "description": "Metrics, alarms, and notifications for OCI resources. Implements LOG-03 (monitoring) and LOG-13 (alerting)." },
+        { "service": "VCN Flow Logs", "description": "Network traffic logging for VCN subnets and VNICs. Implements LOG-01 for network-level visibility." },
+        { "service": "Object Storage Retention Rules", "description": "Immutable retention policies for audit log protection in Object Storage. Implements LOG-05 (log integrity and retention)." }
+      ]
+    },
+    {
+      "ccmDomain": "SEF",
+      "ccmDomainName": "Security Incident Management, E-Discovery, & Cloud Forensics",
+      "ociServices": [
+        { "service": "OCI Cloud Guard", "description": "Centralised security finding aggregation with automated responder recipes for remediation. Supports SEF-01 (incident management)." },
+        { "service": "OCI Threat Intelligence Service", "description": "Threat indicator correlation and investigation support. Supports SEF-02 (incident response) through threat context." },
+        { "service": "OCI Events Service + Functions", "description": "Event-driven automated response to security events. Supports SEF-02 (incident response plan) through automated playbooks." },
+        { "service": "Block Volume Snapshots / Object Storage for forensics", "description": "Volume snapshots and object storage for forensic evidence preservation. Supports cloud forensics capability." }
+      ]
+    },
+    {
+      "ccmDomain": "STA",
+      "ccmDomainName": "Supply Chain Management, Transparency, & Accountability",
+      "ociServices": [
+        { "service": "Oracle Cloud Compliance", "description": "Access to OCI compliance documents (SOC 2, ISO 27001, PCI DSS, CSA STAR). Supports STA-05 (third-party audit) for vendor assessment." },
+        { "service": "OCI Marketplace", "description": "Vetted third-party software marketplace. Supports STA-01 (vendor assessment) through Oracle vetting." },
+        { "service": "OCI Container Registry (OCIR)", "description": "Private container registry with image signing and scanning. Supports STA-06 (supply chain security) for container images." }
+      ]
+    },
+    {
+      "ccmDomain": "TVM",
+      "ccmDomainName": "Threat & Vulnerability Management",
+      "ociServices": [
+        { "service": "OCI Vulnerability Scanning Service", "description": "Automated vulnerability assessment for compute instances and container images. Implements TVM-01 (vulnerability management) and TVM-02 (vulnerability scanning)." },
+        { "service": "OCI Cloud Guard (Threat Detector)", "description": "ML-based threat detection across audit logs, VCN flow logs, and cloud activity. Implements TVM-06 (threat intelligence)." },
+        { "service": "OCI OS Management Service", "description": "Automated OS and application patching for compute instances. Implements TVM-01 (vulnerability remediation)." },
+        { "service": "OCIR Image Scanning", "description": "Container image vulnerability scanning in OCI Container Registry. Implements TVM-04 (container security)." }
+      ]
+    },
+    {
+      "ccmDomain": "UEM",
+      "ccmDomainName": "Universal Endpoint Management",
+      "ociServices": [
+        { "service": "OCI IAM Adaptive Authentication", "description": "Risk-based authentication with device trust evaluation and network context. Supports UEM controls through conditional access policies." },
+        { "service": "Oracle Secure Desktops", "description": "Managed virtual desktop infrastructure on OCI. Supports UEM by providing controlled cloud endpoint environments." }
+      ]
+    }
+  ]
+}

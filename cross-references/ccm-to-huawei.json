@@ -1,0 +1,154 @@
+{
+  "$schema": "cloud-security-v1",
+  "title": "CSA CCM v4 to Huawei Cloud Security Services Cross-Reference",
+  "description": "Maps CSA Cloud Controls Matrix v4 domains to Huawei Cloud security services and features that implement or support each domain's control objectives. Use to identify which Huawei Cloud services satisfy CCM requirements for cloud security assessments.",
+  "sourceType": "constructed-indicative",
+  "verificationNote": "Huawei Cloud service mappings are based on publicly documented service capabilities. Huawei Cloud services evolve frequently -- verify current capabilities against Huawei Cloud documentation. Not endorsed by CSA or Huawei Cloud.",
+  "ccmVersion": "CSA Cloud Controls Matrix v4.0",
+  "cspProvider": "Huawei Cloud",
+  "mappings": [
+    {
+      "ccmDomain": "A&A",
+      "ccmDomainName": "Audit & Assurance",
+      "huaweiServices": [
+        { "service": "Cloud Trace Service (CTS)", "description": "Records API calls and operations across Huawei Cloud services. Provides audit trail for compliance assessments. Maps to A&A-01 (audit planning) and A&A-02 (independent assessments)." },
+        { "service": "Config", "description": "Continuous configuration compliance monitoring and evaluation against compliance rules. Supports A&A-03 (risk-based planning) through automated compliance assessment." },
+        { "service": "Huawei Cloud Compliance Centre", "description": "Access to Huawei Cloud compliance certifications (ISO 27001, SOC 2, CSA STAR, CC EAL). Supports A&A-05 (information system regulatory mapping)." }
+      ]
+    },
+    {
+      "ccmDomain": "AIS",
+      "ccmDomainName": "Application & Interface Security",
+      "huaweiServices": [
+        { "service": "Web Application Firewall (WAF)", "description": "Managed WAF protecting web applications from OWASP Top 10, bot attacks, and CC attacks. Implements AIS-01 (application security) for web applications." },
+        { "service": "Host Security Service (HSS)", "description": "Host-level vulnerability scanning, baseline checks, and intrusion detection. Supports AIS-02 (application security testing)." },
+        { "service": "API Gateway (APIG)", "description": "Managed API gateway with authentication, throttling, and request validation. Supports AIS-04 (secure application design) for API security." },
+        { "service": "SoftWare Repository for Container (SWR)", "description": "Container image registry with built-in vulnerability scanning. Supports AIS-02 for container image security." }
+      ]
+    },
+    {
+      "ccmDomain": "BCR",
+      "ccmDomainName": "Business Continuity Management & Operational Resilience",
+      "huaweiServices": [
+        { "service": "Cloud Backup and Recovery (CBR)", "description": "Centralised backup service for ECS, EVS, SFS, and databases. Cross-region backup replication. Supports BCR-01 and BCR-04 (backup and recovery)." },
+        { "service": "Storage Disaster Recovery Service (SDRS)", "description": "Continuous replication and automated failover for DR across availability zones. Supports BCR-02 (business continuity testing)." },
+        { "service": "Multi-AZ Deployment", "description": "Availability Zone redundancy across Huawei Cloud regions including Malaysia (Kuala Lumpur). Supports BCR-01 (business continuity planning)." },
+        { "service": "OBS Cross-Region Replication", "description": "Automatic replication of OBS objects across regions for disaster recovery. Supports BCR-03." }
+      ]
+    },
+    {
+      "ccmDomain": "CCC",
+      "ccmDomainName": "Change Control & Configuration Management",
+      "huaweiServices": [
+        { "service": "Config", "description": "Continuous configuration recording, compliance evaluation, and drift detection. Implements CCC-03 (configuration management)." },
+        { "service": "Resource Formation Service (RFS)", "description": "Infrastructure as Code (Terraform-compatible) for controlled, repeatable deployments. Implements CCC-01 (change management)." },
+        { "service": "Application Operations Management (AOM)", "description": "Operations management with automated workflows and change execution. Supports CCC-02 (quality testing) through controlled automation." }
+      ]
+    },
+    {
+      "ccmDomain": "CEK",
+      "ccmDomainName": "Cryptography, Encryption & Key Management",
+      "huaweiServices": [
+        { "service": "Data Encryption Workshop (DEW) — KMS", "description": "Customer-managed encryption key management with CMK creation, rotation, and access policies. Implements EKM-01 through EKM-04." },
+        { "service": "Data Encryption Workshop (DEW) — Dedicated HSM", "description": "Dedicated hardware security modules for cryptographic key storage and operations. FIPS 140-2 Level 3. Implements EKM-02 for highest assurance key management." },
+        { "service": "Cloud Certificate Manager (CCM)", "description": "TLS/SSL certificate provisioning and lifecycle management. Implements DSP-02 (encryption in transit)." },
+        { "service": "OBS Server-Side Encryption / EVS Encryption", "description": "Service-level encryption at rest using DEW-managed keys. Implements DSP-01 (encryption at rest)." }
+      ]
+    },
+    {
+      "ccmDomain": "DSP",
+      "ccmDomainName": "Data Security & Privacy Lifecycle Management",
+      "huaweiServices": [
+        { "service": "Data Security Center (DSC)", "description": "Sensitive data discovery, classification, de-identification, and watermarking for OBS, RDS, and data lakes. Implements DSP-01 (data classification)." },
+        { "service": "IAM Fine-Grained Policies", "description": "Resource-level and condition-based access policies for data access control. Supports DSP-05 (data access control)." },
+        { "service": "OBS Bucket Policies (region restrictions)", "description": "Bucket and IAM policies restricting data access and resource creation to approved regions. Implements DSP-06 (data residency)." },
+        { "service": "OBS Lifecycle Rules", "description": "Automated data lifecycle management with retention, transition, and expiration policies. Implements DSP-17 (data retention and deletion)." }
+      ]
+    },
+    {
+      "ccmDomain": "DCS",
+      "ccmDomainName": "Datacenter Security",
+      "huaweiServices": [
+        { "service": "Huawei Cloud Compliance Certifications", "description": "Datacenter physical security is a Huawei Cloud responsibility. Customers verify via ISO 27001, SOC 2, CSA STAR, and CC EAL reports covering physical access controls and environmental protections. Maps to DCS-01 through DCS-09." },
+        { "service": "Huawei Cloud Data Centre Standards", "description": "Huawei Cloud datacenters comply with ISO 27001, SOC 1/2/3, CSA STAR, and Tier III+ design standards. Malaysia KL region provides local data residency." }
+      ]
+    },
+    {
+      "ccmDomain": "GRC",
+      "ccmDomainName": "Governance, Risk & Compliance",
+      "huaweiServices": [
+        { "service": "Organizations", "description": "Multi-account governance with organisational units, service control policies, and consolidated billing. Implements GRC-01 (governance programme)." },
+        { "service": "Cloud Operations Center (COC)", "description": "Centralised operations management with compliance baselines and governance dashboards. Implements GRC-01 and GRC-03 (policy enforcement)." },
+        { "service": "Situation Awareness (SA)", "description": "Centralised security posture dashboard aggregating findings from multiple Huawei Cloud security services. Supports GRC-02 (risk management)." }
+      ]
+    },
+    {
+      "ccmDomain": "IAM",
+      "ccmDomainName": "Identity & Access Management",
+      "huaweiServices": [
+        { "service": "Identity and Access Management (IAM)", "description": "Core identity and access management with users, user groups, agencies, and fine-grained policies. Implements IAM-01 (access control policy) and IAM-04 (provisioning)." },
+        { "service": "IAM Identity Federation (SAML/OIDC)", "description": "Enterprise identity federation with SSO and MFA support. Implements IAM-02 (strong authentication) and IAM-03 (MFA)." },
+        { "service": "Cloud Trace Service (CTS)", "description": "API call logging for all IAM operations. Supports IAM-12 (access logging) and LOG-01." },
+        { "service": "IAM Temporary Security Credentials", "description": "Temporary credential issuance through agency and federation mechanisms. Implements IAM-10 (credential management)." }
+      ]
+    },
+    {
+      "ccmDomain": "IVS",
+      "ccmDomainName": "Infrastructure & Virtualization Security",
+      "huaweiServices": [
+        { "service": "Virtual Private Cloud (VPC)", "description": "Virtual private network with subnets, security groups, and network ACLs. Implements IVS-01 (network security) and IVS-06 (segmentation)." },
+        { "service": "Anti-DDoS", "description": "DDoS protection for Huawei Cloud resources including volumetric, protocol, and application-layer attacks. Implements IVS-04." },
+        { "service": "Cloud Firewall (CFW)", "description": "Managed network firewall with stateful inspection, IPS/IDS, and micro-segmentation. Implements IVS-01 and IVS-04." },
+        { "service": "Host Security Service (HSS) — Intrusion Detection", "description": "Host-based intrusion detection with behavioural analysis and anomaly detection. Implements IVS-09 (threat detection)." },
+        { "service": "VPC Endpoint (VPCEP)", "description": "Private connectivity to Huawei Cloud services without internet transit. Implements IVS-06 (network segmentation)." }
+      ]
+    },
+    {
+      "ccmDomain": "LOG",
+      "ccmDomainName": "Logging & Monitoring",
+      "huaweiServices": [
+        { "service": "Cloud Trace Service (CTS)", "description": "Management event logging across all Huawei Cloud services and regions. Implements LOG-01 (logging policy) and LOG-03 (security monitoring)." },
+        { "service": "Log Tank Service (LTS)", "description": "Centralised log collection, search, analysis, and visualisation. Implements LOG-02 (log centralisation) and LOG-05 (log retention)." },
+        { "service": "Cloud Eye", "description": "Metrics, alarms, and dashboards for Huawei Cloud resources. Implements LOG-03 (monitoring) and LOG-13 (alerting)." },
+        { "service": "VPC Flow Logs", "description": "Network traffic logging for VPC subnets and network interfaces. Implements LOG-01 for network-level visibility." },
+        { "service": "OBS WORM (Object Lock)", "description": "Write-once-read-many object storage for audit log protection and immutability. Implements LOG-05 (log integrity and retention)." }
+      ]
+    },
+    {
+      "ccmDomain": "SEF",
+      "ccmDomainName": "Security Incident Management, E-Discovery, & Cloud Forensics",
+      "huaweiServices": [
+        { "service": "Situation Awareness (SA)", "description": "Centralised security alert aggregation, threat analysis, and incident correlation. Supports SEF-01 (incident management)." },
+        { "service": "SecMaster", "description": "Security operations platform with automated playbooks, investigation, and response orchestration. Implements SEF-02 (incident response plan) and SEF-04 (incident response testing)." },
+        { "service": "EVS Snapshots / OBS for forensic preservation", "description": "Volume snapshots and object storage for forensic evidence preservation. Supports cloud forensics capability." }
+      ]
+    },
+    {
+      "ccmDomain": "STA",
+      "ccmDomainName": "Supply Chain Management, Transparency, & Accountability",
+      "huaweiServices": [
+        { "service": "Huawei Cloud Compliance Centre", "description": "Access to compliance certifications (SOC 2, ISO 27001, CSA STAR). Supports STA-05 (third-party audit) for vendor assessment." },
+        { "service": "KooGallery (Marketplace)", "description": "Vetted third-party software and service marketplace. Supports STA-01 (vendor assessment) through Huawei Cloud vetting." },
+        { "service": "SoftWare Repository for Container (SWR)", "description": "Private container registry with image scanning. Supports STA-06 (supply chain security) for container images." }
+      ]
+    },
+    {
+      "ccmDomain": "TVM",
+      "ccmDomainName": "Threat & Vulnerability Management",
+      "huaweiServices": [
+        { "service": "Host Security Service (HSS) — Vulnerability Management", "description": "Automated vulnerability scanning for ECS instances, containers, and web applications. Implements TVM-01 (vulnerability management) and TVM-02 (vulnerability scanning)." },
+        { "service": "Situation Awareness (SA) — Threat Intelligence", "description": "Threat intelligence with IP reputation, malware detection, and attack correlation. Implements TVM-06 (threat intelligence)." },
+        { "service": "Host Security Service (HSS) — Patch Management", "description": "Automated OS and application patching for ECS instances. Implements TVM-01 (vulnerability remediation)." },
+        { "service": "SWR Image Scanning", "description": "Container image vulnerability scanning in SWR. Implements TVM-04 (container security)." }
+      ]
+    },
+    {
+      "ccmDomain": "UEM",
+      "ccmDomainName": "Universal Endpoint Management",
+      "huaweiServices": [
+        { "service": "IAM Conditional Access / IP-based policies", "description": "IP-range and condition-based access policies for cloud resource access. Supports UEM controls through network-based access restrictions." },
+        { "service": "Workspace (Cloud Desktop)", "description": "Managed virtual desktop infrastructure. Supports UEM by providing controlled cloud endpoint environments." }
+      ]
+    }
+  ]
+}

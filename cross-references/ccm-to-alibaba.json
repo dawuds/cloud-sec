@@ -1,0 +1,154 @@
+{
+  "$schema": "cloud-security-v1",
+  "title": "CSA CCM v4 to Alibaba Cloud Security Services Cross-Reference",
+  "description": "Maps CSA Cloud Controls Matrix v4 domains to Alibaba Cloud security services and features that implement or support each domain's control objectives. Use to identify which Alibaba Cloud services satisfy CCM requirements for cloud security assessments.",
+  "sourceType": "constructed-indicative",
+  "verificationNote": "Alibaba Cloud service mappings are based on publicly documented service capabilities. Alibaba Cloud services evolve frequently -- verify current capabilities against Alibaba Cloud documentation. Not endorsed by CSA or Alibaba Cloud.",
+  "ccmVersion": "CSA Cloud Controls Matrix v4.0",
+  "cspProvider": "Alibaba Cloud",
+  "mappings": [
+    {
+      "ccmDomain": "A&A",
+      "ccmDomainName": "Audit & Assurance",
+      "alibabaServices": [
+        { "service": "ActionTrail", "description": "Records API calls and operations across Alibaba Cloud services. Provides audit trail for compliance assessments. Maps to A&A-01 (audit planning) and A&A-02 (independent assessments)." },
+        { "service": "Cloud Config", "description": "Continuous configuration compliance monitoring and evaluation against compliance rules. Supports A&A-03 (risk-based planning) through automated compliance checks." },
+        { "service": "Alibaba Cloud Compliance Centre", "description": "Access to Alibaba Cloud compliance certifications (ISO 27001, SOC 2, CSA STAR, MLPS 2.0). Supports A&A-05 (information system regulatory mapping)." }
+      ]
+    },
+    {
+      "ccmDomain": "AIS",
+      "ccmDomainName": "Application & Interface Security",
+      "alibabaServices": [
+        { "service": "Web Application Firewall (WAF)", "description": "Managed WAF protecting web applications from OWASP Top 10 attacks, bot management, and API abuse. Implements AIS-01 (application security) for web applications." },
+        { "service": "Security Center (CWPP)", "description": "Cloud workload protection platform with vulnerability scanning, baseline checks, and runtime protection. Supports AIS-02 (application security testing)." },
+        { "service": "API Gateway", "description": "Managed API gateway with authentication, throttling, and request validation. Supports AIS-04 (secure application design) for API security." },
+        { "service": "Container Registry (ACR)", "description": "Container image registry with built-in vulnerability scanning. Supports AIS-02 for container image security." }
+      ]
+    },
+    {
+      "ccmDomain": "BCR",
+      "ccmDomainName": "Business Continuity Management & Operational Resilience",
+      "alibabaServices": [
+        { "service": "Hybrid Backup Recovery (HBR)", "description": "Centralised backup service for ECS, NAS, OSS, and on-premises workloads. Supports BCR-01 and BCR-04 (backup and recovery)." },
+        { "service": "Cross-Region Replication (OSS)", "description": "Automatic replication of OSS objects across regions for disaster recovery. Supports BCR-02 (business continuity testing) and BCR-03." },
+        { "service": "Multi-AZ Deployment", "description": "Availability Zone redundancy across Alibaba Cloud regions including Malaysia (Kuala Lumpur). Supports BCR-01 (business continuity planning)." },
+        { "service": "Alibaba Cloud DNS (Global Traffic Manager)", "description": "DNS-based failover and traffic management for multi-region DR. Supports BCR-02." }
+      ]
+    },
+    {
+      "ccmDomain": "CCC",
+      "ccmDomainName": "Change Control & Configuration Management",
+      "alibabaServices": [
+        { "service": "Cloud Config", "description": "Continuous configuration recording, compliance evaluation, and drift detection. Implements CCC-03 (configuration management)." },
+        { "service": "Resource Orchestration Service (ROS)", "description": "Infrastructure as Code (Terraform-compatible) for controlled, repeatable deployments. Implements CCC-01 (change management)." },
+        { "service": "Operation Orchestration Service (OOS)", "description": "Automated operations with approval workflows and change execution templates. Supports CCC-02 (quality testing) through controlled automation." }
+      ]
+    },
+    {
+      "ccmDomain": "CEK",
+      "ccmDomainName": "Cryptography, Encryption & Key Management",
+      "alibabaServices": [
+        { "service": "Key Management Service (KMS)", "description": "Customer-managed encryption key management with CMK creation, rotation, and access policies. Implements EKM-01 through EKM-04." },
+        { "service": "Data Encryption Service (dedicated HSM)", "description": "Dedicated hardware security modules for cryptographic key storage. Supports high-assurance key management for EKM-02." },
+        { "service": "Certificate Management Service", "description": "TLS/SSL certificate provisioning and lifecycle management. Implements DSP-02 (encryption in transit)." },
+        { "service": "OSS Server-Side Encryption / ECS Disk Encryption", "description": "Service-level encryption at rest using KMS-managed keys. Implements DSP-01 (encryption at rest)." }
+      ]
+    },
+    {
+      "ccmDomain": "DSP",
+      "ccmDomainName": "Data Security & Privacy Lifecycle Management",
+      "alibabaServices": [
+        { "service": "Sensitive Data Discovery and Protection (SDDP)", "description": "ML-powered sensitive data discovery, classification, and de-identification for OSS, RDS, and MaxCompute. Implements DSP-01 (data classification)." },
+        { "service": "Data Security Center", "description": "Unified data security posture management with data flow analysis, anomaly detection, and access auditing. Supports DSP-05 (data access control)." },
+        { "service": "RAM Policies (region restrictions)", "description": "Resource Access Management policies restricting resource creation to approved regions. Implements DSP-06 (data residency)." },
+        { "service": "OSS Lifecycle Rules", "description": "Automated data lifecycle management with retention, archival, and deletion policies. Implements DSP-17 (data retention and deletion)." }
+      ]
+    },
+    {
+      "ccmDomain": "DCS",
+      "ccmDomainName": "Datacenter Security",
+      "alibabaServices": [
+        { "service": "Alibaba Cloud Compliance Certifications", "description": "Datacenter physical security is an Alibaba Cloud responsibility. Customers verify via ISO 27001, SOC 2, MLPS 2.0, and CSA STAR reports covering physical access controls and environmental protections. Maps to DCS-01 through DCS-09." },
+        { "service": "Alibaba Cloud Data Centre Standards", "description": "Alibaba Cloud datacenters comply with ISO 27001, SOC 1/2/3, CSA STAR, and China MLPS — all include physical security audit scope. Malaysia KL region provides local data residency." }
+      ]
+    },
+    {
+      "ccmDomain": "GRC",
+      "ccmDomainName": "Governance, Risk & Compliance",
+      "alibabaServices": [
+        { "service": "Resource Management (Resource Directory)", "description": "Multi-account governance with folder hierarchy, centralised policy management, and consolidated billing. Implements GRC-01 (governance programme)." },
+        { "service": "Cloud Governance Centre", "description": "Automated multi-account setup with compliance baselines and guardrails. Implements GRC-01 and GRC-03 (policy enforcement)." },
+        { "service": "Security Center (CSPM)", "description": "Cloud Security Posture Management with compliance scoring against CIS Benchmarks, MLPS, ISO 27001. Supports GRC-02 (risk management)." }
+      ]
+    },
+    {
+      "ccmDomain": "IAM",
+      "ccmDomainName": "Identity & Access Management",
+      "alibabaServices": [
+        { "service": "Resource Access Management (RAM)", "description": "Core identity and access management with users, roles, policies, and groups. Implements IAM-01 (access control policy) and IAM-04 (provisioning)." },
+        { "service": "IDaaS (Identity as a Service)", "description": "Centralised SSO and MFA for enterprise identity federation. Implements IAM-02 (strong authentication) and IAM-03 (MFA)." },
+        { "service": "ActionTrail", "description": "API call logging for all RAM operations. Supports IAM-12 (access logging) and LOG-01." },
+        { "service": "STS (Security Token Service)", "description": "Temporary credential issuance eliminating long-lived access keys. Implements IAM-10 (credential management)." }
+      ]
+    },
+    {
+      "ccmDomain": "IVS",
+      "ccmDomainName": "Infrastructure & Virtualization Security",
+      "alibabaServices": [
+        { "service": "Virtual Private Cloud (VPC)", "description": "Virtual private network with vSwitches, security groups, and network ACLs. Implements IVS-01 (network security) and IVS-06 (segmentation)." },
+        { "service": "Anti-DDoS (Basic / Pro / Premium)", "description": "Multi-tier DDoS protection for Alibaba Cloud resources. Anti-DDoS Pro provides enhanced volumetric attack mitigation. Implements IVS-04." },
+        { "service": "Cloud Firewall", "description": "Managed network firewall with stateful inspection, IPS, and micro-segmentation. Implements IVS-01 and IVS-04." },
+        { "service": "Security Center (threat detection)", "description": "Intelligent threat detection using behavioural analysis on network traffic, host activity, and API calls. Implements IVS-09 (threat detection)." },
+        { "service": "PrivateLink", "description": "Private connectivity to Alibaba Cloud services without internet transit. Implements IVS-06 (network segmentation)." }
+      ]
+    },
+    {
+      "ccmDomain": "LOG",
+      "ccmDomainName": "Logging & Monitoring",
+      "alibabaServices": [
+        { "service": "ActionTrail", "description": "Management event logging across all Alibaba Cloud services and regions. Implements LOG-01 (logging policy) and LOG-03 (security monitoring)." },
+        { "service": "Log Service (SLS)", "description": "Centralised log collection, analysis, and dashboarding. Implements LOG-02 (log centralisation) and LOG-05 (log retention)." },
+        { "service": "CloudMonitor", "description": "Metrics, alerts, and dashboards for Alibaba Cloud resources. Implements LOG-03 (monitoring) and LOG-13 (alerting)." },
+        { "service": "VPC Flow Logs", "description": "Network traffic logging for VPC and vSwitches. Implements LOG-01 for network-level visibility." },
+        { "service": "OSS WORM (Write Once Read Many)", "description": "Immutable object storage for audit log protection. Implements LOG-05 (log integrity and retention)." }
+      ]
+    },
+    {
+      "ccmDomain": "SEF",
+      "ccmDomainName": "Security Incident Management, E-Discovery, & Cloud Forensics",
+      "alibabaServices": [
+        { "service": "Security Center (incident response)", "description": "Centralised security alert aggregation, automated response, and investigation. Supports SEF-01 (incident management) through alert correlation." },
+        { "service": "Cloud Security Scanner", "description": "Automated security scanning and vulnerability assessment. Supports SEF-02 (incident response) through proactive detection." },
+        { "service": "ECS Snapshots / OSS for forensic preservation", "description": "Disk snapshots and object storage for forensic evidence preservation. Supports cloud forensics capability." }
+      ]
+    },
+    {
+      "ccmDomain": "STA",
+      "ccmDomainName": "Supply Chain Management, Transparency, & Accountability",
+      "alibabaServices": [
+        { "service": "Alibaba Cloud Compliance Centre", "description": "Access to compliance certifications (SOC 2, ISO 27001, CSA STAR). Supports STA-05 (third-party audit) for vendor assessment." },
+        { "service": "Marketplace", "description": "Vetted third-party software and service marketplace. Supports STA-01 (vendor assessment) through vetting." },
+        { "service": "Container Registry (ACR)", "description": "Private container registry with image scanning. Supports STA-06 (supply chain security) for container images." }
+      ]
+    },
+    {
+      "ccmDomain": "TVM",
+      "ccmDomainName": "Threat & Vulnerability Management",
+      "alibabaServices": [
+        { "service": "Security Center (vulnerability management)", "description": "Automated vulnerability scanning for ECS, containers, and web applications. Implements TVM-01 (vulnerability management) and TVM-02 (vulnerability scanning)." },
+        { "service": "Security Center (threat intelligence)", "description": "Threat intelligence feeds with IP reputation, malware detection, and attack correlation. Implements TVM-06 (threat intelligence)." },
+        { "service": "Security Center (patch management)", "description": "Automated OS and application patching for ECS instances. Implements TVM-01 (vulnerability remediation)." },
+        { "service": "Container Registry Image Scanning", "description": "Container image vulnerability scanning in ACR. Implements TVM-04 (container security)." }
+      ]
+    },
+    {
+      "ccmDomain": "UEM",
+      "ccmDomainName": "Universal Endpoint Management",
+      "alibabaServices": [
+        { "service": "IDaaS Conditional Access", "description": "Device trust evaluation and conditional access policies for cloud resource access. Supports UEM controls through device-based policies." },
+        { "service": "Elastic Desktop Service (EDS)", "description": "Managed virtual desktop infrastructure. Supports UEM by providing controlled cloud endpoint environments." }
+      ]
+    }
+  ]
+}

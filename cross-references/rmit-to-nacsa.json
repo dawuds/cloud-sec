@@ -3,16 +3,197 @@
   "sourceType": "constructed-indicative",
   "verificationNote": "This mapping is a reasoned interpretation of how BNM RMiT cloud technology requirements overlap with NACSA Act 854 obligations. It has not been validated by BNM, NACSA, or any regulatory authority. Financial institutions operating NCII should consult qualified legal and compliance advisors.",
   "title": "BNM RMiT to NACSA Act 854 Cross-Reference",
-  "description": "Mapping between BNM RMiT cloud technology requirements (clauses 10.50-10.52, 17.1-17.5) and NACSA Cyber Security Act 2024 (Act 854) obligations. For Malaysian financial institutions operating National Critical Information Infrastructure (NCII) on cloud platforms, both regulatory frameworks apply simultaneously. This mapping identifies where obligations overlap, complement, or create additional requirements.",
+  "description": "Comprehensive mapping between BNM RMiT technology risk management requirements (sections 8-18) and NACSA Cyber Security Act 2024 (Act 854) obligations. For Malaysian financial institutions operating National Critical Information Infrastructure (NCII) on cloud platforms, both regulatory frameworks apply simultaneously. This mapping identifies where obligations overlap, complement, or create additional requirements.",
   "rmitVersion": "BNM RMiT November 2025",
   "nacsaActReference": "Cyber Security Act 2024 (Act 854), Federal Gazette P.U.(B) 283/2024",
   "mappings": [
+    {
+      "rmitClause": "S8",
+      "rmitTitle": "Technology Risk Governance",
+      "nacsaSections": ["s18"],
+      "nacsaTitle": "Duties of NCII entity — security measures",
+      "relationship": "complementary",
+      "mappingType": "partial",
+      "notes": "RMiT S8 requires the Board and senior management to establish technology risk governance frameworks, including a Chief Information Security Officer (CISO) role, technology risk appetite, and Board-level oversight. NACSA s18 requires NCII entities to implement cybersecurity measures. The RMiT governance framework provides the organisational structure through which s18 duties are executed for financial sector NCII."
+    },
+    {
+      "rmitClause": "S8",
+      "rmitTitle": "Technology Risk Governance",
+      "nacsaSections": ["s19"],
+      "nacsaTitle": "NCII information sharing",
+      "relationship": "complementary",
+      "mappingType": "related",
+      "notes": "RMiT S8 governance framework should incorporate NACSA s19 information-sharing obligations. The technology risk governance structure must include processes for sharing NCII-related cyber threat intelligence with NACSA and receiving threat advisories."
+    },
+    {
+      "rmitClause": "S9",
+      "rmitTitle": "Technology Risk Management Framework",
+      "nacsaSections": ["s21"],
+      "nacsaTitle": "Cyber security risk assessment",
+      "relationship": "overlapping",
+      "mappingType": "direct",
+      "notes": "RMiT S9 mandates a comprehensive technology risk management framework covering risk identification, assessment, treatment, monitoring, and reporting. NACSA s21 requires NCII entities to conduct cyber security risk assessments. The RMiT S9 risk framework should incorporate NCII-specific risk assessment requirements to satisfy both obligations with a single unified process."
+    },
+    {
+      "rmitClause": "S9",
+      "rmitTitle": "Technology Risk Management Framework",
+      "nacsaSections": ["s22"],
+      "nacsaTitle": "Code of practice",
+      "relationship": "complementary",
+      "mappingType": "related",
+      "notes": "RMiT S9 risk management framework should reference and incorporate any NACSA-issued codes of practice under s22. NACSA may publish sector-specific codes that supplement the RMiT framework. Financial institutions should monitor NACSA publications and integrate relevant codes into the technology risk management framework."
+    },
+    {
+      "rmitClause": "S10",
+      "rmitTitle": "Technology Operations Management",
+      "nacsaSections": ["s18"],
+      "nacsaTitle": "Duties of NCII entity — security measures",
+      "relationship": "complementary",
+      "mappingType": "partial",
+      "notes": "RMiT S10 prescribes operational requirements for technology systems including change management, capacity management, system availability, and IT service management. For systems designated as NCII, these operational controls directly implement NACSA s18 duties to maintain adequate cybersecurity measures in day-to-day operations."
+    },
+    {
+      "rmitClause": "S10",
+      "rmitTitle": "Technology Operations Management",
+      "nacsaSections": ["s20"],
+      "nacsaTitle": "Cybersecurity standards",
+      "relationship": "complementary",
+      "mappingType": "related",
+      "notes": "RMiT S10 operational management references industry standards for system operations. NACSA s20 empowers NACSA to approve cybersecurity standards for NCII. Financial institutions should monitor whether NACSA-approved standards under s20 prescribe specific operational requirements that supplement S10."
+    },
+    {
+      "rmitClause": "S11",
+      "rmitTitle": "Cybersecurity Management",
+      "nacsaSections": ["s18"],
+      "nacsaTitle": "Duties of NCII entity — security measures",
+      "relationship": "overlapping",
+      "mappingType": "direct",
+      "notes": "RMiT S11 mandates comprehensive cybersecurity controls including network security, endpoint protection, data protection, application security, and security operations. NACSA s18 requires NCII entities to implement appropriate cybersecurity measures. S11 controls provide detailed, prescriptive implementation of s18 duties for financial sector NCII. Compliance with S11 substantially satisfies s18 for the cyber defence portion."
+    },
+    {
+      "rmitClause": "S11",
+      "rmitTitle": "Cybersecurity Management",
+      "nacsaSections": ["s19"],
+      "nacsaTitle": "NCII information sharing",
+      "relationship": "complementary",
+      "mappingType": "partial",
+      "notes": "RMiT S11 cybersecurity operations include threat intelligence and vulnerability management. NACSA s19 requires NCII entities to share cyber threat information with NACSA. The S11 threat intelligence function should integrate NACSA information-sharing channels and formats to satisfy s19 obligations."
+    },
+    {
+      "rmitClause": "S11",
+      "rmitTitle": "Cybersecurity Management",
+      "nacsaSections": ["s26"],
+      "nacsaTitle": "Cyber security incident notification",
+      "relationship": "overlapping",
+      "mappingType": "direct",
+      "notes": "RMiT S11 includes incident management and 24-hour BNM notification requirements for major cybersecurity incidents. NACSA s26 requires 6-hour notification to NACSA for cyber security incidents affecting NCII. Financial institutions must maintain dual notification timelines: 6 hours to NACSA (stricter) and 24 hours to BNM. The NACSA timeline should drive IR plan design."
+    },
+    {
+      "rmitClause": "S12",
+      "rmitTitle": "Technology Audit",
+      "nacsaSections": ["s23"],
+      "nacsaTitle": "Cyber security audit",
+      "relationship": "overlapping",
+      "mappingType": "direct",
+      "notes": "RMiT S12 requires annual technology audits covering IT infrastructure, applications, and security controls. NACSA s23 requires NCII entities to undergo cyber security audits by NACSA-licensed auditors. Both frameworks require audits but with different scoping: RMiT covers broad technology risk while NACSA focuses on NCII cybersecurity. Financial institutions should coordinate audit schedules and ensure NCII systems are in scope for both."
+    },
+    {
+      "rmitClause": "S12",
+      "rmitTitle": "Technology Audit",
+      "nacsaSections": ["s24"],
+      "nacsaTitle": "Audit findings and remediation",
+      "relationship": "complementary",
+      "mappingType": "direct",
+      "notes": "RMiT S12 requires tracking and remediation of technology audit findings with Board reporting. NACSA s24 requires NCII entities to address audit findings and report remediation to NACSA. Financial institutions should maintain a unified audit finding tracker covering both RMiT and NACSA requirements with appropriate reporting to both regulators."
+    },
+    {
+      "rmitClause": "S13",
+      "rmitTitle": "Internal Controls and Compliance",
+      "nacsaSections": ["s22"],
+      "nacsaTitle": "Code of practice",
+      "relationship": "complementary",
+      "mappingType": "related",
+      "notes": "RMiT S13 requires internal controls for technology compliance including regulatory compliance monitoring. NACSA s22 codes of practice may impose additional compliance requirements. The internal control function under S13 should monitor compliance with NACSA-issued codes of practice applicable to financial sector NCII."
+    },
+    {
+      "rmitClause": "S14",
+      "rmitTitle": "Business Continuity Management",
+      "nacsaSections": ["s18"],
+      "nacsaTitle": "Duties of NCII entity — security measures",
+      "relationship": "complementary",
+      "mappingType": "partial",
+      "notes": "RMiT S14 mandates BCM for critical technology systems including RTOs, RPOs, DR testing, and alternate processing arrangements. NACSA s18 duties include maintaining availability of NCII. The S14 BCM requirements provide the detailed implementation of availability assurance for NCII-designated financial systems."
+    },
+    {
+      "rmitClause": "S14",
+      "rmitTitle": "Business Continuity Management",
+      "nacsaSections": ["s25"],
+      "nacsaTitle": "Cyber security exercise",
+      "relationship": "complementary",
+      "mappingType": "partial",
+      "notes": "RMiT S14 requires annual DR testing and BCM exercises for critical systems. NACSA s25 requires cyber security exercises for NCII. Financial institutions should coordinate BCM exercises (S14) with NACSA cyber security exercises (s25) to ensure NCII systems are tested under both frameworks, reducing duplication."
+    },
+    {
+      "rmitClause": "S15",
+      "rmitTitle": "Data Centre and Infrastructure",
+      "nacsaSections": ["s18"],
+      "nacsaTitle": "Duties of NCII entity — security measures",
+      "relationship": "complementary",
+      "mappingType": "partial",
+      "notes": "RMiT S15 prescribes physical and environmental security requirements for data centres housing financial systems. For on-premises NCII, S15 physical controls implement s18 physical cybersecurity measures. For cloud-hosted NCII, CSP data centre compliance (SOC 2, ISO 27001) satisfies both frameworks."
+    },
+    {
+      "rmitClause": "S16",
+      "rmitTitle": "Outsourcing (Technology)",
+      "nacsaSections": ["s18"],
+      "nacsaTitle": "Duties of NCII entity — security measures",
+      "relationship": "complementary",
+      "mappingType": "partial",
+      "notes": "RMiT S16 governs technology outsourcing including vendor risk assessment, contractual requirements, and ongoing monitoring. When NCII systems are outsourced (including cloud hosting), s18 duties remain with the NCII entity. S16 outsourcing controls ensure that third-party arrangements do not diminish NCII security obligations."
+    },
+    {
+      "rmitClause": "S16",
+      "rmitTitle": "Outsourcing (Technology)",
+      "nacsaSections": ["s17"],
+      "nacsaTitle": "Designation of NCII",
+      "relationship": "complementary",
+      "mappingType": "related",
+      "notes": "RMiT S16 requires risk assessment of outsourced technology services. NACSA s17 designation of NCII determines which outsourced systems are critical national infrastructure. Financial institutions should ensure NCII-designated systems are flagged in the S16 outsourcing risk assessment and receive enhanced due diligence."
+    },
+    {
+      "rmitClause": "S17",
+      "rmitTitle": "Access Control",
+      "nacsaSections": ["s18"],
+      "nacsaTitle": "Duties of NCII entity — security measures",
+      "relationship": "overlapping",
+      "mappingType": "direct",
+      "notes": "RMiT S17 mandates access controls including identity management, privileged access management, MFA, and access reviews. NACSA s18 duties include implementing access control measures for NCII. S17 provides prescriptive access control requirements that directly implement s18 for identity and access management of NCII systems."
+    },
+    {
+      "rmitClause": "S18",
+      "rmitTitle": "Cryptography",
+      "nacsaSections": ["s18"],
+      "nacsaTitle": "Duties of NCII entity — security measures",
+      "relationship": "complementary",
+      "mappingType": "partial",
+      "notes": "RMiT S18 prescribes cryptographic controls including encryption at rest, encryption in transit, key management, and cryptographic standards. NACSA s18 duties include data protection for NCII. S18 cryptographic requirements implement the data protection aspect of NACSA duties, particularly for NCII data confidentiality and integrity."
+    },
+    {
+      "rmitClause": "S18",
+      "rmitTitle": "Cryptography",
+      "nacsaSections": ["s20"],
+      "nacsaTitle": "Cybersecurity standards",
+      "relationship": "complementary",
+      "mappingType": "related",
+      "notes": "RMiT S18 references cryptographic standards (e.g., NIST approved algorithms, minimum key lengths). NACSA s20 may approve specific cryptographic standards for NCII. Financial institutions should monitor NACSA-approved cryptographic standards and ensure S18 cryptographic implementations meet both RMiT and NACSA requirements."
+    },
     {
       "rmitClause": "10.50",
       "rmitTitle": "Cloud Services Risk Assessment",
       "nacsaSections": ["s21"],
       "nacsaTitle": "Cyber security risk assessment",
       "relationship": "complementary",
+      "mappingType": "direct",
       "notes": "RMiT 10.50 requires comprehensive risk assessment before cloud adoption covering 10 risk areas (deployment model, migration, data location, multi-tenancy, vendor lock-in, security configuration, CSP exposure, termination, responsibility demarcation, regulatory compliance). NACSA s21 requires NCII entities to conduct cyber security risk assessments. For financial institutions with NCII on cloud, the RMiT 10.50 risk assessment should be expanded to cover NCII-specific risks to satisfy both obligations simultaneously."
     },
     {
@@ -21,6 +202,7 @@
       "nacsaSections": ["s17"],
       "nacsaTitle": "Designation of NCII",
       "relationship": "complementary",
+      "mappingType": "partial",
       "notes": "The RMiT 10.50 risk assessment requires identifying critical systems migrating to cloud. NACSA s17 requires identification and designation of NCII. Financial institutions should ensure cloud-hosted systems designated as NCII are captured in the RMiT risk assessment scope, creating a single unified inventory of critical cloud assets."
     },
     {
@@ -29,6 +211,7 @@
       "nacsaSections": ["s18"],
       "nacsaTitle": "Duties of NCII entity — security measures",
       "relationship": "complementary",
+      "mappingType": "direct",
       "notes": "RMiT 10.51 (Appendix 10) prescribes 8 control domains for public cloud: governance, data security, IAM, network security, monitoring, BC/DR, vendor management, and audit. NACSA s18 requires NCII entities to implement appropriate cybersecurity measures. The Appendix 10 controls provide a structured implementation of s18 duties for cloud-hosted NCII. Compliance with Appendix 10 substantially satisfies s18 for the cloud portion of NCII."
     },
     {
@@ -37,6 +220,7 @@
       "nacsaSections": ["s20"],
       "nacsaTitle": "Cybersecurity standards",
       "relationship": "complementary",
+      "mappingType": "related",
       "notes": "RMiT Appendix 10 references international standards (CIS Benchmarks, CSA CCM) for cloud security controls. NACSA s20 empowers NACSA to approve cybersecurity standards. Financial institutions should monitor whether NACSA approves specific cloud security standards under s20 that may supplement or supersede the Appendix 10 requirements."
     },
     {
@@ -45,6 +229,7 @@
       "nacsaSections": ["s23"],
       "nacsaTitle": "Cyber security audit",
       "relationship": "complementary",
+      "mappingType": "direct",
       "notes": "RMiT Appendix 10 audit domain requires cloud to be included in annual technology audit scope with CIS Benchmark assessments and penetration testing. NACSA s23 requires NCII entities to undergo cyber security audits by NACSA-licensed auditors. The RMiT-mandated cloud security audits provide evidence for NACSA s23 compliance, but NACSA may require additional audit scope or specific licensed auditors."
     },
     {
@@ -53,6 +238,7 @@
       "nacsaSections": ["s26"],
       "nacsaTitle": "Cyber security incident notification",
       "relationship": "overlapping",
+      "mappingType": "direct",
       "notes": "RMiT Appendix 10 monitoring domain requires 24/7 cloud monitoring with cloud-specific IR playbooks and 24-hour BNM notification for major incidents. NACSA s26 requires 6-hour notification to NACSA for cyber security incidents affecting NCII. Financial institutions with NCII on cloud must maintain dual notification procedures: 6-hour to NACSA and 24-hour to BNM. The NACSA timeline is stricter and should drive IR plan design."
     },
     {
@@ -61,6 +247,7 @@
       "nacsaSections": ["s18"],
       "nacsaTitle": "Duties of NCII entity — security measures",
       "relationship": "complementary",
+      "mappingType": "partial",
       "notes": "RMiT 10.52 requires critical customer data to reside in Malaysia (or nearest approved region with BNM approval). NACSA s18 duties include protecting NCII data. For NCII-designated cloud systems, data residency controls serve both obligations. Alibaba Cloud and Huawei Cloud offer Malaysia (Kuala Lumpur) regions; AWS, Azure, and GCP nearest approved region is Singapore."
     },
     {
@@ -69,6 +256,7 @@
       "nacsaSections": ["s17"],
       "nacsaTitle": "Designation of NCII",
       "relationship": "complementary",
+      "mappingType": "partial",
       "notes": "RMiT 10.52 data residency requirements apply to critical customer data. NACSA s17 NCII designation determines which systems are critical national infrastructure. Data classified as NCII under s17 that is also critical customer data under RMiT must satisfy both data residency and NCII protection requirements."
     },
     {
@@ -77,6 +265,7 @@
       "nacsaSections": ["s22"],
       "nacsaTitle": "Code of practice",
       "relationship": "complementary",
+      "mappingType": "related",
       "notes": "RMiT 17.1 requires BNM consultation before first-time public cloud adoption for critical systems, with comprehensive risk assessment and third-party review. NACSA s22 codes of practice may prescribe sector-specific cloud requirements. Financial institutions should reference both BNM consultation requirements and any NACSA-issued codes of practice for the financial sector when preparing cloud adoption submissions."
     },
     {
@@ -85,6 +274,7 @@
       "nacsaSections": ["s21"],
       "nacsaTitle": "Cyber security risk assessment",
       "relationship": "complementary",
+      "mappingType": "direct",
       "notes": "The RMiT 17.1 prerequisite risk assessment (per 10.50 and Appendix 10, using Appendix 7 Part A format) can incorporate NACSA s21 risk assessment requirements. A single comprehensive risk assessment addressing both BNM and NACSA obligations reduces duplication and ensures consistency."
     },
     {
@@ -93,6 +283,7 @@
       "nacsaSections": ["s18"],
       "nacsaTitle": "Duties of NCII entity — security measures",
       "relationship": "complementary",
+      "mappingType": "partial",
       "notes": "RMiT 17.2 allows notification (rather than consultation) for subsequent cloud adoptions if preconditions are met: no BNM concerns from first consultation, enhanced risk framework, independent assurance, and adequate IR. NACSA s18 duties remain continuous regardless of RMiT notification status. Each new NCII system on cloud must still satisfy s18 security measures."
     },
     {
@@ -101,6 +292,7 @@
       "nacsaSections": ["s25"],
       "nacsaTitle": "Cyber security exercise",
       "relationship": "complementary",
+      "mappingType": "partial",
       "notes": "RMiT 17.5 requires cloud adoption roadmap in annual outsourcing plan submitted to BNM. NACSA s25 requires cyber security exercises for NCII. Financial institutions should align cloud adoption milestones with NACSA exercise schedules to ensure newly deployed NCII cloud systems are included in the next exercise cycle."
     }
   ]

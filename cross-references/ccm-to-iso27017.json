@@ -1,9 +1,9 @@
 {
   "$schema": "cloud-security-v1",
   "title": "CSA CCM v4 to ISO 27017:2015 Cross-Reference",
-  "description": "Maps CSA Cloud Controls Matrix v4 domains to ISO/IEC 27017:2015 cloud-specific security controls. ISO 27017 extends ISO 27002 with additional guidance for cloud service providers and cloud service customers. This mapping shows where CCM controls implement ISO 27017 requirements.",
+  "description": "Maps CSA Cloud Controls Matrix v4 domains to ISO/IEC 27017:2015 cloud-specific security controls. ISO 27017 extends ISO 27002 with additional guidance for cloud service providers and cloud service customers. This mapping shows where CCM controls implement ISO 27017 requirements, with implementation guidance for both CSP and customer roles.",
   "sourceType": "constructed-indicative",
-  "verificationNote": "Mapping constructed from analysis of CCM v4 control objectives and ISO 27017:2015 control descriptions. Not normatively specified by either CSA or ISO. ISO 27017 clause numbers reference the ISO 27002 structure with cloud-specific extensions.",
+  "verificationNote": "Mapping constructed from analysis of CCM v4 control objectives and ISO 27017:2015 control descriptions. Not normatively specified by either CSA or ISO. ISO 27017 clause numbers reference the ISO 27002 structure with cloud-specific extensions (CLD.x.x.x). Implementation guidance is indicative and should be verified against the full ISO 27017 standard text.",
   "ccmVersion": "CSA Cloud Controls Matrix v4.0",
   "isoVersion": "ISO/IEC 27017:2015 (Code of practice for information security controls based on ISO/IEC 27002 for cloud services)",
   "mappings": [
@@ -11,135 +11,531 @@
       "ccmDomain": "A&A",
       "ccmDomainName": "Audit & Assurance",
       "iso27017Controls": [
-        { "clause": "18.2.1", "name": "Independent review of information security", "applicability": "cloud-customer", "alignment": "CCM A&A controls implement independent audit requirements for cloud security. A&A-01 (audit planning) and A&A-02 (independent assessments) directly map." },
-        { "clause": "CLD.12.4.5", "name": "Monitoring of Cloud Services", "applicability": "cloud-customer", "alignment": "A&A-05 (information system regulatory mapping) supports monitoring of cloud service compliance." }
+        {
+          "clause": "18.2.1",
+          "name": "Independent review of information security",
+          "applicability": "cloud-customer",
+          "alignment": "CCM A&A controls implement independent audit requirements for cloud security. A&A-01 (audit planning) and A&A-02 (independent assessments) directly map.",
+          "implementationGuidance": "Establish a cloud security audit programme that includes CSP compliance verification (via SOC 2, ISO 27001 reports), customer-side configuration audits, and shared responsibility gap assessments.",
+          "cloudServiceCustomerGuidance": "Request and review CSP audit reports (SOC 2 Type II, ISO 27001 certificates). Conduct independent audits of customer-managed cloud configurations. Include cloud-specific risks in audit scope (misconfiguration, excessive permissions, data exposure).",
+          "cloudServiceProviderGuidance": "Provide audit reports and compliance certifications to customers. Support customer audit rights as defined in service agreements. Maintain transparent reporting on security control effectiveness."
+        },
+        {
+          "clause": "CLD.12.4.5",
+          "name": "Monitoring of Cloud Services",
+          "applicability": "cloud-customer",
+          "alignment": "A&A-05 (information system regulatory mapping) supports monitoring of cloud service compliance.",
+          "implementationGuidance": "Implement continuous monitoring of cloud service usage, compliance status, and security posture. Use cloud-native CSPM tools to track compliance against regulatory requirements.",
+          "cloudServiceCustomerGuidance": "Deploy CSPM tools to monitor cloud configurations against compliance baselines (CIS Benchmarks, CCM). Establish dashboards tracking compliance scores and drift. Include cloud monitoring in regulatory reporting.",
+          "cloudServiceProviderGuidance": "Provide monitoring APIs and dashboards for customers to assess service availability, security events, and compliance status. Publish service health dashboards and incident notifications."
+        },
+        {
+          "clause": "CLD.6.3.1",
+          "name": "Shared roles and responsibilities within a cloud computing environment",
+          "applicability": "both",
+          "alignment": "A&A controls require clarity on audit scope boundaries between CSP and customer. A&A-03 (risk-based planning) must account for shared responsibility in audit planning.",
+          "implementationGuidance": "Document audit scope delineation between CSP and customer responsibilities. Map each CCM control to responsible party (CSP, customer, or shared). Include shared responsibility matrix in audit planning documentation.",
+          "cloudServiceCustomerGuidance": "Understand which A&A controls are the CSP's responsibility (physical security audits, infrastructure compliance) versus customer responsibility (application security, IAM configuration, data classification).",
+          "cloudServiceProviderGuidance": "Clearly document which security controls are managed by the CSP and provide evidence of compliance. Support customer audit requirements for shared controls."
+        }
       ]
     },
     {
       "ccmDomain": "AIS",
       "ccmDomainName": "Application & Interface Security",
       "iso27017Controls": [
-        { "clause": "14.1.1", "name": "Information security requirements analysis and specification", "applicability": "both", "alignment": "AIS-01 (application security) and AIS-02 (application security testing) implement secure application development for cloud." },
-        { "clause": "14.2.1", "name": "Secure development policy", "applicability": "cloud-provider", "alignment": "AIS-04 (secure application design) maps to secure development policy requirements." },
-        { "clause": "CLD.9.5.1", "name": "Segregation in virtual computing environments", "applicability": "cloud-provider", "alignment": "AIS controls support application-level segregation in multi-tenant cloud environments." }
+        {
+          "clause": "14.1.1",
+          "name": "Information security requirements analysis and specification",
+          "applicability": "both",
+          "alignment": "AIS-01 (application security) and AIS-02 (application security testing) implement secure application development for cloud.",
+          "implementationGuidance": "Define security requirements for all cloud-deployed applications including authentication, authorisation, data protection, and API security. Integrate security requirements into the SDLC from design phase.",
+          "cloudServiceCustomerGuidance": "Specify security requirements for applications deployed on cloud platforms: encryption requirements, authentication mechanisms, API security controls, and input validation. Include cloud-specific threats (SSRF, metadata service abuse) in threat modelling.",
+          "cloudServiceProviderGuidance": "Provide secure development guidelines for applications running on the cloud platform. Document security features available to customers (WAF, API gateway, managed certificates)."
+        },
+        {
+          "clause": "14.2.1",
+          "name": "Secure development policy",
+          "applicability": "cloud-provider",
+          "alignment": "AIS-04 (secure application design) maps to secure development policy requirements.",
+          "implementationGuidance": "Establish secure development policies covering cloud-native application patterns: container security, serverless security, infrastructure as code security, and CI/CD pipeline hardening.",
+          "cloudServiceCustomerGuidance": "Adopt secure development policies for cloud-native applications. Include container image scanning, IaC security scanning (Terraform, CloudFormation), secrets management, and dependency vulnerability scanning in CI/CD pipelines.",
+          "cloudServiceProviderGuidance": "Implement secure SDLC for all cloud platform services. Provide secure development tools and guidance to customers. Ensure platform APIs follow secure design principles."
+        },
+        {
+          "clause": "CLD.9.5.1",
+          "name": "Segregation in virtual computing environments",
+          "applicability": "cloud-provider",
+          "alignment": "AIS controls support application-level segregation in multi-tenant cloud environments.",
+          "implementationGuidance": "Ensure application architecture maintains tenant isolation through network segmentation, namespace isolation, data segregation, and access control boundaries.",
+          "cloudServiceCustomerGuidance": "Design applications to enforce tenant boundaries. Use separate cloud accounts, VPCs, or namespaces for different trust levels. Validate that application-level access controls complement infrastructure-level isolation.",
+          "cloudServiceProviderGuidance": "Implement and validate hypervisor-level, network-level, and storage-level tenant isolation. Provide customers with isolation guarantees and validation mechanisms."
+        },
+        {
+          "clause": "14.2.6",
+          "name": "Secure development environment",
+          "applicability": "both",
+          "alignment": "AIS-02 (application security testing) requires secure development and testing environments in cloud.",
+          "implementationGuidance": "Establish secure cloud-based development environments with appropriate isolation from production. Ensure development environments do not use production data or credentials.",
+          "cloudServiceCustomerGuidance": "Use separate cloud accounts or subscriptions for development, staging, and production. Implement data masking for test environments. Restrict developer access to production through separate identity boundaries.",
+          "cloudServiceProviderGuidance": "Provide mechanisms for customers to create isolated development environments. Support separate identity domains and network isolation between development and production."
+        }
       ]
     },
     {
       "ccmDomain": "BCR",
       "ccmDomainName": "Business Continuity Management & Operational Resilience",
       "iso27017Controls": [
-        { "clause": "17.1.1", "name": "Planning information security continuity", "applicability": "both", "alignment": "BCR-01 (business continuity planning) directly implements continuity planning for cloud services." },
-        { "clause": "17.1.2", "name": "Implementing information security continuity", "applicability": "both", "alignment": "BCR-02 (business continuity testing) and BCR-03 (backup) implement continuity measures." },
-        { "clause": "17.2.1", "name": "Availability of information processing facilities", "applicability": "cloud-provider", "alignment": "BCR controls address redundancy and availability requirements for cloud-hosted services." }
+        {
+          "clause": "17.1.1",
+          "name": "Planning information security continuity",
+          "applicability": "both",
+          "alignment": "BCR-01 (business continuity planning) directly implements continuity planning for cloud services.",
+          "implementationGuidance": "Develop cloud-specific business continuity plans addressing CSP service outages, region failures, and multi-cloud failover. Include CSP-specific RTO/RPO capabilities in planning.",
+          "cloudServiceCustomerGuidance": "Understand CSP SLAs for availability and recovery. Design multi-AZ and multi-region architectures for critical workloads. Plan for CSP-level failures including total service unavailability. Maintain cloud exit strategy.",
+          "cloudServiceProviderGuidance": "Publish SLAs with clear availability guarantees and compensation terms. Provide multi-AZ and multi-region capabilities. Document DR capabilities and customer recovery procedures."
+        },
+        {
+          "clause": "17.1.2",
+          "name": "Implementing information security continuity",
+          "applicability": "both",
+          "alignment": "BCR-02 (business continuity testing) and BCR-03 (backup) implement continuity measures.",
+          "implementationGuidance": "Implement automated backup, cross-region replication, and DR automation using cloud-native tools. Test recovery procedures regularly including full-stack failover exercises.",
+          "cloudServiceCustomerGuidance": "Implement automated backups with cross-region replication. Test DR procedures at least annually including full application recovery. Validate backup integrity and recovery times against defined RTOs and RPOs.",
+          "cloudServiceProviderGuidance": "Provide cross-region replication, automated backup, and disaster recovery services. Support customer DR testing without impacting production environments."
+        },
+        {
+          "clause": "17.2.1",
+          "name": "Availability of information processing facilities",
+          "applicability": "cloud-provider",
+          "alignment": "BCR controls address redundancy and availability requirements for cloud-hosted services.",
+          "implementationGuidance": "Leverage CSP infrastructure redundancy (Availability Zones, Regions) and design applications for high availability. Implement health checks, auto-scaling, and automated failover.",
+          "cloudServiceCustomerGuidance": "Deploy workloads across multiple Availability Zones. Use managed services with built-in redundancy. Implement application-level health checks and auto-recovery. Monitor CSP service health dashboards.",
+          "cloudServiceProviderGuidance": "Provide infrastructure redundancy through multiple Availability Zones and Regions. Maintain transparent service health communication. Ensure infrastructure meets published availability SLAs."
+        }
       ]
     },
     {
       "ccmDomain": "CCC",
       "ccmDomainName": "Change Control & Configuration Management",
       "iso27017Controls": [
-        { "clause": "12.1.2", "name": "Change management", "applicability": "both", "alignment": "CCC-01 (change management policy) and CCC-02 (quality testing) implement change control for cloud infrastructure." },
-        { "clause": "14.2.2", "name": "System change control procedures", "applicability": "both", "alignment": "CCC controls ensure cloud configuration changes follow controlled procedures." },
-        { "clause": "CLD.12.1.5", "name": "Administrator's operational security", "applicability": "cloud-provider", "alignment": "CCC-03 (configuration management) supports secure administrative operations." }
+        {
+          "clause": "12.1.2",
+          "name": "Change management",
+          "applicability": "both",
+          "alignment": "CCC-01 (change management policy) and CCC-02 (quality testing) implement change control for cloud infrastructure.",
+          "implementationGuidance": "Implement Infrastructure as Code (IaC) for all cloud changes. Use version control, peer review, and automated testing for infrastructure changes. Enforce change approval workflows.",
+          "cloudServiceCustomerGuidance": "Manage all cloud infrastructure through IaC (Terraform, CloudFormation, ARM, ROS, RFS). Implement pull request reviews for infrastructure changes. Use staging environments for testing before production deployment. Maintain change logs.",
+          "cloudServiceProviderGuidance": "Provide change notification for platform changes affecting customers. Implement controlled rollout processes for service updates. Publish deprecation timelines and migration guidance."
+        },
+        {
+          "clause": "14.2.2",
+          "name": "System change control procedures",
+          "applicability": "both",
+          "alignment": "CCC controls ensure cloud configuration changes follow controlled procedures.",
+          "implementationGuidance": "Establish formal change control procedures for cloud environments including impact assessment, approval workflow, implementation plan, rollback plan, and post-implementation verification.",
+          "cloudServiceCustomerGuidance": "Implement drift detection to identify unauthorised configuration changes. Use policy-as-code to prevent non-compliant configurations. Maintain golden images and base configurations in version control.",
+          "cloudServiceProviderGuidance": "Provide configuration history and drift detection capabilities. Support rollback mechanisms for customer-managed configurations."
+        },
+        {
+          "clause": "CLD.12.1.5",
+          "name": "Administrator's operational security",
+          "applicability": "cloud-provider",
+          "alignment": "CCC-03 (configuration management) supports secure administrative operations.",
+          "implementationGuidance": "Restrict administrative access to cloud management consoles using MFA, just-in-time access, and privileged access workstations. Log all administrative operations.",
+          "cloudServiceCustomerGuidance": "Implement MFA for all cloud console access. Use just-in-time privileged access for administrative tasks. Enforce least privilege for cloud administrators. Audit all administrative changes through cloud trail services.",
+          "cloudServiceProviderGuidance": "Implement and document internal administrative security controls. Restrict and audit employee access to customer environments. Provide transparency reports on administrative access."
+        }
       ]
     },
     {
       "ccmDomain": "CEK",
       "ccmDomainName": "Cryptography, Encryption & Key Management",
       "iso27017Controls": [
-        { "clause": "10.1.1", "name": "Policy on the use of cryptographic controls", "applicability": "both", "alignment": "CEK controls (EKM-01 through EKM-04) implement cryptographic policy for cloud data protection." },
-        { "clause": "10.1.2", "name": "Key management", "applicability": "both", "alignment": "CEK key management controls address the cloud-specific challenge of key ownership, key residency, and CSP access to keys." },
-        { "clause": "CLD.10.1.1", "name": "Shared roles and responsibilities within a cloud computing environment", "applicability": "both", "alignment": "CEK controls clarify encryption responsibilities in the shared responsibility model (who manages keys, who encrypts)." }
+        {
+          "clause": "10.1.1",
+          "name": "Policy on the use of cryptographic controls",
+          "applicability": "both",
+          "alignment": "CEK controls (EKM-01 through EKM-04) implement cryptographic policy for cloud data protection.",
+          "implementationGuidance": "Establish a cloud cryptographic policy defining: approved algorithms, minimum key lengths, key rotation schedules, key ownership, BYOK/HYOK requirements, and encryption scope (at-rest, in-transit, in-use).",
+          "cloudServiceCustomerGuidance": "Define encryption requirements for all cloud data: enforce encryption at rest using customer-managed keys (CMEK) for sensitive data. Enforce TLS 1.2+ for data in transit. Document key ownership and rotation policies. Consider BYOK for regulated workloads.",
+          "cloudServiceProviderGuidance": "Provide key management services with HSM backing. Support customer-managed keys, BYOK, and external key management. Document encryption capabilities and limitations for each service."
+        },
+        {
+          "clause": "10.1.2",
+          "name": "Key management",
+          "applicability": "both",
+          "alignment": "CEK key management controls address the cloud-specific challenge of key ownership, key residency, and CSP access to keys.",
+          "implementationGuidance": "Implement key management using cloud KMS with defined key hierarchy: root keys (HSM-protected), data encryption keys (envelope encryption), and key policies (who can use, manage, and delete keys).",
+          "cloudServiceCustomerGuidance": "Use cloud KMS for key lifecycle management. Implement envelope encryption (KMS master key encrypts data encryption keys). Define key rotation policies (annual for master keys). Restrict key management permissions to dedicated security team. Audit key usage through cloud trail services.",
+          "cloudServiceProviderGuidance": "Provide transparent key management with customer-controlled access policies. Support automatic key rotation. Ensure CSP personnel cannot access customer keys without customer consent. Provide key deletion safeguards."
+        },
+        {
+          "clause": "CLD.10.1.1",
+          "name": "Shared roles and responsibilities within a cloud computing environment",
+          "applicability": "both",
+          "alignment": "CEK controls clarify encryption responsibilities in the shared responsibility model (who manages keys, who encrypts).",
+          "implementationGuidance": "Document encryption responsibility boundaries: CSP-managed encryption (infrastructure-level), customer-managed encryption (application and data-level), and shared encryption (service-level encryption with customer-managed keys).",
+          "cloudServiceCustomerGuidance": "Understand which encryption is CSP-managed vs customer-managed. For regulated data, use CMEK to maintain key control. For highest assurance, use BYOK with on-premises HSM or external KMS. Document the encryption responsibility matrix.",
+          "cloudServiceProviderGuidance": "Clearly document which encryption is managed by the CSP vs customer. Provide options for customer key management. Publish key residency and access transparency information."
+        }
       ]
     },
     {
       "ccmDomain": "DSP",
       "ccmDomainName": "Data Security & Privacy Lifecycle Management",
       "iso27017Controls": [
-        { "clause": "8.2.1", "name": "Classification of information", "applicability": "cloud-customer", "alignment": "DSP-01 (data classification) and DSP-05 (data flow documentation) implement data classification for cloud." },
-        { "clause": "CLD.8.1.5", "name": "Removal of cloud service customer assets", "applicability": "cloud-provider", "alignment": "DSP-17 (data retention and deletion) addresses data removal and secure deletion in cloud." },
-        { "clause": "CLD.9.5.2", "name": "Cloud service customer data access", "applicability": "cloud-provider", "alignment": "DSP-04 and DSP-05 address data access controls and data flow in multi-tenant cloud." }
+        {
+          "clause": "8.2.1",
+          "name": "Classification of information",
+          "applicability": "cloud-customer",
+          "alignment": "DSP-01 (data classification) and DSP-05 (data flow documentation) implement data classification for cloud.",
+          "implementationGuidance": "Implement automated data classification using cloud-native tools (Macie, Purview, DLP, SDDP, Data Safe). Tag cloud resources with data classification labels. Enforce data handling policies based on classification.",
+          "cloudServiceCustomerGuidance": "Deploy automated data discovery and classification tools across cloud storage services. Implement tagging taxonomy for data classification (public, internal, confidential, restricted). Enforce encryption and access controls based on classification level.",
+          "cloudServiceProviderGuidance": "Provide data classification and discovery tools. Support resource tagging for data classification. Enable policy enforcement based on classification labels."
+        },
+        {
+          "clause": "CLD.8.1.5",
+          "name": "Removal of cloud service customer assets",
+          "applicability": "cloud-provider",
+          "alignment": "DSP-17 (data retention and deletion) addresses data removal and secure deletion in cloud.",
+          "implementationGuidance": "Implement data lifecycle policies including secure deletion procedures. Verify CSP data deletion guarantees. Plan for data removal upon contract termination.",
+          "cloudServiceCustomerGuidance": "Implement lifecycle policies for automated data expiration and deletion. Verify CSP secure deletion certifications (e.g., media sanitisation per NIST 800-88). Plan cloud exit procedures including data extraction and verification of deletion. Use crypto-shredding for encrypted data (delete encryption keys to render data unrecoverable).",
+          "cloudServiceProviderGuidance": "Provide verifiable data deletion mechanisms. Document media sanitisation procedures. Support customer data extraction in standard formats. Provide deletion confirmation upon contract termination."
+        },
+        {
+          "clause": "CLD.9.5.2",
+          "name": "Cloud service customer data access",
+          "applicability": "cloud-provider",
+          "alignment": "DSP-04 and DSP-05 address data access controls and data flow in multi-tenant cloud.",
+          "implementationGuidance": "Implement fine-grained access controls for cloud data. Use IAM policies, bucket policies, and database-level access controls. Monitor and alert on anomalous data access patterns.",
+          "cloudServiceCustomerGuidance": "Implement least-privilege data access policies. Use service-specific access controls (bucket policies, database grants, column-level security). Enable data access logging and anomaly detection. Block public access to storage services by default.",
+          "cloudServiceProviderGuidance": "Provide fine-grained data access controls. Implement and enforce tenant data isolation. Restrict and audit CSP personnel access to customer data. Provide access transparency logs."
+        },
+        {
+          "clause": "18.1.1",
+          "name": "Identification of applicable legislation and contractual requirements",
+          "applicability": "both",
+          "alignment": "DSP-06 (data residency) and DSP privacy controls address jurisdictional data requirements.",
+          "implementationGuidance": "Map data residency requirements to cloud region selection. Implement region-restriction policies to prevent data storage in non-approved jurisdictions. Consider sovereign cloud options for regulated data.",
+          "cloudServiceCustomerGuidance": "Identify data residency requirements (PDPA, RMiT, NACSA). Restrict cloud resource creation to approved regions using IAM/SCP policies. Monitor for data replication to non-approved regions. Document data flow maps showing jurisdictional boundaries.",
+          "cloudServiceProviderGuidance": "Publish data residency guarantees per region. Provide region-restriction capabilities. Document any cross-region data flows for service operation (e.g., metadata, support data). Support sovereign cloud deployment options."
+        }
       ]
     },
     {
       "ccmDomain": "DCS",
       "ccmDomainName": "Datacenter Security",
       "iso27017Controls": [
-        { "clause": "11.1.1", "name": "Physical security perimeter", "applicability": "cloud-provider", "alignment": "DCS controls (DCS-01 through DCS-09) implement physical security perimeter requirements for cloud datacenters. This is primarily a CSP responsibility." },
-        { "clause": "11.1.2", "name": "Physical entry controls", "applicability": "cloud-provider", "alignment": "DCS-03 (controlled access points) maps to physical entry control requirements for datacenter facilities." },
-        { "clause": "11.2.1", "name": "Equipment siting and protection", "applicability": "cloud-provider", "alignment": "DCS controls address equipment protection and environmental controls within cloud datacenters." }
+        {
+          "clause": "11.1.1",
+          "name": "Physical security perimeter",
+          "applicability": "cloud-provider",
+          "alignment": "DCS controls (DCS-01 through DCS-09) implement physical security perimeter requirements for cloud datacenters. This is primarily a CSP responsibility.",
+          "implementationGuidance": "Verify CSP physical security through compliance certifications (SOC 2, ISO 27001). For hybrid deployments, ensure on-premises components meet equivalent physical security standards.",
+          "cloudServiceCustomerGuidance": "Review CSP SOC 2 Type II reports for physical security controls. Verify ISO 27001 certification scope includes relevant datacenter facilities. For regulated workloads, confirm datacenter location and physical security standards meet regulatory requirements.",
+          "cloudServiceProviderGuidance": "Implement multi-layered physical security: perimeter fencing, vehicle barriers, manned security, CCTV, biometric access control. Obtain and maintain relevant compliance certifications covering physical security."
+        },
+        {
+          "clause": "11.1.2",
+          "name": "Physical entry controls",
+          "applicability": "cloud-provider",
+          "alignment": "DCS-03 (controlled access points) maps to physical entry control requirements for datacenter facilities.",
+          "implementationGuidance": "CSP responsibility. Customers verify through compliance reports and certifications.",
+          "cloudServiceCustomerGuidance": "Verify CSP implements biometric and multi-factor physical access controls through SOC 2 reports. Confirm visitor management and access logging procedures are documented.",
+          "cloudServiceProviderGuidance": "Implement biometric access controls, mantrap entries, and visitor escort requirements. Maintain physical access logs with retention periods meeting regulatory requirements."
+        },
+        {
+          "clause": "11.2.1",
+          "name": "Equipment siting and protection",
+          "applicability": "cloud-provider",
+          "alignment": "DCS controls address equipment protection and environmental controls within cloud datacenters.",
+          "implementationGuidance": "CSP responsibility. Customers verify environmental controls through compliance certifications.",
+          "cloudServiceCustomerGuidance": "Review CSP environmental control documentation: fire suppression, HVAC, flood protection, seismic design, and power redundancy. Verify through SOC 2 reports.",
+          "cloudServiceProviderGuidance": "Implement redundant power (UPS, generators), precision cooling, fire suppression (clean agent), water detection, and seismic protection. Maintain environmental monitoring with automated alerts."
+        }
       ]
     },
     {
       "ccmDomain": "GRC",
       "ccmDomainName": "Governance, Risk & Compliance",
       "iso27017Controls": [
-        { "clause": "5.1.1", "name": "Policies for information security", "applicability": "both", "alignment": "GRC-01 (governance program) and GRC-03 (policy review) implement the overarching security governance for cloud." },
-        { "clause": "6.1.1", "name": "Information security roles and responsibilities", "applicability": "both", "alignment": "GRC controls define cloud security roles and responsibilities, particularly the shared responsibility model." },
-        { "clause": "18.1.1", "name": "Identification of applicable legislation", "applicability": "both", "alignment": "GRC-02 (risk management) includes regulatory compliance identification for cloud." }
+        {
+          "clause": "5.1.1",
+          "name": "Policies for information security",
+          "applicability": "both",
+          "alignment": "GRC-01 (governance program) and GRC-03 (policy review) implement the overarching security governance for cloud.",
+          "implementationGuidance": "Establish a cloud security policy framework with cloud-specific policies for identity management, data protection, network security, logging, and incident response. Review and update policies at least annually.",
+          "cloudServiceCustomerGuidance": "Develop cloud security policies covering: acceptable use of cloud services, data classification and handling in cloud, identity and access management, encryption requirements, logging and monitoring, and incident response. Ensure policies address the shared responsibility model.",
+          "cloudServiceProviderGuidance": "Publish security policies applicable to cloud services. Provide transparency on security practices. Support customer policy implementation through service features and documentation."
+        },
+        {
+          "clause": "6.1.1",
+          "name": "Information security roles and responsibilities",
+          "applicability": "both",
+          "alignment": "GRC controls define cloud security roles and responsibilities, particularly the shared responsibility model.",
+          "implementationGuidance": "Define cloud security roles including Cloud Security Architect, Cloud IAM Administrator, Cloud Security Operations, and Data Protection Officer. Map responsibilities to the shared responsibility model.",
+          "cloudServiceCustomerGuidance": "Assign clear ownership for cloud security domains: IAM, network security, data protection, logging, and incident response. Ensure CISO and security team have cloud security competencies. Document RACI matrix for shared responsibility controls.",
+          "cloudServiceProviderGuidance": "Clearly document CSP security responsibilities. Provide shared responsibility documentation per service. Assign dedicated security contacts for customer engagement."
+        },
+        {
+          "clause": "18.1.1",
+          "name": "Identification of applicable legislation",
+          "applicability": "both",
+          "alignment": "GRC-02 (risk management) includes regulatory compliance identification for cloud.",
+          "implementationGuidance": "Maintain a regulatory compliance register for cloud services including data protection laws, sector-specific regulations, and cross-border data transfer requirements per jurisdiction.",
+          "cloudServiceCustomerGuidance": "Identify all applicable regulations for cloud usage: data protection (PDPA, GDPR), sector-specific (RMiT, NACSA Act 854), and industry standards (PCI DSS, HIPAA). Map regulatory requirements to cloud configurations and controls.",
+          "cloudServiceProviderGuidance": "Document compliance programmes and certifications. Publish data processing locations and jurisdictional information. Support customer compliance through compliance-specific features and documentation."
+        }
       ]
     },
     {
       "ccmDomain": "IAM",
       "ccmDomainName": "Identity & Access Management",
       "iso27017Controls": [
-        { "clause": "9.1.2", "name": "Access to networks and network services", "applicability": "both", "alignment": "IAM controls implement cloud network and service access management." },
-        { "clause": "9.2.1", "name": "User registration and de-registration", "applicability": "both", "alignment": "IAM-04 (provisioning/deprovisioning) and IAM-06 (access reviews) implement user lifecycle." },
-        { "clause": "9.2.3", "name": "Management of privileged access rights", "applicability": "both", "alignment": "IAM-02 (strong authentication) and IAM-09 (segregation of duties) manage cloud privileged access." },
-        { "clause": "9.4.1", "name": "Information access restriction", "applicability": "both", "alignment": "IAM-01 (access control policy) implements information access restriction in cloud." },
-        { "clause": "CLD.9.5.1", "name": "Segregation in virtual computing environments", "applicability": "cloud-provider", "alignment": "IAM controls contribute to tenant segregation through access management." }
+        {
+          "clause": "9.1.2",
+          "name": "Access to networks and network services",
+          "applicability": "both",
+          "alignment": "IAM controls implement cloud network and service access management.",
+          "implementationGuidance": "Restrict cloud management console access to authorised users with MFA. Use VPN or private connectivity for cloud administration. Implement IP-based access restrictions for management APIs.",
+          "cloudServiceCustomerGuidance": "Restrict cloud console access using IP allowlists, VPN requirements, and conditional access policies. Enforce MFA for all cloud management access. Use private endpoints for API access where possible.",
+          "cloudServiceProviderGuidance": "Provide IP-based access restrictions, VPN access options, and conditional access capabilities for management consoles and APIs."
+        },
+        {
+          "clause": "9.2.1",
+          "name": "User registration and de-registration",
+          "applicability": "both",
+          "alignment": "IAM-04 (provisioning/deprovisioning) and IAM-06 (access reviews) implement user lifecycle.",
+          "implementationGuidance": "Implement automated user provisioning and deprovisioning through identity federation (SAML/OIDC). Conduct quarterly access reviews for cloud IAM. Automate deprovisioning on HR termination events.",
+          "cloudServiceCustomerGuidance": "Federate cloud identity with enterprise IdP (Azure AD, Okta, etc.). Automate user provisioning via SCIM. Implement automated deprovisioning triggered by HR systems. Conduct quarterly access reviews with manager attestation. Remove stale accounts after defined inactivity period.",
+          "cloudServiceProviderGuidance": "Support identity federation (SAML 2.0, OIDC). Provide SCIM-based provisioning APIs. Support automated user lifecycle management. Provide access review and reporting capabilities."
+        },
+        {
+          "clause": "9.2.3",
+          "name": "Management of privileged access rights",
+          "applicability": "both",
+          "alignment": "IAM-02 (strong authentication) and IAM-09 (segregation of duties) manage cloud privileged access.",
+          "implementationGuidance": "Implement privileged access management (PAM) for cloud: just-in-time access, break-glass procedures, session recording, and separate privileged accounts.",
+          "cloudServiceCustomerGuidance": "Implement just-in-time privileged access with time-limited elevation. Use separate accounts for administrative tasks. Enforce phishing-resistant MFA (FIDO2) for privileged access. Log and monitor all privileged operations. Implement break-glass procedures with dual-approval for emergency access.",
+          "cloudServiceProviderGuidance": "Provide just-in-time access mechanisms. Support privileged access separation (service accounts vs user accounts). Provide comprehensive logging of privileged operations. Support conditional access policies for elevated permissions."
+        },
+        {
+          "clause": "9.4.1",
+          "name": "Information access restriction",
+          "applicability": "both",
+          "alignment": "IAM-01 (access control policy) implements information access restriction in cloud.",
+          "implementationGuidance": "Implement least-privilege access using cloud IAM policies. Use attribute-based access control (ABAC) and resource-level permissions. Enforce deny-by-default with explicit allow policies.",
+          "cloudServiceCustomerGuidance": "Implement least-privilege IAM policies using resource-level permissions. Use ABAC for dynamic access control based on tags. Enforce deny-by-default for all cloud resources. Regularly analyse IAM policies for overly permissive access using IAM access analysers.",
+          "cloudServiceProviderGuidance": "Provide fine-grained IAM with resource-level permissions, conditions, and tag-based access control. Provide policy analysis tools to identify overly permissive access."
+        },
+        {
+          "clause": "CLD.9.5.1",
+          "name": "Segregation in virtual computing environments",
+          "applicability": "cloud-provider",
+          "alignment": "IAM controls contribute to tenant segregation through access management.",
+          "implementationGuidance": "Use separate cloud accounts/subscriptions/projects for different trust boundaries. Implement cross-account access controls with explicit trust relationships.",
+          "cloudServiceCustomerGuidance": "Use multi-account strategy for workload isolation (production, development, security, logging). Implement cross-account roles with least-privilege trust policies. Use separate identity domains for different trust levels.",
+          "cloudServiceProviderGuidance": "Implement and validate tenant isolation at IAM, network, storage, and compute layers. Prevent cross-tenant access through infrastructure controls. Provide isolation validation mechanisms."
+        }
       ]
     },
     {
       "ccmDomain": "IVS",
       "ccmDomainName": "Infrastructure & Virtualization Security",
       "iso27017Controls": [
-        { "clause": "13.1.3", "name": "Segregation in networks", "applicability": "both", "alignment": "IVS-06 (network segmentation) and IVS-09 (isolation) implement network segregation in cloud." },
-        { "clause": "CLD.9.5.1", "name": "Segregation in virtual computing environments", "applicability": "cloud-provider", "alignment": "IVS controls address virtualisation security including hypervisor hardening and virtual network isolation." },
-        { "clause": "CLD.13.1.4", "name": "Alignment of security management for virtual and physical networks", "applicability": "cloud-provider", "alignment": "IVS-01 (infrastructure security) and IVS-04 (network security) address virtual-physical network alignment." }
+        {
+          "clause": "13.1.3",
+          "name": "Segregation in networks",
+          "applicability": "both",
+          "alignment": "IVS-06 (network segmentation) and IVS-09 (isolation) implement network segregation in cloud.",
+          "implementationGuidance": "Implement network segmentation using VPCs/VCNs with separate subnets for different tiers. Use security groups and network ACLs for micro-segmentation. Deploy network firewalls between trust boundaries.",
+          "cloudServiceCustomerGuidance": "Design VPC architecture with separate subnets for web, application, and database tiers. Use security groups for instance-level segmentation. Deploy cloud network firewalls between trust zones. Use private subnets for backend services. Implement zero-trust network principles.",
+          "cloudServiceProviderGuidance": "Provide VPC/VCN capabilities with configurable subnets, security groups, and network ACLs. Support network firewall services with stateful inspection and IPS. Ensure infrastructure-level network isolation between tenants."
+        },
+        {
+          "clause": "CLD.9.5.1",
+          "name": "Segregation in virtual computing environments",
+          "applicability": "cloud-provider",
+          "alignment": "IVS controls address virtualisation security including hypervisor hardening and virtual network isolation.",
+          "implementationGuidance": "Leverage CSP hypervisor isolation and validate through compliance certifications. For sensitive workloads, consider dedicated hosts or confidential computing options.",
+          "cloudServiceCustomerGuidance": "Use dedicated hosts or bare metal instances for workloads requiring hardware-level isolation. Consider confidential computing (AMD SEV, Intel SGX) for sensitive processing. Validate CSP hypervisor security through SOC 2 reports.",
+          "cloudServiceProviderGuidance": "Implement hardened hypervisors with security patches. Provide dedicated host options for customers requiring hardware isolation. Support confidential computing capabilities. Validate isolation through regular penetration testing."
+        },
+        {
+          "clause": "CLD.13.1.4",
+          "name": "Alignment of security management for virtual and physical networks",
+          "applicability": "cloud-provider",
+          "alignment": "IVS-01 (infrastructure security) and IVS-04 (network security) address virtual-physical network alignment.",
+          "implementationGuidance": "Ensure virtual network security controls provide equivalent or greater protection than physical network controls. Apply consistent security policies across virtual and physical boundaries.",
+          "cloudServiceCustomerGuidance": "Apply equivalent security controls to virtual networks as physical networks: firewalling, IDS/IPS, traffic monitoring, and access control. Use VPC flow logs as the virtual equivalent of network TAPs. Implement east-west traffic inspection.",
+          "cloudServiceProviderGuidance": "Ensure virtual network controls (security groups, NACLs, virtual firewalls) provide equivalent protection to physical network controls. Validate virtual network isolation through testing."
+        },
+        {
+          "clause": "13.1.1",
+          "name": "Network controls",
+          "applicability": "both",
+          "alignment": "IVS-01 and IVS-04 implement network security controls for cloud infrastructure.",
+          "implementationGuidance": "Implement defence-in-depth network security: DDoS protection, WAF, network firewall, security groups, NACLs, and private connectivity. Monitor network traffic for threats.",
+          "cloudServiceCustomerGuidance": "Enable DDoS protection on all internet-facing endpoints. Deploy WAF for web applications. Use network firewalls for inter-VPC traffic inspection. Enable VPC flow logs for network visibility. Implement private connectivity (PrivateLink, VPC endpoints) for service access.",
+          "cloudServiceProviderGuidance": "Provide DDoS protection, WAF, and network firewall services. Support private connectivity options. Provide network monitoring and flow log capabilities."
+        }
       ]
     },
     {
       "ccmDomain": "LOG",
       "ccmDomainName": "Logging & Monitoring",
       "iso27017Controls": [
-        { "clause": "12.4.1", "name": "Event logging", "applicability": "both", "alignment": "LOG-01 (logging policy) and LOG-03 (security monitoring) implement event logging for cloud." },
-        { "clause": "12.4.3", "name": "Administrator and operator logs", "applicability": "both", "alignment": "LOG controls capture privileged cloud administrative activity." },
-        { "clause": "12.4.4", "name": "Clock synchronisation", "applicability": "both", "alignment": "LOG-08 (log timestamps) addresses time synchronisation for cloud audit trails." },
-        { "clause": "CLD.12.4.5", "name": "Monitoring of Cloud Services", "applicability": "cloud-customer", "alignment": "LOG-03 (security monitoring) and LOG-13 (monitoring) implement continuous cloud service monitoring." }
+        {
+          "clause": "12.4.1",
+          "name": "Event logging",
+          "applicability": "both",
+          "alignment": "LOG-01 (logging policy) and LOG-03 (security monitoring) implement event logging for cloud.",
+          "implementationGuidance": "Enable comprehensive logging across all cloud services: management plane (API calls), data plane (data access), network (flow logs), and application (custom logs). Centralise logs in immutable storage.",
+          "cloudServiceCustomerGuidance": "Enable cloud trail/audit logging in all regions and accounts. Enable data event logging for sensitive resources. Centralise logs in a dedicated security account with cross-account log aggregation. Enable log immutability using WORM storage. Retain logs per regulatory requirements (RMiT: 7 years, NACSA: as specified).",
+          "cloudServiceProviderGuidance": "Provide comprehensive logging for all service operations. Support log export and centralisation. Provide immutable log storage options. Ensure log availability for forensic investigation."
+        },
+        {
+          "clause": "12.4.3",
+          "name": "Administrator and operator logs",
+          "applicability": "both",
+          "alignment": "LOG controls capture privileged cloud administrative activity.",
+          "implementationGuidance": "Ensure all privileged operations are logged with sufficient detail: who performed the action, what was changed, when, and from where. Protect administrative logs from tampering.",
+          "cloudServiceCustomerGuidance": "Log all IAM operations, privilege escalations, policy changes, and security group modifications. Send administrative logs to a separate, restricted log account. Alert on high-risk administrative actions (root account usage, security group changes, encryption key deletion).",
+          "cloudServiceProviderGuidance": "Log all internal administrative operations on customer environments. Provide access transparency logs showing CSP personnel access to customer data. Protect administrative logs from internal tampering."
+        },
+        {
+          "clause": "12.4.4",
+          "name": "Clock synchronisation",
+          "applicability": "both",
+          "alignment": "LOG-08 (log timestamps) addresses time synchronisation for cloud audit trails.",
+          "implementationGuidance": "Use cloud-provided NTP sources for time synchronisation. Ensure all services and instances use UTC timestamps. Validate log timestamp consistency across services.",
+          "cloudServiceCustomerGuidance": "Configure all cloud instances to use CSP-provided NTP servers. Use UTC for all log timestamps. Validate timestamp consistency when correlating logs across services and regions.",
+          "cloudServiceProviderGuidance": "Provide reliable NTP services synchronised to authoritative time sources. Ensure all cloud service logs use consistent UTC timestamps."
+        },
+        {
+          "clause": "CLD.12.4.5",
+          "name": "Monitoring of Cloud Services",
+          "applicability": "cloud-customer",
+          "alignment": "LOG-03 (security monitoring) and LOG-13 (monitoring) implement continuous cloud service monitoring.",
+          "implementationGuidance": "Implement security monitoring covering: threat detection (GuardDuty, Cloud Guard, Security Center, SA), compliance monitoring (Config, CSPM), and operational monitoring (CloudWatch, Cloud Eye, CloudMonitor, OCI Monitoring).",
+          "cloudServiceCustomerGuidance": "Deploy cloud-native threat detection services in all regions and accounts. Implement CSPM tools for continuous compliance monitoring. Create security dashboards tracking key metrics: open findings, compliance scores, threat alerts. Integrate cloud security alerts with SIEM/SOAR platforms.",
+          "cloudServiceProviderGuidance": "Provide threat detection, compliance monitoring, and security posture management services. Support log export to customer SIEM platforms. Provide security alert APIs for automation."
+        }
       ]
     },
     {
       "ccmDomain": "SEF",
       "ccmDomainName": "Security Incident Management, E-Discovery, & Cloud Forensics",
       "iso27017Controls": [
-        { "clause": "16.1.1", "name": "Responsibilities and procedures", "applicability": "both", "alignment": "SEF-01 (incident management policy) and SEF-02 (incident response plan) implement incident management for cloud." },
-        { "clause": "16.1.2", "name": "Reporting information security events", "applicability": "both", "alignment": "SEF-03 (incident reporting) implements security event reporting for cloud incidents." },
-        { "clause": "16.1.5", "name": "Response to information security incidents", "applicability": "both", "alignment": "SEF controls address the cloud-specific challenge of incident response when infrastructure is shared with the CSP." }
+        {
+          "clause": "16.1.1",
+          "name": "Responsibilities and procedures",
+          "applicability": "both",
+          "alignment": "SEF-01 (incident management policy) and SEF-02 (incident response plan) implement incident management for cloud.",
+          "implementationGuidance": "Develop cloud-specific incident response procedures covering: CSP service incidents, customer-side security events, and shared responsibility incidents. Define escalation procedures for both CSP and internal security teams.",
+          "cloudServiceCustomerGuidance": "Develop cloud IR playbooks for common scenarios: compromised credentials, cryptomining, data exfiltration, ransomware, and misconfiguration exposure. Define CSP communication channels for incident coordination. Implement automated response using cloud-native services (Lambda, Functions, Event Rules). Conduct tabletop exercises for cloud incidents.",
+          "cloudServiceProviderGuidance": "Provide incident notification mechanisms (health dashboards, email, API). Define shared incident response procedures. Support customer forensic investigations with data preservation and access. Publish incident communication timelines."
+        },
+        {
+          "clause": "16.1.2",
+          "name": "Reporting information security events",
+          "applicability": "both",
+          "alignment": "SEF-03 (incident reporting) implements security event reporting for cloud incidents.",
+          "implementationGuidance": "Implement automated incident reporting workflows integrating cloud security alerts with incident management systems. Define reporting timelines for both BNM (24 hours) and NACSA (6 hours).",
+          "cloudServiceCustomerGuidance": "Implement automated alert escalation from cloud security services to incident management platform. Define severity classification for cloud incidents. Maintain dual notification procedures for NACSA (6-hour) and BNM (24-hour) where applicable. Document incident reporting templates pre-populated with cloud context.",
+          "cloudServiceProviderGuidance": "Provide timely incident notifications to affected customers. Support customer incident investigation with log access and evidence preservation. Publish root cause analyses for significant incidents."
+        },
+        {
+          "clause": "16.1.5",
+          "name": "Response to information security incidents",
+          "applicability": "both",
+          "alignment": "SEF controls address the cloud-specific challenge of incident response when infrastructure is shared with the CSP.",
+          "implementationGuidance": "Implement cloud forensic readiness: pre-configured forensic collection tools, isolated forensic accounts, snapshot capabilities, and log preservation procedures.",
+          "cloudServiceCustomerGuidance": "Maintain forensic readiness: pre-deployed forensic tools in isolated accounts, automated snapshot collection on alert, log preservation with legal hold, and memory capture capabilities. Conduct cloud forensic exercises. Maintain chain of custody documentation for cloud evidence.",
+          "cloudServiceProviderGuidance": "Support customer forensic investigations through snapshot capabilities, log access, and evidence preservation. Provide data preservation mechanisms for legal hold. Document forensic capabilities and limitations."
+        }
       ]
     },
     {
       "ccmDomain": "STA",
       "ccmDomainName": "Supply Chain Management, Transparency, & Accountability",
       "iso27017Controls": [
-        { "clause": "15.1.1", "name": "Information security policy for supplier relationships", "applicability": "cloud-customer", "alignment": "STA-01 (vendor risk assessment) and STA-03 (supply chain governance) implement CSP relationship management." },
-        { "clause": "15.2.1", "name": "Monitoring and review of supplier services", "applicability": "cloud-customer", "alignment": "STA-05 (third-party audit) and STA-08 (supply chain monitoring) implement ongoing CSP monitoring." },
-        { "clause": "CLD.6.3.1", "name": "Shared roles and responsibilities within a cloud computing environment", "applicability": "both", "alignment": "STA controls clarify and document the shared responsibility model between CSP and customer." }
+        {
+          "clause": "15.1.1",
+          "name": "Information security policy for supplier relationships",
+          "applicability": "cloud-customer",
+          "alignment": "STA-01 (vendor risk assessment) and STA-03 (supply chain governance) implement CSP relationship management.",
+          "implementationGuidance": "Establish a CSP vendor management programme including due diligence, contractual security requirements, ongoing monitoring, and exit planning.",
+          "cloudServiceCustomerGuidance": "Conduct thorough due diligence before CSP selection: review compliance certifications, security documentation, SLAs, and data processing agreements. Include security requirements in contracts: data residency, encryption, incident notification, audit rights, and data deletion. Maintain CSP risk register.",
+          "cloudServiceProviderGuidance": "Provide comprehensive security documentation for customer due diligence. Publish compliance certifications and audit reports. Offer configurable SLAs and data processing agreements."
+        },
+        {
+          "clause": "15.2.1",
+          "name": "Monitoring and review of supplier services",
+          "applicability": "cloud-customer",
+          "alignment": "STA-05 (third-party audit) and STA-08 (supply chain monitoring) implement ongoing CSP monitoring.",
+          "implementationGuidance": "Implement continuous CSP monitoring: track compliance certification renewals, review SOC 2 reports annually, monitor CSP security advisories, and assess CSP security posture changes.",
+          "cloudServiceCustomerGuidance": "Review CSP SOC 2 reports annually. Monitor CSP security bulletins and advisories. Track SLA compliance through CSP health dashboards. Assess impact of CSP service changes on security posture. Maintain alternative CSP options to avoid vendor lock-in.",
+          "cloudServiceProviderGuidance": "Publish annual compliance reports. Provide proactive security advisories. Maintain transparent SLA reporting. Communicate service changes with security impact assessment."
+        },
+        {
+          "clause": "CLD.6.3.1",
+          "name": "Shared roles and responsibilities within a cloud computing environment",
+          "applicability": "both",
+          "alignment": "STA controls clarify and document the shared responsibility model between CSP and customer.",
+          "implementationGuidance": "Document and maintain a shared responsibility matrix for each CSP and service model (IaaS, PaaS, SaaS). Review annually and update as services evolve.",
+          "cloudServiceCustomerGuidance": "Maintain a shared responsibility matrix per CSP documenting security control ownership. Map each security domain to responsible party. Identify shared controls requiring coordination. Use the matrix for audit planning, risk assessment, and incident response.",
+          "cloudServiceProviderGuidance": "Publish and maintain shared responsibility documentation per service. Clearly delineate CSP vs customer responsibilities. Provide guidance for customer security implementation."
+        }
       ]
     },
     {
       "ccmDomain": "TVM",
       "ccmDomainName": "Threat & Vulnerability Management",
       "iso27017Controls": [
-        { "clause": "12.6.1", "name": "Management of technical vulnerabilities", "applicability": "both", "alignment": "TVM-01 (vulnerability management) and TVM-02 (vulnerability scanning) implement vulnerability management for cloud resources." },
-        { "clause": "12.2.1", "name": "Controls against malware", "applicability": "both", "alignment": "TVM controls address cloud-specific malware protection (container scanning, serverless security, endpoint protection)." }
+        {
+          "clause": "12.6.1",
+          "name": "Management of technical vulnerabilities",
+          "applicability": "both",
+          "alignment": "TVM-01 (vulnerability management) and TVM-02 (vulnerability scanning) implement vulnerability management for cloud resources.",
+          "implementationGuidance": "Implement continuous vulnerability management: automated scanning of compute instances, container images, serverless functions, and IaC templates. Define remediation SLAs by severity. Track vulnerability metrics.",
+          "cloudServiceCustomerGuidance": "Deploy cloud-native vulnerability scanning (Inspector, Defender, Security Command Center, Security Center, HSS, OCI Vulnerability Scanning). Scan compute instances, container images, and IaC templates. Define remediation SLAs: critical (24 hours), high (7 days), medium (30 days), low (90 days). Automate patching where possible.",
+          "cloudServiceProviderGuidance": "Provide vulnerability scanning services for customer workloads. Maintain and patch cloud platform infrastructure. Publish security advisories for platform vulnerabilities. Support automated patching mechanisms."
+        },
+        {
+          "clause": "12.2.1",
+          "name": "Controls against malware",
+          "applicability": "both",
+          "alignment": "TVM controls address cloud-specific malware protection (container scanning, serverless security, endpoint protection).",
+          "implementationGuidance": "Implement multi-layer malware protection: container image scanning, runtime protection (CWPP), file integrity monitoring, and network-based threat detection.",
+          "cloudServiceCustomerGuidance": "Deploy cloud workload protection (CWPP) on compute instances. Scan container images before deployment and at runtime. Implement file integrity monitoring for critical system files. Use cloud-native threat detection for cryptomining, malware communication, and data exfiltration detection.",
+          "cloudServiceProviderGuidance": "Provide malware detection capabilities for customer workloads. Implement platform-level malware protection. Support container runtime security. Provide threat intelligence feeds for cloud-specific malware."
+        }
       ]
     },
     {
       "ccmDomain": "UEM",
       "ccmDomainName": "Universal Endpoint Management",
       "iso27017Controls": [
-        { "clause": "6.2.1", "name": "Mobile device policy", "applicability": "cloud-customer", "alignment": "UEM controls implement endpoint security for devices accessing cloud services." },
-        { "clause": "11.2.6", "name": "Security of equipment and assets off-premises", "applicability": "cloud-customer", "alignment": "UEM controls address security of endpoint devices accessing cloud from any location." }
+        {
+          "clause": "6.2.1",
+          "name": "Mobile device policy",
+          "applicability": "cloud-customer",
+          "alignment": "UEM controls implement endpoint security for devices accessing cloud services.",
+          "implementationGuidance": "Implement device trust evaluation for cloud access. Use conditional access policies to restrict cloud management access to compliant, managed devices.",
+          "cloudServiceCustomerGuidance": "Enforce device compliance for cloud console access: managed device requirement, disk encryption, OS patching, and endpoint protection. Use conditional access policies to block access from unmanaged or non-compliant devices. Consider virtual desktops for cloud administration from untrusted environments.",
+          "cloudServiceProviderGuidance": "Support conditional access policies based on device compliance signals. Provide virtual desktop services for secure cloud administration. Support device certificate-based authentication."
+        },
+        {
+          "clause": "11.2.6",
+          "name": "Security of equipment and assets off-premises",
+          "applicability": "cloud-customer",
+          "alignment": "UEM controls address security of endpoint devices accessing cloud from any location.",
+          "implementationGuidance": "Implement zero-trust access principles for cloud access from any location. Use identity-based access controls rather than network-perimeter-based controls.",
+          "cloudServiceCustomerGuidance": "Implement zero-trust architecture for cloud access: verify identity, device health, and context for every access request. Use VPN or ZTNA for cloud administration. Enforce session timeouts and re-authentication for long sessions. Implement geolocation-based access restrictions where appropriate.",
+          "cloudServiceProviderGuidance": "Support zero-trust access patterns: identity-based access, device posture checks, and context-aware authentication. Provide session management and timeout capabilities."
+        }
       ]
     }
   ]
