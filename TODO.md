@@ -45,19 +45,19 @@ Tracking all planned enhancements. Grouped by phase. Check off items as complete
 - [x] Add Well-Architected framework data for GCP (6 principles, 6 areas) — `standards/csp/gcp/well-architected.json`
 - [x] Add missing sector files: education.json, telecommunications.json — all 6 sectors now have detail files
 - [x] Expand threat actors — now 6 (added Muddled Libra); FIN7, APT41 pending
-- [x] Expand evidence items — now 53 items across 12 domains (up from 31), 4-5 items per domain
+- [x] Expand evidence items — now 102 items across all 12 domains (up from 53)
 - [x] Add cloud-specific MITRE ATT&CK sub-techniques — 23 sub-techniques across 10 parent techniques
 
 ---
 
-## Phase 4 — Mapping Enhancements (Pending)
+## Phase 4 — Mapping Enhancements (Complete)
 
-- [ ] Add CCM ↔ Alibaba Cloud service mapping — `cross-references/ccm-to-alibaba.json`
-- [ ] Add CCM ↔ Huawei Cloud service mapping — `cross-references/ccm-to-huawei.json`
-- [ ] Add CCM ↔ Oracle Cloud service mapping — `cross-references/ccm-to-oracle.json`
-- [x] Add RMiT ↔ NACSA cross-reference — 12 mappings covering clauses 10.50-10.52 and 17.1-17.5 to NACSA s17-s26
-- [ ] Add ISO 27017 control detail expansion (currently indicative mapping only)
-- [ ] Add bidirectional lookup to all cross-references (reverse mapping views)
+- [x] Add CCM ↔ Alibaba Cloud service mapping — `cross-references/ccm-to-alibaba.json`
+- [x] Add CCM ↔ Huawei Cloud service mapping — `cross-references/ccm-to-huawei.json`
+- [x] Add CCM ↔ Oracle Cloud service mapping — `cross-references/ccm-to-oracle.json`
+- [x] Add RMiT ↔ NACSA cross-reference — expanded cross-ref coverage
+- [x] Add ISO 27017 control detail expansion
+- [x] Add bidirectional lookup to all cross-references (reverse mapping views)
 
 ---
 
