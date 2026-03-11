@@ -39,7 +39,7 @@
       "treatmentPlan": "Implement least-privilege IAM policies using automated policy analysis tools (AWS IAM Access Analyzer, Azure AD PIM). Enforce permission boundaries (SCPs/permission boundaries). Deploy CSPM with continuous IAM posture assessment. Conduct quarterly IAM policy audits. Eliminate wildcard permissions in all production accounts.",
       "residualLikelihood": 2,
       "residualImpact": 5,
-      "residualRisk": "Critical",
+      "residualRisk": "High",
       "owner": "Cloud Security Engineer / IAM Team",
       "reviewDate": "Monthly",
       "riskScore": 20
@@ -69,7 +69,7 @@
       "treatmentPlan": "Enable account-level block public access on all storage services. Deploy CSPM with real-time alerting on public storage detection. Implement IaC templates that enforce private-only storage by default. Conduct weekly automated scans for public storage. Classify all data in cloud storage and enforce access policies by classification.",
       "residualLikelihood": 1,
       "residualImpact": 4,
-      "residualRisk": "High",
+      "residualRisk": "Medium",
       "owner": "Cloud Security Engineer / Data Protection Officer",
       "reviewDate": "Monthly",
       "riskScore": 16
@@ -110,7 +110,7 @@
       "description": "Attacker compromises the CI/CD pipeline to inject malicious code into cloud deployments. Compromised build environments, poisoned container images, or tampered IaC templates can deploy backdoors across the entire cloud estate. SolarWinds (2020) and Codecov (2021) demonstrated the scale of CI/CD supply chain attacks.",
       "likelihood": 3,
       "impact": 5,
-      "riskRating": "Critical",
+      "riskRating": "High",
       "existingControls": [
         "Code review process for pull requests",
         "Container image scanning in CI pipeline",
@@ -128,7 +128,7 @@
       "treatmentPlan": "Implement code signing and verification for all deployment artefacts. Use immutable container images from a trusted private registry with automated vulnerability scanning. Deploy SBOM (Software Bill of Materials) generation and monitoring. Enforce branch protection rules and mandatory code reviews. Audit CI/CD service account permissions quarterly. Implement pipeline integrity monitoring.",
       "residualLikelihood": 2,
       "residualImpact": 5,
-      "residualRisk": "Critical",
+      "residualRisk": "High",
       "owner": "DevSecOps Lead / Cloud Security Engineer",
       "reviewDate": "Monthly",
       "riskScore": 15
@@ -157,7 +157,7 @@
       "treatmentPlan": "Implement region restriction policies (AWS SCPs, Azure Policy, GCP Organisation Policies) to prevent resource creation in non-approved regions. Audit all cloud services for default cross-region replication behaviour. Deploy data residency monitoring with automated alerting on policy violations. Maintain data residency compliance register per service. Review CSP data processing agreements for data location guarantees.",
       "residualLikelihood": 1,
       "residualImpact": 4,
-      "residualRisk": "High",
+      "residualRisk": "Medium",
       "owner": "Cloud Governance Lead / DPO / Compliance Manager",
       "reviewDate": "Quarterly",
       "riskScore": 12
@@ -198,7 +198,7 @@
       "description": "Malicious or negligent insider with privileged cloud access exfiltrates data, modifies infrastructure, or disables security controls. Cloud environments concentrate significant power in administrative accounts -- a single admin can access all resources across the estate.",
       "likelihood": 2,
       "impact": 4,
-      "riskRating": "High",
+      "riskRating": "Medium",
       "existingControls": [
         "Role-based access control implemented",
         "Administrative actions logged to CloudTrail/Activity Log",
@@ -218,7 +218,7 @@
       "treatmentPlan": "Implement just-in-time privileged access (AWS IAM Identity Center, Azure PIM) with approval workflows. Deploy UEBA (User and Entity Behaviour Analytics) on cloud audit logs to detect anomalous administrative patterns. Enforce separation of duties for critical operations (account deletion, data export). Implement break-glass procedures with post-use review for emergency access. Quarterly access certification for all privileged accounts.",
       "residualLikelihood": 1,
       "residualImpact": 4,
-      "residualRisk": "High",
+      "residualRisk": "Medium",
       "owner": "Cloud Security Manager / HR",
       "reviewDate": "Quarterly",
       "riskScore": 8
@@ -247,7 +247,7 @@
       "treatmentPlan": "Implement centralised secrets management (AWS Secrets Manager, Azure Key Vault, GCP Secret Manager, HashiCorp Vault). Deploy pre-commit hooks for secret detection (git-secrets, gitleaks). Enable CSP credential exposure detection (AWS compromised key detection). Automate credential rotation with short-lived tokens. Prohibit long-lived API keys in favour of IAM roles with temporary credentials. Monitor public repositories for organisation credential exposure.",
       "residualLikelihood": 2,
       "residualImpact": 4,
-      "residualRisk": "High",
+      "residualRisk": "Medium",
       "owner": "DevSecOps Lead / Cloud Security Engineer",
       "reviewDate": "Monthly",
       "riskScore": 16
@@ -259,7 +259,7 @@
       "description": "Attacker exploits container runtime vulnerability to escape container isolation and access the host OS or neighbouring containers. In shared Kubernetes clusters or container services, this enables cross-tenant access. Container escapes have been demonstrated in Docker (CVE-2019-5736), runc, and containerd.",
       "likelihood": 2,
       "impact": 5,
-      "riskRating": "Critical",
+      "riskRating": "High",
       "existingControls": [
         "Container images from trusted registries only",
         "Container runtime updated to latest stable version",
@@ -277,7 +277,7 @@
       "treatmentPlan": "Enforce non-root container execution. Implement Kubernetes Pod Security Standards (restricted profile). Deploy runtime security monitoring (Falco, Sysdig). Use gVisor or Kata Containers for workloads requiring stronger isolation. Restrict container capabilities to minimum required set. Automate container runtime patching. For sensitive workloads, use dedicated node pools with no co-tenancy.",
       "residualLikelihood": 1,
       "residualImpact": 5,
-      "residualRisk": "Critical",
+      "residualRisk": "Medium",
       "owner": "Platform Engineering / Cloud Security Engineer",
       "reviewDate": "Monthly",
       "riskScore": 10
@@ -318,7 +318,7 @@
       "description": "Attacker bypasses multi-factor authentication on cloud administrative accounts through SIM swapping, MFA fatigue attacks (push notification bombing), session token theft, or phishing with real-time MFA relay (AiTM phishing). The Uber 2022 breach used MFA fatigue to compromise an admin account.",
       "likelihood": 3,
       "impact": 5,
-      "riskRating": "Critical",
+      "riskRating": "High",
       "existingControls": [
         "MFA enabled on all administrative accounts",
         "Phishing awareness training",
@@ -335,7 +335,7 @@
       "treatmentPlan": "Upgrade from push-notification MFA to phishing-resistant MFA (FIDO2/WebAuthn hardware security keys) for all administrative accounts. Implement number-matching MFA to prevent fatigue attacks. Deploy conditional access policies with device compliance, impossible travel detection, and IP-based restrictions. Monitor for anomalous authentication patterns. Implement session token binding to prevent token theft.",
       "residualLikelihood": 1,
       "residualImpact": 5,
-      "residualRisk": "Critical",
+      "residualRisk": "Medium",
       "owner": "IAM Team / Cloud Security Manager",
       "reviewDate": "Monthly",
       "riskScore": 15
@@ -347,7 +347,7 @@
       "description": "Vulnerability in CSP shared infrastructure or multi-tenant service enables data leakage between tenants. Cross-tenant attacks have been demonstrated in shared database services, caching layers, and serverless execution environments. The organisation has limited visibility into CSP-side isolation controls.",
       "likelihood": 1,
       "impact": 5,
-      "riskRating": "Critical",
+      "riskRating": "Medium",
       "existingControls": [
         "CSP SOC 2 Type II report reviewed annually",
         "Data encrypted at rest with customer-managed keys",
@@ -365,7 +365,7 @@
       "treatmentPlan": "For high-sensitivity workloads, use dedicated/isolated instance types (dedicated hosts, isolated VPCs). Encrypt all data with customer-managed encryption keys (CMEK) -- even if cross-tenant access occurs, data remains encrypted. Monitor CSP security advisories for multi-tenancy vulnerabilities. Review CSP SOC 2 Type II reports for tenant isolation control effectiveness. Evaluate CSP commitment to responsible disclosure.",
       "residualLikelihood": 1,
       "residualImpact": 4,
-      "residualRisk": "High",
+      "residualRisk": "Medium",
       "owner": "Cloud Security Engineer / Cloud Governance Lead",
       "reviewDate": "Quarterly",
       "riskScore": 5
@@ -377,7 +377,7 @@
       "description": "Attacker compromises DNS records to redirect traffic intended for cloud-hosted services to attacker-controlled infrastructure. Compromised DNS enables credential harvesting, data interception, and phishing. Cloud DNS configurations are managed via API and are vulnerable to credential compromise.",
       "likelihood": 2,
       "impact": 4,
-      "riskRating": "High",
+      "riskRating": "Medium",
       "existingControls": [
         "DNS managed through cloud provider (Route 53, Azure DNS, Cloud DNS)",
         "DNS changes logged in audit trail",
@@ -394,7 +394,7 @@
       "treatmentPlan": "Implement DNSSEC for all externally-facing domains. Enable domain locking and transfer protection at registrar. Restrict DNS record modification to dedicated IAM roles with MFA. Monitor DNS record changes with automated alerting. Implement Certificate Transparency log monitoring to detect unauthorized certificate issuance for organisation domains.",
       "residualLikelihood": 1,
       "residualImpact": 4,
-      "residualRisk": "High",
+      "residualRisk": "Medium",
       "owner": "Cloud Infrastructure / Cloud Security Engineer",
       "reviewDate": "Quarterly",
       "riskScore": 8
@@ -406,7 +406,7 @@
       "description": "Attacker gains full control of a cloud account (AWS account, Azure subscription, GCP project) through stolen root/owner credentials. Account takeover enables complete data exfiltration, resource destruction, and creation of persistent backdoor accounts. Recovery requires CSP intervention.",
       "likelihood": 2,
       "impact": 5,
-      "riskRating": "Critical",
+      "riskRating": "High",
       "existingControls": [
         "Root account MFA enabled",
         "Root account usage alerts configured",
@@ -424,7 +424,7 @@
       "treatmentPlan": "Lock root/owner account with hardware MFA token stored in physical safe. Eliminate all root account API keys. Implement multi-account strategy with AWS Organisations/Azure Management Groups/GCP Organisation to limit blast radius. Deploy real-time alerting on root account usage. Establish CSP support relationship with priority incident response for account recovery. Maintain offline backup of critical account configuration.",
       "residualLikelihood": 1,
       "residualImpact": 5,
-      "residualRisk": "Critical",
+      "residualRisk": "Medium",
       "owner": "Cloud Security Manager / CISO",
       "reviewDate": "Monthly",
       "riskScore": 10

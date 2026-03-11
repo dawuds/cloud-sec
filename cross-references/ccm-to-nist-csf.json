@@ -40,7 +40,7 @@
     {
       "ccmDomain": "DCS",
       "ccmDomainName": "Datacenter Security",
-      "nistCsfMappings": ["PR.IR-01", "PR.IR-02", "PR.AC-02"]
+      "nistCsfMappings": ["PR.IR-01", "PR.IR-02", "PR.AA-02"]
     },
     {
       "ccmDomain": "GRC",
