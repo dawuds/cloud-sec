@@ -3,6 +3,12 @@
     "sourceType": "constructed-indicative",
     "verificationNote": "Cloud security control library with 49 controls across 12 domains. Mapped to CSA CCM v4, NACSA Act 854, NIST CSF 2.0, and MITRE ATT&CK Cloud."
   },
+  "_source": {
+    "sourceDocument": "CSA Cloud Controls Matrix v4.0.10",
+    "sourceVersion": "v4.0.10",
+    "sourceDate": "2023-09-01",
+    "sourceURL": "https://cloudsecurityalliance.org"
+  },
   "controls": [
     {
       "id": "CS-IAM-01",
